@@ -398,6 +398,7 @@ public class IndexWriterManager {
     mErrorLogWriter.println(msg + ":");
     thr.printStackTrace(mErrorLogWriter);
     mErrorLogWriter.println();
+    mErrorLogWriter.flush();
   }
 
 
