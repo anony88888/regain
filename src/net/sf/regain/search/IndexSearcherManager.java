@@ -202,6 +202,32 @@ public class IndexSearcherManager {
     }
   }
 
+  
+  /**
+   * Gets an IndexReader for the index.
+   * <p>
+   * NOTE: Must be called in a synchronized block.
+   * 
+   * @return An IndexReader for the index.
+   * @throws RegainException If creating the IndexReader failed.
+   */
+  private IndexReader getIndexReader() throws RegainException {
+    if (mIndexReader == null) {
+      if (! mWorkingIndexDir.exists()) {
+        checkForIndexUpdate();
+      }
+  
+      try {
+        mIndexReader = IndexReader.open(mWorkingIndexDir.getAbsolutePath());
+      }
+      catch (IOException exc) {
+        throw new RegainException("Creating index reader failed", exc);
+      }
+    }
+    
+    return mIndexReader;
+  }
+
 
   /**
    * Gets all distinct values a index has for a certain field. The values are
@@ -218,22 +244,9 @@ public class IndexSearcherManager {
     
     String[] valueArr = (String[]) mFieldTermHash.get(field);
     if (valueArr == null) {
-      if (mIndexReader == null) {
-        if (! mWorkingIndexDir.exists()) {
-          checkForIndexUpdate();
-        }
-  
-        try {
-          mIndexReader = IndexReader.open(mWorkingIndexDir.getAbsolutePath());
-        }
-        catch (IOException exc) {
-          throw new RegainException("Creating index reader failed", exc);
-        }
-      }
-      
       // Read the terms
       try {
-        TermEnum termEnum = mIndexReader.terms();
+        TermEnum termEnum = getIndexReader().terms();
 
         ArrayList valueList = new ArrayList();
         while(termEnum.next()) {
@@ -259,6 +272,17 @@ public class IndexSearcherManager {
     }
     
     return valueArr;
+  }
+
+
+  /**
+   * Gets the total number of documents in the index. 
+   *  
+   * @return The total number of documents in the index.
+   * @throws RegainException If getting the document count failed.
+   */
+  public synchronized int getDocumentCount() throws RegainException {
+    return getIndexReader().numDocs();
   }
 
 

@@ -27,10 +27,14 @@
  */
 package net.sf.regain.ui.desktop.status.sharedlib;
 
+import java.io.File;
 import java.util.Date;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
+import net.sf.regain.search.IndexSearcherManager;
+import net.sf.regain.search.SearchToolkit;
+import net.sf.regain.search.config.IndexConfig;
 import net.sf.regain.ui.desktop.DesktopConstants;
 import net.sf.regain.util.io.Localizer;
 import net.sf.regain.util.io.MultiLocalizer;
@@ -60,11 +64,25 @@ public class CurrentindexTag extends SharedTag implements DesktopConstants {
     throws RegainException
   {
     Localizer localizer = mMultiLocalizer.getLocalizer(request.getLocale());
-    
-    if (LASTUPDATE_FILE.exists()) {
+
+    IndexConfig config = SearchToolkit.getIndexConfig(request);
+    File currentIndexDir = new File(config.getDirectory(), "index");
+    if (currentIndexDir.exists()) {
+      // Get the last update
       String timestamp = RegainToolkit.readStringFromFile(LASTUPDATE_FILE);
-      Date date = RegainToolkit.stringToLastModified(timestamp);
-      response.print(localizer.msg("lastUpdate", "Last update: {0}", date));
+      Date lastUpdate = RegainToolkit.stringToLastModified(timestamp);
+      
+      // Get the index size
+      long size = RegainToolkit.getDirectorySize(currentIndexDir);
+      String sizeAsString = RegainToolkit.bytesToString(size);
+      
+      // Get the document count
+      IndexSearcherManager manager = IndexSearcherManager.getInstance(config.getDirectory());
+      int docCount = manager.getDocumentCount();
+      
+      // Print the results
+      response.print(localizer.msg("indexInfo", "Last update: {0}<br/>Size: {1}<br/>Document count: {2}",
+          lastUpdate, sizeAsString, new Integer(docCount)));
     } else {
       response.print(localizer.msg("noIndex", "There was no search index created so far."));
     }

@@ -104,6 +104,8 @@ X Neues Feld: extension: Dateiendung indexieren.
 X Internationalisierung und Lokalisierung für deutsch und englisch.
 X Bug: "http://www.murfman.de" wird geparst, aber nicht indexiert.
     (Regex für HTML-Präparator falsch)
+X Desktopsuche: Status: Aktueller Index: Größe in MB, Anzahl Dokumente.
+    Aktuelle Indexierung: Aktuelle Anzahl Indexierte Dokumente.
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -113,9 +115,6 @@ X Bug: "http://www.murfman.de" wird geparst, aber nicht indexiert.
     - Such-JSP: Zusätzliche Eingabefelder für bestimmte Felder können mit
       "field.feldName" hinzugefügt werden.
     - Init-Parameter von configFile nach searchConfigFile umbenannt.
-
-  Desktopsuche: Status: Aktueller Index: Größe in MB, Anzahl Dokumente.
-    Aktuelle Indexierung: Aktuelle Anzahl Indexierte Dokumente.
 
   Desktopsuche: Bei Update-Installation alte Konfiguration nicht überschreiben.
   Desktopsuche: Port einstellbar
@@ -133,6 +132,7 @@ X Bug: "http://www.murfman.de" wird geparst, aber nicht indexiert.
   	(Dazu muss Start-List muss untereinander präfixfrei sein!)
   Crawler: Arbeitspeicher sparen: Erst Dateien an mJobList anhängen, dann
   	Unterverzeichnisse. So wird die mJobList klein gehalten.
+  Desktopsuche: Status-Seite: Ende von Logdatei zeigen
 
   Desktopsuche: Nach Speichern der Konfiguration nur dann neu indexieren, wenn
     sich etwas geändert hat, das den Index verändert.

@@ -48,7 +48,6 @@ import org.apache.log4j.Logger;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 
-
 /**
  * Durchsucht alle konfigurierten Startseiten nach URLs. Die gefundenen Seiten
  * werden je nach Einstellung nur geladen, in den Suchindex aufgenommen oder
@@ -141,7 +140,9 @@ public class Crawler {
   /** Der Profiler der das Durchsuchen von HTML-Dokumenten mißt. */
   private Profiler mHtmlParsingProfiler
     = new Profiler("Parsed HTML documents", "docs");
-
+  
+  /** The IndexWriterManager to use for adding documents to the index. */
+  private IndexWriterManager mIndexWriterManager;
 
 
   /**
@@ -204,6 +205,40 @@ public class Crawler {
     return mCrawlerJobProfiler.getMeasureCount();
   }
 
+
+  /**
+   * Gets the number of documents that were in the (old) index when the
+   * IndexWriterManager was created.
+   * 
+   * @return The initial number of documents in the index.
+   */
+  public int getInitialDocCount() {
+    IndexWriterManager mng = mIndexWriterManager;
+    return (mng == null) ? -1 : mng.getInitialDocCount();
+  }
+
+
+  /**
+   * Gets the number of documents that were added to the index.
+   * 
+   * @return The number of documents added to the index.
+   */
+  public int getAddedDocCount() {
+    IndexWriterManager mng = mIndexWriterManager;
+    return (mng == null) ? -1 : mng.getAddedDocCount();
+  }
+
+
+  /**
+   * Gets the number of documents that will be removed from the index.
+   * 
+   * @return The number of documents removed from the index.
+   */
+  public int getRemovedDocCount() {
+    IndexWriterManager mng = mIndexWriterManager;
+    return (mng == null) ? -1 : mng.getRemovedDocCount();
+  }
+  
 
   /**
    * Analysiert die URL und entscheidet, ob sie bearbeitet werden soll oder nicht.
@@ -317,12 +352,12 @@ public class Crawler {
     mLog.info("Starting crawling...");
 
     // Initialize the IndexWriterManager if building the index is wanted
-    IndexWriterManager indexManager = null;
+    mIndexWriterManager = null;
     if (mConfiguration.getBuildIndex()) {
       mLog.info("Preparing the index");
       try {
-        indexManager = new IndexWriterManager(mConfiguration, updateIndex);
-        updateIndex = indexManager.getUpdateIndex();
+        mIndexWriterManager = new IndexWriterManager(mConfiguration, updateIndex);
+        updateIndex = mIndexWriterManager.getUpdateIndex();
       }
       catch (RegainException exc) {
         logError("Preparing the index failed!", exc, true);
@@ -411,7 +446,7 @@ public class Crawler {
       if (shouldBeIndexed) {
         mLog.info("Indexing " + rawDocument.getUrl());
         try {
-          indexManager.addToIndex(rawDocument);
+          mIndexWriterManager.addToIndex(rawDocument);
         }
         catch (RegainException exc) {
           logError("Indexing failed: " + rawDocument.getUrl(), exc, false);
@@ -430,7 +465,7 @@ public class Crawler {
       mLog.info("Removing index entries of documents that do not exist any more...");
       try {
         String[] prefixesToKeepArr = createPrefixesToKeep();
-        indexManager.removeObsoleteEntires(mFoundUrlSet, prefixesToKeepArr);
+        mIndexWriterManager.removeObsoleteEntires(mFoundUrlSet, prefixesToKeepArr);
       }
       catch (Throwable thr) {
         logError("Removing non-existing documents from index failed", thr, true);
@@ -440,7 +475,7 @@ public class Crawler {
     // Prüfen, ob Index leer ist
     int entryCount = 0;
     try {
-      entryCount = indexManager.getIndexEntryCount();
+      entryCount = mIndexWriterManager.getIndexEntryCount();
     }
     catch (Throwable thr) {
       logError("Counting index entries failed", thr, true);
@@ -468,7 +503,7 @@ public class Crawler {
     writeDeadlinkAndErrorList();
 
     // Index abschließen
-    if (indexManager != null) {
+    if (mIndexWriterManager != null) {
       boolean thereWereFatalErrors = (mFatalErrorCount > 0);
       if (thereWereFatalErrors) {
         mLog.warn("There were " + mFatalErrorCount + " fatal errors. " +
@@ -477,10 +512,11 @@ public class Crawler {
         mLog.info("Finishing the index and providing it to the search mask");
       }
       try {
-        indexManager.close(thereWereFatalErrors);
+        mIndexWriterManager.close(thereWereFatalErrors);
       } catch (RegainException exc) {
         logError("Finishing index failed!", exc, true);
       }
+      mIndexWriterManager = null;
     }
 
     mLog.info("... Finished crawling\n");

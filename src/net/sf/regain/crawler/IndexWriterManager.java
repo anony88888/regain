@@ -173,6 +173,12 @@ public class IndexWriterManager {
 
   /** Das Verzeichnis, in dem die Analyse-Dateien erstellt werden soll. */
   private File mAnalysisDir;
+  
+  /**
+   * The number of documents that were in the (old) index when the
+   * IndexWriterManager was created.
+   */
+  private int mInitialDocCount;
 
   /** Der Profiler der das Hinzufügen zum Index mißt. */
   private Profiler mAddToIndexProfiler = new Profiler("Indexed documents", "docs");
@@ -200,6 +206,8 @@ public class IndexWriterManager {
     throws RegainException
   {
     mUpdateIndex = updateIndex;
+    
+    mInitialDocCount = 0;
 
     File indexDir = new File(config.getIndexDir());
 
@@ -262,6 +270,7 @@ public class IndexWriterManager {
       setIndexMode(DELETING_MODE);
       try {
         IndexReader.unlock(mIndexReader.directory());
+        mInitialDocCount = mIndexReader.numDocs();
       } catch (IOException exc) {
         throw new RegainException("Forcing unlock failed", exc);
       }
@@ -297,6 +306,40 @@ public class IndexWriterManager {
    */
   public boolean getUpdateIndex() {
     return mUpdateIndex;
+  }
+  
+  
+  /**
+   * Gets the number of documents that were in the (old) index when the
+   * IndexWriterManager was created.
+   * 
+   * @return The initial number of documents in the index.
+   */
+  public int getInitialDocCount() {
+    return mInitialDocCount;
+  }
+
+
+  /**
+   * Gets the number of documents that were added to the index.
+   * 
+   * @return The number of documents added to the index.
+   */
+  public int getAddedDocCount() {
+    return mAddToIndexProfiler.getMeasureCount();
+  }
+
+
+  /**
+   * Gets the number of documents that will be removed from the index.
+   * 
+   * @return The number of documents removed from the index.
+   */
+  public int getRemovedDocCount() {
+    // NOTE: We get a local pointer to the mUrlsToDeleteHash, if the hash should
+    //       be set to null in the same time.
+    HashMap hash = mUrlsToDeleteHash;
+    return (hash == null) ? -1 : hash.size();
   }
 
 

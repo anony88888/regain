@@ -182,6 +182,28 @@ public class RegainToolkit {
     }
   }
 
+  
+  /**
+   * Gets the size of a directory with all files.
+   * 
+   * @param dir The directory to get the size for.
+   * @return The size of the directory.
+   */
+  public static long getDirectorySize(File dir) {
+    File[] childArr = dir.listFiles();
+    long size = 0;
+    if (childArr != null) {
+      for (int i = 0; i < childArr.length; i++) {
+        if (childArr[i].isDirectory()) {
+          size += getDirectorySize(childArr[i]);
+        } else {
+          size += childArr[i].length();
+        }
+      }
+    }
+    return size;
+  }
+  
 
   /**
    * Erzeugt einen Analyzer, der sowohl vom Crawler als auch von der Suchmaske

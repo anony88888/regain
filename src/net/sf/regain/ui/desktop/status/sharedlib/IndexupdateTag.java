@@ -27,8 +27,13 @@
  */
 package net.sf.regain.ui.desktop.status.sharedlib;
 
+import java.io.File;
+
 import net.sf.regain.RegainException;
+import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.Crawler;
+import net.sf.regain.search.SearchToolkit;
+import net.sf.regain.search.config.IndexConfig;
 import net.sf.regain.ui.desktop.IndexUpdateManager;
 import net.sf.regain.util.io.Localizer;
 import net.sf.regain.util.io.MultiLocalizer;
@@ -63,8 +68,20 @@ public class IndexupdateTag extends SharedTag {
     if (crawler == null) {
       response.print(localizer.msg("noIndexUpdate", "Currently is no index update running."));
     } else {
-      response.print(localizer.msg("processedDocs", "Processed documents: {0}",
-          new Integer(crawler.getFinishedJobCount())));
+      // Get the index size
+      IndexConfig config = SearchToolkit.getIndexConfig(request);
+      File indexUpdateDir = new File(config.getDirectory(), "temp");
+      long size = RegainToolkit.getDirectorySize(indexUpdateDir);
+      String sizeAsString = RegainToolkit.bytesToString(size);
+      
+      Object[] args = new Object[] {
+        new Integer(crawler.getFinishedJobCount()),
+        sizeAsString,
+        new Integer(crawler.getInitialDocCount()),
+        new Integer(crawler.getAddedDocCount()),
+        new Integer(crawler.getRemovedDocCount()),
+      };
+      response.print(localizer.msg("indexInfo", "Processed documents: {0}<br/>Size: {1}<br/>Initial document count: {2}<br/>Added document count: {3}<br/>Removed document count: {4}", args));
     }
   }
   
