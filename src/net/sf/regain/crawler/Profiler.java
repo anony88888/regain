@@ -35,7 +35,6 @@ import net.sf.regain.RegainToolkit;
 
 import org.apache.log4j.Logger;
 
-
 /**
  * Misst die Zeit und den Datendurchsatz für einen Verarbeitungsschritt.
  *
@@ -196,6 +195,11 @@ public class Profiler {
     if (secs > 0) {
       dataRatePerSec = (long) (totalBytes / secs);
     }
+    
+    long countsPerMinute = 0;
+    if (totalTime > 0) {
+      countsPerMinute = measureCount * (60 * 1000) / totalTime;
+    }
 
     // Berechnen, wie groß die Labels sein müssen
     int maxStaticLabelLength = 12;                   // "Average time"
@@ -207,11 +211,12 @@ public class Profiler {
 
     // Statistik ausgeben
     StringBuffer buffer = new StringBuffer(mName + ":");
+    NumberFormat numberFormat = NumberFormat.getInstance();
     if (abortedMeasureCount > 0) {
       buffer.append(lineSeparator);
 
       appendLabel(buffer, "Aborted " + mUnit, minLabelLength);
-      buffer.append(abortedMeasureCount + " " + mUnit + " (");
+      buffer.append(numberFormat.format(abortedMeasureCount) + " " + mUnit + " (");
 
       // Ausgeben, wieviel % der Messungen fehl schlugen
       int total = abortedMeasureCount + measureCount;
@@ -223,9 +228,8 @@ public class Profiler {
     if (measureCount > 0) {
       buffer.append(lineSeparator);
 
-      NumberFormat format = NumberFormat.getInstance();
       appendLabel(buffer, "Completed " + mUnit, minLabelLength);
-      buffer.append(format.format(measureCount) + " " + mUnit + lineSeparator);
+      buffer.append(numberFormat.format(measureCount) + " " + mUnit + lineSeparator);
 
       appendLabel(buffer, "Total time", minLabelLength);
       buffer.append(toTimeString(totalTime) + lineSeparator);
@@ -240,7 +244,10 @@ public class Profiler {
       buffer.append(RegainToolkit.bytesToString(averageBytes) + lineSeparator);
 
       appendLabel(buffer, "Data rate", minLabelLength);
-      buffer.append(RegainToolkit.bytesToString(dataRatePerSec) + "/sec");
+      buffer.append(RegainToolkit.bytesToString(dataRatePerSec) + "/sec" + lineSeparator);
+
+      appendLabel(buffer, "Output", minLabelLength);
+      buffer.append(numberFormat.format(countsPerMinute) + " " + mUnit + "/min");
     }
 
     return buffer.toString();
