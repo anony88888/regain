@@ -339,7 +339,7 @@ public class IndexWriterManager {
     // NOTE: We get a local pointer to the mUrlsToDeleteHash, if the hash should
     //       be set to null in the same time.
     HashMap hash = mUrlsToDeleteHash;
-    return (hash == null) ? -1 : hash.size();
+    return (hash == null) ? 0 : hash.size();
   }
 
 
@@ -477,7 +477,7 @@ public class IndexWriterManager {
       if ((! indexFiles[i].isDirectory()) && (! fileName.endsWith(".txt"))) {
         // Datei ist weder Verzeichnis, noch Textdatei -> kopieren
         File target = new File(mTempIndexDir, fileName);
-        CrawlerToolkit.copyFile(indexFiles[i], target);
+        RegainToolkit.copyFile(indexFiles[i], target);
       }
     }
 

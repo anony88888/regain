@@ -66,7 +66,11 @@ public class CurrentindexTag extends SharedTag implements DesktopConstants {
     Localizer localizer = mMultiLocalizer.getLocalizer(request.getLocale());
 
     IndexConfig config = SearchToolkit.getIndexConfig(request);
-    File currentIndexDir = new File(config.getDirectory(), "index");
+    File currentIndexDir = new File(config.getDirectory(), "new");
+    if (! currentIndexDir.exists()) {
+      currentIndexDir = new File(config.getDirectory(), "index");
+    }
+    
     if (currentIndexDir.exists()) {
       // Get the last update
       String timestamp = RegainToolkit.readStringFromFile(LASTUPDATE_FILE);
@@ -74,7 +78,7 @@ public class CurrentindexTag extends SharedTag implements DesktopConstants {
       
       // Get the index size
       long size = RegainToolkit.getDirectorySize(currentIndexDir);
-      String sizeAsString = RegainToolkit.bytesToString(size);
+      String sizeAsString = RegainToolkit.bytesToString(size, request.getLocale());
       
       // Get the document count
       IndexSearcherManager manager = IndexSearcherManager.getInstance(config.getDirectory());

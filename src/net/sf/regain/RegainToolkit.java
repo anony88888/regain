@@ -31,6 +31,7 @@ import java.io.*;
 import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -141,6 +142,37 @@ public class RegainToolkit {
     int len;
     while ((len = in.read(buffer)) != -1) {
       out.write(buffer, 0, len);
+    }
+  }
+
+
+  /**
+   * Copies a file.
+   *
+   * @param from The source file.
+   * @param to The target file.
+   * @throws RegainException If copying failed.
+   */
+  public static void copyFile(File from, File to) throws RegainException {
+    FileInputStream in = null;
+    FileOutputStream out = null;
+    try {
+      in = new FileInputStream(from);
+      out = new FileOutputStream(to);
+
+      RegainToolkit.pipe(in, out);
+    }
+    catch (IOException exc) {
+      throw new RegainException("Copying file from " + from.getAbsolutePath()
+        + " to " + to.getAbsolutePath() + " failed", exc);
+    }
+    finally {
+      if (out != null) {
+        try { out.close(); } catch (IOException exc) {}
+      }
+      if (in != null) {
+        try { in.close(); } catch (IOException exc) {}
+      }
     }
   }
 
@@ -383,18 +415,6 @@ public class RegainToolkit {
 
 
   /**
-   * Gibt einen für den Menschen gut lesbaren String für eine Anzahl Bytes
-   * zurück.
-   *
-   * @param bytes Die Anzahl Bytes
-   * @return Ein String, der sie Anzahl Bytes wiedergibt
-   */
-  public static String bytesToString(long bytes) {
-    return bytesToString(bytes, 2);
-  }
-
-
-  /**
    * Gibt einen Wert in Prozent mit zwei Nachkommastellen zurück.
    *
    * @param value Der Wert. (Zwischen 0 und 1)
@@ -407,6 +427,31 @@ public class RegainToolkit {
     return format.format(value);
   }
 
+  
+  /**
+   * Gibt einen für den Menschen gut lesbaren String für eine Anzahl Bytes
+   * zurück.
+   *
+   * @param bytes Die Anzahl Bytes
+   * @return Ein String, der sie Anzahl Bytes wiedergibt
+   */
+  public static String bytesToString(long bytes) {
+    return bytesToString(bytes, Locale.ENGLISH);
+  }
+
+
+  /**
+   * Gibt einen für den Menschen gut lesbaren String für eine Anzahl Bytes
+   * zurück.
+   *
+   * @param bytes Die Anzahl Bytes
+   * @param locale The locale to use for formatting the numbers.
+   * @return Ein String, der sie Anzahl Bytes wiedergibt
+   */
+  public static String bytesToString(long bytes, Locale locale) {
+    return bytesToString(bytes, 2, locale);
+  }
+
 
   /**
    * Gibt einen für den Menschen gut lesbaren String für eine Anzahl Bytes
@@ -417,6 +462,20 @@ public class RegainToolkit {
    * @return Ein String, der sie Anzahl Bytes wiedergibt
    */
   public static String bytesToString(long bytes, int fractionDigits) {
+    return bytesToString(bytes, fractionDigits, Locale.ENGLISH);
+  }
+  
+
+  /**
+   * Gibt einen für den Menschen gut lesbaren String für eine Anzahl Bytes
+   * zurück.
+   *
+   * @param bytes Die Anzahl Bytes
+   * @param fractionDigits Die Anzahl der Nachkommastellen
+   * @param locale The locale to use for formatting the numbers.
+   * @return Ein String, der sie Anzahl Bytes wiedergibt
+   */
+  public static String bytesToString(long bytes, int fractionDigits, Locale locale) {
     int factor;
     String unit;
 
@@ -436,7 +495,7 @@ public class RegainToolkit {
       return bytes + " Byte";
     }
 
-    NumberFormat format = NumberFormat.getInstance();
+    NumberFormat format = NumberFormat.getInstance(locale);
     format.setMinimumFractionDigits(fractionDigits);
     format.setMaximumFractionDigits(fractionDigits);
 

@@ -290,7 +290,7 @@
       <fileset dir="lib" includes="jacob.dll"/>
       <fileset dir="lib/win" includes="tray.dll"/>
     </copy>
-    <copy todir="temp/runtime/desktop/conf">
+    <copy todir="temp/runtime/desktop/conf/default">
       <fileset dir="txt" includes="DesktopConfiguration.xml"/>
       <fileset dir="txt" includes="CrawlerConfiguration.xml"/>
       <fileset dir="txt" includes="SearchConfiguration.xml"/>

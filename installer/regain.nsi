@@ -88,8 +88,8 @@ Section "${PROG_NAME} (erforderlich)"
   File temp\runtime\desktop\*.dll
   File temp\runtime\desktop\regain.exe
 
-  SetOutPath $INSTDIR\conf
-  File temp\runtime\desktop\conf\*
+  SetOutPath $INSTDIR\conf\default
+  File temp\runtime\desktop\conf\default\*
 
   SetOutPath $INSTDIR\web
   File temp\runtime\desktop\web\*

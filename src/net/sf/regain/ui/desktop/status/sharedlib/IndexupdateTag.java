@@ -72,7 +72,7 @@ public class IndexupdateTag extends SharedTag {
       IndexConfig config = SearchToolkit.getIndexConfig(request);
       File indexUpdateDir = new File(config.getDirectory(), "temp");
       long size = RegainToolkit.getDirectorySize(indexUpdateDir);
-      String sizeAsString = RegainToolkit.bytesToString(size);
+      String sizeAsString = RegainToolkit.bytesToString(size, request.getLocale());
       
       Object[] args = new Object[] {
         new Integer(crawler.getFinishedJobCount()),

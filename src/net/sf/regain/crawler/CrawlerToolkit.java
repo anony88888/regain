@@ -226,37 +226,6 @@ public class CrawlerToolkit {
 
 
   /**
-   * Kopiert eine Datei.
-   *
-   * @param from Die Quelldatei
-   * @param to Die Zieldatei
-   * @throws RegainException Wenn das Kopieren fehl schlug.
-   */
-  public static void copyFile(File from, File to) throws RegainException {
-    FileInputStream in = null;
-    FileOutputStream out = null;
-    try {
-      in = new FileInputStream(from);
-      out = new FileOutputStream(to);
-
-      RegainToolkit.pipe(in, out);
-    }
-    catch (IOException exc) {
-      throw new RegainException("Copying file from " + from.getAbsolutePath()
-        + " to " + to.getAbsolutePath() + " failed", exc);
-    }
-    finally {
-      if (out != null) {
-        try { out.close(); } catch (IOException exc) {}
-      }
-      if (in != null) {
-        try { in.close(); } catch (IOException exc) {}
-      }
-    }
-  }
-
-
-  /**
    * L�dt eine Datei vom Dateisystem und gibt den Inhalt zur�ck.
    *
    * @param file Die zu ladende Datei

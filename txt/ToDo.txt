@@ -106,6 +106,7 @@ X Bug: "http://www.murfman.de" wird geparst, aber nicht indexiert.
     (Regex für HTML-Präparator falsch)
 X Desktopsuche: Status: Aktueller Index: Größe in MB, Anzahl Dokumente.
     Aktuelle Indexierung: Aktuelle Anzahl Indexierte Dokumente.
+X Desktopsuche: Bei Update-Installation alte Konfiguration nicht überschreiben.
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -116,7 +117,6 @@ X Desktopsuche: Status: Aktueller Index: Größe in MB, Anzahl Dokumente.
       "field.feldName" hinzugefügt werden.
     - Init-Parameter von configFile nach searchConfigFile umbenannt.
 
-  Desktopsuche: Bei Update-Installation alte Konfiguration nicht überschreiben.
   Desktopsuche: Port einstellbar
 
   Openoffice-Präparator
