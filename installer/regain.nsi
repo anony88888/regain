@@ -94,6 +94,9 @@ Section "${PROG_NAME} (erforderlich)"
   SetOutPath $INSTDIR\web
   File temp\runtime\desktop\web\*
 
+  SetOutPath $INSTDIR\web\img
+  File temp\runtime\desktop\web\img\*
+
   SetOutPath $INSTDIR
   WriteUninstaller "Uninstall.exe"
 
