@@ -38,7 +38,7 @@ import net.sf.regain.RegainException;
  * @author Til Schneider, www.murfman.de
  */
 public abstract class PageRequest {
-
+  
   /**
    * Gets the request parameter with the given name that was given to the page
    * via GET or POST.

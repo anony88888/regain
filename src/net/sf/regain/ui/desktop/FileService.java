@@ -1,7 +1,6 @@
 package net.sf.regain.ui.desktop;
 
 import java.io.File;
-import java.net.URLDecoder;
 
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.search.SearchToolkit;
@@ -50,7 +49,7 @@ public class FileService extends BasicService {
     // Extract the file name
     String filename = context.getRequestPath(req.getURI());
     int filePos = filename.indexOf("file/");
-    filename = URLDecoder.decode(filename.substring(filePos + 5));
+    filename = RegainToolkit.urlDecode(filename.substring(filePos + 5));
     
     // Restore the double slashes
     filename = RegainToolkit.replace(filename, "\\", "/");
@@ -81,7 +80,7 @@ public class FileService extends BasicService {
     throws Exception
   {
     PageRequest request = new SimplePageRequest(req);
-    PageResponse response = new SimplePageResponse(this, req, resp);
+    PageResponse response = new SimplePageResponse(this, req, resp, null, null);
     
     SearchToolkit.sendFile(request, response, file);
   }

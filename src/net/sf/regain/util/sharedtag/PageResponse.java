@@ -40,6 +40,14 @@ import net.sf.regain.RegainToolkit;
 public abstract class PageResponse {
   
   /**
+   * Gets the character encoding of the response.
+   * 
+   * @return The character encoding of the response.
+   * @throws RegainException If getting th encoding failed.
+   */
+  public abstract String getEncoding() throws RegainException;
+  
+  /**
    * Sets the header with the given name.
    * 
    * @param name The name of the header.

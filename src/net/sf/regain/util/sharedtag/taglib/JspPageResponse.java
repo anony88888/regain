@@ -66,6 +66,17 @@ public class JspPageResponse extends PageResponse {
 
   
   /**
+   * Gets the character encoding of the response.
+   * 
+   * @return The character encoding of the response.
+   * @throws RegainException If getting th encoding failed.
+   */
+  public String getEncoding() throws RegainException {
+    return mServletResponse.getCharacterEncoding();
+  }
+  
+  
+  /**
    * Sets the header with the given name.
    * 
    * @param name The name of the header.

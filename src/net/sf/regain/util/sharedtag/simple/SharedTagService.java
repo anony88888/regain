@@ -155,7 +155,7 @@ public class SharedTagService extends BasicService {
     throws Exception
   {
     PageRequest request = new SimplePageRequest(req);
-    PageResponse response = new SimplePageResponse(this, req, resp);
+    PageResponse response = new SimplePageResponse(this, req, resp, null, null);
     
     SearchToolkit.sendFile(request, response, file);
   }

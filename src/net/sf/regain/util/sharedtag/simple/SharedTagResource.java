@@ -72,13 +72,15 @@ public class SharedTagResource extends BasicResource {
    * @throws Exception If executing the JSP page failed.
    */
   protected synchronized void process(Request req, Response resp) throws Exception {
+    String encoding = "UTF-8";
+    
     // Write the page to a buffer first
     // If an exception should be thrown the user gets a clear error message
     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-    PrintStream printStream = new PrintStream(stream, false, "UTF-8");
+    PrintStream printStream = new PrintStream(stream, false, encoding);
 
     PageRequest request = new SimplePageRequest(req);
-    PageResponse response = new SimplePageResponse(this, req, resp, printStream);
+    PageResponse response = new SimplePageResponse(this, req, resp, printStream, encoding);
 
     try {
       mRootTagExecuter.execute(request, response);
@@ -99,7 +101,7 @@ public class SharedTagResource extends BasicResource {
     }
     
     // The page has been generated without exception -> Send it to the user
-    resp.set("Content-Type", "text/html charset=UTF-8");
+    resp.set("Content-Type", "text/html charset=" + encoding);
     PrintStream pageStream = resp.getPrintStream();
     try {
       stream.writeTo(pageStream);

@@ -9,7 +9,6 @@
 package net.sf.regain.ui.server;
 
 import java.io.IOException;
-import java.net.URLDecoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -65,7 +64,7 @@ public class FileServlet extends HttpServlet {
       // Extract the file name
       String filename = req.getRequestURI();
       int filePos = filename.indexOf("file/");
-      filename = URLDecoder.decode(filename.substring(filePos + 5));
+      filename = RegainToolkit.urlDecode(filename.substring(filePos + 5));
       
       // Assemble the file URL
       String fileUrl = "file://" + RegainToolkit.replace(filename, " ", "%20");

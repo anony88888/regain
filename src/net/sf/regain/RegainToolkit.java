@@ -28,6 +28,8 @@
 package net.sf.regain;
 
 import java.io.*;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -803,6 +805,40 @@ public class RegainToolkit {
    */
   public static String fileToUrl(File file) {
     return fileNameToUrl(file.getAbsolutePath());
+  }
+
+
+  /**
+   * URL-encodes a String. 
+   * 
+   * @param text The String to URL-encode.
+   * @return The URL-encoded String.
+   * @throws RegainException If URL-encoding failed.
+   */
+  public static String urlEncode(String text) throws RegainException {
+    try {
+      return URLEncoder.encode(text, "UTF-8");
+    }
+    catch (UnsupportedEncodingException exc) {
+      throw new RegainException("URL-encoding failed: '" + text + "'", exc);
+    }
+  }
+
+
+  /**
+   * URL-decodes a String. 
+   * 
+   * @param text The String to URL-decode.
+   * @return The URL-decoded String.
+   * @throws RegainException If URL-decoding failed.
+   */
+  public static String urlDecode(String text) throws RegainException {
+    try {
+      return URLDecoder.decode(text, "UTF-8");
+    }
+    catch (UnsupportedEncodingException exc) {
+      throw new RegainException("URL-decoding failed: '" + text + "'", exc);
+    }
   }
 
 

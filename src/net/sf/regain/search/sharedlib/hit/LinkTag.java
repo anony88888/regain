@@ -27,9 +27,6 @@
  */
 package net.sf.regain.search.sharedlib.hit;
 
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.search.SearchContext;
@@ -77,7 +74,7 @@ public class LinkTag extends AbstractHitTag {
       if (lastSlash == -1) {
         title = url;
       } else {
-        title = URLDecoder.decode(url.substring(lastSlash + 1));
+        title = RegainToolkit.urlDecode(url.substring(lastSlash + 1));
       }
     }
 
@@ -86,7 +83,7 @@ public class LinkTag extends AbstractHitTag {
     if (url.startsWith("file://")) {
       // URL encode the URL
       String filename = RegainToolkit.urlToFileName(url);
-      String urlEncoded = URLEncoder.encode(filename);
+      String urlEncoded = RegainToolkit.urlEncode(filename);
       urlEncoded = RegainToolkit.replace(urlEncoded, "+", "%20");
       
       // Restore the slashes...
@@ -100,7 +97,7 @@ public class LinkTag extends AbstractHitTag {
       
       String indexName = request.getParameter("index");
       if (indexName != null) {
-        String encodedIndexName = URLEncoder.encode(indexName);
+        String encodedIndexName = RegainToolkit.urlEncode(indexName);
         href += "?index=" + encodedIndexName;
       }
     }

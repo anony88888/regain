@@ -56,22 +56,11 @@ public class SimplePageResponse extends PageResponse {
   
   /** The PrintStream to write the results to. */
   private PrintStream mPrintStream;
+  
+  /** The character encoding of the response. */
+  private String mEncoding;
 
   
-  /**
-   * Creates a new instance of SimplePageWriter.
-   * 
-   * @param resource The resource that uses this response.
-   * @param request The request to adapt.
-   * @param response The response to adapt.
-   */
-  public SimplePageResponse(Resource resource,
-    Request request, Response response)
-  {
-    this(resource, request, response, null);
-  }
-  
-
   /**
    * Creates a new instance of SimplePageWriter.
    * 
@@ -79,14 +68,27 @@ public class SimplePageResponse extends PageResponse {
    * @param request The request to adapt.
    * @param response The response to adapt.
    * @param printStream The PrintStream to write the results to.
+   * @param encoding The character encoding of the response.
    */
   public SimplePageResponse(Resource resource,
-    Request request, Response response, PrintStream printStream)
+    Request request, Response response, PrintStream printStream, String encoding)
   {
     mResource = resource;
     mRequest = request;
     mResponse = response;
     mPrintStream = printStream;
+    mEncoding = encoding;
+  }
+
+
+  /**
+   * Gets the character encoding of the response.
+   * 
+   * @return The character encoding of the response.
+   * @throws RegainException If getting th encoding failed.
+   */
+  public String getEncoding() throws RegainException {
+    return mEncoding;
   }
 
 

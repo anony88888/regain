@@ -27,8 +27,6 @@
  */
 package net.sf.regain.search.sharedlib;
 
-import java.net.URLEncoder;
-
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.search.SearchConstants;
@@ -145,8 +143,8 @@ public class NavigationTag extends SharedTag implements SearchConstants {
   {
     String targetPage = getParameter("targetPage",  DEFAULT_TARGET_PAGE);
 
-    // Für Java 1.2.2
-    String encodedQuery = URLEncoder.encode(query);
+    // Fï¿½r Java 1.2.2
+    String encodedQuery = RegainToolkit.urlEncode(query);
 
     // Ab Java 1.3
     /*
@@ -157,7 +155,7 @@ public class NavigationTag extends SharedTag implements SearchConstants {
 
     response.print("<a href=\"" + targetPage + "?query=" + encodedQuery);
     if (indexName != null) {
-      String encodedIndexName = URLEncoder.encode(indexName);
+      String encodedIndexName = RegainToolkit.urlEncode(indexName);
       response.print("&index=" + encodedIndexName);
     }
     if (maxResults != SearchConstants.DEFAULT_MAX_RESULTS) {
