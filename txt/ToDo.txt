@@ -43,13 +43,13 @@ X Suchmaske: Konfiguration in externe XML-Datei auslagern
     (Nicht mehr in web.xml)
 X Suchmaske: URL-Rewriting: Z.B. Indizierung von file://someserver/bla/blubb/...,
     jedoch Anzeige im Browser mit http://intranet/blubb/... (Aufwand: 4 Std.)
-
-  Index-Felder aus Pfad generieren. (Aufwand: 4 Std.)
-    Z.B. bei Pfad "file://var/sicherung/dk100/..." Feld "system" mit Wert "dk100" indexieren.
+X Zusatz-Index-Felder aus Dokument-URL generieren. (Aufwand: 4 Std.)
+    Z.B. bei URL "file://var/sicherung/dk100/..." Feld "system" mit Wert "dk100" indexieren.
     Oder bei "file://blubb/projects/Otto13/..." Feld "project" mit Wert "Otto13".
-  Suchemaske: Expertensuche: (Aufwand: 4 Std.)
+X Suchemaske: Expertensuche: (Aufwand: 4 Std.)
     Zusätzliche Eingabefelder für bestimmte Suchfelder ermöglichen. Die Werte
     diese Felder dann mit "field:value" an Suchstring anhängen.
+
   Prüfen: Können die im Index enthaltenen Werte (distinct values) der
     Suchfelder in der erweiterten Suchmaske als Auswahlmöglichkeit angeboten
     werden? (für Expertensuche mit ComboBoxes) (Aufwand: 4 Std.)
@@ -70,7 +70,11 @@ X Suchmaske: URL-Rewriting: Z.B. Indizierung von file://someserver/bla/blubb/...
   Handbuch aktualisieren:
     - Neue Versionen der abhängigen Projekte
     - Parameter für Präperatoren (contentExtractor und pathExtractor "verschoben")
-    - Suchmaske wird nun über regain.properties konfiguriert (wo die liegt, steht in web.xml)
+    - Suchmaske wird nun über XML Datei konfiguriert (wo die liegt, steht in web.xml)
+    - Config Suchmaske: URL-Rewriting
+    - Config Crawler: Zusatzfelder aus Pfad generieren
+    - Such-JSP: Zusätzliche Eingabefelder für bestimmte Felder können mit
+      "field.feldName" hinzugefügt werden.
     - Parameternamen für Suchmaske umbenannt.
 
 Rückfragen:

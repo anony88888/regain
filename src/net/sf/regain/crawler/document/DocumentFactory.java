@@ -36,6 +36,8 @@ import java.util.Date;
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.Profiler;
+import net.sf.regain.crawler.config.AuxiliaryField;
+import net.sf.regain.crawler.config.CrawlerConfig;
 import net.sf.regain.crawler.config.PreparatorSettings;
 
 import org.apache.log4j.Logger;
@@ -43,7 +45,6 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
-
 
 /**
  * Fabrik, die aus der URL und den Rohdaten eines Dokuments ein Lucene-Ducument
@@ -60,6 +61,9 @@ public class DocumentFactory {
 
   /** Die maximale L�nge der Zusammenfassung. */
   private static final int MAX_SUMMARY_LENGTH = 200;
+  
+  /** The crawler config. */
+  private CrawlerConfig mConfig;
 
   /**
    * Das Verzeichnis, in dem Analyse-Dateien erzeugt werden sollen. Ist
@@ -85,45 +89,38 @@ public class DocumentFactory {
     = new Profiler("Writing Analysis files", "files");
 
 
-
   /**
-   * Erzeugt eine neue DocumentFactory-Instanz.
+   * Creates a new instance of DocumentFactory.
+   * 
+   * @param config The crawler configuration.
+   * @param analysisDir The directory where to store the analysis files. Is
+   *        <code>null</code> if no analysis files should be created.
    *
-   * @param analysisDir Das Verzeichnis, in dem Analyse-Dateien erzeugt werden
-   *        sollen. Ist <CODE>null</CODE>, wenn keine Analyse-Dateien erzeugt
-   *        werden sollen.
-   * @param preparatorSettingsArr Die Liste der Einstellungen f�r die
-   *        Pr�peratoren.
-   * @param useLinkTextAsTitleRegexArr Die regul�ren Ausdr�cke, auf die die URL
-   *        eines Dokuments passen muss, damit anstatt des wirklichen
-   *        Dokumententitels der Text des Links, der auf das Dokument gezeigt
-   *        hat, als Dokumententitel genutzt wird.
-   * @throws RegainException Wenn entweder die Pr�paratoren nicht erstellt
-   *         werden konnten oder wenn ein regul�rer Ausdruck einen Syntaxfehler
-   *         hat.
+   * @throws RegainException If a preparator could not be created or if a regex
+   *         has a syntax error. 
    */
-  public DocumentFactory(File analysisDir,
-    PreparatorSettings[] preparatorSettingsArr,
-    String[] useLinkTextAsTitleRegexArr)
+  public DocumentFactory(CrawlerConfig config, File analysisDir)
     throws RegainException
   {
+    mConfig = config;
     mAnalysisDir = analysisDir;
 
-    // Die Pr�paratoren erzeugen
+    // Create the preparators
     try {
-      mPreparatorArr = createPreparatorArr(preparatorSettingsArr);
+      mPreparatorArr = createPreparatorArr(config.getPreparatorSettingsList());
     }
     catch (RegainException exc) {
       throw new RegainException("Creating the document preparators failed", exc);
     }
 
-    // F�r jeden Pr�parator einen Profiler erstellen
+    // Create a profiler for each preparator
     mPreparatorProfilerArr = new Profiler[mPreparatorArr.length];
     for (int i = 0; i < mPreparatorProfilerArr.length; i++) {
       String name = mPreparatorArr[i].getClass().getName();
       mPreparatorProfilerArr[i] = new Profiler("Preparator " + name, "docs");
     }
 
+    String[] useLinkTextAsTitleRegexArr = config.getUseLinkTextAsTitleRegexList();
     if (useLinkTextAsTitleRegexArr == null) {
       mUseLinkTextAsTitleReArr = new RE[0];
     } else {
@@ -217,6 +214,25 @@ public class DocumentFactory {
 
     // make a new, empty document
     Document doc = new Document();
+    
+    // Create the auxiliary fields
+    // NOTE: We do this at first, because if someone defined an auxiliary field
+    //       having the same name as a normal field, then the field will be
+    //       overriden by the normal field. This way we can be sure that the
+    //       normal fields have the value we expect.
+    AuxiliaryField[] auxiliaryFieldArr = mConfig.getAuxiliaryFieldList();
+    if (auxiliaryFieldArr != null) {
+      for (int i = 0; i < auxiliaryFieldArr.length; i++) {
+        RE regex = auxiliaryFieldArr[i].getUrlRegex();
+        if (regex.match(url)) {
+          String fieldName = auxiliaryFieldArr[i].getFieldName();
+          int regexGroup = auxiliaryFieldArr[i].getUrlRegexGroup();
+          
+          mLog.info("Adding auxiliary field: " + fieldName + "=" + regex.getParen(regexGroup));
+          doc.add(Field.Keyword(fieldName, regex.getParen(regexGroup)));
+        }
+      }
+    }
 
     // Add the URL of the document
     doc.add(Field.Keyword("url", url));

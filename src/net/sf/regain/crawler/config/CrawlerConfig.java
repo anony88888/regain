@@ -228,5 +228,12 @@ public interface CrawlerConfig {
    * @return Die Liste der Einstellungen für die Präperatoren.
    */
   public PreparatorSettings[] getPreparatorSettingsList();
+  
+  /**
+   * Gets the list of the auxiliary fields.
+   * 
+   * @return The list of the auxiliary fields. May be null.
+   */
+  public AuxiliaryField[] getAuxiliaryFieldList();
 
 }

@@ -55,7 +55,6 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 
-
 /**
  * Kontrolliert und kapselt die Erstellung des Suchindex.
  * <p>
@@ -277,9 +276,7 @@ public class IndexWriterManager {
       }
     }
 
-    mDocumentFactory = new DocumentFactory(mAnalysisDir,
-                                           config.getPreparatorSettingsList(),
-                                           config.getUseLinkTextAsTitleRegexList());
+    mDocumentFactory = new DocumentFactory(config, mAnalysisDir);
   }
 
 

@@ -337,4 +337,14 @@ public class DummyCrawlerConfig implements CrawlerConfig {
     };
   }
 
+  
+  /**
+   * Gets the list of the auxiliary fields.
+   * 
+   * @return The list of the auxiliary fields. May be null.
+   */
+  public AuxiliaryField[] getAuxiliaryFieldList() {
+    return null;
+  }
+
 }

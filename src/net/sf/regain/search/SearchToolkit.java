@@ -28,6 +28,7 @@
 package net.sf.regain.search;
 
 import java.io.File;
+import java.util.Enumeration;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
@@ -45,8 +46,11 @@ import net.sf.regain.search.config.XmlSearchConfig;
  */
 public class SearchToolkit {
 
-  /** Der Name des PageContext-Attributs, unter dem der SearchContext abgelegt ist. */
+  /** The name of the page context attribute that holds the SearchContext. */
   private static final String SEARCH_CONTEXT_ATTR_NAME = "SearchContext";
+
+  /** The prefix for request parameters that contain additional field values. */
+  private static final String FIELD_PREFIX = "field.";
   
   /** The configuration of the search mask. */
   private static SearchConfig mConfig;
@@ -87,8 +91,26 @@ public class SearchToolkit {
             + indexName + "'");
       }
 
-      // Suchkontext erstellen und im pageContext speichern
-      String query = pageContext.getRequest().getParameter("query");
+      // Get the query
+      ServletRequest request = pageContext.getRequest(); 
+      String query = request.getParameter("query");
+      
+      // Append the additional fields to the query
+      Enumeration enum = request.getParameterNames();
+      while (enum.hasMoreElements()) {
+        String paramName = (String) enum.nextElement();
+        if (paramName.startsWith(FIELD_PREFIX)) {
+          // This is an additional field -> Append it to the query
+          String fieldName = paramName.substring(FIELD_PREFIX.length());
+          String fieldValue = request.getParameter(paramName).trim();
+          
+          if (fieldValue.length() != 0) {
+            query += " " + fieldName + ":\"" + fieldValue + "\"";
+          }
+        }
+      }
+      
+      // Create the SearchContext and store it in the page context
       context = new SearchContext(indexConfig, query);
       pageContext.setAttribute(SEARCH_CONTEXT_ATTR_NAME, context);
     }

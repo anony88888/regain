@@ -245,4 +245,25 @@
   <prefix>http://www.mydomain.de</prefix>
 </whitelist>
 
+
+<!--
+ | The index may be extended with auxiliary fields. These are fields that have
+ | been generated from the URL of an document.
+ |
+ | Example: If you have a directory with a sub directory for every project,
+ | then you may create a field with the project's name.
+ |
+ | The folling rule will create a field "project" with the value "otto23"
+ | from the URL "file://c:/projects/otto23/docs/Spez.doc":
+ |   <auxiliaryField name="project" regexGroup="1">^file://c:/projects/([^/]*)</auxiliaryField>
+ |
+ | URLs that doen't match will get no "project" field.
+ |
+ | Having done this you may search for "Offer project:otto23" and you will get
+ | only hits from this project directory.
+ +-->
+<auxiliaryFieldList>
+  <auxiliaryField name="project" regexGroup="1">^file://c:/Temp/dokumente/([^/]*)</auxiliaryField>
+</auxiliaryFieldList>
+
 </configuration>

@@ -97,9 +97,9 @@
     <echo message="  pack-jacobgen Packs a zip file containing the generated jacobgen source"/>
     <echo message="                and a jar file containing the classes."/>
     <echo message="  runtime       Prepares the runtime directory."/>
-    <echo message="  fast-runtime  Prepares the runtime directory without the jars."/>
+    <echo message="  runtime-fast  Prepares the runtime directory without the jars."/>
     <echo message="  run           Runs the project."/>
-    <echo message="  fast-run      Runs the project without building the jars."/>
+    <echo message="  run-fast      Runs the project without building the jars."/>
     <echo message="  public        Creates all the stuff that can be downloaded."/>
     <echo message="  deploy-war    Deploys the war file at the servlet engine."/>
     <echo message="  all           Creates all (Same as public)."/>
@@ -259,7 +259,7 @@
   <!--
    | Creates the runtime directory for fast running (without jars).
    +-->
-  <target name="fast-runtime" depends="make">
+  <target name="runtime-fast" depends="make">
     <echo message="Creating the runtime ..." />
     <mkdir dir="temp/runtime"/>
     <copy todir="temp/runtime">
@@ -284,7 +284,7 @@
   <!--
    | Creates the runtime directory.
    +-->
-  <target name="runtime" depends="fast-runtime, prepare">
+  <target name="runtime" depends="runtime-fast, prepare">
     <echo message="Creating the jars ..." />
 
     <jar jarfile="temp/runtime/crawler/${programname.file}.jar"
@@ -324,7 +324,7 @@
   <!--
    | Tests the project.
    +-->
-  <target name="test" depends="make-test, fast-runtime">
+  <target name="test" depends="make-test, runtime-fast">
     <delete dir="temp/test/docs"/>
     <mkdir dir="temp/test/docs"/>
     
@@ -362,7 +362,7 @@
   <!--
    | Runs the project.
    +-->
-  <target name="fast-run" depends="fast-runtime">
+  <target name="run-fast" depends="runtime-fast">
     <java classname="net.sf.regain.crawler.Main"
           dir="temp/runtime/crawler"
           fork="true">

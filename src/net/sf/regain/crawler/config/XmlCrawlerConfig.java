@@ -117,7 +117,8 @@ public class XmlCrawlerConfig implements CrawlerConfig {
   /** Die Liste der Einstellungen f�r die Pr�peratoren. */
   private PreparatorSettings[] mPreparatorSettingsArr;
 
-
+  /** The list of the auxiliary fields. May be null. */
+  private AuxiliaryField[] mAuxiliaryFieldArr;
 
 
   /**
@@ -144,6 +145,7 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     readWhiteList(config);
     readUseLinkTextAsTitleRegexList(config);
     readPreparatorSettingsList(config, xmlFile);
+    readAuxiliaryFieldList(config);
   }
 
 
@@ -422,6 +424,30 @@ public class XmlCrawlerConfig implements CrawlerConfig {
   }
 
 
+  /**
+   * Reads the list of auxiliary fields.
+   *
+   * @param config The configuration to read from
+   * @throws RegainException If the configuration has errors.
+   */
+  private void readAuxiliaryFieldList(Node config)
+    throws RegainException
+  {
+    Node node = XmlToolkit.getChild(config, "auxiliaryFieldList", false);
+    if (node != null) {
+      Node[] nodeArr = XmlToolkit.getChildArr(node, "auxiliaryField");
+      mAuxiliaryFieldArr = new AuxiliaryField[nodeArr.length];
+      for (int i = 0; i < nodeArr.length; i++) {
+        String fieldName = XmlToolkit.getAttribute(nodeArr[i], "name");
+        String urlRegex = XmlToolkit.getText(nodeArr[i]);
+        int urlRegexGroup = XmlToolkit.getAttributeAsInt(nodeArr[i], "regexGroup");
+        
+        mAuxiliaryFieldArr[i] = new AuxiliaryField(fieldName, urlRegex, urlRegexGroup);
+      }
+    }
+  }
+  
+  
   /**
    * Reads the configuration of a preparator from a node.
    * 
@@ -725,7 +751,6 @@ public class XmlCrawlerConfig implements CrawlerConfig {
   }
 
 
-
   /**
    * Gibt die Liste der Einstellungen f�r die Pr�peratoren zur�ck.
    *
@@ -735,4 +760,14 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     return mPreparatorSettingsArr;
   }
 
+  
+  /**
+   * Gets the list of the auxiliary fields.
+   * 
+   * @return The list of the auxiliary fields. May be null.
+   */
+  public AuxiliaryField[] getAuxiliaryFieldList() {
+    return mAuxiliaryFieldArr;
+  }
+  
 }
