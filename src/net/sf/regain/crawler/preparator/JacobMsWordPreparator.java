@@ -30,19 +30,31 @@ package net.sf.regain.crawler.preparator;
 import java.util.HashSet;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.config.PreparatorConfig;
 import net.sf.regain.crawler.document.RawDocument;
+
+import org.apache.log4j.Logger;
 
 import com.jacob.com.ComFailException;
 import com.jacob.com.ComThread;
 import com.jacob.com.Dispatch;
 import com.jacob.com.Variant;
 
-import de.filiadata.lucene.spider.generated.msoffice2000.word.*;
+import de.filiadata.lucene.spider.generated.msoffice2000.word.Application;
+import de.filiadata.lucene.spider.generated.msoffice2000.word.Document;
+import de.filiadata.lucene.spider.generated.msoffice2000.word.Documents;
+import de.filiadata.lucene.spider.generated.msoffice2000.word.GroupShapes;
+import de.filiadata.lucene.spider.generated.msoffice2000.word.HeaderFooter;
+import de.filiadata.lucene.spider.generated.msoffice2000.word.Paragraph;
+import de.filiadata.lucene.spider.generated.msoffice2000.word.Paragraphs;
+import de.filiadata.lucene.spider.generated.msoffice2000.word.Section;
+import de.filiadata.lucene.spider.generated.msoffice2000.word.Sections;
+import de.filiadata.lucene.spider.generated.msoffice2000.word.Selection;
+import de.filiadata.lucene.spider.generated.msoffice2000.word.Shape;
+import de.filiadata.lucene.spider.generated.msoffice2000.word.Shapes;
+import de.filiadata.lucene.spider.generated.msoffice2000.word.WdHeaderFooterIndex;
 
 /**
  * Präpariert ein Microsoft-Word-Dokument für die Indizierung mit Hilfe der
@@ -55,7 +67,7 @@ import de.filiadata.lucene.spider.generated.msoffice2000.word.*;
  *
  * @author Til Schneider, www.murfman.de
  */
-public class JacobMsWordPreparator extends AbstractPreparator {
+public class JacobMsWordPreparator extends AbstractJacobMsOfficePreparator {
 
   /** The logger for this class */
   private static Logger mLog = Logger.getLogger(JacobMsWordPreparator.class);
@@ -73,7 +85,7 @@ public class JacobMsWordPreparator extends AbstractPreparator {
    */
   private HashSet mHeadlineStyleNameSet;
 
-  
+
   /**
    * Reads the configuration for this preparator.
    * <p>
@@ -84,6 +96,8 @@ public class JacobMsWordPreparator extends AbstractPreparator {
    * @throws RegainException If the configuration has an error.
    */
   protected void readConfig(PreparatorConfig config) throws RegainException {
+    super.readConfig(config);
+    
     Map main = config.getSectionWithName("main");
     if (main != null) {
       String headlineStyles = (String) main.get("headlineStyles");
@@ -191,6 +205,9 @@ public class JacobMsWordPreparator extends AbstractPreparator {
         }
       }
       
+      // Read the document properties
+      readProperties(doc);
+      
       // Set the extracted text and the headlines
       setCleanedContent(content.toString());
       if (headlines != null) {
@@ -201,8 +218,7 @@ public class JacobMsWordPreparator extends AbstractPreparator {
       doc.close(new Variant(false));
     }
     catch (ComFailException exc) {
-      throw new RegainException("Using COM failed. "
-        + "Be sure to use Java 1.3 or older!", exc);
+      throw new RegainException("Using COM failed.", exc);
     }
   }
 

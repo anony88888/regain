@@ -189,8 +189,30 @@
   <preparator>
     <urlPattern>\.xls$</urlPattern>
     <class>.PoiMsExcelPreparator</class>
-    <!--<class>.JacobMsExcelPreparator</class>-->
   </preparator>
+  <!--
+  <preparator>
+    <urlPattern>\.xls$</urlPattern>
+    <class>.JacobMsExcelPreparator</class>
+    <config>
+      -->
+      <!--
+       | properties:
+       |   The semicolon separated list of document properties that should be
+       |   extracted.
+       |   Possible properties are:
+       |     propTitle, subject, author, keywords, comments, template,
+       |     lastAuthor, revision, timeLastPrinted, timeCreated, timeLastSaved,
+       |     totalEditTime, pages, words, characters, security, category,
+       |     manager, company, bytes, lines, paras, hyperlinkBase, charsWSpaces
+       +-->
+      <!--
+      <section name="main">
+        <param name="properties">author</param>
+      </section>
+    </config>
+  </preparator>
+  -->
   <preparator>
     <urlPattern>\.doc$</urlPattern>
     <class>.PoiMsWordPreparator</class>
@@ -200,14 +222,25 @@
     <urlPattern>\.doc$</urlPattern>
     <class>.JacobMsWordPreparator</class>
     <config>
+      -->
+      <!--
+       | headlineStyles:
+       |   The semicolon separated list of Word style names (format templates)
+       |   used by headline paragraphs.
+       |
+       | properties:
+       |   The semicolon separated list of document properties that should be
+       |   extracted.
+       |   Possible properties are:
+       |     propTitle, subject, author, keywords, comments, template,
+       |     lastAuthor, revision, timeLastPrinted, timeCreated, timeLastSaved,
+       |     totalEditTime, pages, words, characters, security, category,
+       |     manager, company, bytes, lines, paras, hyperlinkBase, charsWSpaces
+       +-->
+      <!--
       <section name="main">
-        -->
-        <!--
-         | The semicolon separated list of Word style names (format templates)
-         | used by headline paragraphs.
-         +-->
-        <!--
         <param name="headlineStyles">Überschrift 1;Überschrift 2</param>
+        <param name="properties">author</param>
       </section>
     </config>
   </preparator>
@@ -216,6 +249,24 @@
   <preparator>
     <urlPattern>\.ppt$</urlPattern>
     <class>.JacobMsPowerPointPreparator</class>
+    <config>
+      -->
+      <!--
+       | properties:
+       |   The semicolon separated list of document properties that should be
+       |   extracted.
+       |   Possible properties are:
+       |     propTitle, subject, author, keywords, comments, template,
+       |     lastAuthor, revision, timeLastPrinted, timeCreated, timeLastSaved,
+       |     totalEditTime, pages, words, characters, security, category,
+       |     manager, company, bytes, lines, paras, slides, notes, hiddenSlides,
+       |     mmClips, hyperlinkBase, charsWSpaces
+       +-->
+      <!--
+      <section name="main">
+        <param name="properties">author</param>
+      </section>
+    </config>    
   </preparator>
   -->
   <preparator>

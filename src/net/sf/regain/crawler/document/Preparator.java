@@ -27,6 +27,8 @@
  */
 package net.sf.regain.crawler.document;
 
+import java.util.Map;
+
 import net.sf.regain.RegainException;
 import net.sf.regain.crawler.config.PreparatorConfig;
 
@@ -142,6 +144,15 @@ public interface Preparator {
    * @return Der Pfad, über den das Dokument zu erreichen ist.
    */
   public PathElement[] getPath();
+
+  /**
+   * Gets additional fields that should be indexed.
+   * <p>
+   * These fields will be indexed and stored.
+   * 
+   * @return The additional fields or <code>null</code>.
+   */
+  public Map getAdditionalFields();
 
   /**
    * Gibt alle Ressourcen frei, die für die Informationen über das Dokument

@@ -32,6 +32,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
@@ -275,6 +277,7 @@ public class DocumentFactory {
     String summary;
     String headlines;
     PathElement[] path;
+    Map additionalFieldMap;
     if (mLog.isDebugEnabled()) {
       mLog.debug("Using preparator " + rightPreparator.getClass().getName()
         + " for " + url);
@@ -288,6 +291,7 @@ public class DocumentFactory {
       summary = rightPreparator.getSummary();
       headlines = rightPreparator.getHeadlines();
       path = rightPreparator.getPath();
+      additionalFieldMap = rightPreparator.getAdditionalFields();
 
       rightPreparator.cleanUp();
 
@@ -304,6 +308,16 @@ public class DocumentFactory {
       throw new RegainException("Preparator "
         + rightPreparator.getClass().getName()
         + " did not extract the content of " + url);
+    }
+    
+    // Add the additional fields
+    if (additionalFieldMap != null) {
+      Iterator iter = additionalFieldMap.keySet().iterator();
+      while (iter.hasNext()) {
+        String fieldName = (String) iter.next();
+        String fieldValue = (String) additionalFieldMap.get(fieldName);
+        doc.add(Field.Text(fieldName, fieldValue));
+      }
     }
 
     // Write the clean content to an analysis file

@@ -28,6 +28,7 @@
 package net.sf.regain.crawler.preparator;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.crawler.config.PreparatorConfig;
 import net.sf.regain.crawler.document.RawDocument;
 
 import com.jacob.com.ComFailException;
@@ -48,13 +49,30 @@ import de.filiadata.lucene.spider.generated.msoffice2000.excel.*;
  *
  * @author Til Schneider, www.murfman.de
  */
-public class JacobMsExcelPreparator extends AbstractPreparator {
+public class JacobMsExcelPreparator extends AbstractJacobMsOfficePreparator {
 
   /**
    * Die Excel-Applikation. Ist <code>null</code>, solange noch kein Dokument
    * bearbeitet wurde.
    */
   private Application mExcelApplication;
+
+  
+  /**
+   * Reads the configuration for this preparator.
+   * <p>
+   * Does nothing by default. May be overridden by subclasses to actual read the
+   * config.
+   * 
+   * @param config The configuration
+   * @throws RegainException If the configuration has an error.
+   */
+  protected void readConfig(PreparatorConfig config) throws RegainException {
+    // NOTE: This method is not nessesary since it only calls the super method,
+    //       but I defined it to ensure that the super call is not forgotten
+    //       when there should be a config some day.
+    super.readConfig(config);
+  }
 
 
   /**
@@ -123,7 +141,10 @@ public class JacobMsExcelPreparator extends AbstractPreparator {
           contentBuf.append("\n");
         }
       }
-
+      
+      // Read the document properties
+      readProperties(wb);
+      
       // Set the content
       setCleanedContent(contentBuf.toString());
 
@@ -131,8 +152,7 @@ public class JacobMsExcelPreparator extends AbstractPreparator {
       wb.close(new Variant(false));
     }
     catch (ComFailException exc) {
-      throw new RegainException("Using COM failed. "
-        + "Be sure to use Java 1.3 or older!", exc);
+      throw new RegainException("Using COM failed.", exc);
     }
   }
 

@@ -426,10 +426,10 @@
     <mkdir dir="temp/test/docs"/>
     
     <java classname="net.sf.regain.test.PreparatorTest"
-          dir="temp/runtime"
+          dir="temp/runtime/crawler"
           fork="true">
+      <arg value="../../../test/docs"/>
       <arg value="../../test/docs"/>
-      <arg value="../test/docs"/>
       <classpath>
         <fileset dir="lib">
           <include name="*.jar"/>

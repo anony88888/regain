@@ -27,6 +27,9 @@
  */
 package net.sf.regain.crawler.preparator;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.regain.RegainException;
 import net.sf.regain.crawler.config.PreparatorConfig;
 import net.sf.regain.crawler.document.PathElement;
@@ -65,7 +68,8 @@ public abstract class AbstractPreparator implements Preparator {
   private String mHeadlines;
   /** Der Pfad, über den das Dokument zu erreichen ist. */
   private PathElement[] mPath;
-
+  /** The additional fields that should be indexed. */
+  private HashMap mAdditionalFieldMap;
 
 
   /**
@@ -73,7 +77,6 @@ public abstract class AbstractPreparator implements Preparator {
    */
   public AbstractPreparator() {
   }
-
 
 
   /**
@@ -252,6 +255,33 @@ public abstract class AbstractPreparator implements Preparator {
   }
 
 
+  /**
+   * Gets additional fields that should be indexed.
+   * <p>
+   * These fields will be indexed and stored.
+   * 
+   * @return The additional fields or <code>null</code>.
+   */
+  public Map getAdditionalFields() {
+    return mAdditionalFieldMap;
+  }
+
+
+  /**
+   * Adds an additional field to the current document.
+   * <p>
+   * This field will be indexed and stored.
+   * 
+   * @param fieldName The name of the field.
+   * @param fieldValue The value of the field.
+   */
+  public void addAdditionalField(String fieldName, String fieldValue) {
+    if (mAdditionalFieldMap == null) {
+      mAdditionalFieldMap = new HashMap();
+    }
+    mAdditionalFieldMap.put(fieldName, fieldValue);
+  }
+  
 
   /**
    * Gibt alle Ressourcen frei, die für die Informationen über das Dokument
@@ -263,6 +293,7 @@ public abstract class AbstractPreparator implements Preparator {
     mSummary = null;
     mHeadlines = null;
     mPath = null;
+    mAdditionalFieldMap = null;
   }
 
 
