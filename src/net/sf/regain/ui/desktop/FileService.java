@@ -66,7 +66,6 @@ public class FileService extends BasicService {
       filename = filename.substring(6);
     }
     filename = URLDecoder.decode(filename);
-    System.out.println("filename: '" + filename + "'");
 
     // Check whether this request comes from localhost
     boolean localhost = req.getInetAddress().isLoopbackAddress();
@@ -113,8 +112,6 @@ public class FileService extends BasicService {
         urlPrefix = urlPrefix.toLowerCase();
       }
 
-      System.out.println("url:       '" + url + "'");
-      System.out.println("urlPrefix: '" + urlPrefix + "'");
       if (url.startsWith(urlPrefix)) {
         isAllowed = true;
         break;
