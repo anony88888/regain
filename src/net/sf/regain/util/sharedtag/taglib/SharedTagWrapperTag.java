@@ -27,13 +27,14 @@
  */
 package net.sf.regain.util.sharedtag.taglib;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.search.SearchConstants;
 import net.sf.regain.util.sharedtag.PageRequest;
-import net.sf.regain.util.sharedtag.PageWriter;
+import net.sf.regain.util.sharedtag.PageResponse;
 import net.sf.regain.util.sharedtag.SharedTag;
 
 /**
@@ -77,15 +78,15 @@ public abstract class SharedTagWrapperTag
    * <p>
    * Calls the start tag method of the nested tag.
    *
-   * @see SharedTag#printStartTag(PageWriter, PageRequest)
+   * @see SharedTag#printStartTag(PageRequest, PageResponse)
    * @return {@link #EVAL_PAGE}
    * @throws JspException If the tag could not be executed
    */
   public int doStartTag() throws JspException {
-    PageWriter out = new JspPageWriter(pageContext.getOut());
     PageRequest request = getPageRequest();
+    PageResponse response = new JspPageResponse((HttpServletResponse) pageContext.getResponse());
     try {
-      int result = mNestedTag.printStartTag(out, request);
+      int result = mNestedTag.printStartTag(request, response);
       switch (result) {
         case SharedTag.EVAL_TAG_BODY: return EVAL_BODY_TAG;
         case SharedTag.SKIP_TAG_BODY: return SKIP_BODY;
@@ -104,15 +105,15 @@ public abstract class SharedTagWrapperTag
    * <p>
    * Calls the after body method of the nested tag.
    *
-   * @see SharedTag#printAfterBody(PageWriter, PageRequest)
+   * @see SharedTag#printAfterBody(PageRequest, PageResponse)
    * @return {@link #EVAL_PAGE}
    * @throws JspException If the tag could not be executed
    */
   public int doAfterBody() throws JspException {
-    PageWriter out = new JspPageWriter(pageContext.getOut());
     PageRequest request = getPageRequest();
+    PageResponse response = new JspPageResponse((HttpServletResponse) pageContext.getResponse());
     try {
-      int result = mNestedTag.printAfterBody(out, request);
+      int result = mNestedTag.printAfterBody(request, response);
       switch (result) {
         case SharedTag.EVAL_TAG_BODY: return EVAL_BODY_TAG;
         case SharedTag.SKIP_TAG_BODY: return SKIP_BODY;
@@ -131,7 +132,7 @@ public abstract class SharedTagWrapperTag
    * <p>
    * Calls the end tag method of the nested tag.
    *
-   * @see SharedTag#printEndTag(PageWriter, PageRequest)
+   * @see SharedTag#printEndTag(PageRequest, PageResponse)
    * @return {@link #EVAL_PAGE}
    * @throws JspException If the tag could not be executed
    */
@@ -150,10 +151,10 @@ public abstract class SharedTagWrapperTag
     }
 
     // Print the end tag
-    PageWriter out = new JspPageWriter(pageContext.getOut());
     PageRequest request = getPageRequest();
+    PageResponse response = new JspPageResponse((HttpServletResponse) pageContext.getResponse());
     try {
-      mNestedTag.printEndTag(out, request);
+      mNestedTag.printEndTag(request, response);
     }
     catch (RegainException exc) {
       throw new ExtendedJspException("Writing results failed", exc);

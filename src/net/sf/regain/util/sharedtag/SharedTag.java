@@ -221,30 +221,30 @@ public abstract class SharedTag {
   /**
    * Called when the parser reaches the start tag.
    *  
-   * @param out The writer where to write the code.
    * @param request The page request.
+   * @param response The page response.
    * @return {@link #EVAL_TAG_BODY} if you want the tag body to be evaluated or
    *         {@link #SKIP_TAG_BODY} if you want the tag body to be skipped.
    * @throws RegainException If there was an exception.
    */
-  public int printStartTag(PageWriter out, PageRequest request)
+  public int printStartTag(PageRequest request, PageResponse response)
     throws RegainException
   {
     return EVAL_TAG_BODY;
   }
-
+  
 
   /**
    * Called after the body content was evaluated.
    *  
-   * @param out The writer where to write the code.
    * @param request The page request.
+   * @param response The page response.
    * @return {@link #EVAL_TAG_BODY} if you want the tag body to be evaluated
    *         once again or {@link #SKIP_TAG_BODY} if you want to print the
    *         end tag.
    * @throws RegainException If there was an exception.
    */
-  public int printAfterBody(PageWriter out, PageRequest request)
+  public int printAfterBody(PageRequest request, PageResponse response)
     throws RegainException
   {
     return SKIP_TAG_BODY;
@@ -254,16 +254,16 @@ public abstract class SharedTag {
   /**
    * Called when the parser reaches the end tag.
    *  
-   * @param out The writer where to write the code.
    * @param request The page request.
+   * @param response The page response.
    * @throws RegainException If there was an exception.
    */
-  public void printEndTag(PageWriter out, PageRequest request)
+  public void printEndTag(PageRequest request, PageResponse response)
     throws RegainException
   {
   }
-  
-  
+
+
   /**
    * Gets the String representation of this tag.
    * 

@@ -31,7 +31,7 @@ import java.util.StringTokenizer;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.util.sharedtag.PageRequest;
-import net.sf.regain.util.sharedtag.PageWriter;
+import net.sf.regain.util.sharedtag.PageResponse;
 
 import org.apache.lucene.document.Document;
 
@@ -56,12 +56,12 @@ public class PathTag extends AbstractHitTag {
   /**
    * Generates the tag.
    *
-   * @param out The writer where to write the code.
    * @param request The page request.
+   * @param response The page response.
    * @param hit The current search hit.
    * @throws RegainException If there was an exception.
    */
-  protected void printEndTag(PageWriter out, PageRequest request,
+  protected void printEndTag(PageRequest request, PageResponse response,
     Document hit)
     throws RegainException
   {
@@ -70,7 +70,7 @@ public class PathTag extends AbstractHitTag {
     if (path != null) {
       String htmlBefore = getParameter("before");
       if (htmlBefore != null) {
-        out.print(htmlBefore);
+        response.print(htmlBefore);
       }
       
       boolean createLinks = getParameterAsBoolean("createLinks", true);
@@ -91,16 +91,16 @@ public class PathTag extends AbstractHitTag {
           String title = line.substring(blankPos + 1, line.length());
 
           if (! firstPathElement) {
-            out.print(" &gt; "); // >
+            response.print(" &gt; "); // >
           }
           if (createLinks) {
-            out.print("<a href=\"" + url + "\"");
+            response.print("<a href=\"" + url + "\"");
             if (styleSheetClass != null) {
-              out.print(" class=\"" + styleSheetClass + "\"");
+              response.print(" class=\"" + styleSheetClass + "\"");
             }
-            out.print(">" + title + "</a>");
+            response.print(">" + title + "</a>");
           } else {
-            out.print(title);
+            response.print(title);
           }
 
           firstPathElement = false;
@@ -109,7 +109,7 @@ public class PathTag extends AbstractHitTag {
 
       String htmlAfter = getParameter("after");
       if (htmlAfter != null) {
-        out.print(htmlAfter);
+        response.print(htmlAfter);
       }
     }
   }

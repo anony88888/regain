@@ -29,7 +29,7 @@ package net.sf.regain.ui.desktop.config.sharedlib;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.util.sharedtag.PageRequest;
-import net.sf.regain.util.sharedtag.PageWriter;
+import net.sf.regain.util.sharedtag.PageResponse;
 import net.sf.regain.util.sharedtag.SharedTag;
 
 /**
@@ -50,27 +50,27 @@ public class IntervalTag extends SharedTag {
   /**
    * Called when the parser reaches the end tag.
    *  
-   * @param out The writer where to write the code.
    * @param request The page request.
+   * @param response The page response.
    * @throws RegainException If there was an exception.
    */
-  public void printEndTag(PageWriter out, PageRequest request)
+  public void printEndTag(PageRequest request, PageResponse response)
     throws RegainException
   {
     String currValue = (String) request.getContextAttribute("settings.interval");
     
-    out.print("<select name=\"interval\">");
+    response.print("<select name=\"interval\">");
     for (int i = 0; i < CHOICES.length; i++) {
       String value = CHOICES[i][0];
       String name  = CHOICES[i][1];
       
-      out.print("<option value=\"" + value + "\"");
+      response.print("<option value=\"" + value + "\"");
       if (value.equals(currValue)) {
-        out.print(" selected=\"selected\"");
+        response.print(" selected=\"selected\"");
       }
-      out.print(">" + name + "</option>");
+      response.print(">" + name + "</option>");
     }
-    out.print("</select>");
+    response.print("</select>");
   }
   
 }

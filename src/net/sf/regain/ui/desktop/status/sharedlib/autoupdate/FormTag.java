@@ -29,7 +29,7 @@ package net.sf.regain.ui.desktop.status.sharedlib.autoupdate;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.util.sharedtag.PageRequest;
-import net.sf.regain.util.sharedtag.PageWriter;
+import net.sf.regain.util.sharedtag.PageResponse;
 import net.sf.regain.util.sharedtag.SharedTag;
 
 /**
@@ -41,27 +41,27 @@ public class FormTag extends SharedTag {
   /**
    * Called when the parser reaches the end tag.
    *  
-   * @param out The writer where to write the code.
    * @param request The page request.
+   * @param response The page response.
    * @throws RegainException If there was an exception.
    */
-  public void printEndTag(PageWriter out, PageRequest request)
+  public void printEndTag(PageRequest request, PageResponse response)
     throws RegainException
   {
     String url = getParameter("url", true);
     int time = getParameterAsInt("time", 5);
     
     String autoupdate = request.getParameter("autoupdate");
-    out.print("<form name=\"autoupdate\" action=\"" + url + "\" " +
+    response.print("<form name=\"autoupdate\" action=\"" + url + "\" " +
         "style=\"display:inline;\" method=\"get\">");
-    out.print("Diese Seite alle " + time + " Sekunden automatisch aktualisieren: ");
+    response.print("Diese Seite alle " + time + " Sekunden automatisch aktualisieren: ");
     if (autoupdate == null) {
-      out.print("<input type=\"hidden\" name=\"autoupdate\" value=\"" + time + "\"/>");
-      out.print("<input type=\"submit\" value=\"Einschalten\"/>");
+      response.print("<input type=\"hidden\" name=\"autoupdate\" value=\"" + time + "\"/>");
+      response.print("<input type=\"submit\" value=\"Einschalten\"/>");
     } else {
-      out.print("<input type=\"submit\" value=\"Ausschalten\"/>");
+      response.print("<input type=\"submit\" value=\"Ausschalten\"/>");
     }
-    out.print("</form>");
+    response.print("</form>");
   }
   
 }

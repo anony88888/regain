@@ -25,35 +25,16 @@
  *   $Author$
  * $Revision$
  */
-package net.sf.regain.util.sharedtag.taglib;
-
-import java.io.IOException;
-
-import javax.servlet.jsp.JspWriter;
+package net.sf.regain.util.sharedtag;
 
 import net.sf.regain.RegainException;
-import net.sf.regain.util.sharedtag.PageWriter;
 
 /**
- * Adapter from a JspWriter to a SharedTag PageWriter.
+ * A page response.
  *
  * @author Til Schneider, www.murfman.de
  */
-public class JspPageWriter implements PageWriter {
-
-  /** The JspWriter to adapt. */
-  private JspWriter mJspWriter;
-
-
-  /**
-   * Creates a new instance of JspPageWriter.
-   * 
-   * @param writer The JspWriter to adapt.
-   */
-  public JspPageWriter (JspWriter writer) {
-    mJspWriter = writer;
-  }
-
+public interface PageResponse {
 
   /**
    * Prints text to a page.
@@ -61,13 +42,14 @@ public class JspPageWriter implements PageWriter {
    * @param text The text to print.
    * @throws RegainException If printing failed.
    */
-  public void print(String text) throws RegainException {
-    try {
-      mJspWriter.print(text);
-    }
-    catch (IOException exc) {
-      throw new RegainException("Writing results failed", exc);
-    }
-  }
+  public void print(String text) throws RegainException;
+
+  /**
+   * Redirects the request to another URL.
+   * 
+   * @param url The URL to redirect to.
+   * @throws RegainException If redirecting failed.
+   */
+  public void sendRedirect(String url) throws RegainException;
 
 }

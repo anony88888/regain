@@ -32,7 +32,7 @@ import java.io.PrintStream;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.util.sharedtag.PageRequest;
-import net.sf.regain.util.sharedtag.PageWriter;
+import net.sf.regain.util.sharedtag.PageResponse;
 import simple.http.Request;
 import simple.http.Response;
 import simple.http.serve.BasicResource;
@@ -77,13 +77,26 @@ public class SharedTagResource extends BasicResource {
     ByteArrayOutputStream stream = new ByteArrayOutputStream();
     PrintStream printStream = new PrintStream(stream);
 
-    PageWriter out = new SimplePageWriter(printStream);
     PageRequest request = new SimplePageRequest(req);
+    PageResponse response = new SimplePageResponse(printStream);
 
-    mRootTagExecuter.execute(out, request);
-    
-    printStream.close();
-    stream.close();
+    try {
+      mRootTagExecuter.execute(request, response);
+    }
+    catch (RedirectException exc) {
+      // Send a redirect
+      resp.set("Location", exc.getUrl());
+      handle(req, resp, 303);
+      return;
+    }
+    catch (Exception exc) {
+      exc.printStackTrace();
+      throw exc;
+    }
+    finally {
+      printStream.close();
+      stream.close();
+    }
     
     // The page has been generated without exception -> Send it to the user
     resp.set("Content-Type", "text/html");

@@ -25,30 +25,33 @@
  *   $Author$
  * $Revision$
  */
-package net.sf.regain.search.sharedlib.hit;
+package net.sf.regain.search.sharedlib;
+
+import java.io.File;
 
 import net.sf.regain.RegainException;
-import net.sf.regain.search.SearchConstants;
+import net.sf.regain.search.SearchToolkit;
+import net.sf.regain.search.config.IndexConfig;
 import net.sf.regain.util.sharedtag.PageRequest;
 import net.sf.regain.util.sharedtag.PageResponse;
 import net.sf.regain.util.sharedtag.SharedTag;
 
-import org.apache.lucene.document.Document;
-
 /**
- * Parent class for all tags that show information about a search hit. Provides
- * a template method that gets the current hit.
+ * Checks whether there is a index and whether a query was given. If one of
+ * these conditions is not fulfilled, a redirect to another page is sent.
+ * <p>
+ * Tag Parameters:
+ * <ul>
+ * <li><code>noIndexUrl</code>: The URL to redirect to if there is no index.</li>
+ * <li><code>noQueryUrl</code>: The URL to redirect to if there is no query.</li>
+ * </ul>
  *
  * @author Til Schneider, www.murfman.de
  */
-public abstract class AbstractHitTag extends SharedTag
-  implements SearchConstants
-{
+public class CheckTag extends SharedTag {
 
   /**
    * Called when the parser reaches the end tag.
-   * <p>
-   * Gets the current hit and calls the template method.
    *  
    * @param request The page request.
    * @param response The page response.
@@ -57,28 +60,27 @@ public abstract class AbstractHitTag extends SharedTag
   public void printEndTag(PageRequest request, PageResponse response)
     throws RegainException
   {
-    Document hit = (Document) request.getContextAttribute(ATTR_CURRENT_HIT);
-    if (hit == null) {
-      throw new RegainException("Tag " + getTagName()
-          + " must be inside a list tag!");
+    // Check whether there is a index
+    IndexConfig indexConfig = SearchToolkit.getIndexConfig(request);
+    File indexdir = new File(indexConfig.getDirectory());
+    File newFile = new File(indexdir, "new");
+    File indexFile = new File(indexdir, "index");
+    
+    if (indexdir.exists() && ! indexFile.exists() && ! newFile.exists()) {
+      // There is no index -> Forward to the noIndexUrl
+      String noIndexUrl = getParameter("noIndexUrl", true);
+      response.sendRedirect(noIndexUrl);
+      return;
     }
-
-    printEndTag(request, response, hit);
+    
+    // Check whether there is a query
+    String query = request.getParameter("query");
+    if (query == null) {
+      // There was no query specified -> Forward to the noQueryUrl
+      String noQueryUrl = getParameter("noQueryUrl", true);
+      response.sendRedirect(noQueryUrl);
+      return;
+    }
   }
-
-
-  /**
-   * The template method.
-   * <p>
-   * Must be implemented by subclasses to genereate the actual tag content.
-   *  
-   * @param request The page request.
-   * @param response The page response.
-   * @param hit The current search hit.
-   * @throws RegainException If there was an exception.
-   */
-  protected abstract void printEndTag(PageRequest request, PageResponse response,
-    Document hit)
-    throws RegainException;
 
 }

@@ -32,7 +32,7 @@ import net.sf.regain.search.SearchConstants;
 import net.sf.regain.search.SearchContext;
 import net.sf.regain.search.SearchToolkit;
 import net.sf.regain.util.sharedtag.PageRequest;
-import net.sf.regain.util.sharedtag.PageWriter;
+import net.sf.regain.util.sharedtag.PageResponse;
 import net.sf.regain.util.sharedtag.SharedTag;
 
 import org.apache.lucene.document.Document;
@@ -69,13 +69,13 @@ public class ListTag extends SharedTag implements SearchConstants {
    * <p>
    * Initializes the list generation.
    *  
-   * @param out The writer where to write the code.
    * @param request The page request.
+   * @param response The page response.
    * @return {@link #EVAL_TAG_BODY} if you want the tag body to be evaluated or
    *         {@link #SKIP_TAG_BODY} if you want the tag body to be skipped.
    * @throws RegainException If there was an exception.
    */
-  public int printStartTag(PageWriter out, PageRequest request)
+  public int printStartTag(PageRequest request, PageResponse response)
     throws RegainException
   {
     SearchContext context = SearchToolkit.getSearchContext(request);
@@ -86,7 +86,7 @@ public class ListTag extends SharedTag implements SearchConstants {
     if (context.getHitCount() == 0) {
       String msgNoResults = getParameter("msgNoResults");
       if (msgNoResults != null) {
-        out.print(msgNoResults);
+        response.print(msgNoResults);
       }
       
       return SKIP_TAG_BODY;
@@ -136,14 +136,14 @@ public class ListTag extends SharedTag implements SearchConstants {
    * Decides whether there are more hits to generate HTML for. If yes the next
    * hit is put to the page attributes.
    *  
-   * @param out The writer where to write the code.
    * @param request The page request.
+   * @param response The page response.
    * @return {@link #EVAL_TAG_BODY} if you want the tag body to be evaluated
    *         once again or {@link #SKIP_TAG_BODY} if you want to print the
    *         end tag.
    * @throws RegainException If there was an exception.
    */
-  public int printAfterBody(PageWriter out, PageRequest request)
+  public int printAfterBody(PageRequest request, PageResponse response)
     throws RegainException
   {
     mCurrentResult++;

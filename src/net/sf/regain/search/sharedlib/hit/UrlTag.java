@@ -31,7 +31,7 @@ import net.sf.regain.RegainException;
 import net.sf.regain.search.SearchContext;
 import net.sf.regain.search.SearchToolkit;
 import net.sf.regain.util.sharedtag.PageRequest;
-import net.sf.regain.util.sharedtag.PageWriter;
+import net.sf.regain.util.sharedtag.PageResponse;
 
 import org.apache.lucene.document.Document;
 
@@ -50,12 +50,12 @@ public class UrlTag extends AbstractHitTag {
   /**
    * Generates the tag.
    *
-   * @param out The writer where to write the code.
    * @param request The page request.
+   * @param response The page response.
    * @param hit The current search hit.
    * @throws RegainException If there was an exception.
    */
-  protected void printEndTag(PageWriter out, PageRequest request,
+  protected void printEndTag(PageRequest request, PageResponse response,
     Document hit)
     throws RegainException
   {
@@ -64,7 +64,7 @@ public class UrlTag extends AbstractHitTag {
 
     String url = search.rewriteUrl(hit.get("url"));
 
-    out.print(url);
+    response.print(url);
   }
 
 }

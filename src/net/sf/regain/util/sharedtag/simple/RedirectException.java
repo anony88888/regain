@@ -25,41 +25,41 @@
  *   $Author$
  * $Revision$
  */
-package net.sf.regain.search.sharedlib;
+package net.sf.regain.util.sharedtag.simple;
 
 import net.sf.regain.RegainException;
-import net.sf.regain.util.sharedtag.PageRequest;
-import net.sf.regain.util.sharedtag.PageResponse;
-import net.sf.regain.util.sharedtag.SharedTag;
 
 /**
- * Generates the value of a HTML request parameter. 
- * <p>
- * Tag Parameters:
- * <ul>
- * <li><code>name</code>: The name of the request parameter whichs value should
- *     be generated.</li>
- * </ul>
+ * An exception used to abort a current page request and redirect the request to
+ * another URL.
  *
  * @author Til Schneider, www.murfman.de
  */
-public class ParamTag extends SharedTag {
+public class RedirectException extends RegainException {
 
+  /** The URL to redirect the request to. */
+  private String mUrl;
+  
+  
   /**
-   * Called when the parser reaches the end tag.
-   *  
-   * @param request The page request.
-   * @param response The page response.
-   * @throws RegainException If there was an exception.
+   * Creates a new instance of ForwardException.
+   * 
+   * @param url The URL to redirect the request to.
    */
-  public void printEndTag(PageRequest request, PageResponse response)
-    throws RegainException
-  {
-    String name = getParameter("name", true);
-    String value = request.getParameter(name);
-    if (value != null) {
-      response.print(value);
-    }
+  public RedirectException(String url) {
+    super(null);
+    
+    mUrl = url;
+  }
+  
+  
+  /**
+   * Gets the URL to redirect the request to.
+   * 
+   * @return The URL to redirect the request to.
+   */
+  public String getUrl() {
+    return mUrl;
   }
   
 }

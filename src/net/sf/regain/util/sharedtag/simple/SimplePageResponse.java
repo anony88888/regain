@@ -25,16 +25,33 @@
  *   $Author$
  * $Revision$
  */
-package net.sf.regain.util.sharedtag;
+package net.sf.regain.util.sharedtag.simple;
+
+import java.io.PrintStream;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.util.sharedtag.PageResponse;
 
 /**
- * A writer that prints text to a page.
+ * Adapter from a simpleweb Response to a SharedTag PageResponse.
  *
  * @author Til Schneider, www.murfman.de
  */
-public interface PageWriter {
+public class SimplePageResponse implements PageResponse {
+  
+  /** The PrintStream to write the results to. */
+  private PrintStream mPrintStream;
+
+
+  /**
+   * Creates a new instance of SimplePageWriter.
+   * 
+   * @param printStream The PrintStream to write the results to.
+   */
+  public SimplePageResponse(PrintStream printStream) {
+    mPrintStream = printStream;
+  }
+  
 
   /**
    * Prints text to a page.
@@ -42,6 +59,19 @@ public interface PageWriter {
    * @param text The text to print.
    * @throws RegainException If printing failed.
    */
-  public void print(String text) throws RegainException;
+  public void print(String text) throws RegainException {
+    mPrintStream.print(text);
+  }
+
+
+  /**
+   * Redirects the request to another URL.
+   * 
+   * @param url The URL to redirect to.
+   * @throws RegainException If redirecting failed.
+   */
+  public void sendRedirect(String url) throws RegainException {
+    throw new RedirectException(url);
+  }
 
 }

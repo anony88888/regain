@@ -25,33 +25,35 @@
  *   $Author$
  * $Revision$
  */
-package net.sf.regain.util.sharedtag.simple;
+package net.sf.regain.util.sharedtag.taglib;
 
-import java.io.PrintStream;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
 
 import net.sf.regain.RegainException;
-import net.sf.regain.util.sharedtag.PageWriter;
+import net.sf.regain.util.sharedtag.PageResponse;
 
 /**
- * Adapter from a PrintStream to a SharedTag PageWriter.
+ * Adapter from a ServletResponse to a SharedTag PageResponse.
  *
  * @author Til Schneider, www.murfman.de
  */
-public class SimplePageWriter implements PageWriter {
-  
-  /** The PrintStream to adapt. */
-  private PrintStream mPrintStream;
+public class JspPageResponse implements PageResponse {
+
+  /** The ServletResponse to adapt. */
+  private HttpServletResponse mServletResponse;
 
 
   /**
-   * Creates a new instance of SimplePageWriter.
+   * Creates a new instance of JspPageWriter.
    * 
-   * @param stream The PrintStream to adapt.
+   * @param response The ServletResponse to adapt.
    */
-  public SimplePageWriter(PrintStream stream) {
-    mPrintStream = stream;
+  public JspPageResponse(HttpServletResponse response) {
+    mServletResponse = response;
   }
-  
+
 
   /**
    * Prints text to a page.
@@ -60,7 +62,28 @@ public class SimplePageWriter implements PageWriter {
    * @throws RegainException If printing failed.
    */
   public void print(String text) throws RegainException {
-    mPrintStream.print(text);
+    try {
+      mServletResponse.getWriter().print(text);
+    }
+    catch (IOException exc) {
+      throw new RegainException("Writing results failed", exc);
+    }
+  }
+
+
+  /**
+   * Redirects the request to another URL.
+   * 
+   * @param url The URL to redirect to.
+   * @throws RegainException If redirecting failed.
+   */
+  public void sendRedirect(String url) throws RegainException {
+    try {
+      mServletResponse.sendRedirect(url);
+    }
+    catch (IOException exc) {
+      throw new RegainException("Sending redirect to '" + url + "' failed", exc);
+    }
   }
 
 }

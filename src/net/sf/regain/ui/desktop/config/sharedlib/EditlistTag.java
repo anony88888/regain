@@ -29,7 +29,7 @@ package net.sf.regain.ui.desktop.config.sharedlib;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.util.sharedtag.PageRequest;
-import net.sf.regain.util.sharedtag.PageWriter;
+import net.sf.regain.util.sharedtag.PageResponse;
 import net.sf.regain.util.sharedtag.SharedTag;
 
 /**
@@ -42,11 +42,11 @@ public class EditlistTag extends SharedTag {
   /**
    * Called when the parser reaches the end tag.
    *  
-   * @param out The writer where to write the code.
    * @param request The page request.
+   * @param response The page response.
    * @throws RegainException If there was an exception.
    */
-  public void printEndTag(PageWriter out, PageRequest request)
+  public void printEndTag(PageRequest request, PageResponse response)
     throws RegainException
   {
     // Get the name of the edit list
@@ -55,25 +55,25 @@ public class EditlistTag extends SharedTag {
     // Get the current value
     String[] currValueArr = (String[]) request.getContextAttribute("settings." + name);
     
-    out.print("<select id=\"" + name + "-list\" name=\"" + name + "\" " +
+    response.print("<select id=\"" + name + "-list\" name=\"" + name + "\" " +
         "size=\"5\" multiple");
     String styleSheetClass = getParameter("class");
     if (styleSheetClass != null) {
-      out.print(" class=\"" + styleSheetClass + "\"");
+      response.print(" class=\"" + styleSheetClass + "\"");
     }
-    out.print(">");
+    response.print(">");
     for (int i = 0; i < currValueArr.length; i++) {
-      out.print("<option>" + currValueArr[i] + "</option>");
+      response.print("<option>" + currValueArr[i] + "</option>");
     }
-    out.print("</select><br/>");
+    response.print("</select><br/>");
     
-    out.print("<input type=\"text\" id=\"" + name + "-entry\"");
+    response.print("<input type=\"text\" id=\"" + name + "-entry\"");
     if (styleSheetClass != null) {
-      out.print(" class=\"" + styleSheetClass + "\"");
+      response.print(" class=\"" + styleSheetClass + "\"");
     }
-    out.print("/>");
-    out.print("<button type=\"button\" onClick=\"addToList('" + name + "')\">Hinzuf&uuml;gen</button>");
-    out.print("<button type=\"button\" onClick=\"removeFromList('" + name + "')\">Entfernen</button>");
+    response.print("/>");
+    response.print("<button type=\"button\" onClick=\"addToList('" + name + "')\">Hinzuf&uuml;gen</button>");
+    response.print("<button type=\"button\" onClick=\"removeFromList('" + name + "')\">Entfernen</button>");
   }
 
 }

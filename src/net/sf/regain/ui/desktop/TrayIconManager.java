@@ -81,7 +81,15 @@ public class TrayIconManager {
     item = new JMenuItem("Suchen");
     item.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent evt) {
-        DesktopToolkit.openPageInBrowser("search.jsp");
+        DesktopToolkit.openPageInBrowser("searchinput.jsp");
+      }
+    });
+    menu.add(item);
+
+    item = new JMenuItem("Status");
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent evt) {
+        DesktopToolkit.openPageInBrowser("status.jsp");
       }
     });
     menu.add(item);

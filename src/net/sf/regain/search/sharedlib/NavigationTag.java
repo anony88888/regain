@@ -35,7 +35,7 @@ import net.sf.regain.search.SearchConstants;
 import net.sf.regain.search.SearchContext;
 import net.sf.regain.search.SearchToolkit;
 import net.sf.regain.util.sharedtag.PageRequest;
-import net.sf.regain.util.sharedtag.PageWriter;
+import net.sf.regain.util.sharedtag.PageResponse;
 import net.sf.regain.util.sharedtag.SharedTag;
 
 /**
@@ -63,11 +63,11 @@ public class NavigationTag extends SharedTag implements SearchConstants {
   /**
    * Called when the parser reaches the end tag.
    *  
-   * @param out The writer where to write the code.
    * @param request The page request.
+   * @param response The page response.
    * @throws RegainException If there was an exception.
    */
-  public void printEndTag(PageWriter out, PageRequest request)
+  public void printEndTag(PageRequest request, PageResponse response)
     throws RegainException
   {
     String query = request.getParameter("query");
@@ -109,21 +109,21 @@ public class NavigationTag extends SharedTag implements SearchConstants {
     if (currButton > 0) {
       String msgBack = getParameter("msgBack", true);
       msgBack = RegainToolkit.replace(msgBack, "&quot;", "\"");
-      printLink(out, currButton - 1, query, maxResults, indexName, msgBack);
+      printLink(response, currButton - 1, query, maxResults, indexName, msgBack);
     }
     for (int i = fromButton; i <= toButton; i++) {
       if (i == currButton) {
         // This is the current button
-        out.print("<b>" + (i + 1) + "</b> ");
+        response.print("<b>" + (i + 1) + "</b> ");
       } else {
         String linkText = Integer.toString(i + 1);
-        printLink(out, i, query, maxResults, indexName, linkText);
+        printLink(response, i, query, maxResults, indexName, linkText);
       }
     }
     if (currButton < (buttonCount -1)) {
       String msgForward = getParameter("msgForward", true);
       msgForward = RegainToolkit.replace(msgForward, "'", "\"");
-      printLink(out, currButton + 1, query, maxResults, indexName, msgForward);
+      printLink(response, currButton + 1, query, maxResults, indexName, msgForward);
     }
   }
 
@@ -131,7 +131,7 @@ public class NavigationTag extends SharedTag implements SearchConstants {
   /**
    * Prints the HTML for a hyperlink.
    *
-   * @param out The writer to print to.
+   * @param response The page response.
    * @param button The index of the button to create the HTML for.
    * @param query The search query.
    * @param maxResults The maximum results.
@@ -139,7 +139,7 @@ public class NavigationTag extends SharedTag implements SearchConstants {
    * @param linkText The link text.
    * @throws RegainException If printing failed.
    */
-  private void printLink(PageWriter out, int button, String query,
+  private void printLink(PageResponse response, int button, String query,
     int maxResults, String indexName, String linkText)
     throws RegainException
   {
@@ -156,14 +156,14 @@ public class NavigationTag extends SharedTag implements SearchConstants {
     String encodedIndexName = URLEncoder.encode(indexName, encoding);
     */
 
-    out.print("<a href=\"" + targetPage + "?query=" + encodedQuery
+    response.print("<a href=\"" + targetPage + "?query=" + encodedQuery
       + "&index=" + encodedIndexName + "&maxresults=" + maxResults
       + "&fromresult=" + (button * maxResults) + "\"");
     String styleSheetClass = getParameter("class");
     if (styleSheetClass != null) {
-      out.print(" class=\"" + styleSheetClass + "\"");
+      response.print(" class=\"" + styleSheetClass + "\"");
     }
-    out.print(">" + linkText + "</a> ");
+    response.print(">" + linkText + "</a> ");
   }
 
 }

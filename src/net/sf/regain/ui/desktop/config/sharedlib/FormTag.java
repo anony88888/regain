@@ -43,7 +43,7 @@ import net.sf.regain.RegainToolkit;
 import net.sf.regain.XmlToolkit;
 import net.sf.regain.ui.desktop.DesktopConstants;
 import net.sf.regain.util.sharedtag.PageRequest;
-import net.sf.regain.util.sharedtag.PageWriter;
+import net.sf.regain.util.sharedtag.PageResponse;
 import net.sf.regain.util.sharedtag.SharedTag;
 
 /**
@@ -66,13 +66,13 @@ public class FormTag extends SharedTag implements DesktopConstants {
    * <p>
    * Initializes the list generation.
    *  
-   * @param out The writer where to write the code.
    * @param request The page request.
+   * @param response The page response.
    * @return {@link #EVAL_TAG_BODY} if you want the tag body to be evaluated or
    *         {@link #SKIP_TAG_BODY} if you want the tag body to be skipped.
    * @throws RegainException If there was an exception.
    */
-  public int printStartTag(PageWriter out, PageRequest request)
+  public int printStartTag(PageRequest request, PageResponse response)
     throws RegainException
   {
     int interval = request.getParameterAsInt("interval", -1);
@@ -107,14 +107,14 @@ public class FormTag extends SharedTag implements DesktopConstants {
       if (errorList.isEmpty()) {
         // There were no errors -> Save the values
         saveSettings(interval, dirlist, dirblacklist, sitelist, siteblacklist);
-        out.print("Ihre Einstellungen wurden gespeichert!");
+        response.print("Ihre Einstellungen wurden gespeichert!");
       } else {
         // There were errors -> Show them
-        out.print("Leider enth&auml;lt Ihre Eingabe noch Fehler:<ul>");
+        response.print("Leider enth&auml;lt Ihre Eingabe noch Fehler:<ul>");
         for (int i = 0; i < errorList.size(); i++) {
-          out.print("<li>" + errorList.get(i) + "</li>");
+          response.print("<li>" + errorList.get(i) + "</li>");
         }
-        out.print("</ul>");
+        response.print("</ul>");
       }
     }
 
@@ -126,7 +126,7 @@ public class FormTag extends SharedTag implements DesktopConstants {
     request.setContextAttribute("settings.siteblacklist", siteblacklist);
     
     String action = getParameter("action", true);
-    out.print("<form name=\"settings\" action=\"" + action + "\" " +
+    response.print("<form name=\"settings\" action=\"" + action + "\" " +
         "method=\"post\" onsubmit=\"prepareEditListsForSubmit()\">");
     
     return EVAL_TAG_BODY;
@@ -136,14 +136,14 @@ public class FormTag extends SharedTag implements DesktopConstants {
   /**
    * Called when the parser reaches the end tag.
    *  
-   * @param out The writer where to write the code.
    * @param request The page request.
+   * @param response The page response.
    * @throws RegainException If there was an exception.
    */
-  public void printEndTag(PageWriter out, PageRequest request)
+  public void printEndTag(PageRequest request, PageResponse response)
     throws RegainException
   {
-    out.print("</form>");
+    response.print("</form>");
   }
 
   

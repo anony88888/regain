@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.util.sharedtag.PageRequest;
-import net.sf.regain.util.sharedtag.PageWriter;
+import net.sf.regain.util.sharedtag.PageResponse;
 
 /**
  * A tree node that generates a response when executed.
@@ -85,26 +85,26 @@ public abstract class Executer {
   /**
    * Executes this node.
    * 
-   * @param out The writer where to write the response.
    * @param request The request.
+   * @param response The response.
    * @throws RegainException If executing failed.
    */
-  public abstract void execute(PageWriter out, PageRequest request)
+  public abstract void execute(PageRequest request, PageResponse response)
     throws RegainException;
   
   
   /**
    * Executes all child nodes
    * 
-   * @param out The writer where to write the response.
    * @param request The request.
+   * @param response The response.
    * @throws RegainException If executing failed.
    */
-  protected void executeChildren(PageWriter out, PageRequest request)
+  protected void executeChildren(PageRequest request, PageResponse response)
     throws RegainException
   {
     for (int i = 0; i < childCount(); i++) {
-      getChild(i).execute(out, request);
+      getChild(i).execute(request, response);
     }
   }
 

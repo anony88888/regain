@@ -36,7 +36,6 @@ import java.util.HashMap;
 
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.ui.desktop.FileService;
-
 import simple.http.Request;
 import simple.http.Response;
 import simple.http.load.BasicService;
@@ -77,7 +76,7 @@ public class SharedTagService extends BasicService {
     mFileService = new FileService(context);
   }
 
-  
+
   /**
    * Processes a request.
    * 

@@ -90,6 +90,9 @@ X Desktopsuche: FileService: Mime-Types setzen
 X Desktopsuche: Status
     - Wann wurde der Index zuletzt aktualisiert
     - Fortschritt bei laufender Aktualisierung
+X Desktopsuche: search.jsp:
+    - Forward zu noindex.jsp, wenn kein Index vorhanden.
+    - Forward zu searchinput.jsp, wenn query nicht gesetzt.
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -104,11 +107,11 @@ X Desktopsuche: Status
     - Such-JSP: Zusätzliche Eingabefelder für bestimmte Felder können mit
       "field.feldName" hinzugefügt werden.
     - Init-Parameter von configFile nach searchConfigFile umbenannt.
-  
-  Desktopsuche: search.jsp: Forward zu searchinput.jsp, wenn query nicht gesetzt.
 
   Desktopsuche: Task-Icon für Linux
   Desktopsuche: Mime-Types konfigurierbar
+  Bug: "http://www.murfman.de" wird geparst, aber nicht indexiert.
+    (Regex für HTML-Präparator falsch)
 
 Rückfragen:
 

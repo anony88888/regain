@@ -46,31 +46,32 @@ public class SearchToolkit {
   /** The name of the page context attribute that holds the SearchContext. */
   private static final String SEARCH_CONTEXT_ATTR_NAME = "SearchContext";
 
+  /** The name of the page context attribute that holds the IndexConfig. */
+  private static final String INDEX_CONFIG_CONTEXT_ATTR_NAME = "IndexConfig";
+  
   /** The prefix for request parameters that contain additional field values. */
   private static final String FIELD_PREFIX = "field.";
   
   /** The configuration of the search mask. */
   private static SearchConfig mConfig;
 
-
+  
   /**
-   * Gets the SearchContext from the PageContext.
+   * Gets the IndexConfig from the PageContext.
    * <p>
-   * If there is no SearchContext in the PageContext it is created and put in the
-   * PageContext, so the next call will find it.
-   *
-   * @param request The page request where the SearchContext will be taken
+   * If there is no IndexConfig in the PageContext it is put in the PageContext,
+   * so the next call will find it.
+   * 
+   * @param request The page request where the IndexConfig will be taken
    *        from or put to.
-   * @return The SearchContext for the page the context is for.
-   *
-   * @throws RegainException When the SearchContext could not be created.
-   * @see SearchContext
+   * @return The IndexConfig for the page the context is for.
+   * @throws RegainException If there is no IndexConfig for the specified index.
    */
-  public static SearchContext getSearchContext(PageRequest request)
+  public static IndexConfig getIndexConfig(PageRequest request)
     throws RegainException
   {
-    SearchContext context = (SearchContext) request.getContextAttribute(SEARCH_CONTEXT_ATTR_NAME);
-    if (context == null) {
+    IndexConfig config = (IndexConfig) request.getContextAttribute(INDEX_CONFIG_CONTEXT_ATTR_NAME);
+    if (config == null) {
       // Load the config (if not yet done)
       loadConfiguration(request);
 
@@ -85,11 +86,38 @@ public class SearchToolkit {
       }
       
       // Get the configuration for that index
-      IndexConfig indexConfig = mConfig.getIndexConfig(indexName);
-      if (indexConfig == null) {
+      config = mConfig.getIndexConfig(indexName);
+      if (config == null) {
         throw new RegainException("The configuration does not contain the index '"
             + indexName + "'");
       }
+
+      // Store the IndexConfig in the page context
+      request.setContextAttribute(INDEX_CONFIG_CONTEXT_ATTR_NAME, config);
+    }
+    return config;
+  }
+  
+
+  /**
+   * Gets the SearchContext from the PageContext.
+   * <p>
+   * If there is no SearchContext in the PageContext it is created and put in the
+   * PageContext, so the next call will find it.
+   *
+   * @param request The page request where the SearchContext will be taken
+   *        from or put to.
+   * @return The SearchContext for the page the context is for.
+   * @throws RegainException If the SearchContext could not be created.
+   * @see SearchContext
+   */
+  public static SearchContext getSearchContext(PageRequest request)
+    throws RegainException
+  {
+    SearchContext context = (SearchContext) request.getContextAttribute(SEARCH_CONTEXT_ATTR_NAME);
+    if (context == null) {
+      // Get the index config
+      IndexConfig indexConfig = getIndexConfig(request);
 
       // Get the query
       String query = request.getParameter("query");

@@ -8,6 +8,7 @@
 </head>
 
 <body>
+  <search:check noIndexUrl="noindex.jsp" noQueryUrl="searchinput.jsp"/>
 
   <table class="top"><tr>
     <td><img src="img/logo_regain.gif" width="201" height="66"></td>
@@ -17,7 +18,7 @@
         <search:input_hiddenparam name="index"/>
         <search:input_query/>
         <search:input_maxresults/>
-        <input type="submit" value="Search"/>
+        <input type="submit" value="Suchen"/>
       </form>
     </td>
   </tr></table>
@@ -67,7 +68,7 @@
       <b>Suchen nach: </b>
       <search:input_query/>
       <search:input_maxresults/>
-      <input type="submit" value="Search"/>
+      <input type="submit" value="Suchen"/>
     </td></tr></table>
   </form>
 

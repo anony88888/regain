@@ -29,7 +29,7 @@ package net.sf.regain.util.sharedtag.simple;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.util.sharedtag.PageRequest;
-import net.sf.regain.util.sharedtag.PageWriter;
+import net.sf.regain.util.sharedtag.PageResponse;
 
 /**
  * An executer node that prints some text.
@@ -55,15 +55,15 @@ public class TextExecuter extends Executer {
   /**
    * Executes this node.
    * 
-   * @param out The writer where to write the response.
    * @param request The request.
+   * @param response The response.
    * @throws RegainException If executing failed.
    */
-  public void execute(PageWriter out, PageRequest request)
+  public void execute(PageRequest request, PageResponse response)
     throws RegainException
   {
-    executeChildren(out, request);
-    out.print(mText);
+    executeChildren(request, response);
+    response.print(mText);
   }
   
 

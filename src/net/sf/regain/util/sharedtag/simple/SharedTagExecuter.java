@@ -29,7 +29,7 @@ package net.sf.regain.util.sharedtag.simple;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.util.sharedtag.PageRequest;
-import net.sf.regain.util.sharedtag.PageWriter;
+import net.sf.regain.util.sharedtag.PageResponse;
 import net.sf.regain.util.sharedtag.SharedTag;
 
 /**
@@ -56,20 +56,20 @@ public class SharedTagExecuter extends Executer {
   /**
    * Executes this node.
    * 
-   * @param out The writer where to write the response.
    * @param request The request.
+   * @param response The response.
    * @throws RegainException If executing failed.
    */
-  public void execute(PageWriter out, PageRequest request)
+  public void execute(PageRequest request, PageResponse response)
     throws RegainException
   {
-    int result = mTag.printStartTag(out, request);
+    int result = mTag.printStartTag(request, response);
     while (result == SharedTag.EVAL_TAG_BODY) {
-      executeChildren(out, request);
-      result = mTag.printAfterBody(out, request);
+      executeChildren(request, response);
+      result = mTag.printAfterBody(request, response);
     }
     
-    mTag.printEndTag(out, request);
+    mTag.printEndTag(request, response);
   }
   
 

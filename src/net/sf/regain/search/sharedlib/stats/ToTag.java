@@ -32,7 +32,7 @@ import net.sf.regain.search.SearchConstants;
 import net.sf.regain.search.SearchContext;
 import net.sf.regain.search.SearchToolkit;
 import net.sf.regain.util.sharedtag.PageRequest;
-import net.sf.regain.util.sharedtag.PageWriter;
+import net.sf.regain.util.sharedtag.PageResponse;
 import net.sf.regain.util.sharedtag.SharedTag;
 
 /**
@@ -45,11 +45,11 @@ public class ToTag extends SharedTag implements SearchConstants {
   /**
    * Called when the parser reaches the end tag.
    *  
-   * @param out The writer where to write the code.
    * @param request The page request.
+   * @param response The page response.
    * @throws RegainException If there was an exception.
    */
-  public void printEndTag(PageWriter out, PageRequest request)
+  public void printEndTag(PageRequest request, PageResponse response)
     throws RegainException
   {
     SearchContext search = SearchToolkit.getSearchContext(request);
@@ -62,7 +62,7 @@ public class ToTag extends SharedTag implements SearchConstants {
       toResult = search.getHitCount() - 1;
     }
 
-    out.print(Integer.toString(toResult + 1));
+    response.print(Integer.toString(toResult + 1));
   }
 
 }

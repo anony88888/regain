@@ -29,7 +29,7 @@ package net.sf.regain.search.sharedlib.hit;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.util.sharedtag.PageRequest;
-import net.sf.regain.util.sharedtag.PageWriter;
+import net.sf.regain.util.sharedtag.PageResponse;
 
 import org.apache.lucene.document.Document;
 
@@ -43,19 +43,19 @@ public class SummaryTag extends AbstractHitTag {
   /**
    * Generates the tag.
    *
-   * @param out The writer where to write the code.
    * @param request The page request.
+   * @param response The page response.
    * @param hit The current search hit.
    * @throws RegainException If there was an exception.
    */
-  protected void printEndTag(PageWriter out, PageRequest request,
+  protected void printEndTag(PageRequest request, PageResponse response,
     Document hit)
     throws RegainException
   {
     String summary = hit.get("summary");
 
     if (summary != null) {
-      out.print(summary);
+      response.print(summary);
     }
   }
 

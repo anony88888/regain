@@ -34,7 +34,7 @@ import net.sf.regain.RegainToolkit;
 import net.sf.regain.search.SearchContext;
 import net.sf.regain.search.SearchToolkit;
 import net.sf.regain.util.sharedtag.PageRequest;
-import net.sf.regain.util.sharedtag.PageWriter;
+import net.sf.regain.util.sharedtag.PageResponse;
 
 import org.apache.lucene.document.Document;
 
@@ -54,12 +54,12 @@ public class LinkTag extends AbstractHitTag {
   /**
    * Generates the tag.
    *
-   * @param out The writer where to write the code.
    * @param request The page request.
+   * @param response The page response.
    * @param hit The current search hit.
    * @throws RegainException If there was an exception.
    */
-  protected void printEndTag(PageWriter out, PageRequest request,
+  protected void printEndTag(PageRequest request, PageResponse response,
     Document hit)
     throws RegainException
   {
@@ -88,15 +88,15 @@ public class LinkTag extends AbstractHitTag {
     }
     
     // Generate the link
-    out.print("<a href=\"" + href + "\"");
+    response.print("<a href=\"" + href + "\"");
     if (openInNewWindow) {
-      out.print(" target=\"_blank\"");
+      response.print(" target=\"_blank\"");
     }
     String styleSheetClass = getParameter("class");
     if (styleSheetClass != null) {
-      out.print(" class=\"" + styleSheetClass + "\"");
+      response.print(" class=\"" + styleSheetClass + "\"");
     }
-    out.print(">" + title + "</a>");
+    response.print(">" + title + "</a>");
   }
 
 }
