@@ -230,7 +230,9 @@ public class DocumentFactory {
           String fieldName = auxiliaryFieldArr[i].getFieldName();
           int regexGroup = auxiliaryFieldArr[i].getUrlRegexGroup();
           
-          mLog.info("Adding auxiliary field: " + fieldName + "=" + regex.getParen(regexGroup));
+          if (mLog.isDebugEnabled()) {
+            mLog.debug("Adding auxiliary field: " + fieldName + "=" + regex.getParen(regexGroup));
+          }
           doc.add(Field.Keyword(fieldName, regex.getParen(regexGroup)));
         }
       }
