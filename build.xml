@@ -381,7 +381,7 @@
 
     <echo message="Installing the project in the tomcat directory..." />
     <copy todir="${tomcat-runtime.dir}/webapps">
-      <fileset dir="runtime" includes="LuceneSearch.war"/>
+      <fileset dir="runtime" includes="regain.war"/>
     </copy>
   </target>
 

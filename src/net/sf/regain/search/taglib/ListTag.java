@@ -90,6 +90,7 @@ public class ListTag extends BodyTagSupport implements SearchConstants {
    *         schlug.
    */
   public int doStartTag() throws ExtendedJspException {
+    System.out.println("start");
     ServletRequest request = pageContext.getRequest();
 
     mSearch = null;
@@ -161,6 +162,7 @@ public class ListTag extends BodyTagSupport implements SearchConstants {
    *         schlug.
    */
   public final int doAfterBody() throws ExtendedJspException {
+    System.out.println("after");
     mCurrentResult++;
 
     if (mCurrentResult <= mToResult) {
@@ -184,26 +186,23 @@ public class ListTag extends BodyTagSupport implements SearchConstants {
    *         schlug.
    */
   public int doEndTag() throws ExtendedJspException {
-    try {
-      if (bodyContent != null) {
-        bodyContent.writeOut(bodyContent.getEnclosingWriter());
+    System.out.println("end");
+    if (mSearch.getHitCount() > 0) {
+      try {
+        if (bodyContent != null) {
+          bodyContent.writeOut(bodyContent.getEnclosingWriter());
+        }
+      }
+      catch(java.io.IOException exc) {
+        throw new ExtendedJspException("Writing end tag failed", exc);
       }
     }
-    catch(java.io.IOException exc) {
-      throw new ExtendedJspException("Writing end tag failed", exc);
-    }
-    return EVAL_PAGE;
-  }
 
-
-
-  /**
-   * Releases all resources reserved by this tag.
-   */
-  public void release() {
-    super.release();
-
+    // clean up
+    mSearch = null;
     mMsgNoResults = null;
+    
+    return EVAL_PAGE;
   }
 
 }
