@@ -181,6 +181,9 @@ Section "Uninstall"
   ; remove desktop shortcut
   Delete "$DESKTOP\${PROG_NAME}.lnk"
 
+  ; remove the autostart link
+  Delete "$SMSTARTUP\${PROG_NAME}.lnk" \
+
   # Unregister uninstaller at Windows (Add/Remove programs)
   DeleteRegKey \
     HKLM \
