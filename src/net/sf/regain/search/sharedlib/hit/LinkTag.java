@@ -67,6 +67,11 @@ public class LinkTag extends AbstractHitTag {
     String url   = search.rewriteUrl(hit.get("url"));
     String title = hit.get("title");
     boolean openInNewWindow = search.getOpenUrlInNewWindow(url);
+    
+    // Trim the title
+    if (title != null) {
+      title = title.trim();
+    }
 
     // Use the URL as title if there is no title.
     if ((title == null) || (title.length() == 0)) {
