@@ -149,6 +149,8 @@ X Präparatoren in eigene Jars kapseln. Alle Jars werden in ein Verzeichnis
       "field.feldName" hinzugefügt werden.
     - Init-Parameter von configFile nach searchConfigFile umbenannt.
 
+  Bug: File-Service: Datei von Netzlaufwerken (//fileserver/bla/blubb) werden
+    nicht geladen (Forbidden)
   Changelog erstellen
   Suchmaske: Breakpoints nutzen.
   Bug: HTML-Präparator kommt nicht mit allen Dateien klar (Siehe Mail von Jochen Stiepel)

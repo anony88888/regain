@@ -27,6 +27,7 @@
  */
 package net.sf.regain.search.sharedlib.hit;
 
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 import net.sf.regain.RegainException;
@@ -67,17 +68,17 @@ public class LinkTag extends AbstractHitTag {
     SearchContext search = SearchToolkit.getSearchContext(request);
 
     String url   = search.rewriteUrl(hit.get("url"));
-    String title = hit.get("title").trim();
+    String title = hit.get("title");
     boolean openInNewWindow = search.getOpenUrlInNewWindow(url);
 
-    // Rewrite the title
-    // NOTE: Sometimes the title is an URL. To normal titles this will have no
-    //       effect, because they don't start with an URL
-    title = search.rewriteUrl(title);
-    
     // Use the URL as title if there is no title.
-    if (title.length() == 0) {
-      title = url;
+    if ((title == null) || (title.length() == 0)) {
+      int lastSlash = url.lastIndexOf("/");
+      if (lastSlash == -1) {
+        title = url;
+      } else {
+        title = URLDecoder.decode(url.substring(lastSlash + 1));
+      }
     }
 
     // Pass file URLs to the file servlet
@@ -94,7 +95,7 @@ public class LinkTag extends AbstractHitTag {
       String indexName = request.getParameter("index");
       if (indexName != null) {
         String encodedIndexName = URLEncoder.encode(indexName);
-        href += "?index=" + encodedIndexName + "&";
+        href += "?index=" + encodedIndexName;
       }
     }
     
@@ -107,7 +108,9 @@ public class LinkTag extends AbstractHitTag {
     if (styleSheetClass != null) {
       response.print(" class=\"" + styleSheetClass + "\"");
     }
-    response.print(">" + title + "</a>");
+    response.print(">");
+    response.printNoHtml(title);
+    response.print("</a>");
   }
 
 }

@@ -30,13 +30,14 @@ package net.sf.regain.util.sharedtag;
 import java.io.OutputStream;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.RegainToolkit;
 
 /**
  * A page response.
  *
  * @author Til Schneider, www.murfman.de
  */
-public interface PageResponse {
+public abstract class PageResponse {
   
   /**
    * Sets the header with the given name.
@@ -45,7 +46,7 @@ public interface PageResponse {
    * @param value The header value to set.
    * @throws RegainException If getting the header failed.
    */
-  public void setHeader(String name, String value) throws RegainException;
+  public abstract void setHeader(String name, String value) throws RegainException;
   
   /**
    * Sets the header with the given name as date.
@@ -54,7 +55,7 @@ public interface PageResponse {
    * @param value The header value to set.
    * @throws RegainException If getting the header failed.
    */
-  public void setHeaderAsDate(String name, long value) throws RegainException;
+  public abstract void setHeaderAsDate(String name, long value) throws RegainException;
 
   /**
    * Gets the OutputStream to use for sending binary data.
@@ -62,7 +63,7 @@ public interface PageResponse {
    * @return The OutputStream to use for sending binary data.
    * @throws RegainException If getting the OutputStream failed.
    */
-  public OutputStream getOutputStream() throws RegainException;
+  public abstract OutputStream getOutputStream() throws RegainException;
   
   /**
    * Prints text to a page.
@@ -70,15 +71,27 @@ public interface PageResponse {
    * @param text The text to print.
    * @throws RegainException If printing failed.
    */
-  public void print(String text) throws RegainException;
+  public abstract void print(String text) throws RegainException;
 
+  /**
+   * Prints text to a page and escapes all HTML tags. 
+   * 
+   * @param text The text to print.
+   * @throws RegainException If printing failed.
+   */
+  public void printNoHtml(String text) throws RegainException {
+    text = RegainToolkit.replace(text, "<", "&lt;");
+    text = RegainToolkit.replace(text, ">", "&gt;");
+    print(text);
+  }
+  
   /**
    * Redirects the request to another URL.
    * 
    * @param url The URL to redirect to.
    * @throws RegainException If redirecting failed.
    */
-  public void sendRedirect(String url) throws RegainException;
+  public abstract void sendRedirect(String url) throws RegainException;
   
   /**
    * Sends a HTTP error.
@@ -86,6 +99,6 @@ public interface PageResponse {
    * @param errorCode The error code to send.
    * @throws RegainException If sending the error failed.
    */
-  public void sendError(int errorCode) throws RegainException;
+  public abstract void sendError(int errorCode) throws RegainException;
 
 }

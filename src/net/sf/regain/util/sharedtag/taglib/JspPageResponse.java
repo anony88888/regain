@@ -42,7 +42,7 @@ import net.sf.regain.util.sharedtag.PageResponse;
  *
  * @author Til Schneider, www.murfman.de
  */
-public class JspPageResponse implements PageResponse {
+public class JspPageResponse extends PageResponse {
 
   /** The page context to adapt. */
   private PageContext mPageContext;

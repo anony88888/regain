@@ -308,10 +308,9 @@ public class DocumentFactory {
     }
 
     // Add the document's title
-    if (! hasContent(title)) {
-      title = url;
+    if (hasContent(title)) {
+      doc.add(Field.Text("title", title));
     }
-    doc.add(Field.Text("title", title));
 
     // Add the document's summary
     if (! hasContent(summary)) {

@@ -55,7 +55,7 @@ public class SummaryTag extends AbstractHitTag {
     String summary = hit.get("summary");
 
     if (summary != null) {
-      response.print(summary);
+      response.printNoHtml(summary);
     }
   }
 

@@ -43,7 +43,7 @@ import net.sf.regain.util.sharedtag.PageResponse;
  *
  * @author Til Schneider, www.murfman.de
  */
-public class SimplePageResponse implements PageResponse {
+public class SimplePageResponse extends PageResponse {
   
   /** The resource that uses this response. */
   private Resource mResource;
