@@ -32,6 +32,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.HashMap;
 
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.ui.desktop.FileService;
@@ -48,6 +49,9 @@ import simple.http.serve.Context;
  * @author Til Schneider, www.murfman.de
  */
 public class SharedTagService extends BasicService {
+  
+  /** Holds for an extension the mime type. */
+  private static HashMap mMimeTypeHash;
   
   /** The base directory where the provided files are located. */
   private File mBaseDir;
@@ -157,6 +161,32 @@ public class SharedTagService extends BasicService {
   public static void processFile(Request req, Response resp, File file)
     throws Exception
   {
+    // TODO: Make this configurable
+    if (mMimeTypeHash == null) {
+      // Source: http://de.selfhtml.org/diverses/mimetypen.htm
+      mMimeTypeHash = new HashMap();
+      mMimeTypeHash.put("html", "text/html");
+      mMimeTypeHash.put("htm", "text/html");
+      mMimeTypeHash.put("txt", "text/plain");
+      mMimeTypeHash.put("pdf", "application/pdf");
+      mMimeTypeHash.put("xls", "application/msexcel");
+      mMimeTypeHash.put("doc", "application/msword");
+      mMimeTypeHash.put("ppt", "application/mspowerpoint");
+      mMimeTypeHash.put("rtf", "text/rtf");
+    }
+    
+    // Set the MIME type
+    String filename = file.getName();
+    int lastDot = filename.lastIndexOf('.');
+    if (lastDot != -1) {
+      String extension = filename.substring(lastDot + 1);
+      String mimeType = (String) mMimeTypeHash.get(extension);
+      if (mimeType != null) {
+        resp.set("Content-Type", "mimeType/" + mimeType);
+      }
+    }
+    
+    // Send the file
     OutputStream out = null;
     FileInputStream in = null;
     try {

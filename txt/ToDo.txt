@@ -86,6 +86,7 @@ X Desktopsuche: Besseres Seiten-Design
 X Desktopsuche: Willkommensseite anzeigen, wenn keine Start-URLs definiert sind.
 X Desktopsuche: file-Treffer über http bereitstellen
 X Bug: Indexierung von Webseiten geht nicht
+X Desktopsuche: FileService: Mime-Types setzen
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -105,9 +106,10 @@ X Bug: Indexierung von Webseiten geht nicht
   Desktopsuche: Status
     - Wann wurde der Index zuletzt aktualisiert
     - Fortschritt bei laufender Aktualisierung
-  Desktopsuche: FileService: Mime-Types setzen
 
+  Bug: "http://www.murfman.de" wird geparst, aber nicht indexiert
   Desktopsuche: Task-Icon für Linux
+  Desktopsuche: Mime-Types konfigurierbar
 
 Rückfragen:
 
