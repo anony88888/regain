@@ -267,10 +267,12 @@ public abstract class AbstractPreparator implements Preparator {
 
 
   /**
-   * Gibt alle Ressourcen frei, die von diesem Präparator genutzt wurden.
+   * Frees all resources reserved by the preparator.
    * <p>
-   * Wird ganz am Ende des Crawler-Prozesses aufgerufen, nachdem alle Dokumente
-   * bearbeitet wurden.
+   * Is called at the end of the crawler process after all documents were
+   * processed.
+   * 
+   * @throws RegainException If freeing the resources failed.
    */
   public void close() throws RegainException {
   }
