@@ -532,7 +532,7 @@ public class DocumentFactory {
    */
   public void close() {
     for (int i = 0; i < mPreparatorArr.length; i++) {
-      mCat.debug("Closing preparator " + mPreparatorArr[i].getClass().getName());
+      mCat.info("Closing preparator " + mPreparatorArr[i].getClass().getName());
       try {
         mPreparatorArr[i].close();
       }

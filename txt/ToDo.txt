@@ -34,11 +34,11 @@ X Aktualisierung auf die neusten Versionen der genutzten Projekte, sofern
         Stabilität: Unverändert: 2 von 5 Dokumenten brechen ab.
         Geschwindigkeit: Unverändert: Für 3,39 MB: 1,02 sec -> 1,11 sec
         Qualität: Unverändert: Vergleichbar mit JacobMsWordPreparator
+X Word-Preperator: Öffnen und Schließen von Word loggen
 
   Parameter für Präperatoren: Präperatoren sollen in der Konfiguration
     parametrisierbar werden. Diese Parameter sollen optional in extra Datei
     ausgelagert werden können.
-  Word-Preperator: Öffnen und Schließen von Word loggen
   Jacob-Präperatoren nicht mehr als Default nutzen.
   URL-Mapping: Z.B. Indizierung von file://someserver/bla/blubb/..., jedoch
     Anzeige im Browser mit http://intranet/blubb/... (Aufwand: 4 Std.)
