@@ -89,23 +89,31 @@ public class JacobMsWordPreparator extends AbstractPreparator {
       Document doc = docs.open(new Variant(fileName),
                                new Variant(false),    // confirmConversions
                                new Variant(true));    // readOnly
+      
+      // iterate through the sections
+      Sections sections = doc.getSections();
+      StringBuffer content = new StringBuffer();
+      for (int sec = 1; sec <= sections.getCount(); sec++) {
+        Section section = sections.item(sec);
 
-      // Überschrift holen
-      Section firstSection = doc.getSections().item(1);
-      int headerFirstPage = WdHeaderFooterIndex.wdHeaderFooterFirstPage;
-      HeaderFooter firstHeader = firstSection.getHeaders().item(headerFirstPage);
-      String title = firstHeader.getRange().getText();
-      setTitle(title);
+        // Get the header of the first section as title
+        if (sec == 1) {
+          int headerFirstPage = WdHeaderFooterIndex.wdHeaderFooterFirstPage;
+          HeaderFooter firstHeader = section.getHeaders().item(headerFirstPage);
+          String title = firstHeader.getRange().getText();
+          setTitle(title);
+        }
 
-      // Text holen
-      firstSection.getRange().select();
-      Selection sel = mWordApplication.getSelection();
-      // Alternative (VB): sel.moveEndWhile(?? cset:=vbCr ??, WdConstants.wdBackward);
-      // Alternative (VB): Call app.ActiveDocument.Bookmarks.Item("\endofdoc").Select()
-      sel.moveEnd();
-      sel.copy();
-      String content = sel.getText();
-      setCleanedContent(content);
+        // Get the text
+        section.getRange().select();
+        Selection sel = mWordApplication.getSelection();
+        // Alternative (VB): sel.moveEndWhile(?? cset:=vbCr ??, WdConstants.wdBackward);
+        // Alternative (VB): Call app.ActiveDocument.Bookmarks.Item("\endofdoc").Select()
+        sel.moveEnd();
+        sel.copy();
+        content.append(sel.getText() + "\n");
+      }
+      setCleanedContent(content.toString());
 
       // Dokument schließen (ohne Speichern)
       doc.close(new Variant(false));
