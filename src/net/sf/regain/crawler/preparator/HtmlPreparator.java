@@ -44,7 +44,7 @@ import org.apache.regexp.RESyntaxException;
 
 
 /**
- * Präpariert ein HTML-Dokument für die Indizierung.
+ * Prï¿½pariert ein HTML-Dokument fï¿½r die Indizierung.
  * <p>
  * Dabei werden die Rohdaten des Dokuments von Formatierungsinformation befreit,
  * es wird der Titel extrahiert.
@@ -56,7 +56,7 @@ public class HtmlPreparator extends AbstractPreparator {
   /** The logger for this class */
   private static Logger mLog = Logger.getLogger(HtmlPreparator.class);
 
-  /** Ein regulärer Ausdruck, der den Titel eines HTMl-Dokuments findet. */
+  /** Ein regulï¿½rer Ausdruck, der den Titel eines HTMl-Dokuments findet. */
   private RE mExtractHtmlTitleRE;
 
   /**
@@ -119,7 +119,7 @@ public class HtmlPreparator extends AbstractPreparator {
 
     // Create the title extractor regex.
     try {
-      mExtractHtmlTitleRE = new RE("<title>(.*)</title>", RE.MATCH_CASEINDEPENDENT);
+      mExtractHtmlTitleRE = new RE("<title>([^<]{1,500})</title>", RE.MATCH_CASEINDEPENDENT);
     }
     catch (RESyntaxException exc) {
       // Since the regular expression is hard coded this will never happen
@@ -159,11 +159,11 @@ public class HtmlPreparator extends AbstractPreparator {
   
 
   /**
-   * Präpariert ein Dokument für die Indizierung.
+   * Prï¿½pariert ein Dokument fï¿½r die Indizierung.
    *
-   * @param rawDocument Das zu präpariernde Dokument.
+   * @param rawDocument Das zu prï¿½pariernde Dokument.
    *
-   * @throws RegainException Wenn die Präparation fehl schlug.
+   * @throws RegainException Wenn die Prï¿½paration fehl schlug.
    */
   public void prepare(RawDocument rawDocument) throws RegainException {
     String contentAsString = rawDocument.getContentAsString();

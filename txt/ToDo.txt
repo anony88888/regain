@@ -146,6 +146,7 @@ X Desktopsuche: Einstellungen: Beim Speichern als Grundgerüst
   	default-Config-Dateien nutzen.
 X Desktopsuche: Aktuelle Indexierung pausieren und manuelles Starten einer
   	Indexierung.
+X Bug: HTML-Praeparator kommt nicht mit allen Dateien klar (Siehe Mail von Jochen Stiepel)
 
 Filiadata:
 ----------
@@ -161,7 +162,6 @@ Filiadata:
 
 Prio A:
 -------
-  Bug: HTML-Praeparator kommt nicht mit allen Dateien klar (Siehe Mail von Jochen Stiepel)
   Changelog erstellen
 
 Prio B:
