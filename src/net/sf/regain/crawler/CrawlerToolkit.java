@@ -132,6 +132,90 @@ public class CrawlerToolkit {
       }
     }
   }
+
+  
+  /**
+   * Writes data to a file
+   *
+   * @param data The data
+   * @param file The file to write to
+   *
+   * @throws RegainException When writing failed
+   */
+  public static void writeToFile(byte[] data, File file)
+    throws RegainException
+  {
+    FileOutputStream stream = null;
+    try {
+      stream = new FileOutputStream(file);
+      stream.write(data);
+      stream.close();
+    }
+    catch (IOException exc) {
+      throw new RegainException("Writing file failed: " + file.getAbsolutePath(), exc);
+    }
+    finally {
+      if (stream != null) {
+        try { stream.close(); } catch (IOException exc) {}  
+      }
+    }
+  }
+  
+  
+  /**
+   * Schreibt einen String in eine Datei.
+   *
+   * @param text Der String.
+   * @param file Die Datei, in die geschrieben werden soll.
+   *
+   * @throws RegainException Wenn die Erstellung der Liste fehl schlug.
+   */
+  public static void writeToFile(String text, File file)
+    throws RegainException
+  {
+    writeListToFile(new String[] { text }, file);
+  }
+  
+  
+  /**
+   * Schreibt eine Wortliste in eine Datei.
+   *
+   * @param wordList Die Wortliste.
+   * @param file Die Datei, in die geschrieben werden soll.
+   *
+   * @throws RegainException Wenn die Erstellung der Liste fehl schlug.
+   */
+  public static void writeListToFile(String[] wordList, File file)
+    throws RegainException
+  {
+    if ((wordList == null) || (wordList.length == 0)) {
+      // Nothing to do
+      return;
+    }
+
+    FileOutputStream stream = null;
+    PrintStream printer = null;
+    try {
+      stream = new FileOutputStream(file);
+      printer = new PrintStream(stream);
+
+      for (int i = 0; i < wordList.length; i++) {
+        printer.println(wordList[i]);
+      }
+    }
+    catch (IOException exc) {
+      throw new RegainException("Writing word list to " + file.getAbsolutePath()
+        + " failed", exc);
+    }
+    finally {
+      if (printer != null) {
+        printer.close();
+      }
+      if (stream != null) {
+        try { stream.close(); } catch (IOException exc) {}
+      }
+    }
+  }
   
   
   /**

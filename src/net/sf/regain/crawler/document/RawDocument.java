@@ -28,13 +28,12 @@
 package net.sf.regain.crawler.document;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
 import net.sf.regain.RegainException;
-import net.sf.regain.crawler.Profiler;
 import net.sf.regain.crawler.CrawlerToolkit;
+import net.sf.regain.crawler.Profiler;
 
 import org.apache.log4j.Category;
 
@@ -315,11 +314,8 @@ public class RawDocument {
    * @throws RegainException Wenn das Schreiben fehl schlug.
    */
   public void writeToFile(File file) throws RegainException {
-    FileOutputStream stream = null;
     try {
-      stream = new FileOutputStream(file);
-      stream.write(getContent());
-      stream.close();
+      CrawlerToolkit.writeToFile(getContent(), file);
       
       if (mContentAsFile == null) {
         // Falls das Dokument in Dateiform benötigt wird, dann diese Datei
@@ -327,14 +323,9 @@ public class RawDocument {
         mContentAsFile = file;
       }
     }
-    catch (IOException exc) {
+    catch (RegainException exc) {
       throw new RegainException("Creating file that contains the "
         + "document from '" + mUrl + "' failed", exc);
-    }
-    finally {
-      if (stream != null) {
-        try { stream.close(); } catch (IOException exc) {}  
-      }
     }
   }
 

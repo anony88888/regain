@@ -44,8 +44,8 @@
   <property name="doc.title" value="API documentation for ${programname} ${version}"/>
   <property name="doc.bottom" value="${programname} ${version}, Copyright (C) 2004 Til Schneider, www.murfman.de"/>
 
-  <property name="jacobgen-src.dir" value="jacobgen/generated-src"/>
-  <property name="jacobgen-classes.dir" value="jacobgen/classes"/>
+  <property name="jacobgen-src.dir" value="temp/jacobgen/generated-src"/>
+  <property name="jacobgen-classes.dir" value="temp/jacobgen/classes"/>
   <property name="jacobgen-packed.dir" value="jacobgen/packed"/>
   <property name="package-lists.dir" value="txt/package-lists"/>
   
@@ -57,14 +57,14 @@
   </path>
 
   <path id="classpath">
-    <pathelement location="classes"/>
+    <pathelement location="temp/classes"/>
     <fileset dir="lib">
       <include name="*.jar"/>
     </fileset>
   </path>
 
   <path id="jacobgen-classpath">
-    <pathelement location="classes"/>
+    <pathelement location="temp/classes"/>
     <fileset dir="lib">
       <include name="jacob.jar"/>
     </fileset>
@@ -95,8 +95,9 @@
     <echo message="  pack-jacobgen Packs a zip file containing the generated jacobgen source"/>
     <echo message="                and a jar file containing the classes."/>
     <echo message="  runtime       Prepares the runtime directory."/>
+    <echo message="  fast-runtime  Prepares the runtime directory without the jars."/>
     <echo message="  run           Runs the project."/>
-    <echo message="  fast-run      Runs the project without building the runtime."/>
+    <echo message="  fast-run      Runs the project without building the jars."/>
     <echo message="  public        Creates all the stuff that can be downloaded."/>
     <echo message="  install       Installs the project in the tomcat directory."/>
     <echo message="  restart       (Re)starts the tomcat server."/>
@@ -124,10 +125,10 @@
 
 
   <!--
-   | Deletes the classes and the runtime directory.
+   | Deletes the classes directory.
    +-->
   <target name="clean">
-    <delete dir="classes"/>
+    <delete dir="temp/classes"/>
   </target>
 
 
@@ -136,7 +137,7 @@
    | Deletes the runtime directory
    +-->
   <target name="clean-runtime">
-    <delete dir="runtime"/>
+    <delete dir="temp/runtime"/>
   </target>
 
   
@@ -145,8 +146,8 @@
    | Deletes all generated directories.
    +-->
   <target name="clean-all" depends="clean, clean-runtime">
-    <delete dir="included-lib-classes"/>
-    <delete dir="doc"/>
+    <delete dir="temp/included-lib-classes"/>
+    <delete dir="temp/doc"/>
   </target>
 
   
@@ -156,8 +157,9 @@
    +-->
   <target name="prepare">
     <echo message="Extracting the lib jars ..." />
-
-    <unjar dest="included-lib-classes">
+    <delete dir="temp/included-lib-classes"/>
+    <mkdir dir="temp/included-lib-classes"/>
+    <unjar dest="temp/included-lib-classes">
       <fileset dir="lib">
         <include name="*.jar"/>
       </fileset>
@@ -171,12 +173,12 @@
    +-->
   <target name="doc">
     <echo message="Generating JavaDoc documentation ..." />
-    <delete dir="doc"/>
-    <mkdir dir="doc"/>
+    <delete dir="temp/doc"/>
+    <mkdir dir="temp/doc"/>
     <javadoc packagenames="*"
              sourcepathref="docpath"
              classpathref="classpath"
-             destdir="doc"
+             destdir="temp/doc"
              doctitle="${doc.title}"
              windowtitle="${doc.title}"
              header="${doc.header}"
@@ -199,8 +201,8 @@
    +-->
   <target name="make">
     <echo message="Compiling the source code ..." />
-    <mkdir dir="classes"/>
-    <javac destdir="classes"
+    <mkdir dir="temp/classes"/>
+    <javac destdir="temp/classes"
            debug="${debug}"
            deprecation="true"
            target="1.2">
@@ -216,7 +218,7 @@
       </classpath>
     </javac>
 
-    <copy todir="classes">
+    <copy todir="temp/classes">
       <fileset dir="src" includes="**/*.gif"/>
       <fileset dir="src" includes="**/*.jpg"/>
       <fileset dir="src" includes="**/*.dtd"/>
@@ -225,47 +227,37 @@
   </target>
 
 
-
   <!--
-   | Creates the runtime directory.
+   | Compiles the source code.
    +-->
-  <target name="runtime" depends="make">
-    <echo message="Creating the jars ..." />
+  <target name="make-test" depends="make">
+    <echo message="Compiling the test source code ..." />
+    <mkdir dir="temp/classes"/>
+    <javac destdir="temp/classes"
+           debug="${debug}"
+           deprecation="true"
+           target="1.2">
+      <src>
+        <pathelement location="test/src"/>
+      </src>
+      <classpath>
+        <path refid="classpath"/>
+      </classpath>
+    </javac>
+  </target>
 
-    <mkdir dir="runtime"/>
-    <jar jarfile="runtime/${programname.file}.jar"
-         compress="false"
-         index="true">
-      <manifest>
-        <attribute name="Main-Class" value="net.sf.regain.crawler.Main"/>
-      </manifest>
-      <fileset dir="included-lib-classes">
-        <exclude name="*"/>
-        <exclude name="META-INF/**"/>
-        <exclude name="license/**"/>
-        <exclude name="test/**"/>
-      </fileset>
-      <fileset dir="classes">
-        <exclude name="net/sf/regain/search/**"/>
-      </fileset>
-    </jar>
+  
+  
+  <!--
+   | Creates the runtime directory for fast running (without jars).
+   +-->
+  <target name="fast-runtime" depends="make">
+    <echo message="Creating the runtime ..." />
+    <mkdir dir="temp/runtime"/>
 
-    <war destfile="runtime/${programname.file}.war"
-         webxml="web/Web-inf/web.xml">
-      <classes dir="classes">
-        <exclude name="net/sf/regain/crawler/**"/>
-      </classes>
-      <lib dir="lib">
-        <include name="${lucene.jar}"/>
-        <include name="${regexp.jar}"/>
-      </lib>
-      <fileset dir="web" includes="*.jsp"/>
-      <fileset dir="web" includes="*.tld"/>
-    </war>
+    <mkdir dir="temp/runtime/log"/>
 
-    <mkdir dir="runtime/log"/>
-
-    <copy todir="runtime">
+    <copy todir="temp/runtime">
       <fileset dir="lib" includes="jacob.dll"/>
       <fileset dir="txt" includes="license.txt"/>
       <fileset dir="txt" includes="CrawlerConfiguration.xml"/>
@@ -276,11 +268,73 @@
 
 
   <!--
+   | Creates the runtime directory.
+   +-->
+  <target name="runtime" depends="fast-runtime, prepare">
+    <echo message="Creating the jars ..." />
+
+    <jar jarfile="temp/runtime/${programname.file}.jar"
+         compress="false"
+         index="true">
+      <manifest>
+        <attribute name="Main-Class" value="net.sf.regain.crawler.Main"/>
+      </manifest>
+      <fileset dir="temp/included-lib-classes">
+        <exclude name="*"/>
+        <exclude name="META-INF/**"/>
+        <exclude name="license/**"/>
+        <exclude name="test/**"/>
+      </fileset>
+      <fileset dir="temp/classes">
+        <exclude name="net/sf/regain/search/**"/>
+      </fileset>
+    </jar>
+
+    <war destfile="temp/runtime/${programname.file}.war"
+         webxml="web/Web-inf/web.xml">
+      <classes dir="temp/classes">
+        <exclude name="net/sf/regain/crawler/**"/>
+      </classes>
+      <lib dir="lib">
+        <include name="${lucene.jar}"/>
+        <include name="${regexp.jar}"/>
+      </lib>
+      <fileset dir="web" includes="*.jsp"/>
+      <fileset dir="web" includes="*.tld"/>
+    </war>
+  </target>
+
+
+  
+  <!--
+   | Tests the project.
+   +-->
+  <target name="test" depends="make-test, fast-runtime">
+    <delete dir="temp/test/docs"/>
+    <mkdir dir="temp/test/docs"/>
+    
+    <java classname="net.sf.regain.test.PreparatorTest"
+          dir="temp/runtime"
+          fork="true">
+      <arg value="../../test/docs"/>
+      <arg value="../test/docs"/>
+      <classpath>
+        <fileset dir="lib">
+          <include name="*.jar"/>
+        </fileset>
+        <pathelement path="temp/classes"/>
+      </classpath>      
+    </java>
+  </target>
+
+  
+
+  <!--
    | Runs the project.
    +-->
   <target name="run" depends="runtime">
-    <java jar="runtime/${programname.file}.jar"
-          dir="runtime"
+    <java jar="temp/runtime/${programname.file}.jar"
+          dir="temp/runtime"
           fork="true">
           <!--
           jvm="${java-1_2_2.dir}/bin/java"
@@ -293,13 +347,9 @@
   <!--
    | Runs the project.
    +-->
-  <target name="fast-run" depends="make">
-    <copy todir="runtime">
-      <fileset dir="txt" includes="CrawlerConfiguration.xml"/>
-      <fileset dir="txt" includes="log4j.properties"/>
-    </copy>
+  <target name="fast-run" depends="fast-runtime">
     <java classname="net.sf.regain.crawler.Main"
-          dir="runtime"
+          dir="temp/runtime"
           fork="true">
           <!--
           jvm="${java-1_2_2.dir}/bin/java"
@@ -319,23 +369,23 @@
    | directory contains no stuff we don't want to be destributed.
    +-->
   <target name="public" depends="clean-all, prepare, runtime, doc">
-    <mkdir dir="public"/>
+    <mkdir dir="temp/public"/>
 
-    <zip destfile="public/${programname.file}_v${version}_bin.zip">
+    <zip destfile="temp/public/${programname.file}_v${version}_bin.zip">
       <zipfileset prefix="${programname.file}_v${version}/runtime"
-                  dir="runtime"/>
+                  dir="temp/runtime"/>
       <zipfileset prefix="${programname.file}_v${version}/txt"
                   dir="txt">
         <include name="*.pdf*"/>
       </zipfileset>
     </zip>
 
-    <zip destfile="public/${programname.file}_v${version}_doc.zip">
+    <zip destfile="temp/public/${programname.file}_v${version}_doc.zip">
       <zipfileset prefix="${programname.file}_v${version}/doc"
-                  dir="doc"/>
+                  dir="temp/doc"/>
     </zip>
 
-    <zip destfile="public/${programname.file}_v${version}_src.zip">
+    <zip destfile="temp/public/${programname.file}_v${version}_src.zip">
       <zipfileset prefix="${programname.file}_v${version}"
                   dir="">
         <include name="build.cmd"/>
@@ -361,7 +411,7 @@
       <zipfileset prefix="${programname.file}_v${version}/jacobgen"
                   dir="jacobgen">
         <exclude name="generated-src/**"/>
-        <exclude name="classes/**"/>
+        <exclude name="temp/classes/**"/>
         <exclude name="*.olb"/>
       </zipfileset>
       <zipfileset prefix="${programname.file}_v${version}"
@@ -381,7 +431,7 @@
 
     <echo message="Installing the project in the tomcat directory..." />
     <copy todir="${tomcat-runtime.dir}/webapps">
-      <fileset dir="runtime" includes="regain.war"/>
+      <fileset dir="temp/runtime" includes="regain.war"/>
     </copy>
   </target>
 
