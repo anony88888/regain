@@ -90,7 +90,6 @@ public class ListTag extends BodyTagSupport implements SearchConstants {
    *         schlug.
    */
   public int doStartTag() throws ExtendedJspException {
-    System.out.println("start");
     ServletRequest request = pageContext.getRequest();
 
     mSearch = null;
@@ -162,7 +161,6 @@ public class ListTag extends BodyTagSupport implements SearchConstants {
    *         schlug.
    */
   public final int doAfterBody() throws ExtendedJspException {
-    System.out.println("after");
     mCurrentResult++;
 
     if (mCurrentResult <= mToResult) {
@@ -186,7 +184,6 @@ public class ListTag extends BodyTagSupport implements SearchConstants {
    *         schlug.
    */
   public int doEndTag() throws ExtendedJspException {
-    System.out.println("end");
     if (mSearch.getHitCount() > 0) {
       try {
         if (bodyContent != null) {
