@@ -61,6 +61,9 @@
     <fileset dir="lib">
       <include name="*.jar"/>
     </fileset>
+    <fileset dir="lib/win">
+      <include name="*.jar"/>
+    </fileset>
   </path>
 
   <path id="jacobgen-classpath">
@@ -279,6 +282,7 @@
 
     <copy todir="temp/runtime/desktop">
       <fileset dir="lib" includes="jacob.dll"/>
+      <fileset dir="lib/win" includes="tray.dll"/>
     </copy>
     <copy todir="temp/runtime/desktop/conf">
       <fileset dir="txt" includes="DesktopConfiguration.xml"/>

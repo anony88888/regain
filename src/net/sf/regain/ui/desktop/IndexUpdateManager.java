@@ -127,6 +127,7 @@ public class IndexUpdateManager {
       CrawlerToolkit.initProxy(config);
       
       // Create and run the crawler
+      TrayIconManager.getInstance().setIndexUpdateRunning(true);
       try {
         mLog.info("Starting index update on " + new Date());
         mCrawler = new Crawler(config);
@@ -143,6 +144,8 @@ public class IndexUpdateManager {
         
         // Run the garbage collector
         System.gc();
+
+        TrayIconManager.getInstance().setIndexUpdateRunning(false);
       }
     }
   }

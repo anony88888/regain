@@ -77,6 +77,9 @@ public class Main {
     ExecuterParser.registerNamespace("search", "net.sf.regain.search.sharedlib");
     ExecuterParser.registerNamespace("config", "net.sf.regain.ui.desktop.config.sharedlib");
     
+    // Start the Tray icon
+    TrayIconManager.getInstance().init();
+    
     // Start the index update manager
     IndexUpdateManager.getInstance().init();
     
@@ -100,6 +103,14 @@ public class Main {
       exc.printStackTrace();
       System.exit(1);
     }
+  }
+  
+  
+  /**
+   * Quits the desktop search.
+   */
+  public static void quit() {
+    System.exit(0);
   }
   
 }
