@@ -138,6 +138,8 @@ public class Crawler implements ErrorLogger {
    * @throws RegainException Wenn die regul�ren Ausdr�cke fehlerhaft sind.
    */
   public Crawler(CrawlerConfig config) throws RegainException {
+    Profiler.clearRegisteredProfilers();
+    
     mConfiguration = config;
 
     mFoundUrlSet = new HashSet();

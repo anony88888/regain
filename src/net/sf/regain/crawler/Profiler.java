@@ -36,7 +36,7 @@ import net.sf.regain.RegainToolkit;
 import org.apache.log4j.Logger;
 
 /**
- * Misst die Zeit und den Datendurchsatz für einen Verarbeitungsschritt.
+ * Misst die Zeit und den Datendurchsatz fï¿½r einen Verarbeitungsschritt.
  *
  * @author Til Schneider, www.murfman.de
  */
@@ -62,7 +62,7 @@ public class Profiler {
   private int mAbortedMeasureCount;
   /**
    * Die Zeit, zu der die laufende Messung begonnen hat. Ist -1, wenn keine
-   * Messung läuft.
+   * Messung lï¿½uft.
    */
   private long mMeasureStart = -1;
 
@@ -103,6 +103,14 @@ public class Profiler {
   public int getAbortedMeasureCount() {
     return mAbortedMeasureCount;
   }
+  
+  
+  /**
+   * Clears the registered profilers.
+   */
+  public static synchronized void clearRegisteredProfilers() {
+    mProfilerList = null;
+  }
 
 
   /**
@@ -117,7 +125,6 @@ public class Profiler {
 
     mProfilerList.add(profiler);
   }
-
 
 
   /**
@@ -171,7 +178,7 @@ public class Profiler {
 
 
   /**
-   * Gibt das Resultat der Messungen als String zurück.
+   * Gibt das Resultat der Messungen als String zurï¿½ck.
    *
    * @return Das Resultat der Messungen
    */
@@ -201,7 +208,7 @@ public class Profiler {
       countsPerMinute = measureCount * (60 * 1000) / totalTime;
     }
 
-    // Berechnen, wie groß die Labels sein müssen
+    // Berechnen, wie groï¿½ die Labels sein mï¿½ssen
     int maxStaticLabelLength = 12;                   // "Average time"
     int maxDynamicLabelLength = 10 + mUnit.length(); // "Completed " + mUnit
     int minLabelLength = Math.max(maxStaticLabelLength, maxDynamicLabelLength);
@@ -255,14 +262,14 @@ public class Profiler {
 
 
   /**
-   * Fügt bei einem StringBuffer eine Beschriftung hinzu. Dabei werden so viele
-   * Leerzeichen angehängt, dass alle Beschriftungen auf selber Höhe enden.
+   * Fï¿½gt bei einem StringBuffer eine Beschriftung hinzu. Dabei werden so viele
+   * Leerzeichen angehï¿½ngt, dass alle Beschriftungen auf selber Hï¿½he enden.
    *
-   * @param buffer Der StringBuffer bei dem die Beschriftung hinzugefügt werden
+   * @param buffer Der StringBuffer bei dem die Beschriftung hinzugefï¿½gt werden
    *        soll.
-   * @param label Die Beschriftung, die hinzugefügt werden soll.
-   * @param minLabelLength Die minimale Länge der Beschriftung. (Der Rest wird
-   *        mit Leerzeichen aufgefüllt).
+   * @param label Die Beschriftung, die hinzugefï¿½gt werden soll.
+   * @param minLabelLength Die minimale Lï¿½nge der Beschriftung. (Der Rest wird
+   *        mit Leerzeichen aufgefï¿½llt).
    */
   private void appendLabel(StringBuffer buffer, String label,
     int minLabelLength)
@@ -279,7 +286,7 @@ public class Profiler {
 
 
   /**
-   * Gibt einen für den Menschen gut lesbaren String für eine Zeit zurück.
+   * Gibt einen fï¿½r den Menschen gut lesbaren String fï¿½r eine Zeit zurï¿½ck.
    *
    * @param time Die Zeit in Millisekunden
    * @return Die Zeit als String
@@ -319,8 +326,8 @@ public class Profiler {
 
 
   /**
-   * Gibt zurück, ob dieser Profiler genutzt wurde. Das ist der Fall, wenn
-   * mindestens eine Messung durchgeführt wurde.
+   * Gibt zurï¿½ck, ob dieser Profiler genutzt wurde. Das ist der Fall, wenn
+   * mindestens eine Messung durchgefï¿½hrt wurde.
    *
    * @return Ob dieser Profiler genutzt wurde.
    */
@@ -331,9 +338,9 @@ public class Profiler {
 
 
   /**
-   * Gibt die Resultate sämtlicher genutzter Profiler zurück.
+   * Gibt die Resultate sï¿½mtlicher genutzter Profiler zurï¿½ck.
    *
-   * @return Die Resultate sämtlicher genutzter Profiler.
+   * @return Die Resultate sï¿½mtlicher genutzter Profiler.
    */
   public static String getProfilerResults() {
     if (mProfilerList == null) {
