@@ -167,22 +167,24 @@ public class Profiler {
    * @return Das Resultat der Messungen
    */
   public String toString() {
-    if (mMeasureStart != -1) {
-      mLog.warn("The profiler result for " + mName + " was requested, although "
-        + "there is currently a measuring running!");
-    }
-
+    // Get a current snap shot
+    long totalTime = mTotalTime;
+    long totalBytes = mTotalBytes;
+    int measureCount = mMeasureCount;
+    int abortedMeasureCount = mAbortedMeasureCount;
+    
+    // Calculate the results
     long averageTime = 0;
     long averageBytes = 0;
-    if (mMeasureCount > 0) {
-      averageTime = mTotalTime / mMeasureCount;
-      averageBytes = mTotalBytes / mMeasureCount;
+    if (measureCount > 0) {
+      averageTime = totalTime / measureCount;
+      averageBytes = totalBytes / measureCount;
     }
 
     long dataRatePerSec = 0;
-    double secs = mTotalTime / 1000.0;
+    double secs = totalTime / 1000.0;
     if (secs > 0) {
-      dataRatePerSec = (long) (mTotalBytes / secs);
+      dataRatePerSec = (long) (totalBytes / secs);
     }
 
     // Berechnen, wie groß die Labels sein müssen
@@ -194,28 +196,32 @@ public class Profiler {
     String lineSeparator = RegainToolkit.getLineSeparator();
 
     // Statistik ausgeben
-    StringBuffer buffer = new StringBuffer(mName + ":" + lineSeparator);
-    if (mAbortedMeasureCount > 0) {
+    StringBuffer buffer = new StringBuffer(mName + ":");
+    if (abortedMeasureCount > 0) {
+      buffer.append(lineSeparator);
+
       appendLabel(buffer, "Aborted " + mUnit, minLabelLength);
-      buffer.append(mAbortedMeasureCount + " " + mUnit + " (");
+      buffer.append(abortedMeasureCount + " " + mUnit + " (");
 
       // Ausgeben, wieviel % der Messungen fehl schlugen
-      int total = mAbortedMeasureCount + mMeasureCount;
-      double errorPercent = (double) mAbortedMeasureCount / (double) total;
+      int total = abortedMeasureCount + measureCount;
+      double errorPercent = (double) abortedMeasureCount / (double) total;
       buffer.append(RegainToolkit.toPercentString(errorPercent));
 
-      buffer.append(")" + lineSeparator);
+      buffer.append(")");
     }
-    if (mMeasureCount > 0) {
+    if (measureCount > 0) {
+      buffer.append(lineSeparator);
+
       NumberFormat format = NumberFormat.getInstance();
       appendLabel(buffer, "Completed " + mUnit, minLabelLength);
-      buffer.append(format.format(mMeasureCount) + " " + mUnit + lineSeparator);
+      buffer.append(format.format(measureCount) + " " + mUnit + lineSeparator);
 
       appendLabel(buffer, "Total time", minLabelLength);
-      buffer.append(toTimeString(mTotalTime) + lineSeparator);
+      buffer.append(toTimeString(totalTime) + lineSeparator);
 
       appendLabel(buffer, "Total data", minLabelLength);
-      buffer.append(RegainToolkit.bytesToString(mTotalBytes) + lineSeparator);
+      buffer.append(RegainToolkit.bytesToString(totalBytes) + lineSeparator);
 
       appendLabel(buffer, "Average time", minLabelLength);
       buffer.append(toTimeString(averageTime) + lineSeparator);
@@ -270,10 +276,14 @@ public class Profiler {
     time /= 60;
     long hours = time;
 
-    if ((hours != 0) || (mins != 0)) {
+    if (hours != 0) {
       return hours + ":"
         + ((mins > 9) ? "" : "0") + mins + ":"
         + ((secs > 9) ? "" : "0") + secs + " h";
+    }
+    else if (mins != 0) {
+      return mins + ":"
+        + ((secs > 9) ? "" : "0") + secs + " min";
     }
     else if (secs != 0) {
       NumberFormat format = NumberFormat.getInstance();

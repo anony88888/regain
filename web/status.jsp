@@ -29,6 +29,10 @@
 
       <h4><search:msg key="runningIndexUpdate"/></h4>
       <p><status:indexupdate/></p>
+
+      <h4><search:msg key="timing"/></h4>
+      <pre><status:profiler/></pre>
+
       <br>
     </td></tr>
   </table>

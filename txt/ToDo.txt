@@ -112,6 +112,7 @@ X Desktopsuche: Port einstellbar
 X Crawler: Regelmäßig Breakpoints setzen: IndexWriter und IndexReader schließen
     und aktuellen Stand in gesondertes Verzeichnis kopieren. Falls Indexierung
     abgebrochen wurde auf diesem Breakpoint aufsetzten.
+X Desktopsuche: Status: Profiler-Ergebnisse anzeigen
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -129,7 +130,6 @@ X Crawler: Regelmäßig Breakpoints setzen: IndexWriter und IndexReader schließen
     Versionen der selben Implementierung). Außerdem können andere auch
     Präperatoren anbieten, die dann sehr einfach eingebunden werden können.
 
-  Desktopsuche: Status: Profiler-Ergebnisse anzeigen
   Suchmaske: Breakpoints nutzen, falls noch gar kein Index besteht.
   Desktopsuche: Task-Icon für Linux
   Desktopsuche: Mime-Types konfigurierbar
