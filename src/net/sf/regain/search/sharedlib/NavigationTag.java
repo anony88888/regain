@@ -30,6 +30,7 @@ package net.sf.regain.search.sharedlib;
 import java.net.URLEncoder;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.RegainToolkit;
 import net.sf.regain.search.SearchConstants;
 import net.sf.regain.search.SearchContext;
 import net.sf.regain.search.SearchToolkit;
@@ -107,6 +108,7 @@ public class NavigationTag extends SharedTag implements SearchConstants {
     String indexName = search.getIndexName();
     if (currButton > 0) {
       String msgBack = getParameter("msgBack", true);
+      msgBack = RegainToolkit.replace(msgBack, "&quot;", "\"");
       printLink(out, currButton - 1, query, maxResults, indexName, msgBack);
     }
     for (int i = fromButton; i <= toButton; i++) {
@@ -120,6 +122,7 @@ public class NavigationTag extends SharedTag implements SearchConstants {
     }
     if (currButton < (buttonCount -1)) {
       String msgForward = getParameter("msgForward", true);
+      msgForward = RegainToolkit.replace(msgForward, "'", "\"");
       printLink(out, currButton + 1, query, maxResults, indexName, msgForward);
     }
   }

@@ -4,35 +4,59 @@
 <head>
   <title>regain - Einstellungen</title>
   <script src="regain.js" type="text/javascript"></script>
+  <link href="regain.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
+  <p class="top">
+    <img src="img/logo_regain.gif" width="201" height="66" class="logo">
+  </p>
 
-  <config:form action="config.jsp">
-    Indexierungsintervall: <config:interval/>
+  <table class="content">
+    <tr class="headline"><td>
+      <b>Einstellungen</b>
+    </td></tr>
+    <tr><td>
+      <config:form action="config.jsp">
+        <p>
+          Indexierungsintervall: <config:interval/>
+        </p>
+        
+        <p>
+          <h4>Verzeichnisse</h4>
+          <div class="hint">Geben Sie ein Verzeichnis an und dr&uuml;cken Sie auf 'Hinzuf&uuml;gen'.</div>
+          <config:editlist name="dirlist" class="editlist"/>
+        </p>
+        
+        <p>
+          <h4>Ausgeschlossene Verzeichnisse</h4>
+          <div class="hint">Geben Sie ein Verzeichnis an und dr&uuml;cken Sie auf 'Hinzuf&uuml;gen'.</div>
+          <config:editlist name="dirblacklist" class="editlist"/>
+        </p>
+        
+        <p>
+          <h4>Webseiten</h4>
+          <div class="hint">Geben Sie eine Webseite an und dr&uuml;cken Sie auf 'Hinzuf&uuml;gen'.</div>
+          <config:editlist name="sitelist" class="editlist"/>
+        </p>
+        
+        <p>
+          <h4>Ausgeschlossene Webseiten-Unterverzeichnisse</h4>
+          <div class="hint">Geben Sie eine Webseite an und dr&uuml;cken Sie auf 'Hinzuf&uuml;gen'.</div>
+          <config:editlist name="siteblacklist" class="editlist"/>
+        </p>
     
-    <p>
-      Verzeichnisse:<br>
-      <config:editlist name="dirlist" class="blubb"/>
-    </p>
-    
-    <p>
-      Ausgeschlossene Verzeichnisse:<br>
-      <config:editlist name="dirblacklist" class="blubb"/>
-    </p>
-    
-    <p>
-      Webseiten:<br>
-      <config:editlist name="sitelist" class="blubb"/>
-    </p>
-    
-    <p>
-      Ausgeschlossene Webseiten-Unterverzeichnisse:<br>
-      <config:editlist name="siteblacklist" class="blubb"/>
-    </p>
+        <p>
+          <br>
+          <input type="submit" value="Einstellungen speichern">
+        </p>
+      </config:form>
+    </td></tr>
+  </table>
 
-    <input type="submit" value="Einstellungen speichern">
-  </config:form>
+  <p class="navigation">
+    <img src="img/logo_regain_small.gif" width="121" height="40">
+  </p>
 
 </body>
 </html>

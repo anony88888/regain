@@ -82,6 +82,7 @@ X Desktopsuche: Periodisch den Crawler aufrufen und automatisch geänderte
 X Desktopsuche: Task-Icon mit Menü
 X Desktopsuche: Exe creation with jsmooth
 X Desktopsuche: Installer
+X Desktopsuche: Besseres Seiten-Design
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -101,7 +102,9 @@ X Desktopsuche: Installer
   Desktopsuche: Status
     - Wann wurde der Index zuletzt aktualisiert
     - Fortschritt bei laufender Aktualisierung
-  Desktopsuche: Seiten-Design aufpeppen
+  Desktopsuche: Besseres Seiten-Design
+  Desktopsuche: search.jsp: Forward zu searchinput.jsp, wenn query nicht gesetzt.
+
   Desktopsuche: Task-Icon für Linux
 
 Rückfragen:

@@ -67,7 +67,11 @@ public class EditlistTag extends SharedTag {
     }
     out.print("</select><br/>");
     
-    out.print("<input type=\"text\" size=\"20\" id=\"" + name + "-entry\"/>");
+    out.print("<input type=\"text\" id=\"" + name + "-entry\"");
+    if (styleSheetClass != null) {
+      out.print(" class=\"" + styleSheetClass + "\"");
+    }
+    out.print("/>");
     out.print("<button type=\"button\" onClick=\"addToList('" + name + "')\">Hinzuf&uuml;gen</button>");
     out.print("<button type=\"button\" onClick=\"removeFromList('" + name + "')\">Entfernen</button>");
   }

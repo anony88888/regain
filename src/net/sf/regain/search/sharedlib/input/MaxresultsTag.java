@@ -39,10 +39,6 @@ import net.sf.regain.util.sharedtag.SharedTag;
  */
 public class MaxresultsTag extends SharedTag {
 
-  /** The default maximum number of results to show in the hits page. */
-  private static final int DEFAULT_MAX_RESULTS = 15;
-
-
   /**
    * Called when the parser reaches the end tag.
    *  
@@ -54,12 +50,10 @@ public class MaxresultsTag extends SharedTag {
     throws RegainException
   {
     String maxresults = request.getParameter("maxresults");
-    if (maxresults == null) {
-      maxresults = Integer.toString(DEFAULT_MAX_RESULTS);
+    if (maxresults != null) {
+      out.print("<input name=\"maxresults\" type=\"hidden\" "
+        + "value=\"" + maxresults + "\"/>");
     }
-
-    out.print("<input name=\"maxresults\" type=\"hidden\" "
-      + "value=\"" + maxresults + "\"/>");
   }
 
 }
