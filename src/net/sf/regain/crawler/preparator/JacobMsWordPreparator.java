@@ -27,7 +27,14 @@
  */
 package net.sf.regain.crawler.preparator;
 
+import java.util.HashSet;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+
 import net.sf.regain.RegainException;
+import net.sf.regain.RegainToolkit;
+import net.sf.regain.crawler.config.PreparatorConfig;
 import net.sf.regain.crawler.document.RawDocument;
 
 import com.jacob.com.ComFailException;
@@ -50,11 +57,45 @@ import de.filiadata.lucene.spider.generated.msoffice2000.word.*;
  */
 public class JacobMsWordPreparator extends AbstractPreparator {
 
+  /** The logger for this class */
+  private static Logger mLog = Logger.getLogger(JacobMsWordPreparator.class);
+
   /**
-   * Die Word-Applikation. Ist <code>null</code>, solange noch kein Dokument
-   * bearbeitet wurde.
+   * The word application. Is <code>null</code> as long as no document was
+   * processed.
    */
-  Application mWordApplication;
+  private Application mWordApplication;
+  
+  /**
+   * The word style names (style == format template) that are used by paragraphs
+   * holding a headline. Is <code>null</code> if no headline styles were
+   * configured. 
+   */
+  private HashSet mHeadlineStyleNameSet;
+
+  
+  /**
+   * Reads the configuration for this preparator.
+   * <p>
+   * Does nothing by default. May be overridden by subclasses to actual read the
+   * config.
+   * 
+   * @param config The configuration
+   * @throws RegainException If the configuration has an error.
+   */
+  protected void readConfig(PreparatorConfig config) throws RegainException {
+    Map main = config.getSectionWithName("main");
+    if (main != null) {
+      String headlineStyles = (String) main.get("headlineStyles");
+      if (headlineStyles != null) {
+        String[] styleArr = RegainToolkit.splitString(headlineStyles, ";", true);
+        mHeadlineStyleNameSet = new HashSet();
+        for (int i = 0; i < styleArr.length; i++) {
+          mHeadlineStyleNameSet.add(styleArr[i]);
+        }
+      }
+    }
+  }
 
 
   /**
@@ -89,10 +130,10 @@ public class JacobMsWordPreparator extends AbstractPreparator {
       Document doc = docs.open(new Variant(fileName),
                                new Variant(false),    // confirmConversions
                                new Variant(true));    // readOnly
-      
+
       // iterate through the sections
-      Sections sections = doc.getSections();
       StringBuffer content = new StringBuffer();
+      Sections sections = doc.getSections();
       for (int i = 1; i <= sections.getCount(); i++) {
         Section sec = sections.item(i);
 
@@ -116,8 +157,44 @@ public class JacobMsWordPreparator extends AbstractPreparator {
         appendShape(shape, content);
       }
       
-      // Set the extracted text
+      // iterate through the paragraphs and extract the headlines
+      StringBuffer headlines = null;
+      if ((mHeadlineStyleNameSet != null) && (! mHeadlineStyleNameSet.isEmpty())) {
+        Paragraphs paragraphs = doc.getParagraphs();
+        for (int i = 1; i <= paragraphs.getCount(); i++) {
+          Paragraph paragraph = paragraphs.item(i);
+          
+          // Get the name of the style for this paragraph
+          // NOTE: See the Style class for getting other values from the style
+          Object styleDispatch = paragraph.getFormat().getStyle().getDispatch();
+          String formatName = Dispatch.get(styleDispatch, "NameLocal").toString();
+          
+          if (mHeadlineStyleNameSet.contains(formatName)) {
+            // This paragraph is a headline -> add it to the headlines StringBuffer
+            
+            // Extract the text
+            paragraph.getRange().select();
+            String text = getSelection(mWordApplication);
+            text = removeBinaryStuff(text);
+            
+            // Add it to the headlines
+            if (headlines == null) {
+              headlines = new StringBuffer();
+            }
+            headlines.append(text + "\n");
+            
+            if (mLog.isDebugEnabled()) {
+              mLog.debug("Extracted headline: '" + text + "'");
+            }
+          }
+        }
+      }
+      
+      // Set the extracted text and the headlines
       setCleanedContent(content.toString());
+      if (headlines != null) {
+        setHeadlines(headlines.toString());
+      }
 
       // Dokument schlieﬂen (ohne Speichern)
       doc.close(new Variant(false));
@@ -164,6 +241,26 @@ public class JacobMsWordPreparator extends AbstractPreparator {
         appendShape(child, buffer);
       }
     }
+  }
+  
+  
+  /**
+   * Removes all characters that are less that 32 from the given String 
+   * 
+   * @param text The String where to remove the binary stuff.
+   * @return The cleaned String.
+   */
+  private String removeBinaryStuff(String text) {
+    StringBuffer newText = new StringBuffer(text.length());
+    
+    for (int j = 0; j < text.length(); j++) {
+      char c = text.charAt(j);
+      if (c >= 32) {
+        newText.append(c);
+      }
+    }
+    
+    return newText.toString();
   }
   
 

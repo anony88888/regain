@@ -99,6 +99,24 @@ public class PreparatorConfig {
     Object[] section = (Object[]) mSectionList.get(index);
     return (Map) section[1];
   }
+
+  
+  /**
+   * Gets the first section with the given name.
+   * 
+   * @param name The name of the sections
+   * @return The first section with the given name or <code>null</code> if there
+   *         is no such section.
+   */
+  public Map getSectionWithName(String name) {
+    for (int i = 0; i < getSectionCount(); i++) {
+      if (name.equalsIgnoreCase(getSectionName(i))) {
+        return getSectionContent(i);
+      }
+    }
+    
+    return null;
+  }
   
   
   /**

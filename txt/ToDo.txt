@@ -9,6 +9,7 @@ X Aktualisierung auf die neusten Versionen der genutzten Projekte, sofern
       Jakarta POI: 2.0 RC 2 -> 2.5.1
       jacob: 1.7 -> 1.8 (neue Webseite: http://sourceforge.net/projects/jacob-project/)
     Unterschiede:
+      jacob: Läuft jetzt auch mit Java 1.4
       JacobMsExcelPreparator:
         Stabilität: Führte früher zu Absturz der VM. Jetzt keine Probleme.
         Geschwindigkeit: 5,00 sec für 27,50 kB
@@ -49,17 +50,23 @@ X Zusatz-Index-Felder aus Dokument-URL generieren. (Aufwand: 4 Std.)
 X Suchemaske: Expertensuche: (Aufwand: 4 Std.)
     Zusätzliche Eingabefelder für bestimmte Suchfelder ermöglichen. Die Werte
     diese Felder dann mit "field:value" an Suchstring anhängen.
-
-  Prüfen: Können die im Index enthaltenen Werte (distinct values) der
+X Prüfen: Können die im Index enthaltenen Werte (distinct values) der
     Suchfelder in der erweiterten Suchmaske als Auswahlmöglichkeit angeboten
     werden? (für Expertensuche mit ComboBoxes) (Aufwand: 4 Std.)
-  Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
-    er auch Leserechte hat. (Aufwand: 2 Tage)
-  Word-Preperator: Berücksichtigungen von Formatvorlagen bei der Indizierung
+    Ergebnis: Es ist machbar. (Mit IndexReader.terms())
+X Handbuch aktualisieren:
+    - Neue Versionen der abhängigen Projekte
+    - Parameter für Präperatoren (contentExtractor und pathExtractor "verschoben")
+    - Suchmaske wird nun über XML Datei konfiguriert (wo die liegt, steht in web.xml)
+    - Config Suchmaske: URL-Rewriting
+X Word-Preperator: Berücksichtigungen von Formatvorlagen bei der Indizierung
     von Word-Dokumenten. (Aufwand: max. 4 Std., wenn mehr Rücksprache)
     Text aus Abschnitten, die bestimmte Formatvorlagen nutzen bei der Suche
     stärker gewichten (z.B. Überschriften). Die Namen der Formatvorlagen
     kommen aus der Konfiguration.
+
+  Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
+    er auch Leserechte hat. (Aufwand: 2 Tage)
   Word-Preperator: Gezielte Indizierung + Möglichkeit zur Auswertung der
     Office-Dokumenten-Beschreibungs-Felder. (Aufwand: 4 Std.)
     Dazu Preparator-Schnittstelle erweitern um: String getAuthor(),
@@ -68,10 +75,6 @@ X Suchemaske: Expertensuche: (Aufwand: 4 Std.)
   Multiindexsuche: (Aufwand: 4 Std., vorerst zurückgestellt)
     Mit der selben Suchmaske mehrere Indizes durchsuchen
   Handbuch aktualisieren:
-    - Neue Versionen der abhängigen Projekte
-    - Parameter für Präperatoren (contentExtractor und pathExtractor "verschoben")
-    - Suchmaske wird nun über XML Datei konfiguriert (wo die liegt, steht in web.xml)
-    - Config Suchmaske: URL-Rewriting
     - Config Crawler: Zusatzfelder aus Pfad generieren
     - Such-JSP: Zusätzliche Eingabefelder für bestimmte Felder können mit
       "field.feldName" hinzugefügt werden.

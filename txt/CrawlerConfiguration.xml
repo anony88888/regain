@@ -190,8 +190,24 @@
   <preparator>
     <urlPattern>\.doc$</urlPattern>
     <class>.PoiMsWordPreparator</class>
-    <!--<class>.JacobMsWordPreparator</class>-->
   </preparator>
+  <!--
+  <preparator>
+    <urlPattern>\.doc$</urlPattern>
+    <class>.JacobMsWordPreparator</class>
+    <config>
+      <section name="main">
+        -->
+        <!--
+         | The semicolon separated list of Word style names (format templates)
+         | used by headline paragraphs.
+         +-->
+        <!--
+        <param name="headlineStyles">Überschrift 1;Überschrift 2</param>
+      </section>
+    </config>
+  </preparator>
+  -->
   <preparator>
     <urlPattern>\.ppt$</urlPattern>
     <class>.JacobMsPowerPointPreparator</class>

@@ -531,10 +531,27 @@ public class RegainToolkit {
    * @return An array the items.
    */
   public static String[] splitString(String str, String delim) {
+    return splitString(str, delim, false);
+  }
+
+
+  /**
+   * Splits a String into a string array.
+   *
+   * @param str The String to split.
+   * @param delim The String that separates the items to split
+   * @param trimSplits Specifies whether {@link String#trim()} should be called
+   *        for every split.
+   * @return An array the items.
+   */
+  public static String[] splitString(String str, String delim, boolean trimSplits) {
     StringTokenizer tokenizer = new StringTokenizer(str, delim);
     String[] searchFieldArr = new String[tokenizer.countTokens()];
     for (int i = 0; i < searchFieldArr.length; i++) {
       searchFieldArr[i] = tokenizer.nextToken();
+      if (trimSplits) {
+        searchFieldArr[i] = searchFieldArr[i].trim();
+      }
     }
     return searchFieldArr;
   }
