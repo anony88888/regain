@@ -23,6 +23,8 @@ import net.sf.regain.util.sharedtag.SharedTag;
  * Tag Parameters:
  * <ul>
  * <li><code>field</code>: The name of the field to created the list for.</li>
+ * <li><code>allMsg</code>: The message to show for the item that ignores this
+ *     field.</li>
  * </ul>
  * 
  * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
@@ -40,6 +42,7 @@ public class FieldlistTag extends SharedTag {
     throws RegainException
   {
     String fieldName = getParameter("field", true);
+    String allMsg = getParameter("allMsg", true);
 
     IndexConfig indexConfig = SearchToolkit.getIndexConfig(request);
     IndexSearcherManager manager = IndexSearcherManager.getInstance(indexConfig.getDirectory());
@@ -47,7 +50,7 @@ public class FieldlistTag extends SharedTag {
     String[] fieldValues = manager.getFieldValues(fieldName);
     
     response.print("<select name=\"field." + fieldName + "\" size=\"1\">");
-    response.print("<option value=\"\">- alle -</option>");
+    response.print("<option value=\"\">" + allMsg + "</option>");
     for (int i = 0; i < fieldValues.length; i++) {
       response.print("<option>" + fieldValues[i] + "</option>");
     }

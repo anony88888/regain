@@ -28,6 +28,8 @@
 package net.sf.regain.ui.desktop.config.sharedlib;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.util.io.Localizer;
+import net.sf.regain.util.io.MultiLocalizer;
 import net.sf.regain.util.sharedtag.PageRequest;
 import net.sf.regain.util.sharedtag.PageResponse;
 import net.sf.regain.util.sharedtag.SharedTag;
@@ -39,6 +41,10 @@ import net.sf.regain.util.sharedtag.SharedTag;
  */
 public class EditlistTag extends SharedTag {
 
+  /** The MultiLocalizer for this class. */
+  private static MultiLocalizer mMultiLocalizer = new MultiLocalizer(EditlistTag.class);
+
+
   /**
    * Called when the parser reaches the end tag.
    *  
@@ -49,6 +55,8 @@ public class EditlistTag extends SharedTag {
   public void printEndTag(PageRequest request, PageResponse response)
     throws RegainException
   {
+    Localizer localizer = mMultiLocalizer.getLocalizer(request.getLocale());
+
     // Get the name of the edit list
     String name = getParameter("name", true);
     
@@ -72,8 +80,10 @@ public class EditlistTag extends SharedTag {
       response.print(" class=\"" + styleSheetClass + "\"");
     }
     response.print("/>");
-    response.print("<button type=\"button\" onClick=\"addToList('" + name + "')\">Hinzuf&uuml;gen</button>");
-    response.print("<button type=\"button\" onClick=\"removeFromList('" + name + "')\">Entfernen</button>");
+    response.print("<button type=\"button\" onClick=\"addToList('" + name + "')\">"
+        + localizer.msg("add", "Add") + "</button>");
+    response.print("<button type=\"button\" onClick=\"removeFromList('" + name + "')\">"
+        + localizer.msg("remove", "Remove") + "</button>");
   }
 
 }

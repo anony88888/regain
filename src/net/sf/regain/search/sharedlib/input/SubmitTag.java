@@ -25,29 +25,24 @@
  *   $Author$
  * $Revision$
  */
-package net.sf.regain.ui.desktop.status.sharedlib;
-
-import java.util.Date;
+package net.sf.regain.search.sharedlib.input;
 
 import net.sf.regain.RegainException;
-import net.sf.regain.RegainToolkit;
-import net.sf.regain.ui.desktop.DesktopConstants;
-import net.sf.regain.util.io.Localizer;
-import net.sf.regain.util.io.MultiLocalizer;
 import net.sf.regain.util.sharedtag.PageRequest;
 import net.sf.regain.util.sharedtag.PageResponse;
 import net.sf.regain.util.sharedtag.SharedTag;
 
 /**
- * Generates the status of the current index.
+ * Generates a submit button.
+ * <p>
+ * Tag Parameters:
+ * <ul>
+ * <li><code>text</code>: The button text.</li>
+ * </ul>
  *
  * @author Til Schneider, www.murfman.de
  */
-public class CurrentindexTag extends SharedTag implements DesktopConstants {
-
-  /** The MultiLocalizer for this class. */
-  private static MultiLocalizer mMultiLocalizer = new MultiLocalizer(CurrentindexTag.class);
-
+public class SubmitTag extends SharedTag {
 
   /**
    * Called when the parser reaches the end tag.
@@ -59,15 +54,8 @@ public class CurrentindexTag extends SharedTag implements DesktopConstants {
   public void printEndTag(PageRequest request, PageResponse response)
     throws RegainException
   {
-    Localizer localizer = mMultiLocalizer.getLocalizer(request.getLocale());
-    
-    if (LASTUPDATE_FILE.exists()) {
-      String timestamp = RegainToolkit.readStringFromFile(LASTUPDATE_FILE);
-      Date date = RegainToolkit.stringToLastModified(timestamp);
-      response.print(localizer.msg("lastUpdate", "Last update: {0}", date));
-    } else {
-      response.print(localizer.msg("noIndex", "There was no search index created so far."));
-    }
+    String text = getParameter("text", true);
+    response.print("<input type=\"submit\" value=\"" + text + "\"/>");
   }
 
 }

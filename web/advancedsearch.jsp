@@ -3,7 +3,7 @@
 
 <html>
 <head>
-  <title>regain - Erweiterte Suchen</title>
+  <title>regain - <search:msg key="advancedSearch"/></title>
   <script src="regain.js" type="text/javascript"></script>
   <link href="regain.css" rel="stylesheet" type="text/css">
 </head>
@@ -15,7 +15,7 @@
 
   <table class="content">
     <tr class="headline"><td>
-      <b>Erweiterte Suche</b>
+      <b><search:msg key="advancedSearch"/></b>
     </td></tr>
     <tr><td>
 
@@ -23,15 +23,15 @@
         <br/>
         <table>
           <tr>
-            <td>Suchen nach:</td>
+            <td><search:msg key="searchFor"/>:</td>
             <td><input name="query" size="40"/></td>
           </tr>
           <tr>
-            <td>Dateiendung:</td>
-            <td><search:input_fieldlist field="extension"/></td>
+            <td><search:msg key="fileExtension"/>:</td>
+            <td><search:input_fieldlist field="extension" allMsg="{msg:allItem}"/></td>
           </tr>
           <tr>
-            <td></td><td><input type="submit" value="Suchen"/></td>
+            <td></td><td><search:input_submit text="{msg:search}"/></td>
           </tr>
         </table>
       </form>

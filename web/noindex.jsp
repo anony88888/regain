@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>regain - Kein Index vorhanden</title>
+  <title>regain - <search:msg key="noIndex"/></title>
   <script src="regain.js" type="text/javascript"></script>
   <link href="regain.css" rel="stylesheet" type="text/css">
 </head>
@@ -14,22 +14,13 @@
 
   <table class="content">
     <tr class="headline"><td>
-      <b>Kein Index vorhanden</b>
+      <b><search:msg key="noIndex"/></b>
     </td></tr>
     <tr><td>
-      <h4>Kein Index vorhanden</h4>
+      <h4><search:msg key="noIndex"/></h4>
       
-      <p>
-        Bevor mit regain gesucht werden kann, muss zuerst ein Suchindex erstellt
-        werden. Bitte geben Sie dazu in der
-        <a href="config.jsp">Einstellungen-Seite</a> an, welche Verzeichnisse
-        und Webseiten Sie in den Suchindex aufnehmen wollen.
-      </p>
-      <p>
-        Nachdem Sie diese Angaben gemacht haben, wird ein neuer Suchindex
-        erstellt. Sie können den Fortschritt der Indexierung auf der
-        <a href="status.jsp">Status-Seite</a> mitverfolgen.
-      </p>
+      <p><search:msg key="noIndex.help.config"/></p>
+      <p><search:msg key="noIndex.help.status"/></p>
       <br>
     </td></tr>
   </table>

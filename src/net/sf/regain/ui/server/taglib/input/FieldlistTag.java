@@ -36,4 +36,14 @@ public class FieldlistTag extends SharedTagWrapperTag {
     getNestedTag().setParameter("field", field);
   }
 
+
+  /**
+   * Sets the name of the field to created the list for.
+   * 
+   * @param allMsg The message to show for the item that ignores this field.
+   */
+  public void setAllMsg(String allMsg) {
+    getNestedTag().setParameter("allMsg", allMsg);
+  }
+
 }

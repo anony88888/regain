@@ -35,7 +35,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
 
-import net.sf.regain.Localizer;
+import net.sf.regain.util.io.Localizer;
 
 import org.jdesktop.jdic.tray.SystemTray;
 import org.jdesktop.jdic.tray.TrayIcon;
@@ -48,7 +48,7 @@ import org.jdesktop.jdic.tray.TrayIcon;
 public class TrayIconManager {
   
   /** The localizer for this class. */
-  public static Localizer mLocalizer = new Localizer(TrayIconManager.class);
+  private static Localizer mLocalizer = new Localizer(TrayIconManager.class);
   
   /** The singleton. */
   private static TrayIconManager mSingleton;

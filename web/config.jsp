@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>regain - Einstellungen</title>
+  <title>regain - <search:msg key="preferences"/></title>
   <script src="regain.js" type="text/javascript"></script>
   <link href="regain.css" rel="stylesheet" type="text/css">
 </head>
@@ -14,42 +14,42 @@
 
   <table class="content">
     <tr class="headline"><td>
-      <b>Einstellungen</b>
+      <b><search:msg key="preferences"/></b>
     </td></tr>
     <tr><td>
       <config:form action="config.jsp">
         <br/>
         <p>
-          Indexierungsintervall: <config:interval/>
+          <search:msg key="indexingInterval"/>: <config:interval/>
         </p>
         
         <p>
-          <h4>Verzeichnisse</h4>
-          <div class="hint">Geben Sie ein Verzeichnis an und dr&uuml;cken Sie auf 'Hinzuf&uuml;gen'.</div>
+          <h4><search:msg key="directories"/></h4>
+          <div class="hint"><search:msg key="directory.hint"/></div>
           <config:editlist name="dirlist" class="editlist"/>
         </p>
         
         <p>
-          <h4>Ausgeschlossene Verzeichnisse</h4>
-          <div class="hint">Geben Sie ein Verzeichnis an und dr&uuml;cken Sie auf 'Hinzuf&uuml;gen'.</div>
+          <h4><search:msg key="excludedDirectories"/></h4>
+          <div class="hint"><search:msg key="directory.hint"/></div>
           <config:editlist name="dirblacklist" class="editlist"/>
         </p>
         
         <p>
-          <h4>Webseiten</h4>
-          <div class="hint">Geben Sie eine Webseite an und dr&uuml;cken Sie auf 'Hinzuf&uuml;gen'.</div>
+          <h4><search:msg key="websites"/></h4>
+          <div class="hint"><search:msg key="website.hint"/></div>
           <config:editlist name="sitelist" class="editlist"/>
         </p>
         
         <p>
-          <h4>Ausgeschlossene Webseiten-Unterverzeichnisse</h4>
-          <div class="hint">Geben Sie eine Webseite an und dr&uuml;cken Sie auf 'Hinzuf&uuml;gen'.</div>
+          <h4><search:msg key="excludedWebsiteSubdirs"/></h4>
+          <div class="hint"><search:msg key="website.hint"/></div>
           <config:editlist name="siteblacklist" class="editlist"/>
         </p>
     
         <p>
           <br>
-          <input type="submit" value="Einstellungen speichern">
+          <search:input_submit text="{msg:savePreferences}"/>
         </p>
       </config:form>
     </td></tr>

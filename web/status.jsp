@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>regain - Status</title>
+  <title>regain - <search:msg key="status"/></title>
   <script src="regain.js" type="text/javascript"></script>
   <link href="regain.css" rel="stylesheet" type="text/css">
   <status:autoupdate_meta/>
@@ -15,23 +15,20 @@
 
   <table class="content">
     <tr class="headline"><td>
-      <b>Status</b>
+      <b><search:msg key="status"/></b>
     </td></tr>
     <tr><td>
-      <h4>Automatisch aktualisieren</h4>
-      <p>
-        <status:autoupdate_form url="status.jsp"/>
-      </p>
+      <h4><search:msg key="autoUpdate"/></h4>
+      <p><status:autoupdate_form url="status.jsp"
+            msgAutoupdate="{msg:autoupdate}"
+            msgEnable="{msg:enable}"
+            msgDisable="{msg:disable}"/></p>
 
-      <h4>Aktueller Suchindex</h4>
-      <p>
-        <status:currentindex/>
-      </p>
+      <h4><search:msg key="currentIndex"/></h4>
+      <p><status:currentindex/></p>
 
-      <h4>Laufende Indexierung</h4>
-      <p>
-        <status:indexupdate/>
-      </p>
+      <h4><search:msg key="runningIndexUpdate"/></h4>
+      <p><status:indexupdate/></p>
       <br>
     </td></tr>
   </table>

@@ -29,6 +29,10 @@
       <name>field</name>
       <required>true</required>
     </attribute>
+    <attribute>
+      <name>allMsg</name>
+      <required>true</required>
+    </attribute>
   </tag>
 
   <tag>

@@ -3,7 +3,7 @@
 
 <html>
 <head>
-  <title>regain - Suche nach <search:stats_query/></title>
+  <title>regain - <search:msg key="searchFor"/> <search:stats_query/></title>
   <link href="regain.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -14,11 +14,11 @@
     <td><img src="img/logo_regain.gif" width="201" height="66"></td>
     <td class="searchTop">
       <form name="search" action="search.jsp" method="get">
-        Suchen nach:
+        <search:msg key="searchFor"/>:
         <search:input_hiddenparam name="index"/>
         <search:input_query/>
         <search:input_maxresults/>
-        <input type="submit" value="Suchen"/>
+        <search:input_submit text="{msg:search}"/>
       </form>
     </td>
   </tr></table>
@@ -26,23 +26,23 @@
   <table class="content">
     <tr class="headline">
       <td>
-        Ergebnisse für <b><search:stats_query/></b>
+        <search:msg key="resultsFor"/> <b><search:stats_query/></b>
       </td>
       <td class="headlineRight">
-        Ergebnisse <b><search:stats_from/></b>-<b><search:stats_to/></b>
-        von insgesamt <b><search:stats_total/></b>.
-        Suchdauer: <b><search:stats_searchtime/></b> Sekunden.
+        <search:msg key="results.part1"/> <b><search:stats_from/></b>-<b><search:stats_to/></b>
+        <search:msg key="results.part2"/> <b><search:stats_total/></b>.
+        (<b><search:stats_searchtime/></b> <search:msg key="seconds"/>)
         &nbsp;
       </td>
     </tr>
 
     <tr><td colspan="2"> <br/> </td></tr>
 
-    <search:list msgNoResults="<tr><td colspan='2'>Es wurden leider keine Treffer gefunden!<br/><br/></td></tr>">
+    <search:list msgNoResults="<tr><td colspan='2'>{msg:noResultsFound}<br/><br/></td></tr>">
       <tr><td colspan="2">
         <search:hit_link/>
         <span class="hitDetails">
-        (Relevanz: <search:hit_score/>)<br/>
+        (<search:msg key="relevance"/>: <search:hit_score/>)<br/>
         <search:hit_summary/><br/>
         <search:hit_path after="<br/>" createLinks="false"/>
         <span class="hitInfo"><search:hit_url/> - <search:hit_size/></span><br/>
@@ -52,24 +52,24 @@
   </table>
 
   <p class="navigation">
-    Ergebnisseite:
+    <search:msg key="resultPage"/>:
     <search:navigation
             targetPage="search.jsp"
-            msgBack="<img src='img/back.gif' title='Zur&uuml;ck' border='0'/>"
-            msgForward="<img src='img/forward.gif' title='Weiter' border='0'/>"/>
+            msgBack="<img src='img/back.gif' title='{msg:back}' border='0'/>"
+            msgForward="<img src='img/forward.gif' title='{msg:forward}' border='0'/>"/>
   </p>
 
   <br/>
 
-  <form name="search" action="search.jsp" method="get">
-    <search:input_hiddenparam name="index"/>
-    <table class="searchBottom"><tr><td>
-      <b>Suchen nach: </b>
+  <table class="searchBottom"><tr><td>
+    <form name="search" action="search.jsp" method="get">
+      <search:msg key="searchFor"/>:
+      <search:input_hiddenparam name="index"/>
       <search:input_query/>
       <search:input_maxresults/>
-      <input type="submit" value="Suchen"/>
-    </td></tr></table>
-  </form>
+      <search:input_submit text="{msg:search}"/>
+    </form>
+  </td></tr></table>
 
   <%@include file="footer.jsp" %>
 

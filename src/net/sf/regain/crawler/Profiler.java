@@ -280,7 +280,7 @@ public class Profiler {
       format.setMinimumFractionDigits(2);
       format.setMaximumFractionDigits(2);
 
-      String asString = format.format((double) secs + (double) millis / 1000.0);
+      String asString = format.format(secs + millis / 1000.0);
 
       return asString + " sec";
     }

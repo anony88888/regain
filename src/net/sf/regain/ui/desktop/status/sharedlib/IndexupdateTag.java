@@ -30,6 +30,8 @@ package net.sf.regain.ui.desktop.status.sharedlib;
 import net.sf.regain.RegainException;
 import net.sf.regain.crawler.Crawler;
 import net.sf.regain.ui.desktop.IndexUpdateManager;
+import net.sf.regain.util.io.Localizer;
+import net.sf.regain.util.io.MultiLocalizer;
 import net.sf.regain.util.sharedtag.PageRequest;
 import net.sf.regain.util.sharedtag.PageResponse;
 import net.sf.regain.util.sharedtag.SharedTag;
@@ -41,6 +43,10 @@ import net.sf.regain.util.sharedtag.SharedTag;
  */
 public class IndexupdateTag extends SharedTag {
 
+  /** The MultiLocalizer for this class. */
+  private static MultiLocalizer mMultiLocalizer = new MultiLocalizer(IndexupdateTag.class);
+
+
   /**
    * Called when the parser reaches the end tag.
    *  
@@ -51,11 +57,14 @@ public class IndexupdateTag extends SharedTag {
   public void printEndTag(PageRequest request, PageResponse response)
     throws RegainException
   {
+    Localizer localizer = mMultiLocalizer.getLocalizer(request.getLocale());
+
     Crawler crawler = IndexUpdateManager.getInstance().getCurrentCrawler();
     if (crawler == null) {
-      response.print("Momentan wird kein neuer Index erstellt.");
+      response.print(localizer.msg("noIndexUpdate", "Currently is no index update running."));
     } else {
-      response.print("Untersuchte Dokumente: " + crawler.getFinishedJobCount());
+      response.print(localizer.msg("processedDocs", "Processed documents: {0}",
+          new Integer(crawler.getFinishedJobCount())));
     }
   }
   

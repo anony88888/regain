@@ -85,6 +85,10 @@ public abstract class SharedTagWrapperTag
     PageRequest request = getPageRequest();
     JspPageResponse response = new JspPageResponse(pageContext);
     try {
+      // Set the context
+      mNestedTag.setContext(request);
+      
+      // Print the start tag
       int result = mNestedTag.printStartTag(request, response);
       
       // response.close();
@@ -156,7 +160,11 @@ public abstract class SharedTagWrapperTag
     PageRequest request = getPageRequest();
     PageResponse response = new JspPageResponse(pageContext);
     try {
+      // Print the end tag
       mNestedTag.printEndTag(request, response);
+      
+      // Unset the context
+      mNestedTag.unsetContext();
     }
     catch (RegainException exc) {
       throw new ExtendedJspException("Writing results failed", exc);

@@ -36,7 +36,12 @@ import net.sf.regain.util.sharedtag.taglib.JspPageResponse;
 public class FileServlet extends HttpServlet {
 
   /**
-   * Handles a HTTP GET request. 
+   * Handles a HTTP GET request.
+   * 
+   * @param req The request.
+   * @param resp The response.
+   * @throws ServletException If handling the request failed.
+   * @throws IOException If writing to the result page failed.
    */
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
     throws ServletException, IOException

@@ -28,6 +28,8 @@
 package net.sf.regain.ui.desktop.config.sharedlib;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.util.io.Localizer;
+import net.sf.regain.util.io.MultiLocalizer;
 import net.sf.regain.util.sharedtag.PageRequest;
 import net.sf.regain.util.sharedtag.PageResponse;
 import net.sf.regain.util.sharedtag.SharedTag;
@@ -39,12 +41,11 @@ import net.sf.regain.util.sharedtag.SharedTag;
  */
 public class IntervalTag extends SharedTag {
 
+  /** The MultiLocalizer for this class. */
+  private static MultiLocalizer mMultiLocalizer = new MultiLocalizer(IntervalTag.class);
+
   /** The possible choices. */
-  private final String[][] CHOICES = {
-    { "60",    "Eine Stunde" },
-    { "1440",  "Ein Tag" },
-    { "10080", "Eine Woche" },
-  };
+  private final String[] CHOICES = { "60", "1440", "10080" };
 
 
   /**
@@ -57,12 +58,13 @@ public class IntervalTag extends SharedTag {
   public void printEndTag(PageRequest request, PageResponse response)
     throws RegainException
   {
+    Localizer localizer = mMultiLocalizer.getLocalizer(request.getLocale());
     String currValue = (String) request.getContextAttribute("settings.interval");
     
     response.print("<select name=\"interval\">");
     for (int i = 0; i < CHOICES.length; i++) {
-      String value = CHOICES[i][0];
-      String name  = CHOICES[i][1];
+      String value = CHOICES[i];
+      String name  = localizer.msg("choice." + value, value);
       
       response.print("<option value=\"" + value + "\"");
       if (value.equals(currValue)) {

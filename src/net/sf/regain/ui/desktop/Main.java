@@ -29,14 +29,14 @@ package net.sf.regain.ui.desktop;
 
 import java.io.File;
 import java.net.ServerSocket;
-import java.util.Locale;
-
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 import net.sf.regain.util.sharedtag.simple.ExecuterParser;
 import net.sf.regain.util.sharedtag.simple.SharedTagService;
 import net.sf.regain.util.sharedtag.simple.SimplePageRequest;
+
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import simple.http.ProtocolHandler;
 import simple.http.connect.Connection;
 import simple.http.connect.ConnectionFactory;

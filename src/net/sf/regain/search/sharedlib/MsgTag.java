@@ -27,10 +27,6 @@
  */
 package net.sf.regain.search.sharedlib;
 
-import java.io.File;
-import java.util.Locale;
-
-import net.sf.regain.Localizer;
 import net.sf.regain.RegainException;
 import net.sf.regain.util.sharedtag.PageRequest;
 import net.sf.regain.util.sharedtag.PageResponse;
@@ -58,29 +54,9 @@ public class MsgTag extends SharedTag {
   public void printEndTag(PageRequest request, PageResponse response)
     throws RegainException
   {
-    // Get the Localizer
-    Localizer localizer = (Localizer) request.getContextAttribute("Localizer");
-    if (localizer == null) {
-      // The default resource bundles are in english
-      Locale.setDefault(Locale.ENGLISH);
-
-      // Get the locale
-      Locale locale = request.getLocale();
-      if (locale == null) {
-        locale = Locale.getDefault();
-      }
-
-      // Get the base dir
-      File basedir = new File(request.getInitParameter("webDir"));
-      
-      // Get the localizer
-      localizer = new Localizer(locale, basedir, "msg");
-      request.setContextAttribute("Localizer", localizer);
-    }
-    
     // Get the message
     String key = getParameter("key", true);
-    response.print(localizer.msg(key, "?"));
+    response.print(getLocalizer().msg(key, "?"));
   }
   
 }

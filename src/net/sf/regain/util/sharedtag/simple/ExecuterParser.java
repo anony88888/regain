@@ -132,6 +132,9 @@ public class ExecuterParser {
     throws RegainException
   {
     File file = new File(baseDir, filename);
+    if (! file.exists()) {
+      throw new RegainException("JSP file does not exist: " + file.getAbsolutePath());
+    }
     String jspCode = RegainToolkit.readStringFromFile(file);
     
     // Add all inludes
@@ -276,7 +279,7 @@ public class ExecuterParser {
   private void addText(Executer parent, String jspCode, int startPos,
     int endPos)
   {
-    if (startPos < endPos - 1) {
+    if (startPos < endPos) {
       String text = jspCode.substring(startPos, endPos);
       parent.addChildExecuter(new TextExecuter(text));
     }

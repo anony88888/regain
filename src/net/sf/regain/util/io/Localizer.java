@@ -25,7 +25,7 @@
  *   $Author$
  * $Revision$
  */
-package net.sf.regain;
+package net.sf.regain.util.io;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -37,9 +37,9 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.apache.log4j.Logger;
-
 import net.sf.regain.RegainToolkit;
+
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -66,11 +66,11 @@ public class Localizer {
   /**
    * Creates a new instance of Localizer.
    *
-   * @param locale the locale to load the localizer for.
    * @param basedir The directory to load the resource bundle from.
    * @param basename The basename of the resource bundle to load.
+   * @param locale the locale to create the localizer for.
    */
-  public Localizer(Locale locale, File basedir, String basename) {
+  public Localizer(File basedir, String basename, Locale locale) {
     try {
       URLClassLoader loader = getClassLoader(basedir);
       mBundle = ResourceBundle.getBundle(basename, locale, loader);
@@ -82,15 +82,24 @@ public class Localizer {
     mKeyPrefix = "";
   }
 
-
+  
   /**
    * Creates a new instance of Localizer.
    * 
    * @param clazz The class to create the Localizer for.
    */
   public Localizer(Class clazz) {
-    Locale locale = Locale.getDefault();
-    
+    this(clazz, Locale.getDefault());
+  }
+  
+
+  /**
+   * Creates a new instance of Localizer.
+   * 
+   * @param clazz The class to create the Localizer for.
+   * @param locale the locale to create the localizer for.
+   */
+  public Localizer(Class clazz, Locale locale) {
     String className = clazz.getName();
     String packageName;
     int lastDot = className.lastIndexOf('.');
@@ -221,9 +230,10 @@ public class Localizer {
     //             everthing will be replaced as expected.
     msg = RegainToolkit.replace(msg, "'", "''");
     
-    return MessageFormat.format(msg, args);    
+    MessageFormat format = new MessageFormat(msg, mBundle.getLocale());
+    return format.format(args);    
   }
-  
+
 
   /**
    * Gets a localized message.

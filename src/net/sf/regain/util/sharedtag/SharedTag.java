@@ -27,9 +27,13 @@
  */
 package net.sf.regain.util.sharedtag;
 
+import java.io.File;
 import java.util.HashMap;
+import java.util.Locale;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.util.io.Localizer;
+import net.sf.regain.util.io.MultiLocalizer;
 
 /**
  * A tag that may be used within the taglib technology or the simpleweb
@@ -38,15 +42,24 @@ import net.sf.regain.RegainException;
  * @author Til Schneider, www.murfman.de
  */
 public abstract class SharedTag {
-
+  
   /** Specifies that the tag body should be evaluated. */
   public static final int EVAL_TAG_BODY = 1;
 
   /** Specifies that the tag body should be skipped. */
   public static final int SKIP_TAG_BODY = 2;
+  
+  /** The MultiLocalizer that holds the Localizers for the tags. */
+  private static MultiLocalizer mMultiLocalizer;
 
   /** The parameters for this tag. May be null. */
   private HashMap mParamMap;
+  
+  /**
+   * The current Localizer. Is <code>null</code> when the is currently not
+   * executed.
+   */
+  private Localizer mLocalizer;
 
 
   /**
@@ -104,6 +117,7 @@ public abstract class SharedTag {
     if (mParamMap == null) {
       mParamMap = new HashMap();
     }
+    
     mParamMap.put(name, value);
   }
 
@@ -119,11 +133,15 @@ public abstract class SharedTag {
     if (mParamMap == null) {
       return null;
     } else {
-      return (String) mParamMap.get(name);
+      String value = (String) mParamMap.get(name);
+      if (value != null) {
+        value = localize(value);
+      }
+      return value;
     }
   }
 
-  
+
   /**
    * Gets a parameter.
    * 
@@ -217,6 +235,110 @@ public abstract class SharedTag {
     }
   }
   
+  
+  /**
+   * Sets the tag execution context.
+   * <p>
+   * Is called by the shared tag engine before the start tag is processed.
+   * 
+   * @param request The request to get the context from
+   * @throws RegainException If setting the context failed.
+   */
+  public final void setContext(PageRequest request)
+    throws RegainException
+  {
+    // Get the Localizer
+    mLocalizer = (Localizer) request.getContextAttribute("Localizer");
+    if (mLocalizer == null) {
+      // The default resource bundles are in english
+      Locale.setDefault(Locale.ENGLISH);
+
+      // Get the locale
+      Locale locale = request.getLocale();
+      if (locale == null) {
+        locale = Locale.getDefault();
+      }
+      
+      // Init the MultiLocalizer if nessesary
+      if (mMultiLocalizer == null) {
+        // Get the base dir
+        File basedir = new File(request.getInitParameter("webDir"));
+
+        mMultiLocalizer = new MultiLocalizer(basedir, "msg");
+      }
+      
+      // Get the localizer
+      mLocalizer = mMultiLocalizer.getLocalizer(locale);
+      request.setContextAttribute("Localizer", mLocalizer);
+    }
+  }
+  
+  
+  /**
+   * Unsets the tag execution context.
+   * <p>
+   * Is called by the shared tag engine after the end tag was processed.
+   */
+  public final void unsetContext() {
+    mLocalizer = null;
+  }
+  
+  
+  /**
+   * Gets the localizer.
+   * <p>
+   * Note: The localizer is only not null, when the tag is currently executed.
+   * Which is in the {@link #printStartTag(PageRequest, PageResponse)}, the
+   * {@link #printAfterBody(PageRequest, PageResponse)} ant the
+   * {@link #printEndTag(PageRequest, PageResponse)}.
+   * 
+   * @return The localizer.
+   */
+  protected Localizer getLocalizer() {
+    return mLocalizer;
+  }
+
+
+  /**
+   * Localizes a text. Replaces all "{msg:...}" fields with the matching
+   * localized messages.
+   * 
+   * @param text The text to localize.
+   * @return The localized text.
+   */
+  private String localize(String text) {
+    StringBuffer buffer = null;
+    int startPos = 0;
+    int endPos = 0;
+    while ((startPos = text.indexOf("{msg:", endPos)) != -1) {
+      if (buffer == null) {
+        buffer = new StringBuffer(text.length());
+      }
+      
+      // Add the text before
+      buffer.append(text.substring(endPos, startPos));
+      
+      // Get the new endPos
+      endPos = text.indexOf('}', startPos + 1);
+      if (endPos == -1) {
+        endPos = text.length();
+      }
+      
+      // Append the localized message
+      String key = text.substring(startPos + 5, endPos);
+      buffer.append(mLocalizer.msg(key, "?"));
+    }
+    
+    if (buffer != null) {
+      // Append the last text
+      buffer.append(text.substring(endPos + 1));
+      
+      text = buffer.toString();
+    }
+    
+    return text;
+  }
+
 
   /**
    * Called when the parser reaches the start tag.

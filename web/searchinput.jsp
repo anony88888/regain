@@ -14,15 +14,15 @@
 
   <table class="content">
     <tr class="headline"><td>
-      <b>Suchen</b>
+      <b><search:msg key="search"/></b>
     </td></tr>
     <tr><td>
 
       <form name="search" action="search.jsp" method="get">
         <p class="searchinput">
-          <b>Suchen nach: </b>
+          <b><search:msg key="searchFor"/>: </b>
           <input name="query" size="40"/>
-          <input type="submit" value="Suchen"/>
+          <search:input_submit text="{msg:search}"/>
         </p>
       </form>
 

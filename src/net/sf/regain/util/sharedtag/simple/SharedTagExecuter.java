@@ -63,13 +63,23 @@ public class SharedTagExecuter extends Executer {
   public void execute(PageRequest request, PageResponse response)
     throws RegainException
   {
+    // Set the context
+    mTag.setContext(request);
+    
+    // Print the start tag
     int result = mTag.printStartTag(request, response);
+    
+    // Print the body
     while (result == SharedTag.EVAL_TAG_BODY) {
       executeChildren(request, response);
       result = mTag.printAfterBody(request, response);
     }
     
+    // Print the end tag
     mTag.printEndTag(request, response);
+    
+    // Unset the context
+    mTag.unsetContext();
   }
   
 

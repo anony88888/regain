@@ -100,6 +100,8 @@ X Jacob-Präperatoren: Indizierung der Office-Dokumenten-Beschreibungs-Felder.
     Folgende Felder extrahieren: Möglichst alles aus Eigenschaften/Zusammenfassung
     Einstellbar, welche Felder aufgenommen werden sollen.
 X Expertensuche: Tag für Combobox, die distinct values eines Feldes beinhaltet.
+X Neues Feld: extension: Dateiendung indexieren.
+X Internationalisierung und Lokalisierung für deutsch und englisch.
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -119,9 +121,6 @@ X Expertensuche: Tag für Combobox, die distinct values eines Feldes beinhaltet.
     erlauben.
   Desktopsuche: Bei Update-Installation alte Konfiguration nicht überschreiben.
   Desktopsuche: Schönere Fehlerseite (errorpage benutzen)
-  Neues Feld: extension: Dateiendung indexieren.
-  Desktopsuche: Expertensuche: Textfelder (bzw. Comboboxen) für einige Felder 
-    anbieten.
   Desktopsuche: Nach Speichern der Konfiguration nur dann neu indexieren, wenn
     sich etwas geändert hat, das den Index verändert.
   Desktopsuche: Status: Aktueller Index: Größe in MB, Anzahl Dokumente.

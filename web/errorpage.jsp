@@ -3,7 +3,7 @@
 
 <html>
 <head>
-  <title>Fehler bei Suche nach <%= (request.getParameter("query") == null) ? "" : request.getParameter("query")%></title>
+  <title><search:msg key="errorSearchingFor"/> <search:input_query/></title>
 </head>
 
 <body>
@@ -13,27 +13,22 @@
   %>
 
   <p>
-  Ihre Suchanfrage konnte nicht verarbeitet werden.<br>
-  Bitte &uuml;berpr&uuml;fen Sie Ihre Eingabe.<br>
+  <search:msg key="error.checkInput"/><br>
   <br>
-  Fehlermeldung:
+  <search:msg key="errorMessage"/>:
   <%
   out.print(exc.getMessage());
   %>
   <br>
-  Weitere Informationen über die Eingabemöglichkeiten finden Sie
-  <a href="http://jakarta.apache.org/lucene/docs/queryparsersyntax.html">hier</a>.<br>
+  <search:msg key="error.moreInfo"/><br>
   </p>
 
-  <form name="search" action="SearchOutput.jsp" method="get">
-    <p>
-      <b>Suchen nach: </b>
-      <input name="index" type="hidden"
-             value="<%= (request.getParameter("index") == null) ? "main" : request.getParameter("index")%>">
-      <search:input_query/>
-      <search:input_maxresults/>
-      <input type="submit" value="Search"/>
-    </p>
+  <form name="search" action="search.jsp" method="get">
+    <search:msg key="error.searchFor"/>:
+    <search:input_hiddenparam name="index"/>
+    <search:input_query/>
+    <search:input_maxresults/>
+    <search:input_submit text="{msg:search}"/>
   </form>
   
   <%-- Add the stack trace as hidden text --%>
