@@ -35,9 +35,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
 
-import net.sf.regain.util.ui.BrowserLauncher;
-
-import org.apache.log4j.Logger;
 import org.jdesktop.jdic.tray.SystemTray;
 import org.jdesktop.jdic.tray.TrayIcon;
 
@@ -47,9 +44,6 @@ import org.jdesktop.jdic.tray.TrayIcon;
  * @author Til Schneider, www.murfman.de
  */
 public class TrayIconManager {
-  
-  /** The logger for this class */
-  private static Logger mLog = Logger.getLogger(TrayIconManager.class);
   
   /** The singleton. */
   private static TrayIconManager mSingleton;
@@ -87,7 +81,7 @@ public class TrayIconManager {
     item = new JMenuItem("Suchen");
     item.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent evt) {
-        openPage("search.jsp");
+        DesktopToolkit.openPageInBrowser("search.jsp");
       }
     });
     menu.add(item);
@@ -95,7 +89,7 @@ public class TrayIconManager {
     item = new JMenuItem("Einstellungen");
     item.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent evt) {
-        openPage("config.jsp");
+        DesktopToolkit.openPageInBrowser("config.jsp");
       }
     });
     menu.add(item);
@@ -115,7 +109,7 @@ public class TrayIconManager {
     mTrayIcon = new TrayIcon(icon, "regain", menu);
     mTrayIcon.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent evt) {
-        openPage("search.jsp");
+        DesktopToolkit.openPageInBrowser("search.jsp");
       }
     });
     
@@ -139,22 +133,6 @@ public class TrayIconManager {
       ImageIcon icon = new ImageIcon(getClass().getResource("regain_icon_16.gif"));
       mTrayIcon.setIcon(icon);
       mTrayIcon.setToolTip("regain");
-    }
-  }
-
-
-  /**
-   * Opens a page in the browser.
-   * 
-   * @param page The page to open.
-   */
-  private void openPage(String page) {
-    String url = "http://localhost:88/" + page;
-    try {
-      BrowserLauncher.openURL(url);
-    }
-    catch (Exception exc) {
-      mLog.error("Opening browser failed", exc);
     }
   }
 

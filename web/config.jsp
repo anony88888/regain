@@ -8,9 +8,9 @@
 </head>
 
 <body>
-  <p class="top">
-    <img src="img/logo_regain.gif" width="201" height="66" class="logo">
-  </p>
+  <table class="top"><tr>
+    <td><img src="img/logo_regain.gif" width="201" height="66"></td>
+  </tr></table>
 
   <table class="content">
     <tr class="headline"><td>
@@ -18,6 +18,7 @@
     </td></tr>
     <tr><td>
       <config:form action="config.jsp">
+        <br/>
         <p>
           Indexierungsintervall: <config:interval/>
         </p>

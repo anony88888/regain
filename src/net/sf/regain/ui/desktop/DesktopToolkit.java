@@ -29,8 +29,11 @@ package net.sf.regain.ui.desktop;
 
 import java.io.File;
 
+import org.apache.log4j.Logger;
+
 import net.sf.regain.ui.desktop.config.DesktopConfig;
 import net.sf.regain.ui.desktop.config.XmlDesktopConfig;
+import net.sf.regain.util.ui.BrowserLauncher;
 
 /**
  * A toolkit for the desktop search containing helper methods.
@@ -39,6 +42,9 @@ import net.sf.regain.ui.desktop.config.XmlDesktopConfig;
  */
 public class DesktopToolkit {
 
+  /** The logger for this class */
+  private static Logger mLog = Logger.getLogger(DesktopToolkit.class);
+  
   /** The desktop configuration. */
   private static DesktopConfig mConfig;
 
@@ -56,4 +62,20 @@ public class DesktopToolkit {
     return mConfig;
   }
 
+  
+  /**
+   * Opens a page in the browser.
+   * 
+   * @param page The page to open.
+   */
+  public static void openPageInBrowser(String page) {
+    String url = "http://localhost:88/" + page;
+    try {
+      BrowserLauncher.openURL(url);
+    }
+    catch (Exception exc) {
+      mLog.error("Opening browser failed", exc);
+    }
+  }
+  
 }

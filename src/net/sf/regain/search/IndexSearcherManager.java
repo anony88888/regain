@@ -42,7 +42,6 @@ import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 
-
 /**
  * Kapselt die Suche auf dem Suchindex.
  * <p>

@@ -9,16 +9,18 @@
 
 <body>
 
-  <form name="search" action="search.jsp" method="get">
-    <p class="top">
-      <img src="img/logo_regain.gif" width="201" height="66" class="logo">
-      Suchen nach:
-      <search:input_hiddenparam name="index"/>
-      <search:input_query/>
-      <search:input_maxresults/>
-      <input type="submit" value="Search"/>
-    </p>
-  </form>
+  <table class="top"><tr>
+    <td><img src="img/logo_regain.gif" width="201" height="66"></td>
+    <td class="searchTop">
+      <form name="search" action="search.jsp" method="get">
+        Suchen nach:
+        <search:input_hiddenparam name="index"/>
+        <search:input_query/>
+        <search:input_maxresults/>
+        <input type="submit" value="Search"/>
+      </form>
+    </td>
+  </tr></table>
 
   <table class="content">
     <tr class="headline">

@@ -83,6 +83,7 @@ X Desktopsuche: Task-Icon mit Menü
 X Desktopsuche: Exe creation with jsmooth
 X Desktopsuche: Installer
 X Desktopsuche: Besseres Seiten-Design
+X Desktopsuche: Willkommensseite anzeigen, wenn keine Start-URLs definiert sind.
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -98,12 +99,12 @@ X Desktopsuche: Besseres Seiten-Design
       "field.feldName" hinzugefügt werden.
     - Init-Parameter von configFile nach searchConfigFile umbenannt.
 
-  Desktopsuche: Willkommensseite anzeigen, wenn keine Start-URLs definiert sind.
+  Desktopsuche: file-Treffer über http bereitstellen
+  Desktopsuche: search.jsp: Forward zu searchinput.jsp, wenn query nicht gesetzt.
   Desktopsuche: Status
     - Wann wurde der Index zuletzt aktualisiert
     - Fortschritt bei laufender Aktualisierung
-  Desktopsuche: Besseres Seiten-Design
-  Desktopsuche: search.jsp: Forward zu searchinput.jsp, wenn query nicht gesetzt.
+  Bug: Indexierung von Webseiten geht nicht
 
   Desktopsuche: Task-Icon für Linux
 

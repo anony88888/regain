@@ -2,21 +2,26 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.top {
+table.top {
   margin: 5px;
+  margin-bottom: 30px;
   font-weight: bold;
 }
 
-img.logo {
-  vertical-align: -45px;
-  padding-right: 50px;
-  padding-bottom: 20px;
+td.searchTop {
+  padding-left: 50px;
+  vertical-align: center;
+}
+
+td.searchTop form {
+  display:inline;
 }
 
 table.content {
   padding: 0px;
   margin: 5px;
-  border-spacing:0px;
+  border-spacing: 0px;
+  border-collapse: collapse;
   border-top: 2px solid #004A80;
   border-bottom: 2px solid #004A80;
   width: 100%;
@@ -45,11 +50,11 @@ h4 {
 }
 
 .hint {
-  font-size: small;
+  font-size: 12;
 }
 
 .hitDetails {
-  font-size: small;
+  font-size: 12;
 }
 
 .hitInfo{
@@ -61,7 +66,6 @@ h4 {
 }
 
 table.searchBottom {
-  padding: 30px;
   margin: 5px;
   border-spacing: 0px;
   border-top: 2px solid #004A80;
@@ -69,6 +73,10 @@ table.searchBottom {
   width: 100%;
   text-align: center;
   background-color: #7DA7D9;
+}
+
+table.searchBottom td {
+  padding: 30px;
 }
 
 select.editlist {

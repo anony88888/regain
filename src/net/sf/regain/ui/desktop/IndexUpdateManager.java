@@ -122,30 +122,42 @@ public class IndexUpdateManager {
       // The index must be updated
       File xmlFile = new File(CRAWLER_CONFIG_FILE);
       CrawlerConfig config = new XmlCrawlerConfig(xmlFile);
-
-      // Proxy settings
-      CrawlerToolkit.initProxy(config);
       
-      // Create and run the crawler
-      TrayIconManager.getInstance().setIndexUpdateRunning(true);
-      try {
-        mLog.info("Starting index update on " + new Date());
-        mCrawler = new Crawler(config);
-        mCrawler.run(true, null);
-      }
-      catch (RegainException exc) {
-        mLog.error("Updating the index failed", exc);
-      }
-      finally {
-        mCrawler = null;
-
-        // Save the time when the index was last updated
-        saveIndexLastUpdate();
+      // Check whether to show the welcome page
+      if (config.getStartUrls().length == 0) {
+        // There are no start URLs defined -> Show the welcome page
+        mLog.info("There is nothing configured. Showing the welcome page.");
+        DesktopToolkit.openPageInBrowser("welcome.jsp");
         
-        // Run the garbage collector
-        System.gc();
+        // Show the welcome page again, when the next update period is finished
+        saveIndexLastUpdate();
+      } else {
+        // Update the index
 
-        TrayIconManager.getInstance().setIndexUpdateRunning(false);
+        // Proxy settings
+        CrawlerToolkit.initProxy(config);
+        
+        // Create and run the crawler
+        TrayIconManager.getInstance().setIndexUpdateRunning(true);
+        try {
+          mLog.info("Starting index update on " + new Date());
+          mCrawler = new Crawler(config);
+          mCrawler.run(true, null);
+        }
+        catch (RegainException exc) {
+          mLog.error("Updating the index failed", exc);
+        }
+        finally {
+          mCrawler = null;
+  
+          // Save the time when the index was last updated
+          saveIndexLastUpdate();
+          
+          // Run the garbage collector
+          System.gc();
+  
+          TrayIconManager.getInstance().setIndexUpdateRunning(false);
+        }
       }
     }
   }
