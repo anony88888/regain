@@ -164,6 +164,26 @@ public abstract class PageRequest {
    */
   public abstract Enumeration getParameterNames() throws RegainException;
 
+  
+  /**
+   * Gets the header with the given name.
+   * 
+   * @param name The name of the header.
+   * @return The header or <code>null</code> if no such header exists.
+   * @throws RegainException If getting the header failed.
+   */
+  public abstract String getHeader(String name) throws RegainException;
+
+  
+  /**
+   * Gets the header with the given name as date.
+   * 
+   * @param name The name of the header.
+   * @return The date header or <code>-1</code> if no such header exists.
+   * @throws RegainException If getting the header failed.
+   */
+  public abstract long getHeaderAsDate(String name) throws RegainException;
+
 
   /**
    * Sets an attribute at the page context.

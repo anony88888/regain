@@ -27,7 +27,6 @@
  */
 package net.sf.regain.util.sharedtag.taglib;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
@@ -84,9 +83,12 @@ public abstract class SharedTagWrapperTag
    */
   public int doStartTag() throws JspException {
     PageRequest request = getPageRequest();
-    PageResponse response = new JspPageResponse((HttpServletResponse) pageContext.getResponse());
+    JspPageResponse response = new JspPageResponse(pageContext);
     try {
       int result = mNestedTag.printStartTag(request, response);
+      
+      // response.close();
+      
       switch (result) {
         case SharedTag.EVAL_TAG_BODY: return EVAL_BODY_TAG;
         case SharedTag.SKIP_TAG_BODY: return SKIP_BODY;
@@ -111,7 +113,7 @@ public abstract class SharedTagWrapperTag
    */
   public int doAfterBody() throws JspException {
     PageRequest request = getPageRequest();
-    PageResponse response = new JspPageResponse((HttpServletResponse) pageContext.getResponse());
+    PageResponse response = new JspPageResponse(pageContext);
     try {
       int result = mNestedTag.printAfterBody(request, response);
       switch (result) {
@@ -152,7 +154,7 @@ public abstract class SharedTagWrapperTag
 
     // Print the end tag
     PageRequest request = getPageRequest();
-    PageResponse response = new JspPageResponse((HttpServletResponse) pageContext.getResponse());
+    PageResponse response = new JspPageResponse(pageContext);
     try {
       mNestedTag.printEndTag(request, response);
     }

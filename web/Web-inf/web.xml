@@ -12,4 +12,17 @@
     <param-value>../conf/regain/SearchConfiguration.xml</param-value>
   </context-param>
 
+  <!-- file servlet -->
+  <servlet>
+    <servlet-name>file</servlet-name>
+    <display-name>FileServlet</display-name>
+    <servlet-class>net.sf.regain.ui.server.FileServlet</servlet-class>
+  </servlet>
+
+  <!-- Mapping for file servlet -->
+  <servlet-mapping>
+    <servlet-name>file</servlet-name>
+    <url-pattern>/file/*</url-pattern>
+  </servlet-mapping>
+
 </web-app>

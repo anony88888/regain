@@ -28,7 +28,7 @@
 
   <tag>
     <name>input_maxresults</name>
-    <tagclass>net.sf.regain.ui.server.taglib.input.MaxResultsTag</tagclass>
+    <tagclass>net.sf.regain.ui.server.taglib.input.MaxresultsTag</tagclass>
     <bodycontent>empty</bodycontent>
   </tag>
 
@@ -52,7 +52,7 @@
 
   <tag>
     <name>stats_searchtime</name>
-    <tagclass>net.sf.regain.ui.server.taglib.stats.SearchTimeTag</tagclass>
+    <tagclass>net.sf.regain.ui.server.taglib.stats.SearchtimeTag</tagclass>
     <bodycontent>empty</bodycontent>
   </tag>
 
@@ -63,6 +63,21 @@
 
     <attribute>
       <name>name</name>
+      <required>true</required>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>check</name>
+    <tagclass>net.sf.regain.ui.server.taglib.CheckTag</tagclass>
+    <bodycontent>empty</bodycontent>
+
+    <attribute>
+      <name>noIndexUrl</name>
+      <required>true</required>
+    </attribute>
+    <attribute>
+      <name>noQueryUrl</name>
       <required>true</required>
     </attribute>
   </tag>

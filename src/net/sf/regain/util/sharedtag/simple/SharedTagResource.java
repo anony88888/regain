@@ -78,7 +78,7 @@ public class SharedTagResource extends BasicResource {
     PrintStream printStream = new PrintStream(stream);
 
     PageRequest request = new SimplePageRequest(req);
-    PageResponse response = new SimplePageResponse(printStream);
+    PageResponse response = new SimplePageResponse(this, req, resp, printStream);
 
     try {
       mRootTagExecuter.execute(request, response);

@@ -27,7 +27,13 @@
  */
 package net.sf.regain.util.sharedtag.simple;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintStream;
+
+import simple.http.Request;
+import simple.http.Response;
+import simple.http.serve.Resource;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.util.sharedtag.PageResponse;
@@ -39,19 +45,90 @@ import net.sf.regain.util.sharedtag.PageResponse;
  */
 public class SimplePageResponse implements PageResponse {
   
+  /** The resource that uses this response. */
+  private Resource mResource;
+  
+  /** The request to adapt. */
+  private Request mRequest;
+  
+  /** The response to adapt. */
+  private Response mResponse;
+  
   /** The PrintStream to write the results to. */
   private PrintStream mPrintStream;
 
+  
+  /**
+   * Creates a new instance of SimplePageWriter.
+   * 
+   * @param resource The resource that uses this response.
+   * @param request The request to adapt.
+   * @param response The response to adapt.
+   */
+  public SimplePageResponse(Resource resource,
+    Request request, Response response)
+  {
+    this(resource, request, response, null);
+  }
+  
 
   /**
    * Creates a new instance of SimplePageWriter.
    * 
+   * @param resource The resource that uses this response.
+   * @param request The request to adapt.
+   * @param response The response to adapt.
    * @param printStream The PrintStream to write the results to.
    */
-  public SimplePageResponse(PrintStream printStream) {
+  public SimplePageResponse(Resource resource,
+    Request request, Response response, PrintStream printStream)
+  {
+    mResource = resource;
+    mRequest = request;
+    mResponse = response;
     mPrintStream = printStream;
   }
-  
+
+
+  /**
+   * Sets the header with the given name.
+   * 
+   * @param name The name of the header.
+   * @param value The header value to set.
+   * @throws RegainException If getting the header failed.
+   */
+  public void setHeader(String name, String value) throws RegainException {
+    mResponse.set(name, value);
+  }
+
+
+  /**
+   * Sets the header with the given name as date.
+   * 
+   * @param name The name of the header.
+   * @param value The header value to set.
+   * @throws RegainException If getting the header failed.
+   */
+  public void setHeaderAsDate(String name, long value) throws RegainException {
+    mResponse.setDate(name, value);
+  }
+
+
+  /**
+   * Gets the OutputStream to use for sending binary data.
+   * 
+   * @return The OutputStream to use for sending binary data.
+   * @throws RegainException If getting the OutputStream failed.
+   */
+  public OutputStream getOutputStream() throws RegainException {
+    try {
+      return mResponse.getOutputStream();
+    }
+    catch (IOException exc) {
+      throw new RegainException("Getting the response OutputStream failed", exc);
+    }
+  }
+
 
   /**
    * Prints text to a page.
@@ -60,6 +137,15 @@ public class SimplePageResponse implements PageResponse {
    * @throws RegainException If printing failed.
    */
   public void print(String text) throws RegainException {
+    if (mPrintStream == null) {
+      try {
+        mPrintStream = mResponse.getPrintStream();
+      }
+      catch (IOException exc) {
+        throw new RegainException("Getting response PrintStream failed", exc);
+      }
+    }
+    
     mPrintStream.print(text);
   }
 
@@ -72,6 +158,17 @@ public class SimplePageResponse implements PageResponse {
    */
   public void sendRedirect(String url) throws RegainException {
     throw new RedirectException(url);
+  }
+
+
+  /**
+   * Sends a HTTP error.
+   * 
+   * @param errorCode The error code to send.
+   * @throws RegainException If sending the error failed.
+   */
+  public void sendError(int errorCode) throws RegainException {
+    mResource.handle(mRequest, mResponse, errorCode);
   }
 
 }

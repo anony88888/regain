@@ -117,6 +117,30 @@ public class SimplePageRequest extends PageRequest {
     }
   }
 
+  
+  /**
+   * Gets the header with the given name.
+   * 
+   * @param name The name of the header.
+   * @return The header or <code>null</code> if no such header exists.
+   * @throws RegainException If getting the header failed.
+   */
+  public String getHeader(String name) throws RegainException {
+    return mRequest.getValue(name);
+  }
+
+
+  /**
+   * Gets the header with the given name as date.
+   * 
+   * @param name The name of the header.
+   * @return The date header or <code>-1</code> if no such header exists.
+   * @throws RegainException If getting the header failed.
+   */
+  public long getHeaderAsDate(String name) throws RegainException {
+    return mRequest.getDate(name);
+  }
+
 
   /**
    * Sets an attribute at the page context.

@@ -96,7 +96,7 @@ public class IndexUpdateManager implements DesktopConstants {
    * The run method of the thread that checks whether an index update is
    * nessesary.
    */
-  private void checkThreadRun() {
+  protected void checkThreadRun() {
     while (true) {
       try {
         checkUpdate();

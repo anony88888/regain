@@ -46,8 +46,7 @@
       <dir>c:\Temp\searchindex_example</dir>
       
       <rewriteRules>
-        <rule prefix="file://c:/Temp/dokumente/doc" replacement="file:////knecht/test1"/>
-        <rule prefix="file://c:/Temp/dokumente/xls" replacement="file:////knecht/test2"/>
+        <rule prefix="file://c:/example/www-data" replacement="http://www.mydomain.de"/>
       </rewriteRules>
     </index>
   </indexList>

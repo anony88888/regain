@@ -94,6 +94,7 @@ X Desktopsuche: search.jsp:
     - Forward zu noindex.jsp, wenn kein Index vorhanden.
     - Forward zu searchinput.jsp, wenn query nicht gesetzt.
 X Desktopsuche: Links zu den anderen Seiten im Footer-Bereich
+X Änderungen für die Desktopsuche in Server-Variante übernehmen
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)

@@ -28,13 +28,24 @@
 package net.sf.regain.search;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Enumeration;
+import java.util.HashMap;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.RegainToolkit;
 import net.sf.regain.search.config.IndexConfig;
 import net.sf.regain.search.config.SearchConfig;
 import net.sf.regain.search.config.XmlSearchConfig;
 import net.sf.regain.util.sharedtag.PageRequest;
+import net.sf.regain.util.sharedtag.PageResponse;
+
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.Hits;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermQuery;
 
 /**
  * A toolkit for the search JSPs containing helper methods.
@@ -54,6 +65,9 @@ public class SearchToolkit {
   
   /** The configuration of the search mask. */
   private static SearchConfig mConfig;
+  
+  /** Holds for an extension the mime type. */
+  private static HashMap mMimeTypeHash;
 
   
   /**
@@ -144,8 +158,107 @@ public class SearchToolkit {
 
     return context;
   }
-
   
+  
+  /**
+   * Decides whether the remote access to a file should be allowed.
+   * <p>
+   * The access is granted if the file is in the index.
+   * 
+   * @param request The request that holds the used index.
+   * @param fileUrl The URL to file to check.
+   * @return Whether the remote access to a file should be allowed.
+   * @throws RegainException If checking the file failed.
+   */
+  public static boolean allowFileAccess(PageRequest request, String fileUrl)
+    throws RegainException
+  {
+    IndexConfig config = getIndexConfig(request);
+    
+    IndexSearcherManager manager = IndexSearcherManager.getInstance(config.getDirectory());
+    
+    // Check whether the document is in the index
+    Term urlTerm = new Term("url", fileUrl);
+    Query query = new TermQuery(urlTerm);
+    Hits hits = manager.search(query);
+    
+    // Allow the access if we found the file in the index
+    return hits.length() > 0;
+  }
+
+
+  /**
+   * Sends a file to the client.
+   *
+   * @param request The request.
+   * @param response The response.
+   * @param file The file to send.
+   * @throws RegainException If sending the file failed.
+   */
+  public static void sendFile(PageRequest request, PageResponse response, File file)
+    throws RegainException
+  {
+    long lastModified = file.lastModified();
+    if (lastModified < request.getHeaderAsDate("If-Modified-Since")) {
+      // The browser can use the cached file
+      response.sendError(304);
+    } else {
+      response.setHeaderAsDate("Date", System.currentTimeMillis());
+      response.setHeaderAsDate("Last-Modified", lastModified);
+    
+      // TODO: Make this configurable
+      if (mMimeTypeHash == null) {
+        // Source: http://de.selfhtml.org/diverses/mimetypen.htm
+        mMimeTypeHash = new HashMap();
+        mMimeTypeHash.put("html", "text/html");
+        mMimeTypeHash.put("htm",  "text/html");
+        mMimeTypeHash.put("gif",  "image/gif");
+        mMimeTypeHash.put("jpg",  "image/jpeg");
+        mMimeTypeHash.put("jpeg", "image/jpeg");
+        mMimeTypeHash.put("png",  "image/png");
+        mMimeTypeHash.put("js",   "text/javascript");
+        mMimeTypeHash.put("txt",  "text/plain");
+        mMimeTypeHash.put("pdf",  "application/pdf");
+        mMimeTypeHash.put("xls",  "application/msexcel");
+        mMimeTypeHash.put("doc",  "application/msword");
+        mMimeTypeHash.put("ppt",  "application/mspowerpoint");
+        mMimeTypeHash.put("rtf",  "text/rtf");
+      }
+      
+      // Set the MIME type
+      String filename = file.getName();
+      int lastDot = filename.lastIndexOf('.');
+      if (lastDot != -1) {
+        String extension = filename.substring(lastDot + 1);
+        String mimeType = (String) mMimeTypeHash.get(extension);
+        if (mimeType != null) {
+          response.setHeader("Content-Type", "mimeType/" + mimeType);
+        }
+      }
+      
+      // Send the file
+      OutputStream out = null;
+      FileInputStream in = null;
+      try {
+        out = response.getOutputStream();
+        in = new FileInputStream(file);
+        RegainToolkit.pipe(in, out);
+      }
+      catch (IOException exc) {
+        throw new RegainException("Sending file failed: " + file.getAbsolutePath(), exc);
+      }
+      finally {
+        if (in != null) {
+          try { in.close(); } catch (IOException exc) {}
+        }
+        if (out != null) {
+          try { out.close(); } catch (IOException exc) {}
+        }
+      }
+    }
+  }
+
+
   /**
    * Loads the configuration of the search mask.
    * <p>

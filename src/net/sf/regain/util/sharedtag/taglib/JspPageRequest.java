@@ -29,6 +29,7 @@ package net.sf.regain.util.sharedtag.taglib;
 
 import java.util.Enumeration;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
 import net.sf.regain.RegainException;
@@ -54,7 +55,7 @@ public class JspPageRequest extends PageRequest {
     mPageContext = pageContext;
   }
 
-  
+
   /**
    * Gets a request parameter that was given to page via GET or POST.
    * 
@@ -88,6 +89,32 @@ public class JspPageRequest extends PageRequest {
    */
   public Enumeration getParameterNames() {
     return mPageContext.getRequest().getParameterNames();
+  }
+
+  
+  /**
+   * Gets the header with the given name.
+   * 
+   * @param name The name of the header.
+   * @return The header or <code>null</code> if no such header exists.
+   * @throws RegainException If getting the header failed.
+   */
+  public String getHeader(String name) throws RegainException {
+    HttpServletRequest request = (HttpServletRequest) mPageContext.getRequest();
+    return request.getHeader(name);
+  }
+
+  
+  /**
+   * Gets the header with the given name as date.
+   * 
+   * @param name The name of the header.
+   * @return The date header or <code>-1</code> if no such header exists.
+   * @throws RegainException If getting the header failed.
+   */
+  public long getHeaderAsDate(String name) throws RegainException {
+    HttpServletRequest request = (HttpServletRequest) mPageContext.getRequest();
+    return request.getDateHeader(name);
   }
 
 

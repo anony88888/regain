@@ -27,6 +27,8 @@
  */
 package net.sf.regain.util.sharedtag;
 
+import java.io.OutputStream;
+
 import net.sf.regain.RegainException;
 
 /**
@@ -35,7 +37,33 @@ import net.sf.regain.RegainException;
  * @author Til Schneider, www.murfman.de
  */
 public interface PageResponse {
+  
+  /**
+   * Sets the header with the given name.
+   * 
+   * @param name The name of the header.
+   * @param value The header value to set.
+   * @throws RegainException If getting the header failed.
+   */
+  public void setHeader(String name, String value) throws RegainException;
+  
+  /**
+   * Sets the header with the given name as date.
+   * 
+   * @param name The name of the header.
+   * @param value The header value to set.
+   * @throws RegainException If getting the header failed.
+   */
+  public void setHeaderAsDate(String name, long value) throws RegainException;
 
+  /**
+   * Gets the OutputStream to use for sending binary data.
+   * 
+   * @return The OutputStream to use for sending binary data.
+   * @throws RegainException If getting the OutputStream failed.
+   */
+  public OutputStream getOutputStream() throws RegainException;
+  
   /**
    * Prints text to a page.
    * 
@@ -51,5 +79,13 @@ public interface PageResponse {
    * @throws RegainException If redirecting failed.
    */
   public void sendRedirect(String url) throws RegainException;
+  
+  /**
+   * Sends a HTTP error.
+   * 
+   * @param errorCode The error code to send.
+   * @throws RegainException If sending the error failed.
+   */
+  public void sendError(int errorCode) throws RegainException;
 
 }

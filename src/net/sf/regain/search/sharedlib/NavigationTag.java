@@ -147,10 +147,6 @@ public class NavigationTag extends SharedTag implements SearchConstants {
 
     // Für Java 1.2.2
     String encodedQuery = URLEncoder.encode(query);
-    String encodedIndexName = null;
-    if (indexName != null) {
-      encodedIndexName = URLEncoder.encode(indexName);
-    }
 
     // Ab Java 1.3
     /*
@@ -160,7 +156,8 @@ public class NavigationTag extends SharedTag implements SearchConstants {
     */
 
     response.print("<a href=\"" + targetPage + "?query=" + encodedQuery);
-    if (encodedIndexName != null) {
+    if (indexName != null) {
+      String encodedIndexName = URLEncoder.encode(indexName);
       response.print("&index=" + encodedIndexName);
     }
     if (maxResults != SearchConstants.DEFAULT_MAX_RESULTS) {

@@ -28,8 +28,11 @@
 package net.sf.regain.util.sharedtag.taglib;
 
 import java.io.IOException;
+import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.PageContext;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.util.sharedtag.PageResponse;
@@ -41,19 +44,66 @@ import net.sf.regain.util.sharedtag.PageResponse;
  */
 public class JspPageResponse implements PageResponse {
 
+  /** The page context to adapt. */
+  private PageContext mPageContext;
+  
   /** The ServletResponse to adapt. */
   private HttpServletResponse mServletResponse;
+  
+  /** The JSP writer. Is <code>null</code> until the first time requested. */
+  private JspWriter mJspWriter;
 
 
   /**
    * Creates a new instance of JspPageWriter.
    * 
-   * @param response The ServletResponse to adapt.
+   * @param pageContext The page context to adapt.
    */
-  public JspPageResponse(HttpServletResponse response) {
-    mServletResponse = response;
+  public JspPageResponse(PageContext pageContext) {
+    mPageContext = pageContext;
+    mServletResponse = (HttpServletResponse) pageContext.getResponse();
   }
 
+  
+  /**
+   * Sets the header with the given name.
+   * 
+   * @param name The name of the header.
+   * @param value The header value to set.
+   * @throws RegainException If getting the header failed.
+   */
+  public void setHeader(String name, String value) throws RegainException {
+    mServletResponse.setHeader(name, value);
+  }
+
+
+  /**
+   * Sets the header with the given name as date.
+   * 
+   * @param name The name of the header.
+   * @param value The header value to set.
+   * @throws RegainException If getting the header failed.
+   */
+  public void setHeaderAsDate(String name, long value) throws RegainException {
+    mServletResponse.setDateHeader(name, value);
+  }
+  
+  
+  /**
+   * Gets the OutputStream to use for sending binary data.
+   * 
+   * @return The OutputStream to use for sending binary data.
+   * @throws RegainException If getting the OutputStream failed.
+   */
+  public OutputStream getOutputStream() throws RegainException {
+    try {
+      return mServletResponse.getOutputStream();
+    }
+    catch (IOException exc) {
+      throw new RegainException("Getting the response OutputStream failed", exc);
+    }
+  }
+  
 
   /**
    * Prints text to a page.
@@ -63,7 +113,11 @@ public class JspPageResponse implements PageResponse {
    */
   public void print(String text) throws RegainException {
     try {
-      mServletResponse.getWriter().print(text);
+      if (mJspWriter == null) {
+        mJspWriter = mPageContext.getOut();
+      }
+
+      mJspWriter.print(text);
     }
     catch (IOException exc) {
       throw new RegainException("Writing results failed", exc);
@@ -83,6 +137,22 @@ public class JspPageResponse implements PageResponse {
     }
     catch (IOException exc) {
       throw new RegainException("Sending redirect to '" + url + "' failed", exc);
+    }
+  }
+
+
+  /**
+   * Sends a HTTP error.
+   * 
+   * @param errorCode The error code to send.
+   * @throws RegainException If sending the error failed.
+   */
+  public void sendError(int errorCode) throws RegainException {
+    try {
+      mServletResponse.sendError(errorCode);
+    }
+    catch (IOException exc) {
+      throw new RegainException("Sending error code " + errorCode + " failed", exc);
     }
   }
 
