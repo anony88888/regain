@@ -114,17 +114,18 @@ X Bug: "http://www.murfman.de" wird geparst, aber nicht indexiert.
       "field.feldName" hinzugefügt werden.
     - Init-Parameter von configFile nach searchConfigFile umbenannt.
 
-  Desktopsuche: Task-Icon für Linux
-  Desktopsuche: Mime-Types konfigurierbar
-  Desktopsuche: Port einstellbar
-  Desktopsuche: Zugriff von außen für einstellbare Benutzer/Passwort-Paare
-    erlauben.
-  Desktopsuche: Bei Update-Installation alte Konfiguration nicht überschreiben.
-  Desktopsuche: Schönere Fehlerseite (errorpage benutzen)
-  Desktopsuche: Nach Speichern der Konfiguration nur dann neu indexieren, wenn
-    sich etwas geändert hat, das den Index verändert.
   Desktopsuche: Status: Aktueller Index: Größe in MB, Anzahl Dokumente.
     Aktuelle Indexierung: Aktuelle Anzahl Indexierte Dokumente.
+
+  Desktopsuche: Bei Update-Installation alte Konfiguration nicht überschreiben.
+  Desktopsuche: Port einstellbar
+
+  Openoffice-Präparator
+  Desktopsuche: Task-Icon für Linux
+  Desktopsuche: Mime-Types konfigurierbar
+  Desktopsuche: Zugriff von außen für einstellbare Benutzer/Passwort-Paare
+    erlauben.
+  Desktopsuche: Schönere Fehlerseite (errorpage benutzen)
   Desktopsuche: Aktuelle Indexierung stoppen.
   Crawler: Arbeitspeicher sparen: Dateien vom Dateisystem nicht ins
     mFoundUrlSet oder mIgnoredUrlSet aufnehmen. Beim Dateisystem ist durch die
@@ -132,6 +133,9 @@ X Bug: "http://www.murfman.de" wird geparst, aber nicht indexiert.
   	(Dazu muss Start-List muss untereinander präfixfrei sein!)
   Crawler: Arbeitspeicher sparen: Erst Dateien an mJobList anhängen, dann
   	Unterverzeichnisse. So wird die mJobList klein gehalten.
+
+  Desktopsuche: Nach Speichern der Konfiguration nur dann neu indexieren, wenn
+    sich etwas geändert hat, das den Index verändert.
   Präperatoren in eigene Jars kapseln. Alle Jars werden in ein Verzeichnis
     gepackt und beim Start geladen.
     So ist im regain.jar nur das, was regain selbst braucht und die
