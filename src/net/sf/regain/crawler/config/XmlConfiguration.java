@@ -29,15 +29,16 @@ package net.sf.regain.crawler.config;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import net.sf.regain.RegainException;
-import net.sf.regain.crawler.preparator.html.HtmlContentExtractor;
-import net.sf.regain.crawler.preparator.html.HtmlPathExtractor;
 
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 
 /**
@@ -109,15 +110,6 @@ public class XmlConfiguration implements Configuration {
   private String[] mUrlPrefixBlackList;
   /** Die Wei�e Liste */
   private WhiteListEntry[] mWhiteListEntryArr;
-  /**
-   * Die HtmlContentExtractor, die den jeweiligen zu indizierenden Inhalt aus
-   * den HTML-Dokumenten schneiden.
-   */
-  private HtmlContentExtractor[] mHtmlContentExtractorArr;
-  /**
-   * Die HtmlPathExtractor zur�ck, die den Pfad aus HTML-Dokumenten extrahieren.
-   */
-  private HtmlPathExtractor[] mHtmlPathExtractorArr;
 
   /**
    * Die regul�ren Ausdr�cke, auf die die URL eines Dokuments passen muss,
@@ -142,7 +134,6 @@ public class XmlConfiguration implements Configuration {
    */
   public XmlConfiguration(File xmlFile) throws RegainException {
     Document doc = loadXmlDocument(xmlFile);
-
     Element config = doc.getDocumentElement();
 
     readProxyConfig(config);
@@ -150,15 +141,13 @@ public class XmlConfiguration implements Configuration {
     readHttpTimeoutSecs(config);
     readIndexConfig(config);
     readControlFileConfig(config);
-    readHtmlContentExtractorList(config);
-    readHtmlPathExtractorList(config);
     readStartUrls(config);
     readHtmlParserUrlPatterns(config);
     readDirectoryParserUrlPatterns(config);
     readBlackList(config);
     readWhiteList(config);
     readUseLinkTextAsTitleRegexList(config);
-    readPreparatorSettingsList(config);
+    readPreparatorSettingsList(config, xmlFile);
   }
 
 
@@ -311,92 +300,6 @@ public class XmlConfiguration implements Configuration {
 
 
   /**
-   * Liest die Liste der HTML-Inhalt-Extraktoren aus der Konfiguration.
-   * <p>
-   * Diese dienen dazu, den zu indizierenden Inhalt aus einem HTML-Dokument zu
-   * extrahieren.
-   *
-   * @param config Die Konfiguration, aus der gelesen werden soll.
-   * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
-   */
-  private void readHtmlContentExtractorList(Node config) throws RegainException {
-    Node node = XmlToolkit.getChild(config, "htmlContentExtractorList");
-    Node[] nodeArr = XmlToolkit.getChildArr(node, "contentExtractor");
-    mHtmlContentExtractorArr = new HtmlContentExtractor[nodeArr.length];
-    for (int i = 0; i < nodeArr.length; i++) {
-      node = XmlToolkit.getChild(nodeArr[i], "prefix");
-      String prefix = XmlToolkit.getTextAsUrl(node);
-
-      String contentStartRegex = null;
-      node = XmlToolkit.getChild(nodeArr[i], "startRegex", false);
-      if (node != null) {
-        contentStartRegex = XmlToolkit.getText(node);
-      }
-
-      String contentEndRegex = null;
-      node = XmlToolkit.getChild(nodeArr[i], "endRegex", false);
-      if (node != null) {
-        contentEndRegex = XmlToolkit.getText(node);
-      }
-
-      String headlineRegex = null;
-      int headlineRegexGroup = -1;
-      node = XmlToolkit.getChild(nodeArr[i], "headlineRegex", false);
-      if (node != null) {
-        headlineRegex = XmlToolkit.getText(node);
-        headlineRegexGroup = XmlToolkit.getAttributeAsInt(node, "regexGroup");
-      }
-
-      mHtmlContentExtractorArr[i] = new HtmlContentExtractor(prefix,
-        contentStartRegex, contentEndRegex, headlineRegex, headlineRegexGroup);
-    }
-  }
-
-
-
-  /**
-   * Liest die Liste der HTML-Pfad-Extraktoren aus der Konfiguration.
-   * <p>
-   * Diese dienen dazu, den den Pfad aus HTML-Dokumenten extrahieren, �ber den
-   * das Dokument zu erreichen ist.
-   *
-   * @param config Die Konfiguration, aus der gelesen werden soll.
-   * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
-   */
-  private void readHtmlPathExtractorList(Node config) throws RegainException {
-    Node node = XmlToolkit.getChild(config, "htmlPathExtractorList");
-    Node[] nodeArr = XmlToolkit.getChildArr(node, "pathExtractor");
-    mHtmlPathExtractorArr = new HtmlPathExtractor[nodeArr.length];
-    for (int i = 0; i < nodeArr.length; i++) {
-      node = XmlToolkit.getChild(nodeArr[i], "prefix");
-      String prefix = XmlToolkit.getTextAsUrl(node);
-
-      String pathStartRegex = null;
-      node = XmlToolkit.getChild(nodeArr[i], "startRegex", false);
-      if (node != null) {
-        pathStartRegex = XmlToolkit.getText(node);
-      }
-
-      String pathEndRegex = null;
-      node = XmlToolkit.getChild(nodeArr[i], "endRegex", false);
-      if (node != null) {
-        pathEndRegex = XmlToolkit.getText(node);
-      }
-
-      node = XmlToolkit.getChild(nodeArr[i], "pathNodeRegex");
-      String pathElementRegex = XmlToolkit.getText(node);
-      int pathElementUrlGroup = XmlToolkit.getAttributeAsInt(node, "urlRegexGroup");
-      int pathElementTitleGroup = XmlToolkit.getAttributeAsInt(node, "titleRegexGroup");
-
-      mHtmlPathExtractorArr[i] = new HtmlPathExtractor(prefix,
-        pathStartRegex, pathEndRegex, pathElementRegex,
-        pathElementUrlGroup, pathElementTitleGroup);
-    }
-  }
-
-
-
-  /**
    * Liest die Start-URLs aus der Konfiguration.
    *
    * @param config Die Konfiguration, aus der gelesen werden soll.
@@ -532,12 +435,15 @@ public class XmlConfiguration implements Configuration {
 
 
   /**
-   * Liest die Liste der Einstellungen f�r die Pr�peratoren.
+   * Reads the list of preparator settings.
    *
-   * @param config Die Konfiguration, aus der gelesen werden soll.
-   * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
+   * @param config The configuration to read from
+   * @param xmlFile The file the configuration was read from.
+   * @throws RegainException If the configuration has errors.
    */
-  private void readPreparatorSettingsList(Node config) throws RegainException {
+  private void readPreparatorSettingsList(Node config, File xmlFile)
+    throws RegainException
+  {
     Node node = XmlToolkit.getChild(config, "preparatorList");
     Node[] nodeArr = XmlToolkit.getChildArr(node, "preparator");
     mPreparatorSettingsArr = new PreparatorSettings[nodeArr.length];
@@ -548,11 +454,57 @@ public class XmlConfiguration implements Configuration {
       node = XmlToolkit.getChild(nodeArr[i], "class");
       String className = XmlToolkit.getText(node);
 
-      mPreparatorSettingsArr[i] = new PreparatorSettings(urlRegex, className);
+      node = XmlToolkit.getChild(nodeArr[i], "config", false);
+      PreparatorConfig prepConfig = null;
+      if (node != null) {
+        prepConfig = readPreparatorConfig(node, xmlFile);
+      }
+      
+      mPreparatorSettingsArr[i] = new PreparatorSettings(urlRegex, className, prepConfig);
     }
   }
 
 
+  /**
+   * Reads the configuration of a preparator from a node.
+   * 
+   * @param prepConfig The node to read the preparator config from.
+   * @param xmlFile The file the configuration was read from.
+   * @return The configuration of a preparator.
+   * @throws RegainException If the configuration has errors.
+   */
+  private PreparatorConfig readPreparatorConfig(Node prepConfig, File xmlFile)
+    throws RegainException
+  {
+    // Check whether the config is in a extra file
+    String extraFileName = XmlToolkit.getAttribute(prepConfig, "file", false);
+    if (extraFileName != null) {
+      File extraFile = new File(xmlFile.getParentFile(), extraFileName);
+      Document doc = loadXmlDocument(extraFile);
+      prepConfig = doc.getDocumentElement();
+    }
+    
+    // Read the sections
+    PreparatorConfig config = new PreparatorConfig();
+    Node[] sectionArr = XmlToolkit.getChildArr(prepConfig, "section");
+    for (int secIdx = 0; secIdx < sectionArr.length; secIdx++) {
+      String sectionName = XmlToolkit.getAttribute(sectionArr[secIdx], "name");
+
+      // Read the params
+      HashMap paramMap = new HashMap();
+      Node[] paramArr = XmlToolkit.getChildArr(sectionArr[secIdx], "param");
+      for (int paramIdx = 0; paramIdx < paramArr.length; paramIdx++) {
+        String paramName = XmlToolkit.getAttribute(paramArr[paramIdx], "name");
+        String paramValue = XmlToolkit.getText(paramArr[paramIdx]);
+        paramMap.put(paramName, paramValue);
+      }
+      
+      config.addSection(sectionName, paramMap);
+    }
+    
+    return config;
+  }
+  
 
   /**
    * Gibt den Host-Namen des Proxy-Servers zur�ck. Wenn kein Host konfiguriert
@@ -799,35 +751,6 @@ public class XmlConfiguration implements Configuration {
    */
   public WhiteListEntry[] getWhiteList() {
     return mWhiteListEntryArr;
-  }
-
-
-
-  /**
-   * Gibt die HtmlContentExtractor zur�ck, die den zu inizierenden Teil aus
-   * HTML-Dokumenten extrahieren.
-   * <p>
-   * Wenn keine Liste vorhanden ist, wird <code>null</code> zur�ckgegeben.
-   *
-   * @return Die HtmlContentExtractor zur�ck, die den zu inizierenden Teil aus
-   *         HTML-Dokumenten extrahieren.
-   */
-  public HtmlContentExtractor[] getHtmlContentExtractors() {
-    return mHtmlContentExtractorArr;
-  }
-
-
-
-  /**
-   * Gibt die HtmlPathExtractor zur�ck, die den Pfad aus HTML-Dokumenten
-   * extrahieren.
-   * <p>
-   * Wenn keine Liste vorhanden ist, wird <code>null</code> zur�ckgegeben.
-   *
-   * @return Die HtmlPathExtractor.
-   */
-  public HtmlPathExtractor[] getHtmlPathExtractors() {
-    return mHtmlPathExtractorArr;
   }
 
 

@@ -33,47 +33,6 @@
 
 
 <!--
- | The regular expressions that find the start and end locations of the content
- | that should be indexed in HTML pages.
- |
- | When the content should be indexed from the start, specify an empty text for
- | <startRegex>
- |
- | When the content should be indexed to the end, specify an empty text for
- | <endRegex>
- +-->
-<htmlContentExtractorList>
-  <contentExtractor>
-    <prefix>http://www.testit.de/</prefix>
-    <startRegex>&lt;!-- Start content --&gt;</startRegex>
-    <!-- <endRegex></endRegex> -->
-    <headlineRegex regexGroup="1">&lt;a name=.*>(.*)&lt;/a></headlineRegex>
-  </contentExtractor>
-</htmlContentExtractorList>
-
-
-<!--
- | The ectractor that extracts the navigation path in HTML pages.
- |
- | <prefix>:        The prefix the path extractor is responsible for.
- | <startRegex>:    The regular expression that finds the start of the area
- |                  where the whole navigation path is.
- | <endRegex>:      The regular expression that finds the end of the area where
- |                  the whole navigation path is.
- | <pathNodeRegex>: The regular expression that extracts one node of the
- |                  navigation path.
- +-->
-<htmlPathExtractorList>
-  <pathExtractor>
-    <prefix>http://www.testit.de/</prefix>
-    <startRegex>&lt;!-- Pfad-Beginn  --&gt;</startRegex>
-    <endRegex>&lt;!-- Pfad-Ende --&gt;</endRegex>
-    <pathNodeRegex urlRegexGroup="1" titleRegexGroup="2">&lt;a.*href="([^"]*)">(.*)&lt;/a></pathNodeRegex>
-  </pathExtractor>
-</htmlPathExtractorList>
-
-
-<!--
  | The list of patterns a document's URL must match to, when the link text
  | should be used as title instead of the document's real title.
  +-->
@@ -161,6 +120,55 @@
   <preparator>
     <urlPattern>\.(/|html|htm)$</urlPattern>
     <class>.HtmlPreparator</class>
+    <config>
+      <!--
+       | The regular expressions that find the start and end locations of the content
+       | that should be indexed in HTML pages.
+       |
+       | "prefix":        The prefix the content extractor is responsible for.
+       |                  You may specify more content extractors.
+       | "startRegex":    The regular expression that finds the start of the
+       |                  content. When the content should be indexed from the
+       |                  start, specify an empty text for "startRegex".
+       | "endRegex":      The regular expression that finds the end of the
+       |                  content. When the content should be indexed to the
+       |                  end, specify an empty text for "endRegex".
+       | "headlineRegex": The regular expression that finds the headline.
+       | "headlineRegex.group": The group of "headlineRegex" that extracts the
+       |                  headline.
+       +-->
+      <section name="contentExtractor">
+        <param name="prefix">http://www.testit.de/</param>
+        <param name="startRegex">&lt;!-- Start content --&gt;</param>
+        <!-- <param name="endRegex"></param> -->
+        <param name="headlineRegex">&lt;a name=.*&gt;(.*)&lt;/a&gt;</param>
+        <param name="headlineRegex.group">1</param>
+      </section>
+
+      <!--
+       | The ectractor that extracts the navigation path in HTML pages.
+       |
+       | "prefix":        The prefix the path extractor is responsible for.
+       | "startRegex":    The regular expression that finds the start of the area
+       |                  where the whole navigation path is.
+       | "endRegex":      The regular expression that finds the end of the area where
+       |                  the whole navigation path is.
+       | "pathNodeRegex": The regular expression that extracts one node of the
+       |                  navigation path.
+       | "pathNodeRegex.urlGroup": The group of "pathNodeRegex" that extracts
+       |                  the URL of the path node.
+       | "pathNodeRegex.titleGroup": The group of "pathNodeRegex" that extracts
+       |                  the title of the path node.
+       +-->
+      <section name="pathExtractor">
+        <param name="prefix">http://www.testit.de/</param>
+        <param name="startRegex">&lt;!-- Pfad-Beginn  --&gt;</param>
+        <param name="endRegex">&lt;!-- Pfad-Ende --&gt;</param>
+        <param name="pathNodeRegex">&lt;a.*href="([^"]*)">(.*)&lt;/a></param>
+        <param name="pathNodeRegex.urlGroup">1</param>
+        <param name="pathNodeRegex.titleGroup">2</param>
+      </section>
+    </config>
   </preparator>
   <preparator>
     <urlPattern>\.txt$</urlPattern>
@@ -176,13 +184,13 @@
   </preparator>
   <preparator>
     <urlPattern>\.xls$</urlPattern>
-    <!--<class>.PoiMsExcelPreparator</class>-->
-    <class>.JacobMsExcelPreparator</class>
+    <class>.PoiMsExcelPreparator</class>
+    <!--<class>.JacobMsExcelPreparator</class>-->
   </preparator>
   <preparator>
     <urlPattern>\.doc$</urlPattern>
-    <!--<class>.PoiMsWordPreparator</class>-->
-    <class>.JacobMsWordPreparator</class>
+    <class>.PoiMsWordPreparator</class>
+    <!--<class>.JacobMsWordPreparator</class>-->
   </preparator>
   <preparator>
     <urlPattern>\.ppt$</urlPattern>

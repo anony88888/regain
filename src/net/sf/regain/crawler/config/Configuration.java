@@ -27,9 +27,6 @@
  */
 package net.sf.regain.crawler.config;
 
-import net.sf.regain.crawler.preparator.html.HtmlContentExtractor;
-import net.sf.regain.crawler.preparator.html.HtmlPathExtractor;
-
 /**
  * Stellt alle zu konfigurierenden Einstellungen zur Verfügung.
  *
@@ -214,26 +211,6 @@ public interface Configuration {
    * @return Die Weiße Liste
    */
   public WhiteListEntry[] getWhiteList();
-
-  /**
-   * Gibt die HtmlContentExtractor zurück, die den zu inizierenden Teil aus
-   * HTML-Dokumenten extrahieren.
-   * <p>
-   * Wenn keine Liste vorhanden ist, wird <code>null</code> zurückgegeben.
-   *
-   * @return Die HtmlContentExtractor.
-   */
-  public HtmlContentExtractor[] getHtmlContentExtractors();
-
-  /**
-   * Gibt die HtmlPathExtractor zurück, die den Pfad aus HTML-Dokumenten
-   * extrahieren.
-   * <p>
-   * Wenn keine Liste vorhanden ist, wird <code>null</code> zurückgegeben.
-   *
-   * @return Die HtmlPathExtractor.
-   */
-  public HtmlPathExtractor[] getHtmlPathExtractors();
 
   /**
    * Gibt die regulären Ausdrücke zurück, auf die die URL eines Dokuments passen

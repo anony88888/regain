@@ -27,8 +27,10 @@
  */
 package net.sf.regain.crawler.preparator;
 
+import java.util.Map;
+
 import net.sf.regain.RegainException;
-import net.sf.regain.crawler.document.DocumentFactory;
+import net.sf.regain.crawler.config.PreparatorConfig;
 import net.sf.regain.crawler.document.PathElement;
 import net.sf.regain.crawler.document.RawDocument;
 import net.sf.regain.crawler.preparator.html.HtmlContentExtractor;
@@ -53,9 +55,6 @@ public class HtmlPreparator extends AbstractPreparator {
   /** The logger for this class */
   private static Logger mLog = Logger.getLogger(HtmlPreparator.class);
 
-  /** Die DocumentFactory. Wird genutzt, um Analyse-Dateien zu schreiben. */
-  private DocumentFactory mDocumentFactory;
-
   /** Ein regulärer Ausdruck, der den Titel eines HTMl-Dokuments findet. */
   private RE mExtractHtmlTitleRE;
 
@@ -72,28 +71,47 @@ public class HtmlPreparator extends AbstractPreparator {
   private HtmlPathExtractor[] mPathExtractorArr;
 
 
-
   /**
-   * Erzeugt eine neue HtmlPreparator-Instanz.
-   *
-   * @param documentFactory Die DocumentFactory. Wird genutzt, um
-   *        Analyse-Dateien zu schreiben.
-   * @param contentExtractorArr Die HtmlContentExtractor, die den jeweiligen zu
-   *        indizierenden Inhalt aus den HTML-Dokumenten schneiden.
-   * @param pathExtractorArr Die HtmlPathExtractor, die den jeweiligen Pfad aus
-   *        den HTML-Dokumenten extrahieren.
-   * @throws RegainException Wenn der reguläre Ausdruck, der den Titel
-   *         extrahiert. Da dieser hardcodiert ist, wird der Fehler nicht
-   *         auftreten.
+   * Reads the configuration for this preparator.
+   * <p>
+   * Does nothing by default. May be overridden by subclasses to actual read the
+   * config.
+   * 
+   * @param config The configuration
+   * @throws RegainException If the configuration has an error.
    */
-  public HtmlPreparator(DocumentFactory documentFactory,
-    HtmlContentExtractor[] contentExtractorArr, HtmlPathExtractor[] pathExtractorArr)
-    throws RegainException
-  {
-    mDocumentFactory = documentFactory;
-    mContentExtractorArr = contentExtractorArr;
-    mPathExtractorArr = pathExtractorArr;
+  protected void readConfig(PreparatorConfig config) throws RegainException {
+    // Read the content extractors
+    Map[] sectionArr = config.getSectionsWithName("contentExtractor");
+    mContentExtractorArr = new HtmlContentExtractor[sectionArr.length];
+    for (int i = 0; i < mContentExtractorArr.length; i++) {
+      String prefix            = (String) sectionArr[i].get("prefix");
+      String contentStartRegex = (String) sectionArr[i].get("startRegex");
+      String contentEndRegex   = (String) sectionArr[i].get("endRegex");
+      String headlineRegex     = (String) sectionArr[i].get("headlineRegex");
+      int headlineRegexGroup   = getIntParam(sectionArr[i], "headlineRegex.group");
+      
+      mContentExtractorArr[i] = new HtmlContentExtractor(prefix,
+          contentStartRegex, contentEndRegex, headlineRegex, headlineRegexGroup);
+    }
+   
+    // Read the path extractors
+    sectionArr = config.getSectionsWithName("pathExtractor");
+    mPathExtractorArr = new HtmlPathExtractor[sectionArr.length];
+    for (int i = 0; i < mPathExtractorArr.length; i++) {
+      String prefix          = (String) sectionArr[i].get("prefix");
+      String pathStartRegex  = (String) sectionArr[i].get("startRegex");
+      String pathEndRegex    = (String) sectionArr[i].get("endRegex");
+      String pathNodeRegex   = (String) sectionArr[i].get("pathNodeRegex");
+      int pathNodeUrlGroup   = getIntParam(sectionArr[i], "pathNodeRegex.urlGroup");
+      int pathNodeTitleGroup = getIntParam(sectionArr[i], "pathNodeRegex.titleGroup");
+      
+      mPathExtractorArr[i] = new HtmlPathExtractor(prefix, pathStartRegex,
+          pathEndRegex, pathNodeRegex, pathNodeUrlGroup,
+          pathNodeTitleGroup);
+    }
 
+    // Create the title extractor regex.
     try {
       mExtractHtmlTitleRE = new RE("<title>(.*)</title>", RE.MATCH_CASEINDEPENDENT);
     }
@@ -103,7 +121,36 @@ public class HtmlPreparator extends AbstractPreparator {
     }
   }
 
-
+  
+  /**
+   * Gets an int parameter from a configuration section
+   * 
+   * @param configSection The configuration section to get the int param from.
+   * @param paramName The name of the parameter
+   * @return The value of the parameter.
+   * @throws RegainException If the parameter is not set or is not a number.
+   */
+  private int getIntParam(Map configSection, String paramName)
+    throws RegainException
+  {
+    String asString = (String) configSection.get(paramName);
+    if (asString == null) {
+      throw new RegainException("Error in configuration for "
+          + getClass().getName() + ": Preparator param '" + paramName
+          + "' is not set");
+    }
+    
+    asString = asString.trim();
+    try {
+      return Integer.parseInt(asString);
+    }
+    catch (NumberFormatException exc) {
+      throw new RegainException("Error in configuration for "
+          + getClass().getName() + ": Preparator param '" + paramName
+          + "' is not a number: '" + asString + "'", exc);
+    }
+  }
+  
 
   /**
    * Präpariert ein Dokument für die Indizierung.
@@ -113,7 +160,6 @@ public class HtmlPreparator extends AbstractPreparator {
    * @throws RegainException Wenn die Präparation fehl schlug.
    */
   public void prepare(RawDocument rawDocument) throws RegainException {
-    String url = rawDocument.getUrl();
     String contentAsString = rawDocument.getContentAsString();
 
     // Get the title
@@ -145,9 +191,6 @@ public class HtmlPreparator extends AbstractPreparator {
       headlines = contentExtractor.extractHeadlines(cuttedContent);
     }
 
-    // Write the cuttet content to an analysis file
-    mDocumentFactory.writeAnalysisFile(url, "cutted", cuttedContent);
-
     // Clean the content from tags
     String cleanedContent = cleanFromTags(cuttedContent);
     setCleanedContent(cleanedContent);
@@ -155,9 +198,6 @@ public class HtmlPreparator extends AbstractPreparator {
     if (headlines != null) {
       // Replace HTML Entities
       headlines = replaceHtmlEntities(headlines);
-
-      // Write the headlines to an analysis file
-      mDocumentFactory.writeAnalysisFile(url, "headlines", headlines);
 
       // Set the headlines
       setHeadlines(headlines);

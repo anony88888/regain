@@ -28,6 +28,7 @@
 package net.sf.regain.crawler.preparator;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.crawler.config.PreparatorConfig;
 import net.sf.regain.crawler.document.PathElement;
 import net.sf.regain.crawler.document.Preparator;
 import net.sf.regain.crawler.document.RawDocument;
@@ -50,8 +51,8 @@ import org.apache.regexp.RESyntaxException;
 public abstract class AbstractPreparator implements Preparator {
 
   /**
-   * Der Reguläre Ausdruck, dem eine URL entsprechen muss, damit sie von
-   * diesem Präperator bearbeitet wird.
+   * The regular expression a URL must match to, to be prepared by this
+   * preparator.
    */
   private RE mUrlRegex;
   /** Der gefundene Titel. */
@@ -76,14 +77,15 @@ public abstract class AbstractPreparator implements Preparator {
 
 
   /**
-   * Setzt den Regulären Ausdruck, dem eine URL entsprechen muss, damit sie von
-   * diesem Präperator bearbeitet wird.
+   * Initializes the preparator.
    *
-   * @param regex Der Regulären Ausdruck, dem eine URL entsprechen muss, damit
-   *        sie von diesem Präperator bearbeitet wird.
-   * @throws RegainException Wenn der Reguläre Ausdruck fehlerhaft ist.
+   * @param regex The regular expression a URL must match to, to be prepared by
+   *        this preparator.
+   * @param config The configuration for this preparator.
+   * @throws RegainException If the regular expression or the configuration
+   *         has an error.
    */
-  public void setUrlRegex(String regex) throws RegainException {
+  public void init(String regex, PreparatorConfig config) throws RegainException {
     try {
       mUrlRegex = new RE(regex);
     }
@@ -91,8 +93,22 @@ public abstract class AbstractPreparator implements Preparator {
       throw new RegainException("URL-Regex for preparator " + getClass().getName()
         + " has wrong syntax: '" + regex + "'", exc);
     }
+    
+    readConfig(config);
   }
 
+  
+  /**
+   * Reads the configuration for this preparator.
+   * <p>
+   * Does nothing by default. May be overridden by subclasses to actual read the
+   * config.
+   * 
+   * @param config The configuration
+   * @throws RegainException If the configuration has an error.
+   */
+  protected void readConfig(PreparatorConfig config) throws RegainException {
+  }
 
 
   /**
@@ -101,7 +117,7 @@ public abstract class AbstractPreparator implements Preparator {
    *
    * @param rawDocument Das zu prüfenden Dokuments.
    * @return Ob der Präperator das gegebene Dokument bearbeiten kann.
-   * @see #setUrlRegex(String)
+   * @see #init(String, PreparatorConfig)
    */
   public boolean accepts(RawDocument rawDocument) {
     return mUrlRegex.match(rawDocument.getUrl());

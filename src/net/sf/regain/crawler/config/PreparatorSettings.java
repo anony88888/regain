@@ -28,7 +28,7 @@
 package net.sf.regain.crawler.config;
 
 /**
- * Die Einstellungen für einen Präparator
+ * The settings of a preparator
  *
  * @see net.sf.regain.crawler.document.Preparator
  * @author Til Schneider, www.murfman.de
@@ -36,56 +36,70 @@ package net.sf.regain.crawler.config;
 public class PreparatorSettings {
 
   /**
-   * Der reguläre Ausdruck, der eine URL identifiziert, die mit dem
-   * Präparator bearbeitet werden soll.
+   * The regular expression that identifies a URL that should be handled with
+   * the preparator.
    */
   private String mUrlRegex;
 
   /**
-   * Der Klassenname des Präparators. Die Klasse muss
-   * {@link net.sf.regain.crawler.document.Preparator Preparator}
-   * implementieren.
+   * The class name of the preparator. The class must implement
+   * {@link net.sf.regain.crawler.document.Preparator Preparator}.
    */
   private String mPreparatorClassName;
-
+  
+  /**
+   * The configuration of the preparator.
+   */
+  private PreparatorConfig mPreparatorConfig;
 
 
   /**
-   * Erzeugt eine neue PreparatorSettings-Instanz
-   *
-   * @param urlRegex Der reguläre Ausdruck, der eine URL identifiziert, die mit
-   *        dem Präparator bearbeitet werden soll.
-   * @param preparatorClassName Der Klassenname des Präparators. Die Klasse muss
-   *        {@link net.sf.regain.crawler.document.Preparator Preparator}
-   *        implementieren.
+   * Creates a new instance of PreparatorSettings.
+   * 
+   * @param urlRegex The regular expression that identifies a URL that should be
+   *        handled with the preparator.
+   * @param preparatorClassName The class name of the preparator. The class must
+   *        implement {@link net.sf.regain.crawler.document.Preparator Preparator}.
+   * @param preparatorConfig The configuration of the preparator.
    */
-  public PreparatorSettings(String urlRegex, String preparatorClassName) {
+  public PreparatorSettings(String urlRegex, String preparatorClassName,
+    PreparatorConfig preparatorConfig)
+  {
     mUrlRegex = urlRegex;
     mPreparatorClassName = preparatorClassName;
+    mPreparatorConfig = preparatorConfig;
   }
 
 
-
   /**
-   * Gibt den reguläre Ausdruck zurück, der eine URL identifiziert, die mit
-   * dem Präparator bearbeitet werden soll.
+   * Gets the regular expression that identifies a URL that should be handled
+   * with the preparator.
    *
-   * @return Der reguläre Ausdruck, der eine URL identifiziert, die mit dem
-   *         Präparator bearbeitet werden soll.
+   * @return The regular expression that identifies a URL that should be handled
+   *         with the preparator.
    */
   public String getUrlRegex() {
     return mUrlRegex;
   }
 
 
-
   /**
-   * Gibt den Klassenname des Präparators zurück.
+   * Gets the class name of the preparator.
    *
-   * @return Der Klassenname des Präparators.
+   * @return The class name of the preparator.
    */
   public String getPreparatorClassName() {
     return mPreparatorClassName;
+  }
+
+  
+  /**
+   * Gets the configuration of the preparator.
+   * 
+   * @return The configuration of the preparator.
+   */
+  public PreparatorConfig getPreparatorConfig() {
+    return mPreparatorConfig;
   }
 
 }

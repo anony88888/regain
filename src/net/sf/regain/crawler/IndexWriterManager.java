@@ -279,8 +279,6 @@ public class IndexWriterManager {
 
     mDocumentFactory = new DocumentFactory(mAnalysisDir,
                                            config.getPreparatorSettingsList(),
-                                           config.getHtmlContentExtractors(),
-                                           config.getHtmlPathExtractors(),
                                            config.getUseLinkTextAsTitleRegexList());
   }
 

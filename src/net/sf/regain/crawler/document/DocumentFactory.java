@@ -37,9 +37,6 @@ import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.Profiler;
 import net.sf.regain.crawler.config.PreparatorSettings;
-import net.sf.regain.crawler.preparator.HtmlPreparator;
-import net.sf.regain.crawler.preparator.html.HtmlContentExtractor;
-import net.sf.regain.crawler.preparator.html.HtmlPathExtractor;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
@@ -97,10 +94,6 @@ public class DocumentFactory {
    *        werden sollen.
    * @param preparatorSettingsArr Die Liste der Einstellungen f�r die
    *        Pr�peratoren.
-   * @param htmlContentExtractorArr Die HtmlContentExtractor, die den jeweiligen zu
-   *        indizierenden Inhalt aus den HTML-Dokumenten schneiden.
-   * @param htmlPathExtractorArr Die HtmlPathExtractor, die den jeweiligen Pfad aus
-   *        den HTML-Dokumenten extrahieren.
    * @param useLinkTextAsTitleRegexArr Die regul�ren Ausdr�cke, auf die die URL
    *        eines Dokuments passen muss, damit anstatt des wirklichen
    *        Dokumententitels der Text des Links, der auf das Dokument gezeigt
@@ -111,8 +104,6 @@ public class DocumentFactory {
    */
   public DocumentFactory(File analysisDir,
     PreparatorSettings[] preparatorSettingsArr,
-    HtmlContentExtractor[] htmlContentExtractorArr,
-    HtmlPathExtractor[] htmlPathExtractorArr,
     String[] useLinkTextAsTitleRegexArr)
     throws RegainException
   {
@@ -120,9 +111,7 @@ public class DocumentFactory {
 
     // Die Pr�paratoren erzeugen
     try {
-      mPreparatorArr = createPreparatorArr(preparatorSettingsArr,
-                                           htmlContentExtractorArr,
-                                           htmlPathExtractorArr);
+      mPreparatorArr = createPreparatorArr(preparatorSettingsArr);
     }
     catch (RegainException exc) {
       throw new RegainException("Creating the document preparators failed", exc);
@@ -159,17 +148,11 @@ public class DocumentFactory {
    *
    * @param preparatorSettingsArr Die Liste der Einstellungen f�r die
    *        Pr�peratoren.
-   * @param htmlContentExtractorArr Die HtmlContentExtractor, die den jeweiligen zu
-   *        indizierenden Inhalt aus den HTML-Dokumenten schneiden.
-   * @param htmlPathExtractorArr Die HtmlPathExtractor, die den jeweiligen Pfad aus
-   *        den HTML-Dokumenten extrahieren.
    * @return Ein Array mit den Pr�paratoren
    * @throws RegainException Wenn die Erstellung eines Pr�parators fehl schlug.
    */
   private Preparator[] createPreparatorArr(
-    PreparatorSettings[] preparatorSettingsArr,
-    HtmlContentExtractor[] htmlContentExtractorArr,
-    HtmlPathExtractor[] htmlPathExtractorArr)
+    PreparatorSettings[] preparatorSettingsArr)
     throws RegainException
   {
     Preparator[] preparatorArr = new Preparator[preparatorSettingsArr.length];
@@ -182,43 +165,34 @@ public class DocumentFactory {
       }
 
       // Pr�parator-Instanz erzeugen
-      if (className.equals(HtmlPreparator.class.getName())) {
-        // NOTE: Der HtmlPreparator bildet eine Ausnahme: Er wird nicht �ber
-        //       den Standardkonstruktor erzeugt, sondern er bekommt noch
-        //       weitere Parameter
-        preparatorArr[i] = new HtmlPreparator(this,
-                                              htmlContentExtractorArr,
-                                              htmlPathExtractorArr);
-      } else {
-        // Normalerweise werden Pr�parator �ber die Reflection-API instanziiert
-        Class preparatorClass;
-        try {
-          preparatorClass = Class.forName(className);
-        }
-        catch (ClassNotFoundException exc) {
-          throw new RegainException("The class '" + className
-            + "' does not exist", exc);
-        }
-
-        Object obj;
-        try {
-          obj = preparatorClass.newInstance();
-        }
-        catch (Exception exc) {
-          throw new RegainException("Error creating instance of class "
-            + className, exc);
-        }
-
-        if (! (obj instanceof Preparator)) {
-          throw new RegainException("The class " + className + " does not " +
-            "implement " + Preparator.class.getName());
-        }
-
-        preparatorArr[i] = (Preparator) obj;
+      Class preparatorClass;
+      try {
+        preparatorClass = Class.forName(className);
+      }
+      catch (ClassNotFoundException exc) {
+        throw new RegainException("The class '" + className
+          + "' does not exist", exc);
       }
 
+      Object obj;
+      try {
+        obj = preparatorClass.newInstance();
+      }
+      catch (Exception exc) {
+        throw new RegainException("Error creating instance of class "
+          + className, exc);
+      }
+
+      if (! (obj instanceof Preparator)) {
+        throw new RegainException("The class " + className + " does not " +
+          "implement " + Preparator.class.getName());
+      }
+
+      preparatorArr[i] = (Preparator) obj;
+
       // Die URL-Regex beim Pr�parator setzten
-      preparatorArr[i].setUrlRegex(preparatorSettingsArr[i].getUrlRegex());
+      preparatorArr[i].init(preparatorSettingsArr[i].getUrlRegex(),
+          preparatorSettingsArr[i].getPreparatorConfig());
     }
 
     return preparatorArr;

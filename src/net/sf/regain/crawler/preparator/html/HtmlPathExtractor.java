@@ -49,17 +49,17 @@ public class HtmlPathExtractor extends AbstractExtractor {
   /**
    * Der Reguläre Ausdruck, der ein Pfadelement findet.
    */
-  private RE mPathElementRE;
+  private RE mPathNodeRE;
 
   /**
    * Die Gruppe, die die URL im Reguläre Ausdruck findet.
    */
-  private int mPathElementUrlGroup;
+  private int mPathNodeUrlGroup;
 
   /**
    * Die Gruppe, die den Titel im Reguläre Ausdruck findet.
    */
-  private int mPathElementTitleGroup;
+  private int mPathNodeTitleGroup;
 
 
 
@@ -78,30 +78,30 @@ public class HtmlPathExtractor extends AbstractExtractor {
    *        <p>
    *        Ist <code>null</code> oder Leerstring, wenn der Pfad am Ende des
    *        HTML-Dokuments endet.
-   * @param pathElementRegex Der Reguläre Ausdruck, der ein Pfadelement findet.
-   * @param pathElementUrlGroup Die Gruppe, die die URL im Reguläre Ausdruck
+   * @param pathNodeRegex Der Reguläre Ausdruck, der ein Pfadelement findet.
+   * @param pathNodeUrlGroup Die Gruppe, die die URL im Reguläre Ausdruck
    *        findet.
-   * @param pathElementTitleGroup Die Gruppe, die den Titel im Reguläre Ausdruck
+   * @param pathNodeTitleGroup Die Gruppe, die den Titel im Reguläre Ausdruck
    *        findet.
    * @throws RegainException Wenn ein Regulärer Ausdruck einen Syntaxfehler
    *         enthält.
    */
   public HtmlPathExtractor(String prefix, String pathStartRegex,
-    String pathEndRegex, String pathElementRegex, int pathElementUrlGroup,
-    int pathElementTitleGroup)
+    String pathEndRegex, String pathNodeRegex, int pathNodeUrlGroup,
+    int pathNodeTitleGroup)
     throws RegainException
   {
     super(prefix, pathStartRegex, pathEndRegex);
 
     try {
-      mPathElementRE = new RE(pathElementRegex, RE.MATCH_CASEINDEPENDENT);
+      mPathNodeRE = new RE(pathNodeRegex, RE.MATCH_CASEINDEPENDENT);
     }
     catch (RESyntaxException exc) {
       throw new RegainException("Syntax error in regular expression", exc);
     }
 
-    mPathElementUrlGroup = pathElementUrlGroup;
-    mPathElementTitleGroup = pathElementTitleGroup;
+    mPathNodeUrlGroup = pathNodeUrlGroup;
+    mPathNodeTitleGroup = pathNodeTitleGroup;
   }
 
 
@@ -123,15 +123,15 @@ public class HtmlPathExtractor extends AbstractExtractor {
     ArrayList list = new ArrayList();
 
     int offset = 0;
-    while (mPathElementRE.match(pathFragment, offset)) {
-      String url = mPathElementRE.getParen(mPathElementUrlGroup);
+    while (mPathNodeRE.match(pathFragment, offset)) {
+      String url = mPathNodeRE.getParen(mPathNodeUrlGroup);
       url = CrawlerToolkit.toAbsoluteUrl(url, rawDocument.getUrl());
-      String title = mPathElementRE.getParen(mPathElementTitleGroup);
+      String title = mPathNodeRE.getParen(mPathNodeTitleGroup);
       title = HtmlPreparator.replaceHtmlEntities(title);
 
       list.add(new PathElement(url, title));
 
-      offset = mPathElementRE.getParenEnd(0);
+      offset = mPathNodeRE.getParenEnd(0);
     }
 
     if (list.isEmpty()) {

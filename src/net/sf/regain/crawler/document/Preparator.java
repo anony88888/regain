@@ -28,23 +28,34 @@
 package net.sf.regain.crawler.document;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.crawler.config.PreparatorConfig;
 
 /**
- * Präpariert ein Dokument für die Indizierung.
+ * Prepares a document for indexing.
  * <p>
- * Dabei werden die Rohdaten des Dokuments von Formatierungsinformation befreit,
- * es wird der Titel extrahiert und eine Zusammenfassung erstellt.
+ * This is done by extracting the raw text from a document. In other words the
+ * document is stripped from formating information. Specific text parts like a
+ * title or a summary may be extracted as well.
  * <p>
- * Der Ablauf der Indizierung ist dabei der folgende:
+ * The procedure of preparation is the following:
  * <ul>
- *   <li>Es wird {@link #accepts(RawDocument)} aufgerufen.</li>
- *   <li>Wenn <code>true</code> zurückgegeben wurde, dann wird
- *     {@link #prepare(RawDocument)} aufgerufen. Dabei extrahiert der Preparator
- *     alle wichtigen Informationen</li>
- *   <li>Diese werden nun durch beliebiges Aufrufen von {@link #getTitle()},
- *     {@link #getCleanedContent()} und {@link #getSummary()} abgefragt.</li>
- *   <li>Schließlich wird {@link #cleanUp()} aufgerufen und der Preparator
- *     vergisst die Informationen über das Dokument.</li>
+ *   <li>First {@link #init(String, PreparatorConfig)} is called.</li>
+ *   <li>For each document {@link #accepts(RawDocument)} is called.<br>
+ *     If <code>true</code> was returned the actual preparation of the document
+ *     is made:
+ *     <ul>
+ *       <li>{@link #prepare(RawDocument)} is called. The preparator extracts
+ *         now all nessesary information.</li>
+ *       <li>This information is retrieved by arbitrary calls of
+ *         {@link #getCleanedContent()}, {@link #getHeadlines()},
+ *         {@link #getPath()}, {@link #getSummary()} and {@link #getTitle()}.</li>
+ *       <li>After all information for this document was retrieved,
+ *         {@link #cleanUp()} is called. The preparator should release all
+ *         information about the current document in order to prepare the
+ *         next one.</li>
+ *     </ul>
+ *   </li>
+ *   <li>After all documents have been prepared, {@link #close()} is called.
  * </ul>
  *
  * @author Til Schneider, www.murfman.de
@@ -52,14 +63,15 @@ import net.sf.regain.RegainException;
 public interface Preparator {
 
   /**
-   * Setzt den Regulären Ausdruck, dem eine URL entsprechen muss, damit sie von
-   * diesem Präperator bearbeitet wird.
+   * Initializes the preparator.
    *
-   * @param regex Der Regulären Ausdruck, dem eine URL entsprechen muss, damit
-   *        sie von diesem Präperator bearbeitet wird.
-   * @throws RegainException Wenn der Reguläre Ausdruck fehlerhaft ist.
+   * @param regex The regular expression a URL must match to, to be prepared by
+   *        this preparator.
+   * @param config The configuration for this preparator.
+   * @throws RegainException When the regular expression or the configuration
+   *         has an error.
    */
-  public void setUrlRegex(String regex) throws RegainException;
+  public void init(String regex, PreparatorConfig config) throws RegainException;
 
   /**
    * Gibt zurück, ob der Präperator das gegebene Dokument bearbeiten kann.
@@ -67,7 +79,7 @@ public interface Preparator {
    *
    * @param rawDocument Das zu prüfenden Dokuments.
    * @return Ob der Präperator das gegebene Dokument bearbeiten kann.
-   * @see #setUrlRegex(String)
+   * @see #init(String, PreparatorConfig)
    */
   public boolean accepts(RawDocument rawDocument);
 

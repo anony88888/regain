@@ -27,8 +27,6 @@
  */
 package net.sf.regain.crawler.config;
 
-import net.sf.regain.crawler.preparator.html.HtmlContentExtractor;
-import net.sf.regain.crawler.preparator.html.HtmlPathExtractor;
 
 /**
  * Stellt alle zu konfigurierenden Einstellungen hardcodiert zur Verfügung.
@@ -312,36 +310,6 @@ public class DummyConfiguration implements Configuration {
 
 
   /**
-   * Gibt die HtmlContentExtractor zurück, die den zu inizierenden Teil aus
-   * HTML-Dokumenten extrahieren.
-   * <p>
-   * Wenn keine Liste vorhanden ist, wird <code>null</code> zurückgegeben.
-   *
-   * @return Die HtmlContentExtractor zurück, die den zu inizierenden Teil aus
-   *         HTML-Dokumenten extrahieren.
-   */
-  public HtmlContentExtractor[] getHtmlContentExtractors() {
-    return null;
-  }
-
-
-
-  /**
-   * Gibt die HtmlPathExtractor zurück, die den Pfad aus HTML-Dokumenten
-   * extrahieren.
-   * <p>
-   * Wenn keine Liste vorhanden ist, wird <code>null</code> zurückgegeben.
-   *
-   * @return Die HtmlPathExtractor.
-   */
-  public HtmlPathExtractor[] getHtmlPathExtractors() {
-    return null;
-  }
-
-
-
-
-  /**
    * Gibt die regulären Ausdrücke zurück, auf die die URL eines Dokuments passen
    * muss, damit anstatt des wirklichen Dokumententitels der Text des Links, der
    * auf das Dokument gezeigt hat, als Dokumententitel genutzt wird.
@@ -362,8 +330,10 @@ public class DummyConfiguration implements Configuration {
    */
   public PreparatorSettings[] getPreparatorSettingsList() {
     return new PreparatorSettings[] {
-      new PreparatorSettings("\\.(/|html|htm)$", "net.sf.regain.crawler.document.HtmlPreparator"),
-      new PreparatorSettings("\\.xml$", "net.sf.regain.crawler.document.XmlPreparator")
+      new PreparatorSettings("\\.(/|html|htm)$",
+          "net.sf.regain.crawler.document.HtmlPreparator", new PreparatorConfig()),
+      new PreparatorSettings("\\.xml$",
+          "net.sf.regain.crawler.document.XmlPreparator", new PreparatorConfig())
     };
   }
 
