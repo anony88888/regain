@@ -88,20 +88,20 @@ Section "${PROG_NAME} (erforderlich)"
   File txt\license.txt
   File txt\WhatIsNew.txt
   File txt\WasIstNeu.txt
-  File temp\runtime\desktop\*.dll
-  File temp\runtime\desktop\regain.exe
+  File temp\runtime\desktop\win\*.dll
+  File temp\runtime\desktop\win\regain.exe
 
   SetOutPath $INSTDIR\conf\default
-  File temp\runtime\desktop\conf\default\*
+  File temp\runtime\desktop\win\conf\default\*
 
   SetOutPath $INSTDIR\preparator
-  File temp\runtime\desktop\preparator\*
+  File temp\runtime\desktop\win\preparator\*
 
   SetOutPath $INSTDIR\web
-  File temp\runtime\desktop\web\*
+  File temp\runtime\desktop\win\web\*
 
   SetOutPath $INSTDIR\web\img
-  File temp\runtime\desktop\web\img\*
+  File temp\runtime\desktop\win\web\img\*
 
   SetOutPath $INSTDIR
   WriteUninstaller "Uninstall.exe"
@@ -141,9 +141,9 @@ Section "${PROG_NAME} (erforderlich)"
 SectionEnd ; end the section
 
 
-SubSection /e "Verknï¿½pfungen"
+SubSection /e "Verknüpfungen"
 
-  Section "Verknï¿½pfungen im Start-Menï¿½"
+  Section "Verknüpfungen im Start-Menü"
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
   
       CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
@@ -174,7 +174,7 @@ SubSection /e "Verknï¿½pfungen"
     !insertmacro MUI_STARTMENU_WRITE_END
   SectionEnd
   
-  Section "Verknï¿½pfung im Autostart-Ordner"
+  Section "Verknüpfung im Autostart-Ordner"
     CreateShortCut \
       "$SMSTARTUP\${PROG_NAME}.lnk" \
       "$INSTDIR\regain.exe"
