@@ -899,7 +899,7 @@ public class Crawler implements ErrorLogger {
    * Loggs an error.
    *
    * @param msg The error message.
-   * @param thr The error
+   * @param thr The error. May be <code>null</code>.
    * @param fatal Specifies whether the error was fatal. An error is fatal if
    *        it caused that the index could not be created.
    */
