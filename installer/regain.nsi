@@ -70,6 +70,7 @@ Var STARTMENU_FOLDER
 ;--------------------------------
 ;Languages
  
+!insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "German"
 
 
@@ -85,6 +86,8 @@ Section "${PROG_NAME} (erforderlich)"
 
   SetOutPath $INSTDIR
   File txt\license.txt
+  File txt\WhatIsNew.txt
+  File txt\WasIstNeu.txt
   File temp\runtime\desktop\*.dll
   File temp\runtime\desktop\regain.exe
 
@@ -148,10 +151,18 @@ SubSection /e "Verkn�pfungen"
       CreateShortCut \
         "$SMPROGRAMS\$STARTMENU_FOLDER\${PROG_NAME}.lnk" \
         "$INSTDIR\regain.exe"
-    
+  
       CreateShortCut \
         "$SMPROGRAMS\$STARTMENU_FOLDER\Lizenzbedingungen.lnk" \
         "$INSTDIR\license.txt"
+
+      CreateShortCut \
+        "$SMPROGRAMS\$STARTMENU_FOLDER\Was ist neu.lnk" \
+        "$INSTDIR\WhatIsNew.txt"
+
+      CreateShortCut \
+        "$SMPROGRAMS\$STARTMENU_FOLDER\What is new.lnk" \
+        "$INSTDIR\WhatIsNew.txt"
     
       CreateShortCut \
         "$SMPROGRAMS\$STARTMENU_FOLDER\${PROG_NAME} deinstallieren.lnk" \

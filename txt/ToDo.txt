@@ -147,6 +147,7 @@ X Desktopsuche: Einstellungen: Beim Speichern als Grundgerüst
 X Desktopsuche: Aktuelle Indexierung pausieren und manuelles Starten einer
   	Indexierung.
 X Bug: HTML-Praeparator kommt nicht mit allen Dateien klar (Siehe Mail von Jochen Stiepel)
+X Changelog erstellen
 
 Filiadata:
 ----------
@@ -162,7 +163,6 @@ Filiadata:
 
 Prio A:
 -------
-  Changelog erstellen
 
 Prio B:
 -------

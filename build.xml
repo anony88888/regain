@@ -665,24 +665,33 @@
       <zipfileset prefix="${programname.file}_v${version}/runtime/search"
                   dir="temp/runtime/search"/>
       <zipfileset prefix="${programname.file}_v${version}"
-                  dir="txt"
-                  includes="license.txt"/>
+                  dir="txt">
+        <include name="license.txt"/>
+        <include name="WhatIsNew.txt"/>
+        <include name="WasIstNeu.txt"/>
+      </zipfileset>
     </zip>
 
     <zip destfile="temp/public/${programname.file}_v${version}_destop_win.zip">
       <zipfileset prefix="${programname.file}_v${version}/"
                   dir="temp/runtime/desktop/win"/>
       <zipfileset prefix="${programname.file}_v${version}"
-                  dir="txt"
-                  includes="license.txt"/>
+                  dir="txt">
+        <include name="license.txt"/>
+        <include name="WhatIsNew.txt"/>
+        <include name="WasIstNeu.txt"/>
+      </zipfileset>
     </zip>
 
     <zip destfile="temp/public/${programname.file}_v${version}_destop_linux.zip">
       <zipfileset prefix="${programname.file}_v${version}/"
                   dir="temp/runtime/desktop/linux"/>
       <zipfileset prefix="${programname.file}_v${version}"
-                  dir="txt"
-                  includes="license.txt"/>
+                  dir="txt">
+        <include name="license.txt"/>
+        <include name="WhatIsNew.txt"/>
+        <include name="WasIstNeu.txt"/>
+      </zipfileset>
     </zip>
     
     <zip destfile="temp/public/${programname.file}_v${version}_doc.zip">
