@@ -909,7 +909,9 @@ public class Crawler implements ErrorLogger {
     }
     mLog.error(msg, thr);
     try {
-      mIndexWriterManager.logError(msg, thr);
+      if (mIndexWriterManager != null) {
+        mIndexWriterManager.logError(msg, thr);
+      }
     }
     catch (RegainException exc) {
       mLog.error("Logging error in error log of index failed", exc);
