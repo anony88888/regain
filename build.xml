@@ -394,6 +394,28 @@
 
 
   <!--
+   | Creates a Windows installer for the project.
+   +-->
+  <target name="installer" depends="jsmoothgen">
+    <mkdir dir="temp/public"/>
+    <exec executable="installer/makensis.exe"
+          failonerror="true">
+      <arg value="/NOCD"/>
+      <arg value="/DVERSION=${version}"/>
+      <arg value="/DVERSION_FILE=${version.file}"/>
+      <arg value="/DPROG_NAME=${programname}"/>
+      <arg value="/DPROG_NAME_FILE=${programname.file}"/>
+      <arg value="/DRUNTIME_DIR=temp\runtime\desktop"/>
+      <arg value="/DINSTALLER_DIR=installer"/>
+      <arg value="/DPUBLIC_DIR=temp\public"/>
+      <arg value="/DLANGUAGE_FILE=installer\German.nlf"/>
+      <arg value="/DBASICS_DIR=installer\Basics"/>
+      <arg value="installer\regain.nsi"/>
+    </exec>
+  </target>
+
+
+  <!--
    | Tests the project.
    +-->
   <target name="test" depends="make-test, runtime-fast">

@@ -61,7 +61,6 @@ public class Main {
    */
   public static void main(String[] args) {
     // Initialize Logging
-    new File("log").mkdir();
     File logConfigFile = new File("conf/log4j.properties");
     if (! logConfigFile.exists()) {
       System.out.println("ERROR: Logging configuration file not found: "
@@ -69,6 +68,7 @@ public class Main {
       return; // Abort
     }
 
+    new File("log").mkdir();
     PropertyConfigurator.configure(logConfigFile.getAbsolutePath());
     mLog.info("Logging initialized");
 
@@ -81,6 +81,7 @@ public class Main {
     TrayIconManager.getInstance().init();
     
     // Start the index update manager
+    new File("searchindex").mkdir();
     IndexUpdateManager.getInstance().init();
     
     // Start the server

@@ -81,6 +81,7 @@ X Desktopsuche: Periodisch den Crawler aufrufen und automatisch geänderte
     Konfiguration laden
 X Desktopsuche: Task-Icon mit Menü
 X Desktopsuche: Exe creation with jsmooth
+X Desktopsuche: Installer
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -96,7 +97,7 @@ X Desktopsuche: Exe creation with jsmooth
       "field.feldName" hinzugefügt werden.
     - Init-Parameter von configFile nach searchConfigFile umbenannt.
 
-  Desktopsuche: Installer
+  Desktopsuche: Willkommensseite anzeigen, wenn keine Start-URLs definiert sind.
   Desktopsuche: Status
     - Wann wurde der Index zuletzt aktualisiert
     - Fortschritt bei laufender Aktualisierung

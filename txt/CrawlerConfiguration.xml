@@ -212,10 +212,12 @@
     </config>
   </preparator>
   -->
+  <!--
   <preparator>
     <urlPattern>\.ppt$</urlPattern>
     <class>.JacobMsPowerPointPreparator</class>
   </preparator>
+  -->
   <preparator>
     <urlPattern>\.rtf$</urlPattern>
     <!--<class>.SwingRtfPreparator</class>-->
