@@ -11,7 +11,7 @@
 Name "${PROG_NAME} ${VERSION}"
 
 ; The file to write
-OutFile "${PUBLIC_DIR}\${PROG_NAME_FILE}_v${VERSION_FILE}.exe"
+OutFile "${PUBLIC_DIR}\${PROG_NAME_FILE}_v${VERSION_FILE}_desktop.exe"
 
 ; The default installation directory
 InstallDir "$PROGRAMFILES\${PROG_NAME}"
