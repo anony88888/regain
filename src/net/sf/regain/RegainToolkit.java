@@ -54,13 +54,13 @@ public class RegainToolkit {
    */
   private static final boolean ANALYSE_ANALYZER = false;
 
-  /** Die Anzahl Bytes in einem kB (Kilobyte). */
+  /** The number of bytes in a kB (kilo byte). */
   private static final int SIZE_KB = 1024;
 
-  /** Die Anzahl Bytes in einem MB (Megabyte). */
+  /** The number of bytes in a MB (mega byte). */
   private static final int SIZE_MB = 1024 * 1024;
 
-  /** Die Anzahl Bytes in einem GB (Gigabyte). */
+  /** The number of bytes in a GB (giga byte). */
   private static final int SIZE_GB = 1024 * 1024 * 1024;
 
   /** Der gecachte, systemspeziefische Zeilenumbruch. */

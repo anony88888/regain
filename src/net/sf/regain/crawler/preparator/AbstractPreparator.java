@@ -41,13 +41,12 @@ import org.apache.regexp.RESyntaxException;
 
 
 /**
- * Abstrakte Implementierung eines Präperators.
+ * Abstract implementation of a preparator.
  * <p>
- * Implementiert die Getter-Methoden und übernimmt das Aufräumen zwischen zwei
- * Präparationen (Siehe {@link #cleanUp()}).
+ * Implements the getter methods and assumes the clean-up between two
+ * preparations (See {@link #cleanUp()}).
  * <p>
- * Kindklassen können die Werte über die geschützten (protected) Setter-Methoden
- * setzen.
+ * Child class may set the values using the protected setter methods.
  *
  * @author Til Schneider, www.murfman.de
  */
@@ -115,11 +114,11 @@ public abstract class AbstractPreparator implements Preparator {
 
 
   /**
-   * Gibt zurück, ob der Präperator das gegebene Dokument bearbeiten kann.
-   * Das ist der Fall, wenn seine URL der URL-Regex entspricht.
+   * Gets whether the preparator is able to process the given document. This is
+   * the case, if its URL matches the URL regex.
    *
-   * @param rawDocument Das zu prüfenden Dokuments.
-   * @return Ob der Präperator das gegebene Dokument bearbeiten kann.
+   * @param rawDocument The document to check.
+   * @return Whether the preparator is able to process the given document.
    * @see #init(String, PreparatorConfig)
    */
   public boolean accepts(RawDocument rawDocument) {

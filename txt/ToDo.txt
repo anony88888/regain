@@ -35,11 +35,11 @@ X Aktualisierung auf die neusten Versionen der genutzten Projekte, sofern
         Stabilität: Unverändert: 2 von 5 Dokumenten brechen ab.
         Geschwindigkeit: Unverändert: Für 3,39 MB: 1,02 sec -> 1,11 sec
         Qualität: Unverändert: Vergleichbar mit JacobMsWordPreparator
-X Word-Preperator: Öffnen und Schließen von Word loggen
-X Parameter für Präperatoren: (Aufwand: 4 Std.)
-    Präperatoren sollen in der Konfiguration parametrisierbar werden. Diese
+X Word-Preparator: Öffnen und Schließen von Word loggen
+X Parameter für Präparatoren: (Aufwand: 4 Std.)
+    Präparatoren sollen in der Konfiguration parametrisierbar werden. Diese
     Parameter sollen optional in extra Datei ausgelagert werden können.
-X Jacob-Präperatoren nicht mehr als Default nutzen.
+X Jacob-Präparatoren nicht mehr als Default nutzen.
 X Suchmaske: Konfiguration in externe XML-Datei auslagern
     (Nicht mehr in web.xml)
 X Suchmaske: URL-Rewriting: Z.B. Indizierung von file://someserver/bla/blubb/...,
@@ -56,10 +56,10 @@ X Prüfen: Können die im Index enthaltenen Werte (distinct values) der
     Ergebnis: Es ist machbar. (Mit IndexReader.terms())
 X Handbuch aktualisieren:
     - Neue Versionen der abhängigen Projekte
-    - Parameter für Präperatoren (contentExtractor und pathExtractor "verschoben")
+    - Parameter für Präparatoren (contentExtractor und pathExtractor "verschoben")
     - Suchmaske wird nun über XML Datei konfiguriert (wo die liegt, steht in web.xml)
     - Config Suchmaske: URL-Rewriting
-X Word-Preperator: Berücksichtigungen von Formatvorlagen bei der Indizierung
+X Word-Preparator: Berücksichtigungen von Formatvorlagen bei der Indizierung
     von Word-Dokumenten. (Aufwand: max. 4 Std., wenn mehr Rücksprache)
     Text aus Abschnitten, die bestimmte Formatvorlagen nutzen bei der Suche
     stärker gewichten (z.B. Überschriften). Die Namen der Formatvorlagen
@@ -95,7 +95,7 @@ X Desktopsuche: search.jsp:
     - Forward zu searchinput.jsp, wenn query nicht gesetzt.
 X Desktopsuche: Links zu den anderen Seiten im Footer-Bereich
 X Änderungen für die Desktopsuche in Server-Variante übernehmen
-X Jacob-Präperatoren: Indizierung der Office-Dokumenten-Beschreibungs-Felder.
+X Jacob-Präparatoren: Indizierung der Office-Dokumenten-Beschreibungs-Felder.
     Dazu Preparator-Schnittstelle erweitern um: Map getAdditionalFields()
     Folgende Felder extrahieren: Möglichst alles aus Eigenschaften/Zusammenfassung
     Einstellbar, welche Felder aufgenommen werden sollen.
@@ -123,12 +123,12 @@ X Desktopsuche: Status: Profiler-Ergebnisse anzeigen
       "field.feldName" hinzugefügt werden.
     - Init-Parameter von configFile nach searchConfigFile umbenannt.
 
-  Präperatoren in eigene Jars kapseln. Alle Jars werden in ein Verzeichnis
+  Präparatoren in eigene Jars kapseln. Alle Jars werden in ein Verzeichnis
     gepackt und beim Start geladen.
     So ist im regain.jar nur das, was regain selbst braucht und die
-    Präperatoren lassen sich leichter austauschen (insbesondere verschiedene
+    Präparatoren lassen sich leichter austauschen (insbesondere verschiedene
     Versionen der selben Implementierung). Außerdem können andere auch
-    Präperatoren anbieten, die dann sehr einfach eingebunden werden können.
+    Präparatoren anbieten, die dann sehr einfach eingebunden werden können.
 
   Suchmaske: Breakpoints nutzen, falls noch gar kein Index besteht.
   Desktopsuche: Task-Icon für Linux

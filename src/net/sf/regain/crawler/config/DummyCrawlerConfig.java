@@ -324,9 +324,9 @@ public class DummyCrawlerConfig implements CrawlerConfig {
 
 
   /**
-   * Gibt die Liste der Einstellungen für die Präperatoren zurück.
+   * Gets the list with the preparator settings.
    *
-   * @return Die Liste der Einstellungen für die Präperatoren.
+   * @return The list with the preparator settings.
    */
   public PreparatorSettings[] getPreparatorSettingsList() {
     return new PreparatorSettings[] {

@@ -114,7 +114,7 @@ public class XmlCrawlerConfig implements CrawlerConfig {
    */
   private String[] mUseLinkTextAsTitleRegexList;
 
-  /** Die Liste der Einstellungen f�r die Pr�peratoren. */
+  /** The list with the preparator settings. */
   private PreparatorSettings[] mPreparatorSettingsArr;
 
   /** The list of the auxiliary fields. May be null. */
@@ -752,9 +752,9 @@ public class XmlCrawlerConfig implements CrawlerConfig {
 
 
   /**
-   * Gibt die Liste der Einstellungen f�r die Pr�peratoren zur�ck.
+   * Gets the list with the preparator settings.
    *
-   * @return Die Liste der Einstellungen f�r die Pr�peratoren.
+   * @return The list with the preparator settings.
    */
   public PreparatorSettings[] getPreparatorSettingsList() {
     return mPreparatorSettingsArr;

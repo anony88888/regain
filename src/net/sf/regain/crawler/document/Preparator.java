@@ -76,11 +76,11 @@ public interface Preparator {
   public void init(String regex, PreparatorConfig config) throws RegainException;
 
   /**
-   * Gibt zurück, ob der Präperator das gegebene Dokument bearbeiten kann.
-   * Das ist der Fall, wenn seine URL der URL-Regex entspricht.
+   * Gets whether the preparator is able to process the given document. This is
+   * the case, if its URL matches the URL regex.
    *
-   * @param rawDocument Das zu prüfenden Dokuments.
-   * @return Ob der Präperator das gegebene Dokument bearbeiten kann.
+   * @param rawDocument The document to check.
+   * @return Whether the preparator is able to process the given document.
    * @see #init(String, PreparatorConfig)
    */
   public boolean accepts(RawDocument rawDocument);

@@ -73,7 +73,7 @@ public class DocumentFactory {
    */
   private File mAnalysisDir = null;
 
-  /** Die Pr�peratoren. */
+  /** The preparators. */
   private Preparator[] mPreparatorArr;
 
   /** Die Profiler, die die Bearbeitung durch die Pr�paratoren messen. */
@@ -143,12 +143,11 @@ public class DocumentFactory {
 
 
   /**
-   * Erzeugt aus den Einstellungen ein Array mit Pr�paratoren.
+   * Creates an array of preparators from the settings.
    *
-   * @param preparatorSettingsArr Die Liste der Einstellungen f�r die
-   *        Pr�peratoren.
-   * @return Ein Array mit den Pr�paratoren
-   * @throws RegainException Wenn die Erstellung eines Pr�parators fehl schlug.
+   * @param preparatorSettingsArr The list with the preparator settings.
+   * @return The preparators. 
+   * @throws RegainException If the creation of a preparator failed.
    */
   private Preparator[] createPreparatorArr(
     PreparatorSettings[] preparatorSettingsArr)
