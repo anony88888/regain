@@ -30,6 +30,8 @@ package net.sf.regain.ui.desktop;
 import java.io.File;
 import java.net.ServerSocket;
 
+import net.sf.regain.RegainException;
+import net.sf.regain.RegainToolkit;
 import net.sf.regain.util.sharedtag.simple.ExecuterParser;
 import net.sf.regain.util.sharedtag.simple.SharedTagService;
 import net.sf.regain.util.sharedtag.simple.SimplePageRequest;
@@ -61,18 +63,39 @@ public class Main implements DesktopConstants {
    * @param args The command line arguments.
    */
   public static void main(String[] args) {
+    // Initialize the configuration
+    // (Copy all files from the default dir that don't exist in the config dir)
+    File defaultConfigDir = new File(CONFIG_DIR, "default");
+    String[] defaultFileArr = defaultConfigDir.list();
+    for (int i = 0; i < defaultFileArr.length; i++) {
+      File confFile = new File(CONFIG_DIR, defaultFileArr[i]);
+      if (! confFile.exists()) {
+        // This config file does not exist -> Copy the default file
+        File defaultConfFile = new File(defaultConfigDir, defaultFileArr[i]);
+        try {
+          RegainToolkit.copyFile(defaultConfFile, confFile);
+        }
+        catch (RegainException exc) {
+          System.out.println("Copying default config file failed: "
+              + defaultConfFile.getAbsolutePath());
+          exc.printStackTrace();
+          System.exit(1); // Abort
+        }
+      }
+    }
+
     // Initialize Logging
     File logConfigFile = new File("conf/log4j.properties");
     if (! logConfigFile.exists()) {
       System.out.println("ERROR: Logging configuration file not found: "
         + logConfigFile.getAbsolutePath());
-      return; // Abort
+      System.exit(1); // Abort
     }
 
     LOG_DIR.mkdir();
     PropertyConfigurator.configure(logConfigFile.getAbsolutePath());
     mLog.info("Logging initialized");
-
+    
     // Initialize the search mask
     SimplePageRequest.setInitParameter("searchConfigFile", "conf/SearchConfiguration.xml");
     SimplePageRequest.setInitParameter("webDir", "web");
@@ -105,7 +128,7 @@ public class Main implements DesktopConstants {
     }
     catch (Exception exc) {
       exc.printStackTrace();
-      System.exit(1);
+      System.exit(1); // Abort
     }
   }
   
