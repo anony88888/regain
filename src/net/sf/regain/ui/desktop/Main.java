@@ -97,11 +97,7 @@ public class Main implements DesktopConstants {
     // Start the Tray icon
     TrayIconManager.getInstance().init();
     
-    // Start the index update manager
-    INDEX_DIR.mkdir();
-    IndexUpdateManager.getInstance().init();
-    
-    // Start the server
+    // Start the webserver
     try {
       DesktopToolkit.checkWebserver();
     }
@@ -109,6 +105,10 @@ public class Main implements DesktopConstants {
       exc.printStackTrace();
       System.exit(1); // Abort
     }
+    
+    // Start the index update manager
+    INDEX_DIR.mkdir();
+    IndexUpdateManager.getInstance().init();
   }
   
   
