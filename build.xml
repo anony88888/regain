@@ -329,7 +329,7 @@
         <exclude name="simple/**"/>
       </fileset>
       <fileset dir="temp/classes">
-        <include name="net/sf/regain/*"/>
+        <include name="net/sf/regain/*.class"/>
         <include name="net/sf/regain/crawler/**"/>
       </fileset>
     </jar>
@@ -338,7 +338,7 @@
     <war destfile="temp/runtime/search/webapps/${programname.file}.war"
          webxml="web/Web-inf/web.xml">
       <classes dir="temp/classes">
-        <include name="net/sf/regain/*"/>
+        <include name="net/sf/regain/*.class"/>
         <include name="net/sf/regain/search/**"/>
         <include name="net/sf/regain/ui/server/**"/>
         <include name="net/sf/regain/util/sharedtag/**"/>
@@ -399,7 +399,7 @@
   <!--
    | Creates a Windows installer for the project.
    +-->
-  <target name="installer" depends="jsmoothgen">
+  <target name="installer" depends="clean-all, jsmoothgen">
     <mkdir dir="temp/public"/>
     <exec executable="installer/makensis.exe"
           failonerror="true">
@@ -500,13 +500,18 @@
   <target name="public" depends="clean-all, prepare, runtime, doc">
     <mkdir dir="temp/public"/>
 
-    <zip destfile="temp/public/${programname.file}_v${version}_bin.zip">
-      <zipfileset prefix="${programname.file}_v${version}/runtime"
-                  dir="temp/runtime"/>
+    <zip destfile="temp/public/${programname.file}_v${version}_server.zip">
+      <zipfileset prefix="${programname.file}_v${version}/runtime/crawler"
+                  dir="temp/runtime/crawler"/>
+      <zipfileset prefix="${programname.file}_v${version}/runtime/search"
+                  dir="temp/runtime/search"/>
       <zipfileset prefix="${programname.file}_v${version}/txt"
                   dir="txt">
-        <include name="*.pdf*"/>
+        <include name="*.pdf"/>
       </zipfileset>
+      <zipfileset prefix="${programname.file}_v${version}"
+                  dir="txt"
+                  includes="license.txt"/>
     </zip>
 
     <zip destfile="temp/public/${programname.file}_v${version}_doc.zip">
@@ -523,8 +528,8 @@
       </zipfileset>
       <zipfileset prefix="${programname.file}_v${version}/lib"
                   dir="lib">
-        <include name="*.jar"/>
-        <include name="*.dll"/>
+        <include name="**/*.jar"/>
+        <include name="**/*.dll"/>
       </zipfileset>
       <zipfileset prefix="${programname.file}_v${version}/src"
                   dir="src">
@@ -533,7 +538,7 @@
       </zipfileset>
       <zipfileset prefix="${programname.file}_v${version}/txt"
                   dir="txt">
-        <exclude name="*.pdf*"/>
+        <exclude name="*.pdf"/>
       </zipfileset>
       <zipfileset prefix="${programname.file}_v${version}/web"
                   dir="web"/>

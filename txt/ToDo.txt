@@ -102,7 +102,8 @@ X Änderungen für die Desktopsuche in Server-Variante übernehmen
     Office-Dokumenten-Beschreibungs-Felder. (Aufwand: 4 Std.)
     Dazu Preparator-Schnittstelle erweitern um: String getAuthor(),
       Map getAdditionalFields()
-    Folgende Felder extrahieren: Autor, ???
+    Folgende Felder extrahieren: Möglichst alles aus Eigenschaften/Zusammenfassung
+    Einstellbar, welche Felder aufgenommen werden sollen.
   Multiindexsuche: (Aufwand: 4 Std., vorerst zurückgestellt)
     Mit der selben Suchmaske mehrere Indizes durchsuchen
   Handbuch aktualisieren:
