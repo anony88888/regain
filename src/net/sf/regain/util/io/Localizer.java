@@ -47,8 +47,8 @@ import org.apache.log4j.Logger;
  */
 public class Localizer {
   
-  /** The logger for this class. May be <code>null</code>. */  
-  private static Logger mLog;
+  /** The logger for this class. */  
+  private static Logger mLog = Logger.getLogger(Localizer.class.getName());
   
   /** The ResourceBundle to get the messages from. */
   private ResourceBundle mBundle;
@@ -71,24 +71,12 @@ public class Localizer {
    * @param locale the locale to create the localizer for.
    */
   public Localizer(File basedir, String basename, Locale locale) {
-    // Try to load the localizer
-    if (mLog == null) {
-      try {
-        mLog = Logger.getLogger(Localizer.class.getName());
-      }
-      catch (Exception exc) {
-        // The &§%&&$ tomcat and its class loading problems!!! Grrr
-        // When it is not willing to load the Logger then we've got to log to
-        // System.out
-      }
-    }
-    
     try {
       URLClassLoader loader = getClassLoader(basedir);
       mBundle = ResourceBundle.getBundle(basename, locale, loader);
     }
     catch (Throwable thr) {
-      logError("ResourceBundle not found: '" + basename + "'", thr);
+      mLog.error("ResourceBundle not found: '" + basename + "'", thr);
     }
     
     mKeyPrefix = "";
@@ -137,7 +125,7 @@ public class Localizer {
       if (mBundle == null) {
         if (packageName.length() == 0) {
           // We already tried all packages -> Give up
-          logError("ResourceBundle not found for class '" + clazz + "'", null);
+          mLog.error("ResourceBundle not found for class '" + clazz + "'");
           return;
         }
         
@@ -269,24 +257,6 @@ public class Localizer {
       return "[" + key + "#" + defaultMsg + "]";
     } else {
       return msg;
-    }
-  }
-
-
-  /**
-   * Logs an error.
-   * 
-   * @param msg The error message.
-   * @param thr The error.
-   */
-  private void logError(String msg, Throwable thr) {
-    if (mLog != null) {
-      mLog.error(msg, thr);
-    } else {
-      System.out.println("ERROR: " + msg);
-      if (thr != null) {
-        thr.printStackTrace();
-      }
     }
   }
   
