@@ -149,6 +149,7 @@ X Desktopsuche: Aktuelle Indexierung pausieren und manuelles Starten einer
 X Bug: HTML-Praeparator kommt nicht mit allen Dateien klar (Siehe Mail von Jochen Stiepel)
 X Changelog erstellen
 X Desktopsuche: index.php zeigen
+X Desktopsuche: Schoenere Fehlerseite (errorpage benutzen)
 
 Filiadata:
 ----------
@@ -165,7 +166,6 @@ Filiadata:
 Prio A:
 -------
 
-  Desktopsuche: Schoenere Fehlerseite (errorpage benutzen)
   Desktopsuche: Bessere Fehlerseite für QuerySyntaxException
 
 Prio B:

@@ -28,11 +28,15 @@
 package net.sf.regain.util.sharedtag.simple;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.PrintStream;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.util.sharedtag.PageRequest;
 import net.sf.regain.util.sharedtag.PageResponse;
+
+import org.apache.log4j.Logger;
+
 import simple.http.Request;
 import simple.http.Response;
 import simple.http.serve.BasicResource;
@@ -45,6 +49,12 @@ import simple.http.serve.Context;
  * @author Til Schneider, www.murfman.de
  */
 public class SharedTagResource extends BasicResource {
+  
+  /** The logger for this class */
+  private static Logger mLog = Logger.getLogger(SharedTagResource.class);
+  
+  /** The base directory where the provided files are located. */
+  private static File mBaseDir;
   
   /** The root executer holding the parsed JSP page. */
   private Executer mRootTagExecuter;
@@ -72,8 +82,26 @@ public class SharedTagResource extends BasicResource {
    * @throws Exception If executing the JSP page failed.
    */
   protected synchronized void process(Request req, Response resp) throws Exception {
+    process(req, resp, mRootTagExecuter, null);
+  }
+  
+  
+  /**
+   * Processes a request.
+   * 
+   * @param req The request.
+   * @param resp The response.
+   * @param executer The executer to use.
+   * @param error The error to show. Is <code>null</code> if no error page is
+   *        shown.
+   * @throws Exception If executing the JSP page failed.
+   */
+  private synchronized void process(Request req, Response resp,
+    Executer executer, Throwable error)
+    throws Exception
+  {
     String encoding = "UTF-8";
-    
+        
     // Write the page to a buffer first
     // If an exception should be thrown the user gets a clear error message
     ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -82,8 +110,13 @@ public class SharedTagResource extends BasicResource {
     PageRequest request = new SimplePageRequest(req);
     PageResponse response = new SimplePageResponse(this, req, resp, printStream, encoding);
 
+    // Add the error to the page attributes
+    if (error != null) {
+      request.setContextAttribute("javax.servlet.jsp.jspException", error);
+    }
+    
     try {
-      mRootTagExecuter.execute(request, response);
+      executer.execute(request, response);
     }
     catch (RedirectException exc) {
       // Send a redirect
@@ -92,8 +125,23 @@ public class SharedTagResource extends BasicResource {
       return;
     }
     catch (Exception exc) {
-      exc.printStackTrace();
-      throw exc;
+      mLog.error("Processing page failed", exc);
+      if (error == null) {
+        // This is the normal page -> Show the error page
+        try {
+          Executer errorExecuter = loadErrorPage();
+          process(req, resp, errorExecuter, exc);
+        }
+        catch (RegainException loadingExc) {
+          mLog.error("Processing error page failed", loadingExc);
+          
+          // Throw the original error, so a simple error page is shown
+          throw exc;
+        }
+      } else {
+        // This already is the error page -> Show a simple error
+        throw exc;
+      }
     }
     finally {
       printStream.close();
@@ -111,4 +159,19 @@ public class SharedTagResource extends BasicResource {
     }
   }
 
+
+  /**
+   * Loads the error page executer.
+   * 
+   * @return The error page executer.
+   * @throws RegainException If loading the error page executer failed.
+   */
+  private Executer loadErrorPage() throws RegainException {
+    if (mBaseDir == null) {
+      mBaseDir = new File(context.getBasePath());
+    }
+    
+    return new ExecuterParser().parse(mBaseDir, "errorpage.jsp");
+  }
+  
 }

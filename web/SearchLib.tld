@@ -48,6 +48,18 @@
   </tag>
 
   <tag>
+    <name>error_message</name>
+    <tagclass>net.sf.regain.ui.server.taglib.error.MessageTag</tagclass>
+    <bodycontent>empty</bodycontent>
+  </tag>
+
+  <tag>
+    <name>error_stacktrace</name>
+    <tagclass>net.sf.regain.ui.server.taglib.error.StacktraceTag</tagclass>
+    <bodycontent>empty</bodycontent>
+  </tag>
+
+  <tag>
     <name>stats_query</name>
     <tagclass>net.sf.regain.ui.server.taglib.stats.QueryTag</tagclass>
     <bodycontent>empty</bodycontent>

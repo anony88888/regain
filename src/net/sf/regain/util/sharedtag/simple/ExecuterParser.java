@@ -164,7 +164,6 @@ public class ExecuterParser {
     }
     if (buffer != null) {
       // Add the text after the last include
-      System.out.println("pos: " + pos + ", jspCode.length(): " + jspCode.length());
       buffer.append(jspCode.substring(pos, jspCode.length()));
       jspCode = buffer.toString();
     }

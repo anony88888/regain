@@ -48,7 +48,7 @@ import simple.http.serve.Context;
 public class SharedTagService extends BasicService {
   
   /** The base directory where the provided files are located. */
-  private File mBaseDir;
+  private static File mBaseDir;
   
   /** The parser to use for parsing JSP pages */
   private ExecuterParser mParser;
