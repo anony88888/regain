@@ -94,6 +94,16 @@ public class Profiler {
   public int getMeasureCount() {
     return mMeasureCount;
   }
+  
+  
+  /**
+   * Gets the number of aborted measures.
+   * 
+   * @return The number of aborted measures.
+   */
+  public int getAbortedMeasureCount() {
+    return mAbortedMeasureCount;
+  }
 
 
   /**
@@ -319,6 +329,10 @@ public class Profiler {
    * @return Die Resultate sämtlicher genutzter Profiler.
    */
   public static String getProfilerResults() {
+    if (mProfilerList == null) {
+      return "";
+    }
+    
     StringBuffer buffer = new StringBuffer();
 
     for (Iterator iter = mProfilerList.iterator(); iter.hasNext();) {
