@@ -64,6 +64,10 @@ X Word-Preperator: Berücksichtigungen von Formatvorlagen bei der Indizierung
     Text aus Abschnitten, die bestimmte Formatvorlagen nutzen bei der Suche
     stärker gewichten (z.B. Überschriften). Die Namen der Formatvorlagen
     kommen aus der Konfiguration.
+X Handbuch aktualisieren:
+    - Config Crawler: Zusatzfelder aus Pfad generieren
+    - Installations- und Konfigurationsbeschreibung der Suchmaske überarbeitet,
+      so dass der Umgang mit der SearchConfiguration.xml erklärt wird.
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -75,10 +79,8 @@ X Word-Preperator: Berücksichtigungen von Formatvorlagen bei der Indizierung
   Multiindexsuche: (Aufwand: 4 Std., vorerst zurückgestellt)
     Mit der selben Suchmaske mehrere Indizes durchsuchen
   Handbuch aktualisieren:
-    - Config Crawler: Zusatzfelder aus Pfad generieren
     - Such-JSP: Zusätzliche Eingabefelder für bestimmte Felder können mit
       "field.feldName" hinzugefügt werden.
-    - Parameternamen für Suchmaske umbenannt.
 
 Rückfragen:
 
@@ -99,4 +101,4 @@ Ideen:
     Präperatoren lassen sich leichter austauschen (insbesondere verschiedene
     Versionen der selben Implementierung). Außerdem können andere auch
     Präperatoren anbieten, die dann sehr einfach eingebunden werden können.
-  GUI für den unbedarften Heimanwender.
+  Desktop-Suche für den unbedarften Heimanwender.
