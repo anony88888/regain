@@ -102,6 +102,8 @@ X Jacob-Präperatoren: Indizierung der Office-Dokumenten-Beschreibungs-Felder.
 X Expertensuche: Tag für Combobox, die distinct values eines Feldes beinhaltet.
 X Neues Feld: extension: Dateiendung indexieren.
 X Internationalisierung und Lokalisierung für deutsch und englisch.
+X Bug: "http://www.murfman.de" wird geparst, aber nicht indexiert.
+    (Regex für HTML-Präparator falsch)
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -114,8 +116,6 @@ X Internationalisierung und Lokalisierung für deutsch und englisch.
 
   Desktopsuche: Task-Icon für Linux
   Desktopsuche: Mime-Types konfigurierbar
-  Bug: "http://www.murfman.de" wird geparst, aber nicht indexiert.
-    (Regex für HTML-Präparator falsch)
   Desktopsuche: Port einstellbar
   Desktopsuche: Zugriff von außen für einstellbare Benutzer/Passwort-Paare
     erlauben.

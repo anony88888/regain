@@ -118,7 +118,7 @@
 
 <preparatorList>
   <preparator>
-    <urlPattern>\.(/|html|htm)$</urlPattern>
+    <urlPattern>(^http://[^/]*$)|(^http://.*/[^\.]*$)|(\.(/|html|htm)$)</urlPattern>
     <class>.HtmlPreparator</class>
     <config>
       <!--
