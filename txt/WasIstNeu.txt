@@ -2,6 +2,8 @@
 * Zugriffsrechte-Management: Es kann nun ein Rechte-Management eingebunden
     werden, das dafür sorgt, dass ein Benutzer nur Treffer für Dokumente erhält,
     für die er Leserechte hat.
+* Suche: Die search-Taglib hat nun ein Tag "hit_field", das ein beliebiges
+    Indexfeld ausgibt. Das Tag "hit_summary" wurde in diesem Zuge entfernt.
 
 
 Version 1.1 Beta 3 am 17.03.05

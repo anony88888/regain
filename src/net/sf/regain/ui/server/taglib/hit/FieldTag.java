@@ -30,19 +30,29 @@ package net.sf.regain.ui.server.taglib.hit;
 import net.sf.regain.util.sharedtag.taglib.SharedTagWrapperTag;
 
 /**
- * Taglib wrapper for the shared summary tag.
+ * Taglib wrapper for the shared field tag.
  *
- * @see net.sf.regain.search.sharedlib.hit.SummaryTag
+ * @see net.sf.regain.search.sharedlib.hit.FieldTag
  *
  * @author Til Schneider, www.murfman.de
  */
-public class SummaryTag extends SharedTagWrapperTag {
+public class FieldTag extends SharedTagWrapperTag {
 
   /**
-   * Creates a new instance of SummaryTag.
+   * Creates a new instance of FieldTag.
    */
-  public SummaryTag() {
-    super(new net.sf.regain.search.sharedlib.hit.SummaryTag());
+  public FieldTag() {
+    super(new net.sf.regain.search.sharedlib.hit.FieldTag());
+  }
+
+
+  /**
+   * Sets the name of the index field to generate.
+   * 
+   * @param field The name of the index field to generate.
+   */
+  public void setField(String field) {
+    getNestedTag().setParameter("field", field);
   }
 
 }

@@ -224,9 +224,14 @@
   </tag>
 
   <tag>
-    <name>hit_summary</name>
-    <tagclass>net.sf.regain.ui.server.taglib.hit.SummaryTag</tagclass>
+    <name>hit_field</name>
+    <tagclass>net.sf.regain.ui.server.taglib.hit.FieldTag</tagclass>
     <bodycontent>empty</bodycontent>
+
+    <attribute>
+      <name>field</name>
+      <required>true</required>
+    </attribute>
   </tag>
 
 </taglib>

@@ -43,8 +43,8 @@
         <search:hit_link/>
         <span class="hitDetails">
         (<search:msg key="relevance"/>: <search:hit_score/>)<br/>
-        <search:hit_summary/><br/>
-        <search:hit_path after="<br/>" createLinks="false"/>
+        <search:hit_field field="summary"/><br/>
+        <search:hit_path after="<br/>" createLinks="true"/>
         <span class="hitInfo"><search:hit_url/> - <search:hit_size/></span><br/>
         <br/></span>
       </td></tr>

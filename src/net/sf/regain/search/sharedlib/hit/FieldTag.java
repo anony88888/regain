@@ -34,11 +34,16 @@ import net.sf.regain.util.sharedtag.PageResponse;
 import org.apache.lucene.document.Document;
 
 /**
- * Generates the summary of the current hit's document.
+ * Generates an index field value of the current hit's document.
+ * <p>
+ * Tag Parameters:
+ * <ul>
+ * <li><code>field</code>: The name of the index field to generate.</li>
+ * </ul>
  *
  * @author Til Schneider, www.murfman.de
  */
-public class SummaryTag extends AbstractHitTag {
+public class FieldTag extends AbstractHitTag {
 
   /**
    * Generates the tag.
@@ -52,10 +57,10 @@ public class SummaryTag extends AbstractHitTag {
     Document hit)
     throws RegainException
   {
-    String summary = hit.get("summary");
-
-    if (summary != null) {
-      response.printNoHtml(summary);
+    String field = getParameter("field", true);
+    String value = hit.get(field);
+    if (value != null) {
+      response.printNoHtml(value);
     }
   }
 

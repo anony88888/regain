@@ -157,10 +157,10 @@ X Bugfix: Nicht alle Zeitmessungen werden angezeigt.
 X Suchmaske: Version anzeigen
 X Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, fuer die
     er auch Leserechte hat. (Aufwand: 2 Tage)
+X Taglib-Tag, das ein bestimmtes Indexfeld ausgibt.
 
 Filiadata:
 ----------
-  Taglib-Tag, der ein bestimmtes Indexfeld ausgibt.
   Multiindexsuche: (Aufwand: 4 Std.)
     Mit der selben Suchmaske mehrere Indizes durchsuchen
   Handbuch aktualisieren:
