@@ -1,6 +1,6 @@
 X Urversion
 
-** Version 1.0 **
+** Version 1.0 am 28.07.04 **
 
 X Aktualisierung auf die neusten Versionen der genutzten Projekte, sofern
     Ergebnis dadurch nicht schlechter wird. (Aufwand: 8 Std.)
