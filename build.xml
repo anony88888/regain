@@ -254,14 +254,22 @@
   <target name="fast-runtime" depends="make">
     <echo message="Creating the runtime ..." />
     <mkdir dir="temp/runtime"/>
-
-    <mkdir dir="temp/runtime/log"/>
-
     <copy todir="temp/runtime">
-      <fileset dir="lib" includes="jacob.dll"/>
       <fileset dir="txt" includes="license.txt"/>
+    </copy>
+
+    <mkdir dir="temp/runtime/crawler"/>
+    <mkdir dir="temp/runtime/crawler/log"/>
+    <copy todir="temp/runtime/crawler">
+      <fileset dir="lib" includes="jacob.dll"/>
       <fileset dir="txt" includes="CrawlerConfiguration.xml"/>
       <fileset dir="txt" includes="log4j.properties"/>
+    </copy>
+
+    <mkdir dir="temp/runtime/search"/>
+    <mkdir dir="temp/runtime/search/conf"/>
+    <copy todir="temp/runtime/search/conf">
+      <fileset dir="txt" includes="regain.properties"/>
     </copy>
   </target>
 
@@ -273,7 +281,7 @@
   <target name="runtime" depends="fast-runtime, prepare">
     <echo message="Creating the jars ..." />
 
-    <jar jarfile="temp/runtime/${programname.file}.jar"
+    <jar jarfile="temp/runtime/crawler/${programname.file}.jar"
          compress="false"
          index="true">
       <manifest>
@@ -290,7 +298,8 @@
       </fileset>
     </jar>
 
-    <war destfile="temp/runtime/${programname.file}.war"
+    <mkdir dir="temp/runtime/search/webapps"/>
+    <war destfile="temp/runtime/search/webapps/${programname.file}.war"
          webxml="web/Web-inf/web.xml">
       <classes dir="temp/classes">
         <exclude name="net/sf/regain/crawler/**"/>
@@ -333,8 +342,8 @@
    | Runs the project.
    +-->
   <target name="run" depends="runtime">
-    <java jar="temp/runtime/${programname.file}.jar"
-          dir="temp/runtime"
+    <java jar="temp/runtime/crawler/${programname.file}.jar"
+          dir="temp/runtime/crawler"
           fork="true">
           <!--
           jvm="${java-1_2_2.dir}/bin/java"
@@ -349,7 +358,7 @@
    +-->
   <target name="fast-run" depends="fast-runtime">
     <java classname="net.sf.regain.crawler.Main"
-          dir="temp/runtime"
+          dir="temp/runtime/crawler"
           fork="true">
           <!--
           jvm="${java-1_2_2.dir}/bin/java"

@@ -35,10 +35,12 @@ X Aktualisierung auf die neusten Versionen der genutzten Projekte, sofern
         Geschwindigkeit: Unverändert: Für 3,39 MB: 1,02 sec -> 1,11 sec
         Qualität: Unverändert: Vergleichbar mit JacobMsWordPreparator
 X Word-Preperator: Öffnen und Schließen von Word loggen
-X Parameter für Präperatoren: Präperatoren sollen in der Konfiguration
-    parametrisierbar werden. Diese Parameter sollen optional in extra Datei
-    ausgelagert werden können.
+X Parameter für Präperatoren: (Aufwand: 4 Std.)
+    Präperatoren sollen in der Konfiguration parametrisierbar werden. Diese
+    Parameter sollen optional in extra Datei ausgelagert werden können.
 X Jacob-Präperatoren nicht mehr als Default nutzen.
+X Suchmaske: Konfiguration in externe Properties-Datei auslagern
+    (Nicht mehr in web.xml)
 
   URL-Mapping: Z.B. Indizierung von file://someserver/bla/blubb/..., jedoch
     Anzeige im Browser mit http://intranet/blubb/... (Aufwand: 4 Std.)
@@ -67,6 +69,9 @@ X Jacob-Präperatoren nicht mehr als Default nutzen.
     Mit der selben Suchmaske mehrere Indizes durchsuchen
   Handbuch aktualisieren:
     - Neue Versionen der abhängigen Projekte
+    - Parameter für Präperatoren (contentExtractor und pathExtractor "verschoben")
+    - Suchmaske wird nun über regain.properties konfiguriert (wo die liegt, steht in web.xml)
+    - Parameternamen für Suchmaske umbenannt.
 
 Rückfragen:
   

@@ -200,9 +200,16 @@ public class IndexSearcherManager {
   public synchronized Analyzer getAnalyzer() throws RegainException {
     if (mAnalyzer == null) {
       if (! mWorkingIndexDir.exists()) {
+        // There is no working index -> check whether there is a new one
         checkForIndexUpdate();
       }
 
+      if (! mWorkingIndexDir.exists()) {
+        // There is no working and no new index -> throw exception
+        throw new RegainException("No index found in "
+            + mWorkingIndexDir.getParentFile().getAbsolutePath());
+      }
+      
       // Read the stopWordList and the exclusionList
       File analyzerTypeFile = new File(mWorkingIndexDir, "analyzerType.txt");
       String analyzerType = RegainToolkit.readStringFromFile(analyzerTypeFile);

@@ -27,6 +27,11 @@
  */
 package net.sf.regain.search;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.jsp.PageContext;
@@ -47,6 +52,9 @@ public class SearchToolkit {
 
   /** Die Standard-Liste der Felder in denen gesucht wird. */
   private static final String DEFAULT_SEARCH_FIELD_LIST = "content title headlines";
+  
+  /** The configuration of the search mask. */
+  private static Properties mConfig;
 
 
 
@@ -68,7 +76,8 @@ public class SearchToolkit {
   {
     SearchContext context = (SearchContext) pageContext.getAttribute(SEARCH_CONTEXT_ATTR_NAME);
     if (context == null) {
-      ServletContext ctx = pageContext.getServletContext();
+      // Load the config (if not yet done)
+      loadConfiguration(pageContext.getServletContext());
 
       // Namen des Index holen
       String indexName = pageContext.getRequest().getParameter("index");
@@ -77,26 +86,27 @@ public class SearchToolkit {
       }
 
       // Verzeichnis für diesen Namen erfragen
-      String indexDir = ctx.getInitParameter("indexDir." + indexName);
+      String indexDir = mConfig.getProperty("index." + indexName + ".dir");
       if (indexDir == null) {
-        throw new RegainException("Context parameter 'indexDir." + indexName
-          + "' not set in the web.xml!");
+        throw new RegainException("Parameter 'index." + indexName + ".dir' is "
+            + "not set in the configuration!");
       }
 
       // Regex holen, zu der eine URL passen muss, damit sie in einem neuen
       // Fenster geöffnet wird.
-      String param = "openInNewWindowRegex." + indexName;
-      String openInNewWindowRegex = ctx.getInitParameter(param);
+      String openInNewWindowRegex
+        = mConfig.getProperty("index." + indexName + ".openInNewWindowRegex");
       if (openInNewWindowRegex == null) {
         // Globalen Eintrag probieren
-        openInNewWindowRegex = ctx.getInitParameter("openInNewWindowRegex");
+        openInNewWindowRegex = mConfig.getProperty("openInNewWindowRegex");
       }
 
       // Liste der Felder holen, in denen gesucht werden soll
-      String searchFieldList = ctx.getInitParameter("searchFieldList." + indexName);
+      String searchFieldList
+        = mConfig.getProperty("index." + indexName + ".searchFieldList");
       if (searchFieldList == null) {
         // Globalen Eintrag probieren
-        searchFieldList = ctx.getInitParameter("searchFieldList");
+        searchFieldList = mConfig.getProperty("searchFieldList");
 
         if (searchFieldList == null) {
           searchFieldList = DEFAULT_SEARCH_FIELD_LIST;
@@ -141,4 +151,41 @@ public class SearchToolkit {
     }
   }
 
+  
+  /**
+   * Loads the configuration of the search mask.
+   * <p>
+   * If the configuration is already loaded, nothing is done.
+   * 
+   * @param context The servlet context. Used to get the "configFile" init
+   *        parameter, which holds the name of the configuration file.
+   * @throws RegainException If loading failed.
+   */
+  private static void loadConfiguration(ServletContext context)
+    throws RegainException
+  {
+    if (mConfig == null) {
+      String configFileName = context.getInitParameter("configFile");
+      File configFile = new File(configFileName);
+      Properties prop = new Properties();
+      FileInputStream stream = null;
+      try {
+        stream = new FileInputStream(configFile);
+        prop.load(stream);
+        
+        // Loading suceed -> Set the configuration
+        mConfig = prop;
+      }
+      catch (IOException exc) {
+        throw new RegainException("Loading configuration file failed: "
+            + configFile.getAbsolutePath(), exc);
+      }
+      finally {
+        if (stream != null) {
+          try { stream.close(); } catch (IOException exc) {}
+        }
+      }
+    }
+  }
+  
 }
