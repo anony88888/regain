@@ -43,8 +43,8 @@ Version 1.1 Beta 1 am 10.03.05
   machen:
     - Ein Installer fuer Windows.
     - Integration in die Taskleiste unter Linux und Windows.
-    - Konfiguration ueber den Browser
-    - Status-Anzeige ueber den Browser
+    - Konfiguration ueber den Browser.
+    - Status-Anzeige ueber den Browser.
 * Crawler: Es gibt nun einen Praeparator für OpenOffice- und StarOffice-Dokumente.
 * Gesamt: Aktualisierung auf die neusten Versionen der genutzten Projekte.
 * Crawler: Praeparatoren sind nun ueber die CrawlerConfiguration.xml

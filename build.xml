@@ -294,7 +294,7 @@
     <copy todir="temp/runtime/search/conf/regain">
       <fileset dir="txt" includes="SearchConfiguration.xml"/>
     </copy>
-
+    
     <copy todir="temp/runtime/desktop/win">
       <fileset dir="lib" includes="jacob.dll"/>
       <fileset dir="lib/win" includes="tray.dll"/>
@@ -319,6 +319,7 @@
         <exclude name="**/CVS/*"/>
       </fileset>
     </copy>
+    <echo message="${version}" file="temp/runtime/desktop/win/web/version"/>
     <copy todir="temp/runtime/desktop/linux/web">
       <fileset dir="temp/runtime/desktop/win/web"/>
     </copy>
@@ -532,6 +533,9 @@
         <include name="*.tld"/>
         <include name="*.jsp"/>
         <exclude name="settings.jsp"/>
+      </fileset>
+      <fileset dir="temp/runtime/desktop/win/web">
+        <include name="version"/>
       </fileset>
     </war>
   </target>
@@ -763,6 +767,7 @@
         <exclude name="**/CVS/*"/>
       </fileset>
     </copy>
+    <echo message="${version}" file="${deploy-target.dir}/${programname.file}/version"/>
   </target>
 
 

@@ -153,6 +153,9 @@ X Desktopsuche: Schoenere Fehlerseite (errorpage benutzen)
 
 ** Version 1.1 Beta 3 am 17.03.05 **
 
+X Bugfix: Nicht alle Zeitmessungen werden angezeigt.
+X Suchmaske: Version anzeigen
+
 Filiadata:
 ----------
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, fuer die
@@ -167,18 +170,14 @@ Filiadata:
 
 Prio A:
 -------
-
-  Desktopsuche: Installer auch auf Englisch
-
-Prio B:
--------
+  Desktopsuche: Installer komplett auch auf Englisch
   Suchmaske: Breakpoints nutzen.
   Desktopsuche: Mime-Types konfigurierbar
   Desktopsuche: Zugriff von aussen fuer einstellbare Benutzer/Passwort-Paare
     erlauben.
   Suchmaske: Icons passend zu den Dateiendungen
 
-Prio C:
+Prio B:
 -------
   Crawler: Arbeitspeicher sparen: Dateien vom Dateisystem nicht ins
     mFoundUrlSet oder mIgnoredUrlSet aufnehmen. Beim Dateisystem ist durch die
@@ -187,6 +186,9 @@ Prio C:
   Crawler: Arbeitspeicher sparen: Erst Dateien an mJobList anhaengen, dann
   	Unterverzeichnisse. So wird die mJobList klein gehalten.
   Desktopsuche: Status-Seite: Ende von Logdatei zeigen
+
+Prio C:
+-------
   Neuer MS Word-Praeparator: http://textmining.org
   Neuer PDF-Praeparator: PJX (http://www.etymon.com/epub.html)
   Desktopsuche: Nach Speichern der Konfiguration nur dann neu indexieren, wenn
