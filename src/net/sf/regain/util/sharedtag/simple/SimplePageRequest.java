@@ -185,6 +185,31 @@ public class SimplePageRequest extends PageRequest {
 
 
   /**
+   * Sets an attribute at the session.
+   * 
+   * @param name The name of the attribute to set.
+   * @param value The value of the attribute to set.
+   */
+  public void setSessionAttribute(String name, Object value) {
+    // TODO: implement
+    throw new IllegalStateException("Not yet implemented");
+  }
+
+
+  /**
+   * Gets an attribute from the session.
+   * 
+   * @param name The name of the attribute to get.
+   * @return The attribute's value or <code>null</code> if there is no such
+   *         attribute.
+   */
+  public Object getSessionAttribute(String name) {
+    // TODO: implement
+    throw new IllegalStateException("Not yet implemented");
+  }
+
+
+  /**
    * Gets an init parameter.
    * 
    * @param name The name of the init parameter.

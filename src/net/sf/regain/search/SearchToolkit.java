@@ -206,8 +206,31 @@ public class SearchToolkit {
 
     return context;
   }
-  
-  
+
+
+  /**
+   * Extracts the file URL from a request path.
+   * 
+   * @param requestPath The request path to extract the file URL from.
+   * @return The extracted file URL.
+   * @throws RegainException If extracting the file URL failed.
+   * 
+   * @see net.sf.regain.search.sharedlib.hit.LinkTag
+   */
+  public static String extractFileUrl(String requestPath)
+    throws RegainException
+  {
+    int filePos = requestPath.indexOf("file/");
+    String filename = RegainToolkit.urlDecode(requestPath.substring(filePos + 5));
+    
+    // Restore the double slashes
+    filename = RegainToolkit.replace(filename, "\\", "/");
+    
+    // Assemble the file URL
+    return RegainToolkit.fileNameToUrl(filename);
+  }
+
+
   /**
    * Decides whether the remote access to a file should be allowed.
    * <p>
@@ -313,7 +336,7 @@ public class SearchToolkit {
         String extension = filename.substring(lastDot + 1);
         String mimeType = (String) mMimeTypeHash.get(extension);
         if (mimeType != null) {
-          response.setHeader("Content-Type", "mimeType/" + mimeType);
+          response.setHeader("Content-Type", mimeType);
         }
       }
       

@@ -193,7 +193,6 @@ public abstract class PageRequest {
    * @throws RegainException If getting the locale failed.
    */
   public abstract Locale getLocale() throws RegainException;
-  
 
   /**
    * Sets an attribute at the page context.
@@ -211,6 +210,23 @@ public abstract class PageRequest {
    *         attribute.
    */
   public abstract Object getContextAttribute(String name);
+
+  /**
+   * Sets an attribute at the session.
+   * 
+   * @param name The name of the attribute to set.
+   * @param value The value of the attribute to set.
+   */
+  public abstract void setSessionAttribute(String name, Object value);
+
+  /**
+   * Gets an attribute from the session.
+   * 
+   * @param name The name of the attribute to get.
+   * @return The attribute's value or <code>null</code> if there is no such
+   *         attribute.
+   */
+  public abstract Object getSessionAttribute(String name);
   
   /**
    * Gets an init parameter.
