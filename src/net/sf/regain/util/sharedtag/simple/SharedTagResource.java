@@ -100,7 +100,7 @@ public class SharedTagResource extends BasicResource {
     Executer executer, Throwable error)
     throws Exception
   {
-    String encoding = "UTF-8";
+    String encoding = "utf-8";
         
     // Write the page to a buffer first
     // If an exception should be thrown the user gets a clear error message
@@ -149,7 +149,7 @@ public class SharedTagResource extends BasicResource {
     }
     
     // The page has been generated without exception -> Send it to the user
-    resp.set("Content-Type", "text/html charset=" + encoding);
+    resp.set("Content-Type", "text/html; charset=" + encoding);
     PrintStream pageStream = resp.getPrintStream();
     try {
       stream.writeTo(pageStream);
