@@ -330,7 +330,7 @@
       <manifest>
         <attribute name="Preparator-Classes" value=".PoiMsExcelPreparator;.PoiMsWordPreparator"/>
       </manifest>
-      <fileset dir="temp/included-lib-classes">
+      <fileset dir="temp/included-lib-classes/common">
         <include name="font_metrics.properties"/>
         <include name="org/apache/poi/**"/>
       </fileset>
@@ -344,7 +344,7 @@
       <manifest>
         <attribute name="Preparator-Classes" value=".JacobMsExcelPreparator;.JacobMsWordPreparator;.JacobMsPowerPointPreparator"/>
       </manifest>
-      <fileset dir="temp/included-lib-classes">
+      <fileset dir="temp/included-lib-classes/common">
         <include name="com/jacob/**"/>
         <include name="de/filiadata/lucene/spider/generated/msoffice2000/**"/>
       </fileset>
@@ -381,7 +381,7 @@
       <manifest>
         <attribute name="Preparator-Classes" value=".PdfBoxPreparator"/>
       </manifest>
-      <fileset dir="temp/included-lib-classes">
+      <fileset dir="temp/included-lib-classes/common">
         <include name="org/pdfbox/**"/>
         <include name="Resources/**"/>
       </fileset>
@@ -497,7 +497,7 @@
       <manifest>
         <attribute name="Main-Class" value="net.sf.regain.crawler.Main"/>
       </manifest>
-      <fileset dir="temp/included-lib-classes">
+      <fileset dir="temp/included-lib-classes/common">
         <include name="org/apache/lucene/**"/>
         <include name="org/apache/log4j/**"/>
         <include name="org/apache/regexp/**"/>
