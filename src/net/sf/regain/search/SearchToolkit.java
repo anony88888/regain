@@ -36,6 +36,7 @@ import java.util.HashMap;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
+import net.sf.regain.search.access.SearchAccessController;
 import net.sf.regain.search.config.IndexConfig;
 import net.sf.regain.search.config.SearchConfig;
 import net.sf.regain.search.config.XmlSearchConfig;
@@ -184,8 +185,22 @@ public class SearchToolkit {
       // Get the query
       String query = getSearchQuery(request);
       
+      // Get the groups the current user has reading rights for
+      String[] groupArr = null;
+      SearchAccessController accessController = indexConfig.getSearchAccessController();
+      if (accessController != null) {
+        groupArr = accessController.getUserGroups(request);
+        
+        if (groupArr == null) {
+          // NOTE: The SearchAccessController should never return null, but for
+          //       security reasons we check it. Because if the groupArr is
+          //       null, the access control is disabled.
+          groupArr = new String[0];
+        }
+      }
+      
       // Create the SearchContext and store it in the page context
-      context = new SearchContext(indexConfig, query);
+      context = new SearchContext(indexConfig, query, groupArr);
       request.setContextAttribute(SEARCH_CONTEXT_ATTR_NAME, context);
     }
 

@@ -188,7 +188,7 @@ public class PreparatorFactory {
           }
           
           // Load the preparator and add it to the preparatorHash
-          Preparator prep = loadPreparator(className, loader);
+          Preparator prep = (Preparator) RegainToolkit.createClassInstance(className, Preparator.class, loader);
           preparatorHash.put(className, prep);
         }
       }
@@ -225,47 +225,6 @@ public class PreparatorFactory {
     
     // There are no settings for the preparator -> It is enabled
     return true;
-  }
-
-
-  /**
-   * Loads a preparator.
-   * 
-   * @param className The class name of the preparator to load. 
-   * @param classLoader The class loader to use for loading.
-   * @return The preparator.
-   * @throws RegainException If loading the preparator failed.
-   */
-  private Preparator loadPreparator(String className, ClassLoader classLoader)
-    throws RegainException
-  {
-    // Load the preparator class
-    Class preparatorClass;
-    try {
-      preparatorClass = classLoader.loadClass(className);
-    }
-    catch (ClassNotFoundException exc) {
-      throw new RegainException("The class '" + className
-        + "' does not exist", exc);
-    }
-
-    // Create the preparator instance
-    Object obj;
-    try {
-      obj = preparatorClass.newInstance();
-    }
-    catch (Exception exc) {
-      throw new RegainException("Error creating instance of class "
-        + className, exc);
-    }
-
-    // Check the preparator instance
-    if (! (obj instanceof Preparator)) {
-      throw new RegainException("The class " + className + " does not " +
-        "implement " + Preparator.class.getName());
-    }
-
-    return (Preparator) obj;
   }
 
 }

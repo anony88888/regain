@@ -1,4 +1,9 @@
 
+* Zugriffsrechte-Management: Es kann nun ein Rechte-Management eingebunden
+    werden, das dafür sorgt, dass ein Benutzer nur Treffer für Dokumente erhält,
+    für die er Leserechte hat.
+
+
 Version 1.1 Beta 3 am 17.03.05
 ------------------------------
 

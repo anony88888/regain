@@ -481,7 +481,7 @@ public class XmlToolkit {
    *         <code>node</code> and the <code>defaultNode</code> have no child
    *         with the given name. 
    */
-  public static Node getCascadedChildKram(Node node, Node defaultNode,
+  public static Node getCascadedChild(Node node, Node defaultNode,
     String childNodeName)
   {
     Node child = XmlToolkit.getChild(node, childNodeName);
@@ -513,7 +513,7 @@ public class XmlToolkit {
     String childNodeName, boolean mandatory)
     throws RegainException
   {
-    Node child = getCascadedChildKram(node, defaultNode, childNodeName);
+    Node child = getCascadedChild(node, defaultNode, childNodeName);
     if (mandatory && (child == null)) {
       throw new RegainException("Node '" + node.getNodeName()
           + "' or node '" + defaultNode.getNodeName()
@@ -522,7 +522,7 @@ public class XmlToolkit {
     
     return child;
   }
-  
+
 
   /**
    * Gets the text of a child node.

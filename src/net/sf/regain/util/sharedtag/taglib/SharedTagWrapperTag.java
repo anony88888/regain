@@ -186,6 +186,12 @@ public abstract class SharedTagWrapperTag
     if (request == null) {
       request = new JspPageRequest(pageContext);
       pageContext.setAttribute("SharedTagPageRequest", request);
+      
+      // Add the error to the page attributes
+      Throwable error = (Throwable) pageContext.getRequest().getAttribute("javax.servlet.jsp.jspException");
+      if (error != null) {
+        request.setContextAttribute("page.exception", error);
+      }
     }
     
     return request;

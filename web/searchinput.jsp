@@ -1,4 +1,5 @@
 <%@page contentType="text/html" errorPage="errorpage.jsp"%>
+<%@taglib uri="SearchLib.tld" prefix="search" %>
 
 <html>
 <head>

@@ -10,83 +10,14 @@
   <shortname>TagLib for searching in a Lucene index</shortname>
 
   <tag>
-    <name>input_hiddenparam</name>
-    <tagclass>net.sf.regain.ui.server.taglib.input.HiddenparamTag</tagclass>
+    <name>msg</name>
+    <tagclass>net.sf.regain.ui.server.taglib.MsgTag</tagclass>
     <bodycontent>empty</bodycontent>
 
     <attribute>
-      <name>name</name>
+      <name>key</name>
       <required>true</required>
     </attribute>
-  </tag>
-
-  <tag>
-    <name>input_fieldlist</name>
-    <tagclass>net.sf.regain.ui.server.taglib.input.FieldlistTag</tagclass>
-    <bodycontent>empty</bodycontent>
-
-    <attribute>
-      <name>field</name>
-      <required>true</required>
-    </attribute>
-    <attribute>
-      <name>allMsg</name>
-      <required>true</required>
-    </attribute>
-  </tag>
-
-  <tag>
-    <name>input_query</name>
-    <tagclass>net.sf.regain.ui.server.taglib.input.QueryTag</tagclass>
-    <bodycontent>empty</bodycontent>
-  </tag>
-
-  <tag>
-    <name>input_maxresults</name>
-    <tagclass>net.sf.regain.ui.server.taglib.input.MaxresultsTag</tagclass>
-    <bodycontent>empty</bodycontent>
-  </tag>
-
-  <tag>
-    <name>error_message</name>
-    <tagclass>net.sf.regain.ui.server.taglib.error.MessageTag</tagclass>
-    <bodycontent>empty</bodycontent>
-  </tag>
-
-  <tag>
-    <name>error_stacktrace</name>
-    <tagclass>net.sf.regain.ui.server.taglib.error.StacktraceTag</tagclass>
-    <bodycontent>empty</bodycontent>
-  </tag>
-
-  <tag>
-    <name>stats_query</name>
-    <tagclass>net.sf.regain.ui.server.taglib.stats.QueryTag</tagclass>
-    <bodycontent>empty</bodycontent>
-  </tag>
-
-  <tag>
-    <name>stats_from</name>
-    <tagclass>net.sf.regain.ui.server.taglib.stats.FromTag</tagclass>
-    <bodycontent>empty</bodycontent>
-  </tag>
-
-  <tag>
-    <name>stats_to</name>
-    <tagclass>net.sf.regain.ui.server.taglib.stats.ToTag</tagclass>
-    <bodycontent>empty</bodycontent>
-  </tag>
-
-  <tag>
-    <name>stats_total</name>
-    <tagclass>net.sf.regain.ui.server.taglib.stats.TotalTag</tagclass>
-    <bodycontent>empty</bodycontent>
-  </tag>
-
-  <tag>
-    <name>stats_searchtime</name>
-    <tagclass>net.sf.regain.ui.server.taglib.stats.SearchtimeTag</tagclass>
-    <bodycontent>empty</bodycontent>
   </tag>
 
   <tag>
@@ -147,6 +78,97 @@
       <name>msgNoResults</name>
       <required>true</required>
     </attribute>
+  </tag>
+
+  <tag>
+    <name>input_hiddenparam</name>
+    <tagclass>net.sf.regain.ui.server.taglib.input.HiddenparamTag</tagclass>
+    <bodycontent>empty</bodycontent>
+
+    <attribute>
+      <name>name</name>
+      <required>true</required>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>input_fieldlist</name>
+    <tagclass>net.sf.regain.ui.server.taglib.input.FieldlistTag</tagclass>
+    <bodycontent>empty</bodycontent>
+
+    <attribute>
+      <name>field</name>
+      <required>true</required>
+    </attribute>
+    <attribute>
+      <name>allMsg</name>
+      <required>true</required>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>input_query</name>
+    <tagclass>net.sf.regain.ui.server.taglib.input.QueryTag</tagclass>
+    <bodycontent>empty</bodycontent>
+  </tag>
+
+  <tag>
+    <name>input_maxresults</name>
+    <tagclass>net.sf.regain.ui.server.taglib.input.MaxresultsTag</tagclass>
+    <bodycontent>empty</bodycontent>
+  </tag>
+
+  <tag>
+    <name>input_submit</name>
+    <tagclass>net.sf.regain.ui.server.taglib.input.SubmitTag</tagclass>
+    <bodycontent>empty</bodycontent>
+
+    <attribute>
+      <name>text</name>
+      <required>true</required>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>error_message</name>
+    <tagclass>net.sf.regain.ui.server.taglib.error.MessageTag</tagclass>
+    <bodycontent>empty</bodycontent>
+  </tag>
+
+  <tag>
+    <name>error_stacktrace</name>
+    <tagclass>net.sf.regain.ui.server.taglib.error.StacktraceTag</tagclass>
+    <bodycontent>empty</bodycontent>
+  </tag>
+
+  <tag>
+    <name>stats_query</name>
+    <tagclass>net.sf.regain.ui.server.taglib.stats.QueryTag</tagclass>
+    <bodycontent>empty</bodycontent>
+  </tag>
+
+  <tag>
+    <name>stats_from</name>
+    <tagclass>net.sf.regain.ui.server.taglib.stats.FromTag</tagclass>
+    <bodycontent>empty</bodycontent>
+  </tag>
+
+  <tag>
+    <name>stats_to</name>
+    <tagclass>net.sf.regain.ui.server.taglib.stats.ToTag</tagclass>
+    <bodycontent>empty</bodycontent>
+  </tag>
+
+  <tag>
+    <name>stats_total</name>
+    <tagclass>net.sf.regain.ui.server.taglib.stats.TotalTag</tagclass>
+    <bodycontent>empty</bodycontent>
+  </tag>
+
+  <tag>
+    <name>stats_searchtime</name>
+    <tagclass>net.sf.regain.ui.server.taglib.stats.SearchtimeTag</tagclass>
+    <bodycontent>empty</bodycontent>
   </tag>
 
   <tag>

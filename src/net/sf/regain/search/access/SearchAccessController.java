@@ -25,45 +25,46 @@
  *   $Author$
  * $Revision$
  */
-package net.sf.regain.search.sharedlib.error;
+package net.sf.regain.search.access;
+
+import java.util.Properties;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.util.sharedtag.PageRequest;
-import net.sf.regain.util.sharedtag.PageResponse;
-import net.sf.regain.util.sharedtag.SharedTag;
 
 /**
- * Generates the error message.
- *
- * @author Til Schneider, www.murfman.de
+ * Identifies the groups a user has reading rights for.
+ * <p>
+ * This interface is a part of the access control system that ensures that only
+ * those documents are shown in the search results that the user is allowed to
+ * read.
+ * 
+ * @see net.sf.regain.crawler.access.CrawlerAccessController
+ * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
  */
-public abstract class AbstractErrorTag extends SharedTag {
+public interface SearchAccessController {
 
   /**
-   * Called when the parser reaches the end tag.
+   * Initializes the CrawlerAccessController.
+   * <p>
+   * This method is called once right after the CrawlerAccessController instance
+   * was created.
    *  
-   * @param request The page request.
-   * @param response The page response.
-   * @throws RegainException If there was an exception.
+   * @param config The configuration.
+   * 
+   * @throws RegainException If loading the config failed.
    */
-  public final void printEndTag(PageRequest request, PageResponse response)
-    throws RegainException
-  {
-    Throwable error = (Throwable) request.getContextAttribute("page.exception");
-    printEndTag(request, response, error);
-  }
-
+  public void init(Properties config) throws RegainException;
 
   /**
-   * Called when the parser reaches the end tag.
-   *  
-   * @param request The page request.
-   * @param response The page response.
-   * @param error The error of the request.
-   * @throws RegainException If there was an exception.
+   * Gets the groups the current user has reading rights for.
+   * 
+   * @param request The page request to use for identifying the user.
+   * @return The groups of the current user.
+   * 
+   * @throws RegainException If getting the groups failed.
    */
-  protected abstract void printEndTag(PageRequest request,
-    PageResponse response, Throwable error)
+  public String[] getUserGroups(PageRequest request)
     throws RegainException;
-  
+
 }

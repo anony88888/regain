@@ -8,6 +8,12 @@
  */
 package net.sf.regain.search.config;
 
+import java.util.Properties;
+
+import net.sf.regain.RegainException;
+import net.sf.regain.RegainToolkit;
+import net.sf.regain.search.access.SearchAccessController;
+
 /**
  * The configuration for one index.
  * 
@@ -57,6 +63,9 @@ public class IndexConfig {
    */
   private String[][] mRewriteRules;
 
+  /** The SearchAccessController to use. May be <code>null</code>. */
+  private SearchAccessController mSearchAccessController;
+
 
   /**
    * Creates a new instance of IndexConfig.
@@ -68,18 +77,40 @@ public class IndexConfig {
    * @param searchFieldList The index fields to search by default.
    * @param rewriteRules The URL rewrite rules. Contains pairs of URL prefixes:
    *        The first prefix will be replaced by the second.
+   * @param searchAccessControllerClass The class name of the
+   *        {@link SearchAccessController} to use.
+   * @param searchAccessControllerJar The name of jar file to load the
+   *        {@link SearchAccessController} from.
+   * @param searchAccessControllerConfig The configuration for the
+   *        {@link SearchAccessController}.
+   * @throws RegainException If loading the SearchAccessController failed.
    */
   public IndexConfig(String name, String directory, String openInNewWindowRegex,
-    String[] searchFieldList, String[][] rewriteRules)
+    String[] searchFieldList, String[][] rewriteRules,
+    String searchAccessControllerClass, String searchAccessControllerJar,
+    Properties searchAccessControllerConfig)
+    throws RegainException
   {
     mName = name;
     mDirectory = directory;
     mOpenInNewWindowRegex = openInNewWindowRegex;
     mSearchFieldList = searchFieldList;
     mRewriteRules = rewriteRules;
+    
+    if (searchAccessControllerClass != null) {
+      mSearchAccessController = (SearchAccessController)
+        RegainToolkit.createClassInstance(searchAccessControllerClass,
+                                          SearchAccessController.class,
+                                          searchAccessControllerJar);
+      
+      if (searchAccessControllerConfig == null) {
+        searchAccessControllerConfig = new Properties();
+      }
+      mSearchAccessController.init(searchAccessControllerConfig);
+    }
   }
-  
-  
+
+
   /**
    * Gets the name of the index.
    * 
@@ -146,5 +177,16 @@ public class IndexConfig {
   public String[][] getRewriteRules() {
     return mRewriteRules;
   }
-  
+
+
+  /**
+   * Gets the SearchAccessController to use. Returns <code>null</code> if no
+   * SearchAccessController should be used.
+   * 
+   * @return The SearchAccessController. 
+   */
+  public SearchAccessController getSearchAccessController() {
+    return mSearchAccessController;
+  }
+
 }

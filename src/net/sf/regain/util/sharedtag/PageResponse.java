@@ -88,8 +88,11 @@ public abstract class PageResponse {
    * @throws RegainException If printing failed.
    */
   public void printNoHtml(String text) throws RegainException {
-    text = RegainToolkit.replace(text, "<", "&lt;");
-    text = RegainToolkit.replace(text, ">", "&gt;");
+    if (text != null) {
+      text = RegainToolkit.replace(text, "<", "&lt;");
+      text = RegainToolkit.replace(text, ">", "&gt;");
+    }
+    
     print(text);
   }
   

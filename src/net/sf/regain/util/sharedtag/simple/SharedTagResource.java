@@ -112,7 +112,7 @@ public class SharedTagResource extends BasicResource {
 
     // Add the error to the page attributes
     if (error != null) {
-      request.setContextAttribute("javax.servlet.jsp.jspException", error);
+      request.setContextAttribute("page.exception", error);
     }
     
     try {

@@ -75,8 +75,8 @@ public class Localizer {
       URLClassLoader loader = getClassLoader(basedir);
       mBundle = ResourceBundle.getBundle(basename, locale, loader);
     }
-    catch (Exception exc) {
-      mLog.error("ResourceBundle not found: '" + basename + "'", exc);
+    catch (Throwable thr) {
+      mLog.error("ResourceBundle not found: '" + basename + "'", thr);
     }
     
     mKeyPrefix = "";

@@ -1,4 +1,9 @@
 
+* Access rights management: It is now possible to integrate an access rights
+    management, that ensures that a user only sees results for documents he has
+    reading rights for.
+
+
 Version 1.1 Beta 3 on 2005-03-17
 --------------------------------
 

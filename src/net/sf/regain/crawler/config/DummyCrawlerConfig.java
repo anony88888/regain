@@ -27,6 +27,8 @@
  */
 package net.sf.regain.crawler.config;
 
+import java.util.Properties;
+
 
 /**
  * Stellt alle zu konfigurierenden Einstellungen hardcodiert zur Verfügung.
@@ -327,6 +329,43 @@ public class DummyCrawlerConfig implements CrawlerConfig {
    * @return The list of the auxiliary fields. May be null.
    */
   public AuxiliaryField[] getAuxiliaryFieldList() {
+    return null;
+  }
+
+
+  /**
+   * Gets the class name of the
+   * {@link net.sf.regain.crawler.access.CrawlerAccessController} to use.
+   * Returns <code>null</code> if no CrawlerAccessController should be used.
+   * 
+   * @return The class name of the CrawlerAccessController. 
+   */
+  public String getCrawlerAccessControllerClass() {
+    return null;
+  }
+
+
+  /**
+   * Gets the name of jar file to load the
+   * {@link net.sf.regain.crawler.access.CrawlerAccessController} from.
+   * Returns <code>null</code> if the CrawlerAccessController already is in the
+   * classpath.
+   * 
+   * @return The name of jar file to load the CrawlerAccessController from. 
+   */
+  public String getCrawlerAccessControllerJar() {
+    return null;
+  }
+
+  
+  /**
+   * Gets the configuration of the
+   * {@link net.sf.regain.crawler.access.CrawlerAccessController}. May be
+   * <code>null</code>.
+   * 
+   * @return The the configuration of the CrawlerAccessController. 
+   */
+  public Properties getCrawlerAccessControllerConfig() {
     return null;
   }
 
