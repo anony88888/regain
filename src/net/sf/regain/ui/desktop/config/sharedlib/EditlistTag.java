@@ -56,7 +56,7 @@ public class EditlistTag extends SharedTag {
     String[] currValueArr = (String[]) request.getContextAttribute("settings." + name);
     
     response.print("<select id=\"" + name + "-list\" name=\"" + name + "\" " +
-        "size=\"5\" multiple");
+        "size=\"5\" onClick=\"showListSelection('" + name + "')\" multiple");
     String styleSheetClass = getParameter("class");
     if (styleSheetClass != null) {
       response.print(" class=\"" + styleSheetClass + "\"");
