@@ -1,3 +1,7 @@
+
+Version 1.1 Beta 3 am 17.03.05
+------------------------------
+
 * Crawler: Bugfix: Der PoiMsExcelPraeparator kam nicht mit allen Zahlen- und
   Datumsformaten klar.
 * Crawler: Das Fehler-Log im Index ist nun ausführlicher (Mit Stacktrace).

@@ -151,6 +151,8 @@ X Changelog erstellen
 X Desktopsuche: index.php zeigen
 X Desktopsuche: Schoenere Fehlerseite (errorpage benutzen)
 
+** Version 1.1 Beta 3 am 17.03.05 **
+
 Filiadata:
 ----------
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, fuer die
@@ -166,7 +168,7 @@ Filiadata:
 Prio A:
 -------
 
-  Desktopsuche: Bessere Fehlerseite für QuerySyntaxException
+  Desktopsuche: Installer auch auf Englisch
 
 Prio B:
 -------
