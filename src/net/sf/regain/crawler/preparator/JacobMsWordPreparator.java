@@ -93,26 +93,30 @@ public class JacobMsWordPreparator extends AbstractPreparator {
       // iterate through the sections
       Sections sections = doc.getSections();
       StringBuffer content = new StringBuffer();
-      for (int sec = 1; sec <= sections.getCount(); sec++) {
-        Section section = sections.item(sec);
+      for (int i = 1; i <= sections.getCount(); i++) {
+        Section sec = sections.item(i);
 
         // Get the header of the first section as title
-        if (sec == 1) {
+        if (i == 1) {
           int headerFirstPage = WdHeaderFooterIndex.wdHeaderFooterFirstPage;
-          HeaderFooter firstHeader = section.getHeaders().item(headerFirstPage);
+          HeaderFooter firstHeader = sec.getHeaders().item(headerFirstPage);
           String title = firstHeader.getRange().getText();
           setTitle(title);
         }
 
         // Get the text
-        section.getRange().select();
-        Selection sel = mWordApplication.getSelection();
-        // Alternative (VB): sel.moveEndWhile(?? cset:=vbCr ??, WdConstants.wdBackward);
-        // Alternative (VB): Call app.ActiveDocument.Bookmarks.Item("\endofdoc").Select()
-        sel.moveEnd();
-        sel.copy();
-        content.append(sel.getText() + "\n");
+        sec.getRange().select();
+        content.append(getSelection(mWordApplication) + "\n");
       }
+
+      // iterate through the shapes
+      Shapes shapes = doc.getShapes();
+      for (int i = 1; i <= shapes.getCount(); i++) {
+        Shape shape = shapes.item(new Variant(i));
+        appendShape(shape, content);
+      }
+      
+      // Set the extracted text
       setCleanedContent(content.toString());
 
       // Dokument schließen (ohne Speichern)
@@ -124,6 +128,44 @@ public class JacobMsWordPreparator extends AbstractPreparator {
     }
   }
 
+  
+  /**
+   * Gets the currently selected text from a Word application.
+   * 
+   * @param wordAppl The Word application to get the selected text from.
+   * @return The currently selected text.
+   */
+  private String getSelection(Application wordAppl) {
+    Selection sel = wordAppl.getSelection();
+    // Alternative (VB): sel.moveEndWhile(?? cset:=vbCr ??, WdConstants.wdBackward);
+    // Alternative (VB): Call app.ActiveDocument.Bookmarks.Item("\endofdoc").Select()
+    sel.moveEnd();
+    sel.copy();
+    return sel.getText();
+  }
+
+  
+  /**
+   * Appends the text content of a shape to a StringBuffer.
+   * 
+   * @param shape The shape to add.
+   * @param buffer The buffer where to append the text
+   */
+  private void appendShape(Shape shape, StringBuffer buffer) {
+    String shapeName = shape.getName();
+    if (shapeName.startsWith("Text Box ")) {
+      shape.getTextFrame().getTextRange().select();
+      buffer.append(getSelection(mWordApplication) + "\n");
+    }
+    else if (shapeName.startsWith("Group ")) {
+      GroupShapes group = shape.getGroupItems();
+      for (int i = 1; i <= group.getCount(); i++) {
+        Shape child = group.item(new Variant(i));
+        appendShape(child, buffer);
+      }
+    }
+  }
+  
 
   /**
    * Gibt alle Ressourcen frei, die von diesem Präparator genutzt wurden.
