@@ -387,6 +387,7 @@
           <!--
           jvm="${java-1_2_2.dir}/bin/java"
           -->
+      <jvmarg value="-Xmx256M"/>
       <classpath>
         <path refid="classpath"/>
       </classpath>
@@ -404,6 +405,7 @@
           <!--
           jvm="${java-1_2_2.dir}/bin/java"
           -->
+      <jvmarg value="-Xmx256M"/>
       <classpath>
         <path refid="classpath"/>
       </classpath>

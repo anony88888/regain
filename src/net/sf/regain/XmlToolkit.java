@@ -108,9 +108,9 @@ public class XmlToolkit {
       out.println("<?xml version=\"1.0\" encoding=\"" + encoding + "\"?>");
       out.println();
       out.println("<!DOCTYPE entities [");
-      out.println("  <!ENTITY amp \"&#38;\">");
-      out.println("  <!ENTITY lt  \"&#60;\">");
-      out.println("  <!ENTITY gt  \"&#62;\">");
+      out.println("  <!ENTITY minus \"&#45;\">");
+      out.println("  <!ENTITY lt \"&#60;\">");
+      out.println("  <!ENTITY gt \"&#62;\">");
       out.println("]>");
       out.println();
       
@@ -154,6 +154,7 @@ public class XmlToolkit {
       String text = node.getNodeValue();
       text = RegainToolkit.replace(text, "<", "&lt;");
       text = RegainToolkit.replace(text, ">", "&gt;");
+      text = RegainToolkit.replace(text, "--", "&minus;&minus;");
       out.print(text);
     } else if (isComment) {
       // This is a comment tag

@@ -53,7 +53,6 @@ public class SearchToolkit {
   private static SearchConfig mConfig;
 
 
-
   /**
    * Gets the SearchContext from the PageContext.
    * <p>
@@ -132,9 +131,8 @@ public class SearchToolkit {
     throws RegainException
   {
     if (mConfig == null) {
-      String configFileName = request.getInitParameter("configFile");
+      String configFileName = request.getInitParameter("searchConfigFile");
       File configFile = new File(configFileName);
-      
       try {
         mConfig = new XmlSearchConfig(configFile);
       }

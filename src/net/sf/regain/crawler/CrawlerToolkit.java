@@ -30,8 +30,11 @@ package net.sf.regain.crawler;
 import java.io.*;
 import java.net.*;
 
+import org.apache.log4j.Logger;
+
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
+import net.sf.regain.crawler.config.CrawlerConfig;
 
 
 /**
@@ -41,6 +44,10 @@ import net.sf.regain.RegainToolkit;
  */
 public class CrawlerToolkit {
 
+  /** The logger for this class */
+  private static Logger mLog = Logger.getLogger(CrawlerToolkit.class);
+
+  
   /**
    * Originally copied from javax.swing.JEditorPane#getStream(...).
    * <p>
@@ -396,4 +403,42 @@ public class CrawlerToolkit {
     System.out.println();
   }
 
+
+  /**
+   * Initialisiert die Proxy-Einstellungen.
+   *
+   * @param config Die Konfiguration, aus der die Einstellungen gelesen werden
+   *        sollen.
+   */
+  public static void initProxy(CrawlerConfig config) {
+    String httpProxyHost = config.getProxyHost();
+    String httpProxyPort = config.getProxyPort();
+    String httpProxyUser = config.getProxyUser();
+    String httpProxyPassword = config.getProxyPassword();
+
+    String msg = "";
+    if (httpProxyHost != null) {
+      System.setProperty("http.proxyHost", httpProxyHost);
+      msg += " host: " + httpProxyHost;
+    }
+    if (httpProxyPort != null) {
+      System.setProperty("http.proxyPort", httpProxyPort);
+      msg += " port: " + httpProxyPort;
+    }
+    if (httpProxyUser != null) {
+      System.setProperty("http.proxyUser", httpProxyUser);
+      msg += " user: " + httpProxyUser;
+    }
+    if (httpProxyPassword != null) {
+      System.setProperty("http.proxyPassword", httpProxyPassword);
+      msg += " password: (" + httpProxyPassword.length() + " characters)";
+    }
+
+    if (msg.length() != 0) {
+      mLog.info("Using proxy:" + msg);
+    } else {
+      mLog.info("Using no proxy");
+    }
+  }
+  
 }

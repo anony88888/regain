@@ -30,6 +30,9 @@ package net.sf.regain.ui.desktop;
 import java.io.File;
 import java.net.ServerSocket;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import net.sf.regain.util.sharedtag.simple.ExecuterParser;
 import net.sf.regain.util.sharedtag.simple.SharedTagService;
 import net.sf.regain.util.sharedtag.simple.SimplePageRequest;
@@ -46,17 +49,38 @@ import simple.http.serve.HandlerFactory;
  * @author Til Schneider, www.murfman.de
  */
 public class Main {
+  
+  /** The logger for this class */
+  private static Logger mLog = Logger.getLogger(Main.class);
 
+  
   /**
    * The main entry point.
    * 
    * @param args The command line arguments.
    */
   public static void main(String[] args) {
-    SimplePageRequest.setInitParameter("configFile", "conf/SearchConfiguration.xml");
+    // Initialize Logging
+    new File("log").mkdir();
+    File logConfigFile = new File("conf/log4j.properties");
+    if (! logConfigFile.exists()) {
+      System.out.println("ERROR: Logging configuration file not found: "
+        + logConfigFile.getAbsolutePath());
+      return; // Abort
+    }
+
+    PropertyConfigurator.configure(logConfigFile.getAbsolutePath());
+    mLog.info("Logging initialized");
+
+    // Initialize the search mask
+    SimplePageRequest.setInitParameter("searchConfigFile", "conf/SearchConfiguration.xml");
     ExecuterParser.registerNamespace("search", "net.sf.regain.search.sharedlib");
-    ExecuterParser.registerNamespace("settings", "net.sf.regain.ui.desktop.settings.sharedlib");
+    ExecuterParser.registerNamespace("config", "net.sf.regain.ui.desktop.config.sharedlib");
     
+    // Start the index update manager
+    IndexUpdateManager.getInstance().init();
+    
+    // Start the server
     try {
       FileContext context = new FileContext(new File("web"));
       
@@ -69,7 +93,7 @@ public class Main {
       
       Connection connection = ConnectionFactory.getConnection(handler);
 
-      System.out.println("Listening on port 88...");
+      mLog.info("Listening on port 88...");
       connection.connect(new ServerSocket(88));
     }
     catch (Exception exc) {

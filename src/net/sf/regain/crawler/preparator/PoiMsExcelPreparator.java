@@ -168,6 +168,7 @@ public class PoiMsExcelPreparator extends AbstractPreparator {
         // This is a date
         format = RegainToolkit.replace(format, "mmmm", "MMMM");
         format = RegainToolkit.replace(format, "/", ".");
+        format = RegainToolkit.replace(format, ";", "\\;");
 
         double numberValue = cell.getNumericCellValue();
         java.util.Date date = HSSFDateUtil.getJavaDate(numberValue);

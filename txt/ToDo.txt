@@ -77,6 +77,8 @@ X Desktopsuche: Einstellungen
     - Welche Verzeichnisse sollen indiziert werden sollen
     - Welche Verzeichnisse sollen ausgelassen werden
     - Welche Webseiten sollen indiziert werden
+X Desktopsuche: Periodisch den Crawler aufrufen und automatisch geänderte
+    Konfiguration laden
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -90,15 +92,14 @@ X Desktopsuche: Einstellungen
   Handbuch aktualisieren:
     - Such-JSP: Zusätzliche Eingabefelder für bestimmte Felder können mit
       "field.feldName" hinzugefügt werden.
+    - Init-Parameter von configFile nach searchConfigFile umbenannt.
 
-  Desktopsuche: Suche: Automatisch geänderte Konfiguration laden
-  Desktopsuche: Periodisch den Crawler aufrufen
-  Desktopsuche: Status
-    - Wann wurde der Index zuletzt aktualisiert
-    - Fortschritt bei laufender Aktualisierung
   Desktopsuche: Task-Icon mit Menü
   Desktopsuche: Installer
   Desktopsuche: Jsmooth
+  Desktopsuche: Status
+    - Wann wurde der Index zuletzt aktualisiert
+    - Fortschritt bei laufender Aktualisierung
   Desktopsuche: Seiten-Design aufpeppen
 
 Rückfragen:

@@ -113,7 +113,7 @@ public class Main {
     }
 
     // Proxy settings
-    initProxy(config);
+    CrawlerToolkit.initProxy(config);
 
     // Create crawler
     Crawler crawler = null;
@@ -200,44 +200,6 @@ public class Main {
       "                      (Default: log4j.properties)");
 
     System.exit(100);
-  }
-
-
-  /**
-   * Initialisiert die Proxy-Einstellungen.
-   *
-   * @param config Die Konfiguration, aus der die Einstellungen gelesen werden
-   *        sollen.
-   */
-  private static void initProxy(CrawlerConfig config) {
-    String httpProxyHost = config.getProxyHost();
-    String httpProxyPort = config.getProxyPort();
-    String httpProxyUser = config.getProxyUser();
-    String httpProxyPassword = config.getProxyPassword();
-
-    String msg = "";
-    if (httpProxyHost != null) {
-      System.setProperty("http.proxyHost", httpProxyHost);
-      msg += " host: " + httpProxyHost;
-    }
-    if (httpProxyPort != null) {
-      System.setProperty("http.proxyPort", httpProxyPort);
-      msg += " port: " + httpProxyPort;
-    }
-    if (httpProxyUser != null) {
-      System.setProperty("http.proxyUser", httpProxyUser);
-      msg += " user: " + httpProxyUser;
-    }
-    if (httpProxyPassword != null) {
-      System.setProperty("http.proxyPassword", httpProxyPassword);
-      msg += " password: (" + httpProxyPassword.length() + " characters)";
-    }
-
-    if (msg.length() != 0) {
-      mLog.info("Using proxy:" + msg);
-    } else {
-      mLog.info("Using no proxy");
-    }
   }
 
 

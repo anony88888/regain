@@ -3,6 +3,7 @@
 <!DOCTYPE configuration [
   <!ENTITY amp "&#x26;">
   <!ENTITY lt "&#x3C;">
+  <!ENTITY minus "&#45;">
 ]>
 
 <!--
@@ -44,7 +45,7 @@
 <!-- The preferences for the search index -->
 <searchIndex>
   <!-- The directory where the index should be located -->
-  <dir>c:\Temp\searchindex</dir>
+  <dir>searchindex</dir>
 
   <!-- Specifies, whether the index should be built -->
   <buildIndex>true</buildIndex>
@@ -65,7 +66,7 @@
    | Specifies, whether the analysis files should be written.
    | The analysis files help to check the quality of the index building process.
    +-->
-  <writeAnalysisFiles>true</writeAnalysisFiles>
+  <writeAnalysisFiles>false</writeAnalysisFiles>
 
   <!--
    | Gibt den maximalen Prozentsatz von gescheiterten Dokumenten an. (0..100)
@@ -76,7 +77,7 @@
    | Gescheiterte Dokumente sind Dokumente die es entweder nicht gibt (Deadlink)
    | oder die nicht ausgelesen werden konnten.
    +-->
-  <maxFailedDocuments>9.5</maxFailedDocuments>
+  <maxFailedDocuments>100</maxFailedDocuments>
 
   <!--
    | Contains all words that should not be indexed.
@@ -97,23 +98,22 @@
 </searchIndex>
 
 
+<!--
+ | Specifies which control files should be crated. These files may be used to
+ | check with a sceduling script whether the index was successfully built.
+ |
+ | <finishedWithoutFatalsFile>: The name of the control file that should be
+ | created if the index creation finished without fatal errors.
+ |
+ | <finishedWithFatalsFile>: The name of the control file that should be
+ | created if the index creation failed with a fatal error.
+ +-->
+<!--
 <controlFiles>
-  <!--
-   | Der Name der Kontrolldatei für erfolgreiche Indexerstellung.
-   |
-   | Diese Datei wird erzeugt, wenn der Index erstellt wurde, ohne dass
-   | fatale Fehler aufgetreten sind.
-   +-->
   <finishedWithoutFatalsFile>c:\Temp\control\NoFatals</finishedWithoutFatalsFile>
-
-  <!--
-   | Der Name der Kontrolldatei für fehlerhafte Indexerstellung.
-   |
-   | Diese Datei wird erzeugt, wenn der Index erstellt wurde, wobei
-   | fatale Fehler aufgetreten sind.
-   +-->
   <finishedWithFatalsFile>c:\Temp\control\WithFatals</finishedWithFatalsFile>
 </controlFiles>
+-->
 
 
 <preparatorList>
@@ -137,13 +137,15 @@
        | "headlineRegex.group": The group of "headlineRegex" that extracts the
        |                  headline.
        +-->
+      <!--
       <section name="contentExtractor">
         <param name="prefix">http://www.testit.de/</param>
-        <param name="startRegex">&lt;!-- Start content --&gt;</param>
-        <!-- <param name="endRegex"></param> -->
+        <param name="startRegex">&lt;!&minus;&minus; Start content &minus;&minus;&gt;</param>
+        <param name="endRegex"></param>
         <param name="headlineRegex">&lt;a name=.*&gt;(.*)&lt;/a&gt;</param>
         <param name="headlineRegex.group">1</param>
       </section>
+      -->
 
       <!--
        | The ectractor that extracts the navigation path in HTML pages.
@@ -160,14 +162,16 @@
        | "pathNodeRegex.titleGroup": The group of "pathNodeRegex" that extracts
        |                  the title of the path node.
        +-->
+      <!--
       <section name="pathExtractor">
         <param name="prefix">http://www.testit.de/</param>
-        <param name="startRegex">&lt;!-- Pfad-Beginn  --&gt;</param>
-        <param name="endRegex">&lt;!-- Pfad-Ende --&gt;</param>
+        <param name="startRegex">&lt;!&minus;&minus; Pfad-Beginn &minus;&minus;&gt;</param>
+        <param name="endRegex">&lt;!&minus;&minus; Pfad-Ende &minus;&minus;&gt;</param>
         <param name="pathNodeRegex">&lt;a.*href="([^"]*)">(.*)&lt;/a></param>
         <param name="pathNodeRegex.urlGroup">1</param>
         <param name="pathNodeRegex.titleGroup">2</param>
       </section>
+      -->
     </config>
   </preparator>
   <preparator>
@@ -240,7 +244,9 @@
 <!-- The list of URLs where the spidering will start. -->
 <startlist>
   <!-- Directory parsing -->
-  <start parse="true" index="false">file://c:/Temp/dokumente</start>
+  <!--
+  <start parse="true" index="false">file://c:/Eigene Dateien</start>
+  -->
 
   <!-- HTML parsing -->
   <!--
@@ -251,7 +257,9 @@
 
 <!-- The blacklist containing prefixes an URL must NOT have to be processed -->
 <blacklist>
+  <!--
   <prefix>http://www.mydomain.de/some/dynamic/content/</prefix>
+  -->
 </blacklist>
 
 
@@ -278,8 +286,10 @@
  | Having done this you may search for "Offer project:otto23" and you will get
  | only hits from this project directory.
  +-->
+<!--
 <auxiliaryFieldList>
   <auxiliaryField name="project" regexGroup="1">^file://c:/Temp/dokumente/([^/]*)</auxiliaryField>
 </auxiliaryFieldList>
+-->
 
 </configuration>

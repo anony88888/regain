@@ -250,12 +250,20 @@ public class IndexWriterManager {
       }
     }
 
-    // Check whether we need a IndexSearcher
     if (updateIndex) {
+      // Check whether we need a IndexSearcher
       try {
         mIndexSearcher = new IndexSearcher(mTempIndexDir.getAbsolutePath());
       } catch (IOException exc) {
         throw new RegainException("Creating IndexSearcher failed", exc);
+      }
+
+      // Force an unlock of the index (we just created a copy so this is save)
+      setIndexMode(DELETING_MODE);
+      try {
+        IndexReader.unlock(mIndexReader.directory());
+      } catch (IOException exc) {
+        throw new RegainException("Forcing unlock failed", exc);
       }
     }
 

@@ -25,7 +25,7 @@
  *   $Author$
  * $Revision$
  */
-package net.sf.regain.ui.desktop.settings.sharedlib;
+package net.sf.regain.ui.desktop.config.sharedlib;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.util.sharedtag.PageRequest;
@@ -33,19 +33,11 @@ import net.sf.regain.util.sharedtag.PageWriter;
 import net.sf.regain.util.sharedtag.SharedTag;
 
 /**
- * Generates a combo box with the index update interval.
+ * Generates a editable list.
  *
  * @author Til Schneider, www.murfman.de
  */
-public class IntervalTag extends SharedTag {
-
-  /** The possible choices. */
-  private final String[][] CHOICES = {
-    { "60",    "Eine Stunde" },
-    { "1440",  "Ein Tag" },
-    { "10080", "Eine Woche" },
-  };
-
+public class EditlistTag extends SharedTag {
 
   /**
    * Called when the parser reaches the end tag.
@@ -57,20 +49,27 @@ public class IntervalTag extends SharedTag {
   public void printEndTag(PageWriter out, PageRequest request)
     throws RegainException
   {
-    String currValue = (String) request.getContextAttribute("settings.interval");
+    // Get the name of the edit list
+    String name = getParameter("name", true);
     
-    out.print("<select name=\"interval\">");
-    for (int i = 0; i < CHOICES.length; i++) {
-      String value = CHOICES[i][0];
-      String name  = CHOICES[i][1];
-      
-      out.print("<option value=\"" + value + "\"");
-      if (value.equals(currValue)) {
-        out.print(" selected=\"selected\"");
-      }
-      out.print(">" + name + "</option>");
+    // Get the current value
+    String[] currValueArr = (String[]) request.getContextAttribute("settings." + name);
+    
+    out.print("<select id=\"" + name + "-list\" name=\"" + name + "\" " +
+        "size=\"5\" multiple");
+    String styleSheetClass = getParameter("class");
+    if (styleSheetClass != null) {
+      out.print(" class=\"" + styleSheetClass + "\"");
     }
-    out.print("</select>");
+    out.print(">");
+    for (int i = 0; i < currValueArr.length; i++) {
+      out.print("<option>" + currValueArr[i] + "</option>");
+    }
+    out.print("</select><br/>");
+    
+    out.print("<input type=\"text\" size=\"20\" id=\"" + name + "-entry\"/>");
+    out.print("<button type=\"button\" onClick=\"addToList('" + name + "')\">Hinzuf&uuml;gen</button>");
+    out.print("<button type=\"button\" onClick=\"removeFromList('" + name + "')\">Entfernen</button>");
   }
-  
+
 }

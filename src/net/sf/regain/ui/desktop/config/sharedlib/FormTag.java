@@ -25,7 +25,7 @@
  *   $Author$
  * $Revision$
  */
-package net.sf.regain.ui.desktop.settings.sharedlib;
+package net.sf.regain.ui.desktop.config.sharedlib;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -351,6 +351,9 @@ public class FormTag extends SharedTag {
     // Save the config
     XmlToolkit.saveXmlDocument(desktopFile, desktopDoc);
     XmlToolkit.saveXmlDocument(crawlerFile, crawlerDoc);
+    
+    // Remove the lastupdate file, so the index will be updated
+    new File("searchindex/lastupdate").delete();
   }
 
 }
