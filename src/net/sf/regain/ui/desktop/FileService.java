@@ -52,9 +52,11 @@ public class FileService extends BasicService {
     int filePos = filename.indexOf("file/");
     filename = URLDecoder.decode(filename.substring(filePos + 5));
     
+    // Restore the double slashes
+    filename = RegainToolkit.replace(filename, "\\", "/");
+    
     // Assemble the file URL
-    String fileUrl = "file://" + RegainToolkit.replace(filename, " ", "%20");
-    System.out.println("fileUrl: " + fileUrl);
+    String fileUrl = RegainToolkit.fileNameToUrl(filename);
     
     // Check the filename
     if (SearchToolkit.allowFileAccess(new SimplePageRequest(req), fileUrl)) {

@@ -75,7 +75,7 @@ public class SharedTagResource extends BasicResource {
     // Write the page to a buffer first
     // If an exception should be thrown the user gets a clear error message
     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-    PrintStream printStream = new PrintStream(stream);
+    PrintStream printStream = new PrintStream(stream, false, "UTF-8");
 
     PageRequest request = new SimplePageRequest(req);
     PageResponse response = new SimplePageResponse(this, req, resp, printStream);
@@ -99,13 +99,13 @@ public class SharedTagResource extends BasicResource {
     }
     
     // The page has been generated without exception -> Send it to the user
-    resp.set("Content-Type", "text/html");
-    printStream = resp.getPrintStream();
+    resp.set("Content-Type", "text/html charset=UTF-8");
+    PrintStream pageStream = resp.getPrintStream();
     try {
-      stream.writeTo(printStream);
+      stream.writeTo(pageStream);
     }
     finally {
-      printStream.close();
+      pageStream.close();
     }
   }
 

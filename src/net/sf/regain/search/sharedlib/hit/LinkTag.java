@@ -85,13 +85,19 @@ public class LinkTag extends AbstractHitTag {
     String href = url;
     if (url.startsWith("file://")) {
       // URL encode the URL
-      String urlEncoded = URLEncoder.encode(url.substring(7));
+      String filename = RegainToolkit.urlToFileName(url);
+      String urlEncoded = URLEncoder.encode(filename);
+      urlEncoded = RegainToolkit.replace(urlEncoded, "+", "%20");
       
-      // Restore the slashes
+      // Restore the slashes...
       urlEncoded = RegainToolkit.replace(urlEncoded, "%2F", "/");
-      
+
+      // Create a URL
       href = "file/" + urlEncoded;
 
+      // ...but encode double slashes
+      href = RegainToolkit.replace(href, "//", "/\\");
+      
       String indexName = request.getParameter("index");
       if (indexName != null) {
         String encodedIndexName = URLEncoder.encode(indexName);

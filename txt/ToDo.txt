@@ -139,6 +139,8 @@ X Praeparatoren in eigene Jars kapseln. Alle Jars werden in ein Verzeichnis
     abgearbeitet, in der sie konfiguriert sind. (Die nicht konfigurierten
     Praeparatoren in unbestimmter Reihenfolge danach).
 X Desktopsuche: Task-Icon fuer Linux
+X Bug: File-Service: Datei von Netzlaufwerken (//fileserver/bla/blubb) werden
+    nicht geladen (Forbidden)
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, fuer die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -150,8 +152,7 @@ X Desktopsuche: Task-Icon fuer Linux
       "field.feldName" hinzugefuegt werden.
     - Init-Parameter von configFile nach searchConfigFile umbenannt.
 
-  Bug: File-Service: Datei von Netzlaufwerken (//fileserver/bla/blubb) werden
-    nicht geladen (Forbidden)
+  Bug: Desktopsuche: Suchergebnisse: Umlaute werden falsch dargestellt.
   Changelog erstellen
   Suchmaske: Breakpoints nutzen.
   Bug: HTML-Praeparator kommt nicht mit allen Dateien klar (Siehe Mail von Jochen Stiepel)

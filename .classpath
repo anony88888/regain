@@ -15,7 +15,7 @@
 	<classpathentry kind="lib" path="lib/poi-2.5.1-final-20040804.jar"/>
 	<classpathentry kind="lib" path="lib/poi-scratchpad-2.5.1-final-20040804.jar"/>
 	<classpathentry kind="lib" path="lib/servlet.jar"/>
-	<classpathentry sourcepath="E:/Projekte/regain/lib-src/simple-src.zip" kind="lib" path="lib/simple-2.5.3.jar"/>
+	<classpathentry sourcepath="/home/til/Projekte/regain/lib-src/simple-src.zip" kind="lib" path="lib/simple-2.5.3.jar"/>
 	<classpathentry kind="lib" path="lib/win/jdic.jar"/>
 	<classpathentry kind="output" path="temp/eclipse-classes"/>
 </classpath>

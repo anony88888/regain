@@ -41,7 +41,7 @@ import org.apache.lucene.analysis.de.GermanAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 
 /**
- * Enthält Hilfsmethoden, die sowohl vom Crawler als auch von der Suchmaske
+ * Enthï¿½lt Hilfsmethoden, die sowohl vom Crawler als auch von der Suchmaske
  * genutzt werden.
  *
  * @author Til Schneider, www.murfman.de
@@ -69,11 +69,11 @@ public class RegainToolkit {
 
 
   /**
-   * Löscht ein Verzeichnis mit allen Unterverzeichnissen und -dateien.
+   * Lï¿½scht ein Verzeichnis mit allen Unterverzeichnissen und -dateien.
    *
-   * @param dir Das zu löschende Verzeichnis.
+   * @param dir Das zu lï¿½schende Verzeichnis.
    *
-   * @throws RegainException Wenn das Löschen fehl schlug.
+   * @throws RegainException Wenn das Lï¿½schen fehl schlug.
    */
   public static void deleteDirectory(File dir) throws RegainException {
     if (! dir.exists()) {
@@ -107,7 +107,7 @@ public class RegainToolkit {
    * Schreibt alle Daten, die der Reader liefert in den Writer.
    * <p>
    * Weder der Reader noch der Writer werden dabei geschlossen. Dies muss die
-   * aufrufende Methode übernehmen!
+   * aufrufende Methode ï¿½bernehmen!
    *
    * @param reader Der Reader, der die Daten liefert.
    * @param writer Der Writer auf den die Daten geschrieben werden sollen.
@@ -129,7 +129,7 @@ public class RegainToolkit {
    * Schreibt alle Daten, die der InputStream liefert in den OutputStream.
    * <p>
    * Weder der InputStream noch der OutputStream werden dabei geschlossen. Dies
-   * muss die aufrufende Methode übernehmen!
+   * muss die aufrufende Methode ï¿½bernehmen!
    *
    * @param in Der InputStream, der die Daten liefert.
    * @param out Der OutputStream auf den die Daten geschrieben werden sollen.
@@ -333,16 +333,16 @@ public class RegainToolkit {
    * genutzt wird. Es ist sehr wichtig, dass beide den gleichen Analyzer nutzen,
    * daher nutzen beide diese Methode.
    * <p>
-   * Momentan werden folgende Analyzer-Typen unterstützt:
+   * Momentan werden folgende Analyzer-Typen unterstï¿½tzt:
    * <ul>
-   *   <li>english: Ein Analyzer für englisch</li>
-   *   <li>german: Ein Analyzer für deutsch</li>
+   *   <li>english: Ein Analyzer fï¿½r englisch</li>
+   *   <li>german: Ein Analyzer fï¿½r deutsch</li>
    * </ul>
    *
    * @param analyzerType Der Typ des zu erstellenden Analyzers.
    * @param stopWordList Alle Worte, die nicht indiziert werden sollen.
    * @param exclusionList Alle Worte, die bei der Indizierung nicht vom Analyzer
-   *        verändert werden sollen.
+   *        verï¿½ndert werden sollen.
    * @return Der Analyzer
    * @throws RegainException Wenn die Erzeugung fehl schlug.
    */
@@ -401,7 +401,7 @@ public class RegainToolkit {
 
   /**
    * Erzeugt einen Analyzer, der ein Dokument in Kleinschreibung umwandelt,
-   * bevor es dem einem eingebetteten Analyzer übergeben wird.
+   * bevor es dem einem eingebetteten Analyzer ï¿½bergeben wird.
    *
    * @param nestedAnalyzer Der eingebettete Analyzer.
    * @return Der Analyzer.
@@ -424,7 +424,7 @@ public class RegainToolkit {
    * Erzeugt einen Analyzer, der die Aufrufe an einen eingebetteten Analyzer
    * analysiert.
    * <p>
-   * Dies ist beim Debugging hilfreich, wenn man prüfen will, was ein Analyzer
+   * Dies ist beim Debugging hilfreich, wenn man prï¿½fen will, was ein Analyzer
    * bei bestimmten Anfragen ausgibt.
    *
    * @param nestedAnalyzer The nested Analyzer that should
@@ -476,7 +476,7 @@ public class RegainToolkit {
    *
    * @param source Der zu durchsuchende String.
    * @param pattern Das zu ersetzende Muster.
-   * @param replacement Der Ersatz für alle Vorkommnisse des Musters.
+   * @param replacement Der Ersatz fï¿½r alle Vorkommnisse des Musters.
    *
    * @return Ein String in dem alle Vorkommnisse von <CODE>pattern</CODE> durch
    *         <CODE>replacement</CODE> ersetzt wurden.
@@ -506,7 +506,7 @@ public class RegainToolkit {
 
 
   /**
-   * Gibt einen Wert in Prozent mit zwei Nachkommastellen zurück.
+   * Gibt einen Wert in Prozent mit zwei Nachkommastellen zurï¿½ck.
    *
    * @param value Der Wert. (Zwischen 0 und 1)
    * @return Der Wert in Prozent.
@@ -520,8 +520,8 @@ public class RegainToolkit {
 
   
   /**
-   * Gibt einen für den Menschen gut lesbaren String für eine Anzahl Bytes
-   * zurück.
+   * Gibt einen fï¿½r den Menschen gut lesbaren String fï¿½r eine Anzahl Bytes
+   * zurï¿½ck.
    *
    * @param bytes Die Anzahl Bytes
    * @return Ein String, der sie Anzahl Bytes wiedergibt
@@ -532,8 +532,8 @@ public class RegainToolkit {
 
 
   /**
-   * Gibt einen für den Menschen gut lesbaren String für eine Anzahl Bytes
-   * zurück.
+   * Gibt einen fï¿½r den Menschen gut lesbaren String fï¿½r eine Anzahl Bytes
+   * zurï¿½ck.
    *
    * @param bytes Die Anzahl Bytes
    * @param locale The locale to use for formatting the numbers.
@@ -545,8 +545,8 @@ public class RegainToolkit {
 
 
   /**
-   * Gibt einen für den Menschen gut lesbaren String für eine Anzahl Bytes
-   * zurück.
+   * Gibt einen fï¿½r den Menschen gut lesbaren String fï¿½r eine Anzahl Bytes
+   * zurï¿½ck.
    *
    * @param bytes Die Anzahl Bytes
    * @param fractionDigits Die Anzahl der Nachkommastellen
@@ -558,8 +558,8 @@ public class RegainToolkit {
   
 
   /**
-   * Gibt einen für den Menschen gut lesbaren String für eine Anzahl Bytes
-   * zurück.
+   * Gibt einen fï¿½r den Menschen gut lesbaren String fï¿½r eine Anzahl Bytes
+   * zurï¿½ck.
    *
    * @param bytes Die Anzahl Bytes
    * @param fractionDigits Die Anzahl der Nachkommastellen
@@ -598,11 +598,11 @@ public class RegainToolkit {
 
   /**
    * Konvertiert ein Date-Objekt in einen String mit dem Format
-   * "YYYY-MM-DD HH:MM". Das ist nötig, um ein eindeutiges und vom Menschen
+   * "YYYY-MM-DD HH:MM". Das ist nï¿½tig, um ein eindeutiges und vom Menschen
    * lesbares Format zu haben.
    * <p>
    * Dieses Format ist mit Absicht nicht lokalisiert, um die Eindeutigkeit zu
-   * gewährleisten. Die Lokalisierung muss die Suchmaske übernehmen.
+   * gewï¿½hrleisten. Die Lokalisierung muss die Suchmaske ï¿½bernehmen.
    *
    * @param lastModified Das zu konvertiernende Date-Objekt
    * @return Ein String mit dem Format "YYYY-MM-DD HH:MM"
@@ -730,7 +730,7 @@ public class RegainToolkit {
 
 
   /**
-   * Gibt den systemspeziefischen Zeilenumbruch zurück.
+   * Gibt den systemspeziefischen Zeilenumbruch zurï¿½ck.
    *
    * @return Der Zeilenumbruch.
    */
@@ -744,15 +744,14 @@ public class RegainToolkit {
 
 
   /**
-   * Gibt die Datei zurï¿½ck, die hinter einer URL mit dem file:// Protokoll
-   * steht.
+   * Gets the file name that is described by a URL with the <code>file://</code>
+   * protocol.
    *
-   * @param url Die URL, fï¿½r die die Datei zurï¿½ckgegeben werden soll.
-   * @return Die zur URL passende Datei.
-   * @throws RegainException Wenn das Protokoll der URL nicht
-   *         <code>file://</code> ist.
+   * @param url The URL to get the file name for.
+   * @return The file name that matches the URL.
+   * @throws RegainException If the URL's protocol isn't <code>file://</code>.
    */
-  public static File urlToFile(String url) throws RegainException {
+  public static String urlToFileName(String url) throws RegainException {
     if (! url.startsWith("file://")) {
       throw new RegainException("URL must have the file:// protocol to get a "
         + "File for it");
@@ -762,21 +761,30 @@ public class RegainToolkit {
     String fileName = url.substring(7);
   
     // Replace %20 by spaces
-    fileName = replace(fileName, "%20", " ");
-  
-    return new File(fileName);
+    return replace(fileName, "%20", " ");
   }
 
 
   /**
-   * Gibt die URL einer Datei zurï¿½ck.
+   * Gets the file that is described by a URL with the <code>file://</code>
+   * protocol.
    *
-   * @param file Die Datei, deren URL zurï¿½ckgegeben werden soll.
-   * @return Die URL der Datei.
+   * @param url The URL to get the file for.
+   * @return The file that matches the URL.
+   * @throws RegainException If the URL's protocol isn't <code>file://</code>.
    */
-  public static String fileToUrl(File file) {
-    String fileName = file.getAbsolutePath();
-  
+  public static File urlToFile(String url) throws RegainException {
+    return new File(urlToFileName(url));
+  }
+
+
+  /**
+   * Gets the URL of a file name.
+   *
+   * @param fileName The file name to get the URL for
+   * @return The URL of the file.
+   */
+  public static String fileNameToUrl(String fileName) {
     // Replace spaces by %20
     fileName = replace(fileName, " ", "%20");
   
@@ -784,6 +792,17 @@ public class RegainToolkit {
     fileName = replace(fileName, File.separator, "/");
   
     return "file://" + fileName;
+  }
+
+
+  /**
+   * Gets the URL of a file.
+   *
+   * @param file The file to get the URL for
+   * @return The URL of the file.
+   */
+  public static String fileToUrl(File file) {
+    return fileNameToUrl(file.getAbsolutePath());
   }
 
 
@@ -813,7 +832,7 @@ public class RegainToolkit {
 
 
     /**
-     * Schließt den eingebetteten Reader.
+     * Schlieï¿½t den eingebetteten Reader.
      *
      * @throws IOException Wenn der eingebettete Reader nicht geschlossen werden
      *         konnte.
@@ -830,8 +849,8 @@ public class RegainToolkit {
      *        sollen
      * @param off Der Offset im Puffer, ab dem geschreiben werden soll.
      * @param len Die max. Anzahl von Zeichen, die geschrieben werden soll.
-     * @return Die Anzahl von Zeichen, die tatsächlich geschrieben wurde, bzw.
-     *         <code>-1</code>, wenn keine Daten mehr verfügbar sind.
+     * @return Die Anzahl von Zeichen, die tatsï¿½chlich geschrieben wurde, bzw.
+     *         <code>-1</code>, wenn keine Daten mehr verfï¿½gbar sind.
      * @throws IOException Wenn nicht vom eingebetteten Reader gelesen werden
      *         konnte.
      */
