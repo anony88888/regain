@@ -1,0 +1,90 @@
+X Aktualisierung auf die neusten Versionen der genutzten Projekte, sofern
+    Ergebnis dadurch nicht schlechter wird. (Aufwand: 8 Std.)
+    Updates:
+      jakarta regexp: 1.2 -> 1.3
+      jakarta log4j: 1.1.3 -> 1.2.9
+      jakarta lucene: 1.3 -> 1.4.2
+      xerces-j: ? -> 2.6.2
+      pdfBox: 0.6.4 -> 0.6.7
+      Jakarta POI: 2.0 RC 2 -> 2.5.1
+      jacob: 1.7 -> 1.8 (neue Webseite: http://sourceforge.net/projects/jacob-project/)
+    Unterschiede:
+      JacobMsExcelPreparator:
+        Stabilität: Führte früher zu Absturz der VM. Jetzt keine Probleme.
+        Geschwindigkeit: 5,00 sec für 27,50 kB
+        Qualität: Es werden nicht alle Spalten ausgelesen.
+      JacobMsPowerPointPreparator:
+        Stabilität: Unverändert: Keine Probleme bekannt
+        Geschwindigkeit: Unverändert: Für 820,50 kB: 7,07 sec -> 7,53 sec
+        Qualität: Unverändert: Keine Probleme bekannt
+      JacobMsWordPreparator:
+        Stabilität: Unverändert: Keine Probleme bekannt
+        Geschwindigkeit: Unverändert: Für 3,59 MB: 36,34 sec -> 37,98 sec
+        Qualität: Unverändert: Keine Probleme bekannt
+      PdfPreparator:
+        Stabilität: Unverändert: Keine Probleme bekannt
+        Geschwindigkeit: Faktor 4 langsamer: Für 674,44 kB: 13,69 sec -> 1:06 min
+                                                   2. Test: 13,43 sec -> 1:07 min
+        Qualität: Besser: Es wird mehr erkannt. Probleme mit Umlauten aus Latex (M¨oglichkeit)
+      PoiMsExcelPreparator:
+        Stabilität: Unverändert: Keine Probleme bekannt
+        Geschwindigkeit: Unverändert: Für 27,50 kB: 1,27 sec -> 1,91 sec
+        Qualität: Unverändert: Keine Probleme bekannt
+      PoiMsWordPreparator:
+        Stabilität: Unverändert: 2 von 5 Dokumenten brechen ab.
+        Geschwindigkeit: Unverändert: Für 3,39 MB: 1,02 sec -> 1,11 sec
+        Qualität: Unverändert: Vergleichbar mit JacobMsWordPreparator
+
+  Parameter für Präperatoren: Präperatoren sollen in der Konfiguration
+    parametrisierbar werden. Diese Parameter sollen optional in extra Datei
+    ausgelagert werden können.
+  Word-Preperator: Öffnen und Schließen von Word loggen
+  Jacob-Präperatoren nicht mehr als Default nutzen.
+  URL-Mapping: Z.B. Indizierung von file://someserver/bla/blubb/..., jedoch
+    Anzeige im Browser mit http://intranet/blubb/... (Aufwand: 4 Std.)
+  Index-Felder aus Pfad generieren. (Aufwand: 4 Std.)
+    Z.B. bei Pfad "file://var/sicherung/dk100/..." Feld "system" mit Wert "dk100" indexieren.
+    Oder bei "file://blubb/projects/Otto13/..." Feld "project" mit Wert "Otto13".
+  Suchemaske: Expertensuche: (Aufwand: 4 Std.)
+    Zusätzliche Eingabefelder für bestimmte Suchfelder ermöglichen. Die Werte
+    diese Felder dann mit "field:value" an Suchstring anhängen.
+  Prüfen: Können die im Index enthaltenen Werte (distinct values) der
+    Suchfelder in der erweiterten Suchmaske als Auswahlmöglichkeit angeboten
+    werden? (für Expertensuche mit ComboBoxes) (Aufwand: 4 Std.)
+  Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
+    er auch Leserechte hat. (Aufwand: 2 Tage)
+  Word-Preperator: Berücksichtigungen von Formatvorlagen bei der Indizierung
+    von Word-Dokumenten. (Aufwand: max. 4 Std., wenn mehr Rücksprache)
+    Text aus Abschnitten, die bestimmte Formatvorlagen nutzen bei der Suche
+    stärker gewichten (z.B. Überschriften). Die Namen der Formatvorlagen
+    kommen aus der Konfiguration.
+  Word-Preperator: Gezielte Indizierung + Möglichkeit zur Auswertung der
+    Office-Dokumenten-Beschreibungs-Felder. (Aufwand: 4 Std.)
+    Dazu Preparator-Schnittstelle erweitern um: String getAuthor(),
+      Map getAdditionalFields()
+    Folgende Felder extrahieren: Autor, ???
+  Multiindexsuche: (Aufwand: 4 Std., vorerst zurückgestellt)
+    Mit der selben Suchmaske mehrere Indizes durchsuchen
+  Handbuch aktualisieren:
+    - Neue Versionen der abhängigen Projekte
+
+Rückfragen:
+  
+  Word-Preperator: Gezielte Indizierung + Möglichkeit zur Auswertung der
+    Office-Dokumenten-Beschreibungs-Felder.
+    -> Welche Felder sollen konkret extrahiert werden.
+
+
+Ideen:
+
+  Crawler: Neue URLs nicht hinten anfügen, sondern vorne: Dadurch wird
+    zuerst in ein Verzeichnis abgestiegen und dann durchsucht, es werden
+    nicht mehr alle Verzeichnisse einer Ebene komplett in die Liste gepackt.
+    Die TODO-Liste ist also wesentlich kleiner.
+  Präperatoren in eigene Jars kapseln. Alle Jars werden in ein Verzeichnis
+    gepackt und beim Start geladen.
+    So ist im regain.jar nur das, was regain selbst braucht und die
+    Präperatoren lassen sich leichter austauschen (insbesondere verschiedene
+    Versionen der selben Implementierung). Außerdem können andere auch
+    Präperatoren anbieten, die dann sehr einfach eingebunden werden können.
+  GUI für den unbedarften Heimanwender.

@@ -28,12 +28,14 @@
 package net.sf.regain.test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import net.sf.regain.crawler.CrawlerToolkit;
 import net.sf.regain.crawler.Profiler;
 import net.sf.regain.crawler.document.RawDocument;
 import net.sf.regain.crawler.preparator.AbstractPreparator;
+import net.sf.regain.crawler.preparator.JacobMsExcelPreparator;
 import net.sf.regain.crawler.preparator.JacobMsPowerPointPreparator;
 import net.sf.regain.crawler.preparator.JacobMsWordPreparator;
 import net.sf.regain.crawler.preparator.PdfPreparator;
@@ -53,6 +55,9 @@ public class PreparatorTest {
   
   /** The profilers that measured the work of the preparators. */
   private static ArrayList mProfilerList;
+  
+  /** The class prefix of the the regain preparators. */
+  private static final String REGAIN_PREP_PREFIX = "net.sf.regain.crawler.preparator.";
 
 
   /**
@@ -66,8 +71,16 @@ public class PreparatorTest {
       System.exit(1);
     }
     
-    File docDir = new File(args[0]);
-    File outputDir = new File(args[1]);
+    File docDir, outputDir;
+    try {
+      docDir = new File(args[0]).getCanonicalFile();
+      outputDir = new File(args[1]).getCanonicalFile();
+    }
+    catch (IOException exc) {
+      exc.printStackTrace();
+      System.exit(1);
+      return;
+    }
     
     mProfilerList = new ArrayList();
     
@@ -79,7 +92,7 @@ public class PreparatorTest {
     testPreparator(docDir, outputDir, "rtf", new SimpleRtfPreparator());
     testPreparator(docDir, outputDir, "rtf", new SwingRtfPreparator());
     testPreparator(docDir, outputDir, "txt", new PlainTextPreparator());
-    // testPreparator(docDir, outputDir, "xls", new JacobMsExcelPreparator());
+    testPreparator(docDir, outputDir, "xls", new JacobMsExcelPreparator());
     testPreparator(docDir, outputDir, "xls", new PoiMsExcelPreparator());
     testPreparator(docDir, outputDir, "xml", new XmlPreparator());
     
@@ -102,12 +115,17 @@ public class PreparatorTest {
   private static void testPreparator(File docDir, File outputDir,
     String fileType, AbstractPreparator prep)
   {
-    System.out.println("Testing preparator " + prep.getClass().getName() + "...");
+    String prepName = prep.getClass().getName();
+    if (prepName.startsWith(REGAIN_PREP_PREFIX)) {
+      prepName = prepName.substring(REGAIN_PREP_PREFIX.length());
+    }
+      
+    System.out.println("Testing preparator " + prepName + "...");
     
-    Profiler profiler = new Profiler(prep.getClass().getName(), "docs");
+    Profiler profiler = new Profiler(prepName, "docs");
     
     File typeDir = new File(docDir, fileType);
-    File prepOutputDir = new File(outputDir, prep.getClass().getName());
+    File prepOutputDir = new File(outputDir, prepName);
     if (! prepOutputDir.mkdir()) {
       System.out.println("Could not create output dir: "
         + prepOutputDir.getAbsolutePath());
@@ -146,7 +164,7 @@ public class PreparatorTest {
       }
     }
     
-    System.out.println("Closing preparator " + prep.getClass().getName() + "...");
+    System.out.println("Closing preparator " + prepName + "...");
     try {
       prep.close();
     }
