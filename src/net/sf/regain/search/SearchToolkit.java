@@ -30,14 +30,11 @@ package net.sf.regain.search;
 import java.io.File;
 import java.util.Enumeration;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRequest;
-import javax.servlet.jsp.PageContext;
-
 import net.sf.regain.RegainException;
 import net.sf.regain.search.config.IndexConfig;
 import net.sf.regain.search.config.SearchConfig;
 import net.sf.regain.search.config.XmlSearchConfig;
+import net.sf.regain.util.sharedtag.PageRequest;
 
 /**
  * A toolkit for the search JSPs containing helper methods.
@@ -63,23 +60,23 @@ public class SearchToolkit {
    * If there is no SearchContext in the PageContext it is created and put in the
    * PageContext, so the next call will find it.
    *
-   * @param pageContext The page context where the SearchContext will be taken
+   * @param request The page request where the SearchContext will be taken
    *        from or put to.
    * @return The SearchContext for the page the context is for.
    *
    * @throws RegainException When the SearchContext could not be created.
    * @see SearchContext
    */
-  public static SearchContext getSearchContextFromPageContext(PageContext pageContext)
+  public static SearchContext getSearchContext(PageRequest request)
     throws RegainException
   {
-    SearchContext context = (SearchContext) pageContext.getAttribute(SEARCH_CONTEXT_ATTR_NAME);
+    SearchContext context = (SearchContext) request.getContextAttribute(SEARCH_CONTEXT_ATTR_NAME);
     if (context == null) {
       // Load the config (if not yet done)
-      loadConfiguration(pageContext.getServletContext());
+      loadConfiguration(request);
 
       // Get the name of the index
-      String indexName = pageContext.getRequest().getParameter("index");
+      String indexName = request.getParameter("index");
       if (indexName == null) {
         throw new RegainException("Request parameter 'index' not specified");
       }
@@ -92,7 +89,6 @@ public class SearchToolkit {
       }
 
       // Get the query
-      ServletRequest request = pageContext.getRequest(); 
       String query = request.getParameter("query");
       
       // Append the additional fields to the query
@@ -112,37 +108,10 @@ public class SearchToolkit {
       
       // Create the SearchContext and store it in the page context
       context = new SearchContext(indexConfig, query);
-      pageContext.setAttribute(SEARCH_CONTEXT_ATTR_NAME, context);
+      request.setContextAttribute(SEARCH_CONTEXT_ATTR_NAME, context);
     }
 
     return context;
-  }
-
-
-  /**
-   * Gets a request parameter and converts it to an int.
-   *
-   * @param request The request to read the parameter from.
-   * @param paramName The name of the parameter
-   * @param defaultValue The value to return if the parameter is not set.
-   * @throws ExtendedJspException When the parameter value is not a number.
-   * @return The int value of the parameter.
-   */
-  public static int getIntParameter(ServletRequest request, String paramName,
-    int defaultValue) throws ExtendedJspException
-  {
-    String asString = request.getParameter(paramName);
-    if (asString == null) {
-      return defaultValue;
-    } else {
-      try {
-        return Integer.parseInt(asString);
-      }
-      catch (NumberFormatException exc) {
-        throw new ExtendedJspException("Parameter '" + paramName
-                                       + "' must be a number: " + asString);
-      }
-    }
   }
 
   
@@ -151,15 +120,16 @@ public class SearchToolkit {
    * <p>
    * If the configuration is already loaded, nothing is done.
    * 
-   * @param context The servlet context. Used to get the "configFile" init
+   * @param request The page request. Used to get the "configFile" init
    *        parameter, which holds the name of the configuration file.
    * @throws RegainException If loading failed.
    */
-  private static void loadConfiguration(ServletContext context)
+  private static void loadConfiguration(PageRequest request)
     throws RegainException
   {
     if (mConfig == null) {
-      String configFileName = context.getInitParameter("configFile");
+      String configFileName = request.getInitParameter("configFile");
+      System.out.println("configFileName: " + configFileName);
       File configFile = new File(configFileName);
       
       try {

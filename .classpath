@@ -5,7 +5,6 @@
 	<classpathentry kind="lib" path="jacobgen/lib/jacobgen.jar"/>
 	<classpathentry kind="lib" path="lib/jacob.jar"/>
 	<classpathentry sourcepath="C:/tschneider/Projekte/regain/jacobgen/packed/jacobgen-msoffice2000_src.zip" kind="lib" path="lib/jacobgen-msoffice2000.jar"/>
-	<classpathentry kind="lib" path="lib/servlet.jar"/>
 	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry sourcepath="C:/tschneider/Ressourcen/Xerces-J/2.6.2/Xerces-J-src.2.6.2.zip" kind="lib" path="lib/xml-apis.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
@@ -15,5 +14,7 @@
 	<classpathentry kind="lib" path="lib/PDFBox-0.6.7a.jar"/>
 	<classpathentry kind="lib" path="lib/poi-2.5.1-final-20040804.jar"/>
 	<classpathentry kind="lib" path="lib/poi-scratchpad-2.5.1-final-20040804.jar"/>
+	<classpathentry kind="lib" path="lib/servlet.jar"/>
+	<classpathentry sourcepath="E:/Projekte/regain/lib-src/simple-src.zip" kind="lib" path="lib/simple-2.5.3.jar"/>
 	<classpathentry kind="output" path="temp/eclipse-classes"/>
 </classpath>

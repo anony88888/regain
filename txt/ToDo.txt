@@ -68,6 +68,10 @@ X Handbuch aktualisieren:
     - Config Crawler: Zusatzfelder aus Pfad generieren
     - Installations- und Konfigurationsbeschreibung der Suchmaske überarbeitet,
       so dass der Umgang mit der SearchConfiguration.xml erklärt wird.
+X SharedTags: Die selben Tags für Taglib-Technologie und simpleweb-Technologie
+    nutzen.
+X SharedTags: JSP-Parser für simpleweb
+X DesktopSuche: Such-JSPs unter simpleweb zum Laufen bekommen.
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)

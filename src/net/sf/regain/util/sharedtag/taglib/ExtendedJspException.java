@@ -25,28 +25,25 @@
  *   $Author$
  * $Revision$
  */
-package net.sf.regain;
+package net.sf.regain.util.sharedtag.taglib;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
+import javax.servlet.jsp.JspException;
+
 /**
- * An exception for the lucene search.
+ * Eine JspException, die eingebettete Exceptions unterstützt.
  * <p>
- * It can handle nested exceptions. Nested exceptions will be printed with the
- * stacktrace.
- * <p>
- * This class has the same code as
- * {@link net.sf.regain.util.sharedtag.taglib.ExtendedJspException}.
- * The only difference is, that is inherits from <code>Exception</code>.
+ * This class has the same code as {@link net.sf.regain.RegainException}.
+ * The only difference is, that is inherits from <code>JspException</code>.
  *
  * @author Til Schneider, www.murfman.de
  */
-public class RegainException extends Exception {
+public class ExtendedJspException extends JspException {
 
   /** The nested exception. May be null. */
   private Throwable mCause;
-
 
 
   /**
@@ -54,7 +51,7 @@ public class RegainException extends Exception {
    *
    * @param message The error message
    */
-  public RegainException(String message) {
+  public ExtendedJspException(String message) {
     this(message, null);
   }
 
@@ -66,7 +63,7 @@ public class RegainException extends Exception {
    * @param message The error message
    * @param cause The nested exception.
    */
-  public RegainException(String message, Throwable cause) {
+  public ExtendedJspException(String message, Throwable cause) {
     super(message);
 
     mCause = cause;
@@ -77,7 +74,8 @@ public class RegainException extends Exception {
   /**
    * Gets the cause of this exception. (May be null)
    *
-   * @return The cause of this exception.
+   * @return The cause of this exception or <code>null</code> if there no other
+   *         Throwable has caused this exception.
    */
   public Throwable getCause() {
     return mCause;
@@ -101,6 +99,7 @@ public class RegainException extends Exception {
   }
 
 
+
   /**
    * Prints the stack trace of this exception an of the nested exception, if
    * present.
@@ -116,7 +115,7 @@ public class RegainException extends Exception {
     }
   }
 
-  
+
   /**
    * Gets whether the superclass is able to print the cause of the exception.
    * This is true for Java 1.4 and above.
@@ -136,5 +135,5 @@ public class RegainException extends Exception {
       return false;
     }
   }
-
+  
 }

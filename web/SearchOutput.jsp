@@ -4,14 +4,13 @@
 
 <html>
 <head>
-  <title>Suche nach <%= (request.getParameter("query") == null) ? "" : request.getParameter("query")%></title>
+  <title>Suche nach <search:param name="query"/></title>
 </head>
 
 <body>
 
   <form name="search" action="SearchOutput.jsp" method="get">
-    <input name="index" type="hidden"
-           value="<%= (request.getParameter("index") == null) ? "main" : request.getParameter("index")%>">
+    <search:input_hiddenparam name="index"/>
     <p>
       <b>Suchen nach: </b>
       <search:input_query/>
@@ -26,9 +25,7 @@
     <tr bgcolor="#0000EE">
       <td><font color="#FFFFFF">
         &nbsp;
-        Die dm-Seiten wurden nach
-        <b><%= (request.getParameter("query") == null) ? "" : request.getParameter("query")%></b>
-        durchsucht.
+        Ergebnisse für <b><search:param name="query"/></b>
       </font></td>
       <td align="right"><font color="#FFFFFF">
         Ergebnisse <b><search:stats_from/></b>-<b><search:stats_to/></b>
@@ -41,15 +38,7 @@
     <tr><td colspan="2"> <br/> </td></tr>
 
     <search:list msgNoResults="<tr><td colspan='2'>Es wurden leider keine Treffer gefunden!</td></tr>">
-      <tr><td colspan="2" bgcolor="<%
-        String name = SearchConstants.ATTR_CURRENT_HIT_INDEX;
-        int hitIndex = ((Integer) pageContext.getAttribute(name)).intValue();
-        if ((hitIndex % 2) == 0) {
-          out.print("#ffffff");
-        } else {
-          out.print("#ffffdd");
-        }
-      %>">
+      <tr><td colspan="2">
         <search:hit_link/> <small>(Relevanz: <search:hit_score/>)</small><br/>
         <small>
           <search:hit_summary/><br/>
@@ -72,8 +61,7 @@
   <br/>
 
   <form name="search" action="SearchOutput.jsp" method="get">
-    <input name="index" type="hidden"
-           value="<%= (request.getParameter("index") == null) ? "main" : request.getParameter("index")%>">
+    <search:input_hiddenparam name="index"/>
     <p>
       <b>Suchen nach: </b>
       <search:input_query/>

@@ -40,12 +40,11 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 
-
 /**
  * Contains the search context for one query. Using this context you have access of
  * all hits the search had.
  *
- * @see SearchToolkit#getSearchContextFromPageContext(javax.servlet.jsp.PageContext)
+ * @see SearchToolkit#getSearchContext(net.sf.regain.util.sharedtag.PageRequest)
  * @author Til Schneider, www.murfman.de
  */
 public class SearchContext {
