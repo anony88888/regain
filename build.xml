@@ -52,6 +52,14 @@
   <property name="lucene.jar" value="lucene-1.4.2.jar"/>
   <property name="regexp.jar" value="jakarta-regexp-1.3.jar"/>
   <property name="log4j.jar" value="log4j-1.2.9.jar"/>
+  
+  <!-- Autodetect the platform -->
+  <condition property="platform" value="linux">
+    <os family="unix"/>
+  </condition>
+  <condition property="platform" value="win">
+    <os family="windows"/>
+  </condition>
 
   <path id="sourcepath">
     <pathelement location="src"/>
@@ -136,7 +144,6 @@
     <echo message="file.encoding=${file.encoding}" />
     <echo message="user.language=${user.language}" />
   </target>
-
 
 
   <!--
