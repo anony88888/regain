@@ -36,6 +36,9 @@ import java.io.File;
  */
 public interface DesktopConstants {
 
+  /** The default port for the webserver. */
+  public static final int DEFAULT_PORT = 8020;
+  
   /** The directory where the log files are located. */
   public static final File LOG_DIR = new File("log");
   

@@ -40,7 +40,7 @@ import net.sf.regain.util.ui.BrowserLauncher;
  *
  * @author Til Schneider, www.murfman.de
  */
-public class DesktopToolkit {
+public class DesktopToolkit implements DesktopConstants {
 
   /** The logger for this class */
   private static Logger mLog = Logger.getLogger(DesktopToolkit.class);
@@ -62,14 +62,14 @@ public class DesktopToolkit {
     return mConfig;
   }
 
-  
+
   /**
    * Opens a page in the browser.
    * 
    * @param page The page to open.
    */
   public static void openPageInBrowser(String page) {
-    String url = "http://localhost:88/" + page;
+    String url = "http://localhost:" + DEFAULT_PORT + "/" + page;
     try {
       BrowserLauncher.openURL(url);
     }

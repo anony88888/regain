@@ -98,8 +98,8 @@ public class Main implements DesktopConstants {
       
       Connection connection = ConnectionFactory.getConnection(handler);
 
-      mLog.info("Listening on port 88...");
-      connection.connect(new ServerSocket(88));
+      mLog.info("Listening on port " + DEFAULT_PORT + "...");
+      connection.connect(new ServerSocket(DEFAULT_PORT));
     }
     catch (Exception exc) {
       exc.printStackTrace();
