@@ -123,8 +123,11 @@ public class PreparatorTest {
           RawDocument doc = new RawDocument(url, sourceUrl, null);
 
           profiler.startMeasuring();
+          String content;
           try {
             prep.prepare(doc);
+            content = prep.getCleanedContent();
+            prep.cleanUp();
             profiler.stopMeasuring(docFileArr[i].length());
           }
           catch (Throwable thr) {
@@ -133,7 +136,7 @@ public class PreparatorTest {
           }
 
           File outFile = new File(prepOutputDir, docFileArr[i].getName() + ".txt");
-          CrawlerToolkit.writeToFile(doc.getContent(), outFile);
+          CrawlerToolkit.writeToFile(content, outFile);
           System.out.println("Prepared document: " + url);
         }
         catch (Throwable thr) {
