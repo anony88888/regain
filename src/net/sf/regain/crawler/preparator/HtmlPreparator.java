@@ -30,11 +30,11 @@ package net.sf.regain.crawler.preparator;
 import java.util.Map;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.crawler.CrawlerToolkit;
 import net.sf.regain.crawler.config.PreparatorConfig;
 import net.sf.regain.crawler.document.PathElement;
 import net.sf.regain.crawler.document.RawDocument;
 import net.sf.regain.crawler.preparator.html.HtmlContentExtractor;
-import net.sf.regain.crawler.preparator.html.HtmlEntities;
 import net.sf.regain.crawler.preparator.html.HtmlPathExtractor;
 
 import org.apache.log4j.Logger;
@@ -194,12 +194,12 @@ public class HtmlPreparator extends AbstractPreparator {
     }
 
     // Clean the content from tags
-    String cleanedContent = cleanFromTags(cuttedContent);
+    String cleanedContent = CrawlerToolkit.cleanFromHtmlTags(cuttedContent);
     setCleanedContent(cleanedContent);
 
     if (headlines != null) {
       // Replace HTML Entities
-      headlines = replaceHtmlEntities(headlines);
+      headlines = CrawlerToolkit.replaceHtmlEntities(headlines);
 
       // Set the headlines
       setHeadlines(headlines);
@@ -221,115 +221,6 @@ public class HtmlPreparator extends AbstractPreparator {
       setPath(path);
     }
   }
-
-
-
-  /**
-   * Säubert HTML-Text von seinen Tags und wandelt alle HTML-Entitäten in ihre
-   * Ensprechungen.
-   *
-   * @param text Der zu säubernde HTML-Text.
-   *
-   * @return Der von Tags gesäberte Text
-   */
-  public static String cleanFromTags(String text) {
-    StringBuffer clean = new StringBuffer();
-
-    int offset = 0;
-    int tagStart;
-    while ((tagStart = text.indexOf('<', offset)) != -1) {
-      // Extract the good part since the last tag
-      String goodPart = text.substring(offset, tagStart);
-
-      // Check whether the good part is wasted by cascaded tags
-      // Example: In the text "<!-- <br> --> Hello" "<!-- <br>" will be
-      //          detected as tag and "--> Hello" as good part.
-      //          We now have to scan the good part for a tag rest.
-      //          (In this example: "-->")
-      int tagRestEnd = goodPart.indexOf('>');
-      if (tagRestEnd != -1) {
-        goodPart = goodPart.substring(tagRestEnd + 1);
-      }
-
-      // Trim the good part
-      goodPart = goodPart.trim();
-
-      if (goodPart.length() > 0) {
-        // Replace all entities in the text and append the result
-        goodPart = replaceHtmlEntities(goodPart);
-        clean.append(goodPart);
-
-        // Append a space
-        clean.append(" ");
-      }
-
-      // Find the end of the tag
-      int tagEnd = text.indexOf('>', tagStart);
-      if (tagEnd == -1) {
-        // Syntax error: The tag doesn't end -> Forget that dirty end
-        offset = text.length();
-        break;
-      }
-
-      // Calculate the next offset
-      offset = tagEnd + 1;
-    }
-
-    // Extract the good part since the last tag, replace all entities and append
-    // the result
-    if (offset < text.length()) {
-      String goodPart = text.substring(offset, text.length()).trim();
-      goodPart = replaceHtmlEntities(goodPart);
-      clean.append(goodPart);
-    }
-
-    return clean.toString();
-  }
-
-
-
-  /**
-   * Wandelt alle HTML-Entitäten in ihre Ensprechungen.
-   *
-   * @param text Den Text, dessen HTML-Entitäten gewandelt werden sollen.
-   *
-   * @return Der gewandelte Text.
-   */
-  public static String replaceHtmlEntities(String text) {
-    StringBuffer clean = new StringBuffer();
-
-    int offset = 0;
-    int entityStart;
-    while ((entityStart = text.indexOf('&', offset)) != -1) {
-      // Append the part since the last entity
-      String textPart = text.substring(offset, entityStart);
-      clean.append(textPart);
-
-      // Find the end of the entity
-      int entityEnd = text.indexOf(';', entityStart);
-      if (entityEnd == -1) {
-        // Syntax error: The entity doesn't end -> Forget that dirty end
-        offset = text.length();
-        break;
-      }
-
-      // Extract, decode and append the entity
-      String entity = text.substring(entityStart, entityEnd + 1);
-      String decoded = HtmlEntities.decode(entity);
-      clean.append(decoded);
-
-      // Get the next offset
-      offset = entityEnd + 1;
-    }
-
-    // Append the part since the last entity
-    if (offset < text.length()) {
-      clean.append(text.substring(offset, text.length()));
-    }
-
-    return clean.toString();
-  }
-
 
 
   /**

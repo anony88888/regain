@@ -33,7 +33,6 @@ import net.sf.regain.RegainException;
 import net.sf.regain.crawler.CrawlerToolkit;
 import net.sf.regain.crawler.document.PathElement;
 import net.sf.regain.crawler.document.RawDocument;
-import net.sf.regain.crawler.preparator.HtmlPreparator;
 
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
@@ -127,7 +126,7 @@ public class HtmlPathExtractor extends AbstractExtractor {
       String url = mPathNodeRE.getParen(mPathNodeUrlGroup);
       url = CrawlerToolkit.toAbsoluteUrl(url, rawDocument.getUrl());
       String title = mPathNodeRE.getParen(mPathNodeTitleGroup);
-      title = HtmlPreparator.replaceHtmlEntities(title);
+      title = CrawlerToolkit.replaceHtmlEntities(title);
 
       list.add(new PathElement(url, title));
 

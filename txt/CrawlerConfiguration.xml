@@ -187,6 +187,10 @@
     <class>.PdfPreparator</class>
   </preparator>
   <preparator>
+    <urlPattern>\.(sds|sdc|sdw|sgl|sda|sdd|sdf|sxw|stw|sxg|sxc|stc|sxi|sti|sxd|std|sxm|odt|ott|oth|odm|odg|otg|odp|otp|ods|ots|odc|odf|odb|odi)$</urlPattern>
+    <class>.OpenOfficePreparator</class>
+  </preparator>
+  <preparator>
     <urlPattern>\.xls$</urlPattern>
     <class>.PoiMsExcelPreparator</class>
   </preparator>
@@ -279,8 +283,8 @@
 
 <!-- The regular expressions that indetify URLs in HTML. -->
 <htmlParserPatternList>
-  <pattern parse="true" index="true" regexGroup="1">="([^"]*\.html)"</pattern>
-  <pattern parse="false" index="true" regexGroup="1">="([^"]*\.(pdf|xls|doc|rtf))"</pattern>
+  <pattern parse="true" index="true" regexGroup="1">="([^"]*\.(htm|html))"</pattern>
+  <pattern parse="false" index="true" regexGroup="1">="([^"]*\.(pdf|xls|doc|rtf|sds|sdc|sdw|sgl|sda|sdd|sdf|sxw|stw|sxg|sxc|stc|sxi|sti|sxd|std|sxm|odt|ott|oth|odm|odg|otg|odp|otp|ods|ots|odc|odf|odb|odi))"</pattern>
   <pattern parse="false" index="false" regexGroup="1">="([^"]*\.(js|css|jpg|gif|png))"</pattern>
 </htmlParserPatternList>
 
@@ -290,7 +294,7 @@
  | by the spider.
  +-->
 <directoryParserPatternList>
-  <pattern index="true">^.*\.(html|pdf|ppt|xls|doc|rtf)$</pattern>
+  <pattern index="true">\.(html|pdf|ppt|xls|doc|rtf|sds|sdc|sdw|sgl|sda|sdd|sdf|sxw|stw|sxg|sxc|stc|sxi|sti|sxd|std|sxm|odt|ott|oth|odm|odg|otg|odp|otp|ods|ots|odc|odf|odb|odi)$</pattern>
 </directoryParserPatternList>
 
 

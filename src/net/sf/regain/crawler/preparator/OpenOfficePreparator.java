@@ -27,39 +27,63 @@
  */
 package net.sf.regain.crawler.preparator;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
 import net.sf.regain.RegainException;
+import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.CrawlerToolkit;
 import net.sf.regain.crawler.document.RawDocument;
 
 /**
- * Präpariert ein XML-Dokument für die Indizierung.
- * <p>
- * Dabei werden die Rohdaten des Dokuments von Formatierungsinformation befreit.
  *
  * @author Til Schneider, www.murfman.de
  */
-public class XmlPreparator extends AbstractPreparator {
+public class OpenOfficePreparator extends AbstractPreparator {
 
   /**
-   * Erzeugt eine neue XmlPreparator-Instanz.
-   */
-  public XmlPreparator() {
-  }
-
-
-
-  /**
-   * Präpariert ein Dokument für die Indizierung.
+   * Prepares a document for indexing.
    *
-   * @param rawDocument Das zu präpariernde Dokument.
+   * @param rawDocument The document to prepare.
    *
-   * @throws RegainException Wenn die Präparation fehl schlug.
+   * @throws RegainException If preparing the document failed.
    */
   public void prepare(RawDocument rawDocument) throws RegainException {
-    String contentAsString = rawDocument.getContentAsString();
+    File file = rawDocument.getContentAsFile();
+    
+    ZipFile zipFile;
+    try {
+      zipFile = new ZipFile(file);
+    }
+    catch (IOException exc) {
+      throw new RegainException("Opening OpenOffice file failed: " +
+          file.getAbsolutePath(), exc);
+    }
+
+    // Read the content.xml
+    ZipEntry entry = zipFile.getEntry("content.xml");
+    InputStream xmlStream = null;
+    String content;
+    try {
+      xmlStream = zipFile.getInputStream(entry);
+      content = RegainToolkit.readStringFromStream(xmlStream, "UTF-8");
+    }
+    catch (IOException exc) {
+      throw new RegainException("Reading text from OpenOffice file failed: " +
+          file.getAbsolutePath(), exc);
+    }
+    finally {
+      if (xmlStream != null) {
+        try { xmlStream.close(); } catch (IOException exc) {}
+      }
+      try { zipFile.close(); } catch (IOException exc) {}
+    }
 
     // Clean the content from tags
-    String cleanedContent = CrawlerToolkit.cleanFromHtmlTags(contentAsString);
+    String cleanedContent = CrawlerToolkit.cleanFromHtmlTags(content);
     setCleanedContent(cleanedContent);
   }
 

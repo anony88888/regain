@@ -256,6 +256,39 @@ public class SearchToolkit {
         mMimeTypeHash.put("doc",  "application/msword");
         mMimeTypeHash.put("ppt",  "application/mspowerpoint");
         mMimeTypeHash.put("rtf",  "text/rtf");
+        
+        // Source: http://framework.openoffice.org/documentation/mimetypes/mimetypes.html
+        mMimeTypeHash.put("sds",  "application/vnd.stardivision.chart");
+        mMimeTypeHash.put("sdc",  "application/vnd.stardivision.calc");
+        mMimeTypeHash.put("sdw",  "application/vnd.stardivision.writer");
+        mMimeTypeHash.put("sgl",  "application/vnd.stardivision.writer-global");
+        mMimeTypeHash.put("sda",  "application/vnd.stardivision.draw");
+        mMimeTypeHash.put("sdd",  "application/vnd.stardivision.impress");
+        mMimeTypeHash.put("sdf",  "application/vnd.stardivision.math");
+        mMimeTypeHash.put("sxw",  "application/vnd.sun.xml.writer");
+        mMimeTypeHash.put("stw",  "application/vnd.sun.xml.writer.template");
+        mMimeTypeHash.put("sxg",  "application/vnd.sun.xml.writer.global");
+        mMimeTypeHash.put("sxc",  "application/vnd.sun.xml.calc");
+        mMimeTypeHash.put("stc",  "application/vnd.sun.xml.calc.template");
+        mMimeTypeHash.put("sxi",  "application/vnd.sun.xml.impress");
+        mMimeTypeHash.put("sti",  "application/vnd.sun.xml.impress.template");
+        mMimeTypeHash.put("sxd",  "application/vnd.sun.xml.draw");
+        mMimeTypeHash.put("std",  "application/vnd.sun.xml.draw.template");
+        mMimeTypeHash.put("sxm",  "application/vnd.sun.xml.math");
+        mMimeTypeHash.put("odt",  "application/vnd.oasis.opendocument.text");
+        mMimeTypeHash.put("ott",  "application/vnd.oasis.opendocument.text-template");
+        mMimeTypeHash.put("oth",  "application/vnd.oasis.opendocument.text-web");
+        mMimeTypeHash.put("odm",  "application/vnd.oasis.opendocument.text-master");
+        mMimeTypeHash.put("odg",  "application/vnd.oasis.opendocument.graphics");
+        mMimeTypeHash.put("otg",  "application/vnd.oasis.opendocument.graphics-template");
+        mMimeTypeHash.put("odp",  "application/vnd.oasis.opendocument.presentation");
+        mMimeTypeHash.put("otp",  "application/vnd.oasis.opendocument.presentation-template");
+        mMimeTypeHash.put("ods",  "application/vnd.oasis.opendocument.spreadsheet");
+        mMimeTypeHash.put("ots",  "application/vnd.oasis.opendocument.spreadsheet-template");
+        mMimeTypeHash.put("odc",  "application/vnd.oasis.opendocument.chart");
+        mMimeTypeHash.put("odf",  "application/vnd.oasis.opendocument.formula");
+        mMimeTypeHash.put("odb",  "application/vnd.oasis.opendocument.database");
+        mMimeTypeHash.put("odi",  "application/vnd.oasis.opendocument.image");
       }
       
       // Set the MIME type

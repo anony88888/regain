@@ -404,7 +404,9 @@ public class RawDocument {
       if (mLog.isDebugEnabled()) {
         mLog.debug("Deleting temporary file: " + mContentAsFile.getAbsolutePath());
       }
-      mContentAsFile.delete();
+      if (! mContentAsFile.delete()) {
+        mLog.warn("Deleting temporary file failed: " + mContentAsFile.getAbsolutePath());
+      }
     }
   }
 

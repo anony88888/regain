@@ -86,11 +86,11 @@ public interface Preparator {
   public boolean accepts(RawDocument rawDocument);
 
   /**
-   * Präpariert ein Dokument für die Indizierung.
+   * Prepares a document for indexing.
    *
-   * @param rawDocument Das zu präpariernde Dokument.
+   * @param rawDocument The document to prepare.
    *
-   * @throws RegainException Wenn die Präparation fehl schlug.
+   * @throws RegainException If preparing the document failed.
    */
   public void prepare(RawDocument rawDocument) throws RegainException;
 

@@ -175,7 +175,59 @@ public class RegainToolkit {
       }
     }
   }
+  
+  
+  /**
+   * Reads a String from a stream.
+   * 
+   * @param stream The stream to read the String from
+   * @param charsetName The name of the charset to use.
+   * @return The stream content as String.
+   * @throws RegainException If reading the String failed.
+   */
+  public static String readStringFromStream(InputStream stream, String charsetName)
+    throws RegainException
+  {
+    InputStreamReader reader = null;
+    try {
+      if (charsetName == null) {
+        reader = new InputStreamReader(stream);
+      } else {
+        reader = new InputStreamReader(stream, charsetName);
+      }
+      StringWriter writer = new StringWriter();
 
+      RegainToolkit.pipe(reader, writer);
+
+      reader.close();
+      writer.close();
+
+      return writer.toString();
+    }
+    catch (IOException exc) {
+      throw new RegainException("Reading String from stream failed", exc);
+    }
+    finally {
+      if (reader != null) {
+        try { reader.close(); } catch (IOException exc) {}
+      }
+    }
+  }
+
+  
+  /**
+   * Reads a String from a stream.
+   * 
+   * @param stream The stream to read the String from
+   * @return The stream content as String.
+   * @throws RegainException If reading the String failed.
+   */
+  public static String readStringFromStream(InputStream stream)
+    throws RegainException
+  {
+    return readStringFromStream(stream, null);
+  }
+  
 
   /**
    * Liest einen String aus einer Datei.
@@ -191,25 +243,18 @@ public class RegainToolkit {
       return null;
     }
 
-    FileReader reader = null;
+    FileInputStream stream = null;
     try {
-      reader = new FileReader(file);
-      StringWriter writer = new StringWriter();
-
-      RegainToolkit.pipe(reader, writer);
-
-      reader.close();
-      writer.close();
-
-      return writer.toString();
+      stream = new FileInputStream(file);
+      return readStringFromStream(stream);
     }
     catch (IOException exc) {
-      throw new RegainException("Reading word list from " + file.getAbsolutePath()
+      throw new RegainException("Reading String from " + file.getAbsolutePath()
           + "failed", exc);
     }
     finally {
-      if (reader != null) {
-        try { reader.close(); } catch (IOException exc) {}
+      if (stream != null) {
+        try { stream.close(); } catch (IOException exc) {}
       }
     }
   }

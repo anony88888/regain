@@ -107,6 +107,7 @@ X Bug: "http://www.murfman.de" wird geparst, aber nicht indexiert.
 X Desktopsuche: Status: Aktueller Index: Größe in MB, Anzahl Dokumente.
     Aktuelle Indexierung: Aktuelle Anzahl Indexierte Dokumente.
 X Desktopsuche: Bei Update-Installation alte Konfiguration nicht überschreiben.
+X Openoffice-Präparator
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -119,7 +120,6 @@ X Desktopsuche: Bei Update-Installation alte Konfiguration nicht überschreiben.
 
   Desktopsuche: Port einstellbar
 
-  Openoffice-Präparator
   Desktopsuche: Task-Icon für Linux
   Desktopsuche: Mime-Types konfigurierbar
   Desktopsuche: Zugriff von außen für einstellbare Benutzer/Passwort-Paare
