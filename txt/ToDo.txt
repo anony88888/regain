@@ -93,6 +93,7 @@ X Desktopsuche: Status
 X Desktopsuche: search.jsp:
     - Forward zu noindex.jsp, wenn kein Index vorhanden.
     - Forward zu searchinput.jsp, wenn query nicht gesetzt.
+X Desktopsuche: Links zu den anderen Seiten im Footer-Bereich
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)

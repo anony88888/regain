@@ -77,13 +77,28 @@ public class FileService extends BasicService {
     // Check the filename
     if (isAllowed(filename)) {
       // This file is allowed -> Send it
-      SharedTagService.processFile(req, resp, new File(filename));
+      processFile(req, resp, new File(filename));
     } else {
       // This file is not allowed -> Send 403 Forbidden
       handle(req, resp, 403);
     }
   }
 
+  
+  /**
+   * Processes a file request.
+   * 
+   * @param req The request.
+   * @param resp The response.
+   * @param file The to send.
+   * @throws Exception If executing the JSP page failed.
+   */
+  private void processFile(Request req, Response resp, File file)
+    throws Exception
+  {
+    SharedTagService.processFile(this, req, resp, file);
+  }
+  
   
   /**
    * Decides whether a file access is allowed or not.

@@ -27,9 +27,11 @@
  */
 package net.sf.regain.util.sharedtag.simple;
 
+import java.io.File;
 import java.util.HashMap;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.RegainToolkit;
 import net.sf.regain.util.sharedtag.SharedTag;
 
 import org.apache.regexp.RE;
@@ -41,6 +43,12 @@ import org.apache.regexp.RE;
  * @author Til Schneider, www.murfman.de
  */
 public class ExecuterParser {
+  
+  /** The regex that matches a include tag. */
+  private RE mIncludeRegex;
+  
+  /** The regex that matches JSP code. */
+  private RE mJspCodeRegex;
   
   /** The regex that matches a JSP tag. */
   private RE mJspTagRegex;
@@ -58,8 +66,11 @@ public class ExecuterParser {
   public ExecuterParser() {
     // NOTE: The regex objects are not static in order to be able to use
     //       several ExecuterParser instances in concurrent threads
+    mIncludeRegex = new RE("<%@include\\s*file=\"([^\"]*)\"\\s*%>");
+    mJspCodeRegex = new RE("<%([^%]*)%>");
     mJspTagRegex = new RE("<([\\w/]*):(\\w*)(([^>\"]*\"[^\"]*\")*\\w*/?)>");
     mParamRegex = new RE("(\\w+)\\s*=\\s*\"([^\"]*)\"");
+    // <%@include file="Header.jsp" %>
   }
   
   
@@ -82,11 +93,16 @@ public class ExecuterParser {
   /**
    * Parses the JSP code.
    * 
-   * @param jspCode The JSP code to parse.
+   * @param baseDir The base directory where to search for the JSP file.
+   * @param filename The name of the JSP file to parse.
    * @return An Executer tree that can execute the JSP page.
    * @throws RegainException If parsing failed.
    */
-  public synchronized Executer parse(String jspCode) throws RegainException {
+  public synchronized Executer parse(File baseDir, String filename)
+    throws RegainException
+  {
+    String jspCode = prepareJspCode(baseDir, filename);
+    
     // Get the position where the real content starts
     int startPos = jspCode.indexOf("<html>");
     if (startPos == -1) {
@@ -103,6 +119,68 @@ public class ExecuterParser {
     return executer;
   }
 
+  
+  /**
+   * Prepares the JSP code before it is parsed for shared tags. 
+   * 
+   * @param baseDir The base directory where to search for the JSP file.
+   * @param filename The name of the JSP file to prepare.
+   * @return The prepared code.
+   * @throws RegainException If loading the requested file failed.
+   */
+  private String prepareJspCode(File baseDir, String filename)
+    throws RegainException
+  {
+    File file = new File(baseDir, filename);
+    String jspCode = RegainToolkit.readStringFromFile(file);
+    
+    // Add all inludes
+    // NOTE: For performance reasons we create only a StringBuffer if a match is
+    //       found. Otherwise the jspCode String remains the same.
+    int pos = 0;
+    StringBuffer buffer = null;
+    while (mIncludeRegex.match(jspCode, pos)) {
+      if (buffer == null) {
+        buffer = new StringBuffer(jspCode.length());
+      }
+      
+      // Add the text before
+      buffer.append(jspCode.substring(pos, mIncludeRegex.getParenStart(0)));
+      
+      // Include the file
+      String incFilename = mIncludeRegex.getParen(1);
+      buffer.append(prepareJspCode(baseDir, incFilename));
+      
+      pos = mIncludeRegex.getParenEnd(0);
+    }
+    if (buffer != null) {
+      // Add the text after the last include
+      buffer.append(jspCode.substring(pos, jspCode.length()));
+      jspCode = buffer.toString();
+    }
+    
+    // Remove all JSP code
+    pos = 0;
+    buffer = null;
+    while (mJspCodeRegex.match(jspCode, pos)) {
+      if (buffer == null) {
+        buffer = new StringBuffer(jspCode.length());
+      }
+
+      // Add the text before
+      buffer.append(jspCode.substring(pos, mJspCodeRegex.getParenStart(0)));
+
+      pos = mJspCodeRegex.getParenEnd(0);
+    }
+    if (buffer != null) {
+      // Add the text after the last JSP code
+      buffer.append(jspCode.substring(pos, jspCode.length()));
+      jspCode = buffer.toString();
+    }
+    
+    return jspCode;
+  }
+  
 
   /**
    * Parses the content of an executer.

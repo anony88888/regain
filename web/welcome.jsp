@@ -39,10 +39,8 @@
       <br>
     </td></tr>
   </table>
-
-  <p class="navigation">
-    <img src="img/logo_regain_small.gif" width="121" height="40">
-  </p>
+  
+  <%@include file="footer.jsp" %>
 
 </body>
 </html>

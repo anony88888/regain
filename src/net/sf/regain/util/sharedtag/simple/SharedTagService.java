@@ -40,6 +40,7 @@ import simple.http.Request;
 import simple.http.Response;
 import simple.http.load.BasicService;
 import simple.http.serve.Context;
+import simple.http.serve.Resource;
 
 /**
  * A simpleweb Service providing JSP pages and normal files.
@@ -111,8 +112,7 @@ public class SharedTagService extends BasicService {
         processDirectory(req, resp, file);
       }
       else if (file.getName().endsWith(".jsp")) {
-        String jspCode = RegainToolkit.readStringFromFile(file);
-        Executer root = mParser.parse(jspCode);
+        Executer root = mParser.parse(mBaseDir, fileName);
         SharedTagResource resource = new SharedTagResource(context, root);
         resource.handle(req, resp);
       }
@@ -157,48 +157,74 @@ public class SharedTagService extends BasicService {
    * @param file The to send.
    * @throws Exception If executing the JSP page failed.
    */
-  public static void processFile(Request req, Response resp, File file)
+  private void processFile(Request req, Response resp, File file)
     throws Exception
   {
-    // TODO: Make this configurable
-    if (mMimeTypeHash == null) {
-      // Source: http://de.selfhtml.org/diverses/mimetypen.htm
-      mMimeTypeHash = new HashMap();
-      mMimeTypeHash.put("html", "text/html");
-      mMimeTypeHash.put("htm", "text/html");
-      mMimeTypeHash.put("txt", "text/plain");
-      mMimeTypeHash.put("pdf", "application/pdf");
-      mMimeTypeHash.put("xls", "application/msexcel");
-      mMimeTypeHash.put("doc", "application/msword");
-      mMimeTypeHash.put("ppt", "application/mspowerpoint");
-      mMimeTypeHash.put("rtf", "text/rtf");
-    }
+    processFile(this, req, resp, file);
+  }
+  
+  
+  /**
+   * Processes a file request.
+   * 
+   * @param statusCodeHandler The resource to use for handling a status code.
+   * @param req The request.
+   * @param resp The response.
+   * @param file The to send.
+   * @throws Exception If executing the JSP page failed.
+   */
+  public static void processFile(Resource statusCodeHandler, Request req,
+    Response resp, File file)
+    throws Exception
+  {
+    long lastModified = file.lastModified();
+    if (lastModified < req.getDate("If-Modified-Since")) {
+      // The browser can use the cached file
+      statusCodeHandler.handle(req, resp, 304);
+    } else {
+      resp.setDate("Date", System.currentTimeMillis());
+      resp.setDate("Last-Modified", lastModified);
     
-    // Set the MIME type
-    String filename = file.getName();
-    int lastDot = filename.lastIndexOf('.');
-    if (lastDot != -1) {
-      String extension = filename.substring(lastDot + 1);
-      String mimeType = (String) mMimeTypeHash.get(extension);
-      if (mimeType != null) {
-        resp.set("Content-Type", "mimeType/" + mimeType);
+      // TODO: Make this configurable
+      if (mMimeTypeHash == null) {
+        // Source: http://de.selfhtml.org/diverses/mimetypen.htm
+        mMimeTypeHash = new HashMap();
+        mMimeTypeHash.put("html", "text/html");
+        mMimeTypeHash.put("htm", "text/html");
+        mMimeTypeHash.put("txt", "text/plain");
+        mMimeTypeHash.put("pdf", "application/pdf");
+        mMimeTypeHash.put("xls", "application/msexcel");
+        mMimeTypeHash.put("doc", "application/msword");
+        mMimeTypeHash.put("ppt", "application/mspowerpoint");
+        mMimeTypeHash.put("rtf", "text/rtf");
       }
-    }
-    
-    // Send the file
-    OutputStream out = null;
-    FileInputStream in = null;
-    try {
-      out = resp.getOutputStream();
-      in = new FileInputStream(file);
-      RegainToolkit.pipe(in, out);
-    }
-    finally {
-      if (in != null) {
-        try { in.close(); } catch (IOException exc) {}
+      
+      // Set the MIME type
+      String filename = file.getName();
+      int lastDot = filename.lastIndexOf('.');
+      if (lastDot != -1) {
+        String extension = filename.substring(lastDot + 1);
+        String mimeType = (String) mMimeTypeHash.get(extension);
+        if (mimeType != null) {
+          resp.set("Content-Type", "mimeType/" + mimeType);
+        }
       }
-      if (out != null) {
-        try { out.close(); } catch (IOException exc) {}
+      
+      // Send the file
+      OutputStream out = null;
+      FileInputStream in = null;
+      try {
+        out = resp.getOutputStream();
+        in = new FileInputStream(file);
+        RegainToolkit.pipe(in, out);
+      }
+      finally {
+        if (in != null) {
+          try { in.close(); } catch (IOException exc) {}
+        }
+        if (out != null) {
+          try { out.close(); } catch (IOException exc) {}
+        }
       }
     }
   }

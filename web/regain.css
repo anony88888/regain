@@ -85,6 +85,11 @@ table.searchBottom td {
   padding: 30px;
 }
 
+p.footerLinks {
+  text-align: center;
+  font-size: 10;
+}
+
 select.editlist {
   width: 400px;
 }

@@ -79,7 +79,7 @@ public class NavigationTag extends SharedTag implements SearchConstants {
     SearchContext search = SearchToolkit.getSearchContext(request);
 
     int fromResult = request.getParameterAsInt(PARAM_FROM_RESULT, 0);
-    int maxResults = request.getParameterAsInt(PARAM_MAX_RESULTS, 25);
+    int maxResults = request.getParameterAsInt(PARAM_MAX_RESULTS, SearchConstants.DEFAULT_MAX_RESULTS);
     int totalResults = search.getHitCount();
 
     int buttonCount = (int) Math.ceil((double) totalResults / (double) maxResults);
@@ -105,7 +105,7 @@ public class NavigationTag extends SharedTag implements SearchConstants {
       }
     }
 
-    String indexName = search.getIndexName();
+    String indexName = request.getParameter("index");
     if (currButton > 0) {
       String msgBack = getParameter("msgBack", true);
       msgBack = RegainToolkit.replace(msgBack, "&quot;", "\"");
@@ -147,7 +147,10 @@ public class NavigationTag extends SharedTag implements SearchConstants {
 
     // Für Java 1.2.2
     String encodedQuery = URLEncoder.encode(query);
-    String encodedIndexName = URLEncoder.encode(indexName);
+    String encodedIndexName = null;
+    if (indexName != null) {
+      encodedIndexName = URLEncoder.encode(indexName);
+    }
 
     // Ab Java 1.3
     /*
@@ -156,9 +159,17 @@ public class NavigationTag extends SharedTag implements SearchConstants {
     String encodedIndexName = URLEncoder.encode(indexName, encoding);
     */
 
-    response.print("<a href=\"" + targetPage + "?query=" + encodedQuery
-      + "&index=" + encodedIndexName + "&maxresults=" + maxResults
-      + "&fromresult=" + (button * maxResults) + "\"");
+    response.print("<a href=\"" + targetPage + "?query=" + encodedQuery);
+    if (encodedIndexName != null) {
+      response.print("&index=" + encodedIndexName);
+    }
+    if (maxResults != SearchConstants.DEFAULT_MAX_RESULTS) {
+      response.print("&maxresults=" + maxResults);
+    }
+    if (button != 0) {
+      response.print("&fromresult=" + (button * maxResults));
+    }
+    response.print("\"");
     String styleSheetClass = getParameter("class");
     if (styleSheetClass != null) {
       response.print(" class=\"" + styleSheetClass + "\"");

@@ -81,7 +81,7 @@ public class ListTag extends SharedTag implements SearchConstants {
     SearchContext context = SearchToolkit.getSearchContext(request);
 
     int fromResult = request.getParameterAsInt(PARAM_FROM_RESULT, 0);
-    int maxResults = request.getParameterAsInt(PARAM_MAX_RESULTS, 15);
+    int maxResults = request.getParameterAsInt(PARAM_MAX_RESULTS, SearchConstants.DEFAULT_MAX_RESULTS);
 
     if (context.getHitCount() == 0) {
       String msgNoResults = getParameter("msgNoResults");

@@ -52,7 +52,6 @@
   </table>
 
   <p class="navigation">
-    <img src="img/logo_regain_small.gif" width="121" height="40"><br />
     Ergebnisseite:
     <search:navigation
             targetPage="search.jsp"
@@ -71,6 +70,8 @@
       <input type="submit" value="Suchen"/>
     </td></tr></table>
   </form>
+
+  <%@include file="footer.jsp" %>
 
 </body>
 </html>

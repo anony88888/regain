@@ -55,7 +55,7 @@ public class ToTag extends SharedTag implements SearchConstants {
     SearchContext search = SearchToolkit.getSearchContext(request);
 
     int fromResult = request.getParameterAsInt(PARAM_FROM_RESULT, 0);
-    int maxResults = request.getParameterAsInt(PARAM_MAX_RESULTS, 25);
+    int maxResults = request.getParameterAsInt(PARAM_MAX_RESULTS, SearchConstants.DEFAULT_MAX_RESULTS);
 
     int toResult = fromResult + maxResults - 1;
     if (toResult >= search.getHitCount()) {
