@@ -7,13 +7,13 @@
   <JVMSearchPath>exepath</JVMSearchPath>
   <JVMSearchPath>jview</JVMSearchPath>
   <arguments></arguments>
-  <embeddedJar>false</embeddedJar>
+  <embeddedJar>true</embeddedJar>
   <executableName>..\temp\runtime\desktop\regain.exe</executableName>
   <iconLocation>..\src\net\sf\regain\ui\desktop\regain_icon_16.gif</iconLocation>
   <jarLocation>..\temp\runtime\desktop\regain.jar</jarLocation>
   <mainClassName>net.sf.regain.ui.desktop.Main</mainClassName>
   <initialMemoryHeap>-1</initialMemoryHeap>
-  <maximumMemoryHeap>256</maximumMemoryHeap>
+  <maximumMemoryHeap>268435456</maximumMemoryHeap> 
   <maximumVersion></maximumVersion>
   <minimumVersion>1.3.0</minimumVersion>
   <skeletonName>Windowed Wrapper</skeletonName>
