@@ -398,7 +398,14 @@ public class CrawlerToolkit {
 
       // Extract, decode and append the entity
       String entity = text.substring(entityStart, entityEnd + 1);
-      String decoded = HtmlEntities.decode(entity);
+      String decoded;
+      try {
+        decoded = HtmlEntities.decode(entity);
+      }
+      catch (Throwable thr) {
+        // This doesn't seem to be a wellformed entity -> Leave the text as it is
+        decoded = entity;
+      }
       clean.append(decoded);
 
       // Get the next offset
