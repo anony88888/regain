@@ -11,43 +11,43 @@
 
   <tag>
     <name>input_query</name>
-    <tagclass>de.filiadata.lucene.search.taglib.input.QueryTag</tagclass>
+    <tagclass>net.sf.regain.search.taglib.input.QueryTag</tagclass>
     <bodycontent>empty</bodycontent>
   </tag>
 
   <tag>
     <name>input_maxresults</name>
-    <tagclass>de.filiadata.lucene.search.taglib.input.MaxResultsTag</tagclass>
+    <tagclass>net.sf.regain.search.taglib.input.MaxResultsTag</tagclass>
     <bodycontent>empty</bodycontent>
   </tag>
 
   <tag>
     <name>stats_from</name>
-    <tagclass>de.filiadata.lucene.search.taglib.stats.FromTag</tagclass>
+    <tagclass>net.sf.regain.search.taglib.stats.FromTag</tagclass>
     <bodycontent>empty</bodycontent>
   </tag>
 
   <tag>
     <name>stats_to</name>
-    <tagclass>de.filiadata.lucene.search.taglib.stats.ToTag</tagclass>
+    <tagclass>net.sf.regain.search.taglib.stats.ToTag</tagclass>
     <bodycontent>empty</bodycontent>
   </tag>
 
   <tag>
     <name>stats_total</name>
-    <tagclass>de.filiadata.lucene.search.taglib.stats.TotalTag</tagclass>
+    <tagclass>net.sf.regain.search.taglib.stats.TotalTag</tagclass>
     <bodycontent>empty</bodycontent>
   </tag>
 
   <tag>
     <name>stats_searchtime</name>
-    <tagclass>de.filiadata.lucene.search.taglib.stats.SearchTimeTag</tagclass>
+    <tagclass>net.sf.regain.search.taglib.stats.SearchTimeTag</tagclass>
     <bodycontent>empty</bodycontent>
   </tag>
 
   <tag>
     <name>navigation</name>
-    <tagclass>de.filiadata.lucene.search.taglib.NavigationTag</tagclass>
+    <tagclass>net.sf.regain.search.taglib.NavigationTag</tagclass>
     <bodycontent>empty</bodycontent>
 
     <attribute>
@@ -70,7 +70,7 @@
 
   <tag>
     <name>list</name>
-    <tagclass>de.filiadata.lucene.search.taglib.ListTag</tagclass>
+    <tagclass>net.sf.regain.search.taglib.ListTag</tagclass>
     <bodycontent>jsp</bodycontent>
 
     <attribute>
@@ -81,7 +81,7 @@
 
   <tag>
     <name>hit_link</name>
-    <tagclass>de.filiadata.lucene.search.taglib.hit.LinkTag</tagclass>
+    <tagclass>net.sf.regain.search.taglib.hit.LinkTag</tagclass>
     <bodycontent>empty</bodycontent>
 
     <attribute>
@@ -92,7 +92,7 @@
 
   <tag>
     <name>hit_path</name>
-    <tagclass>de.filiadata.lucene.search.taglib.hit.PathTag</tagclass>
+    <tagclass>net.sf.regain.search.taglib.hit.PathTag</tagclass>
     <bodycontent>empty</bodycontent>
 
     <attribute>
@@ -115,25 +115,25 @@
 
   <tag>
     <name>hit_score</name>
-    <tagclass>de.filiadata.lucene.search.taglib.hit.ScoreTag</tagclass>
+    <tagclass>net.sf.regain.search.taglib.hit.ScoreTag</tagclass>
     <bodycontent>empty</bodycontent>
   </tag>
 
   <tag>
     <name>hit_size</name>
-    <tagclass>de.filiadata.lucene.search.taglib.hit.SizeTag</tagclass>
+    <tagclass>net.sf.regain.search.taglib.hit.SizeTag</tagclass>
     <bodycontent>empty</bodycontent>
   </tag>
 
   <tag>
     <name>hit_url</name>
-    <tagclass>de.filiadata.lucene.search.taglib.hit.UrlTag</tagclass>
+    <tagclass>net.sf.regain.search.taglib.hit.UrlTag</tagclass>
     <bodycontent>empty</bodycontent>
   </tag>
 
   <tag>
     <name>hit_summary</name>
-    <tagclass>de.filiadata.lucene.search.taglib.hit.SummaryTag</tagclass>
+    <tagclass>net.sf.regain.search.taglib.hit.SummaryTag</tagclass>
     <bodycontent>empty</bodycontent>
   </tag>
 

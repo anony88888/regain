@@ -1,5 +1,5 @@
 <%@page contentType="text/html" errorPage="ErrorPage.jsp"%>
-<%@page import="de.filiadata.lucene.search.SearchConstants" %>
+<%@page import="net.sf.regain.search.SearchConstants" %>
 <%@taglib uri="SearchLib.tld" prefix="search" %>
 
 <html>
