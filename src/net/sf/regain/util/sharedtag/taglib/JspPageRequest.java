@@ -28,6 +28,7 @@
 package net.sf.regain.util.sharedtag.taglib;
 
 import java.util.Enumeration;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
@@ -117,6 +118,18 @@ public class JspPageRequest extends PageRequest {
     return request.getDateHeader(name);
   }
 
+  
+  /**
+   * Gets the locale of the client.
+   * 
+   * @return The locale.
+   * @throws RegainException If getting the locale failed.
+   */
+  public Locale getLocale() throws RegainException {
+    HttpServletRequest request = (HttpServletRequest) mPageContext.getRequest();
+    return request.getLocale();
+  }
+  
 
   /**
    * Sets an attribute at the page context.

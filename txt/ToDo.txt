@@ -114,6 +114,19 @@ X Jacob-Präperatoren: Indizierung der Office-Dokumenten-Beschreibungs-Felder.
   Desktopsuche: Mime-Types konfigurierbar
   Bug: "http://www.murfman.de" wird geparst, aber nicht indexiert.
     (Regex für HTML-Präparator falsch)
+  Desktopsuche: Port einstellbar
+  Desktopsuche: Zugriff von außen für einstellbare Benutzer/Passwort-Paare
+    erlauben.
+  Desktopsuche: Bei Update-Installation alte Konfiguration nicht überschreiben.
+  Desktopsuche: Schönere Fehlerseite (errorpage benutzen)
+  Neues Feld: extension: Dateiendung indexieren.
+  Desktopsuche: Expertensuche: Textfelder (bzw. Comboboxen) für einige Felder 
+    anbieten.
+  Desktopsuche: Nach Speichern der Konfiguration nur dann neu indexieren, wenn
+    sich etwas geändert hat, das den Index verändert.
+  Desktopsuche: Status: Aktueller Index: Größe in MB, Anzahl Dokumente.
+    Aktuelle Indexierung: Aktuelle Anzahl Indexierte Dokumente.
+  Desktopsuche: Aktuelle Indexierung stoppen.
   Crawler: Arbeitspeicher sparen: Dateien vom Dateisystem nicht ins
     mFoundUrlSet oder mIgnoredUrlSet aufnehmen. Beim Dateisystem ist durch die
     klare Baumstruktur sowieso klar, welche Dokumente schon bearbeitet wurden.

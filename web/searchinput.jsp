@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>regain - Suchen</title>
+  <title>regain - <search:msg key="search"/></title>
   <script src="regain.js" type="text/javascript"></script>
   <link href="regain.css" rel="stylesheet" type="text/css">
 </head>

@@ -28,6 +28,7 @@
 package net.sf.regain.util.sharedtag;
 
 import java.util.Enumeration;
+import java.util.Locale;
 
 import net.sf.regain.RegainException;
 
@@ -184,6 +185,15 @@ public abstract class PageRequest {
    */
   public abstract long getHeaderAsDate(String name) throws RegainException;
 
+  
+  /**
+   * Gets the locale of the client.
+   * 
+   * @return The locale.
+   * @throws RegainException If getting the locale failed.
+   */
+  public abstract Locale getLocale() throws RegainException;
+  
 
   /**
    * Sets an attribute at the page context.

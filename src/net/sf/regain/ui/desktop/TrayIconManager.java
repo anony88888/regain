@@ -35,6 +35,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
 
+import net.sf.regain.Localizer;
+
 import org.jdesktop.jdic.tray.SystemTray;
 import org.jdesktop.jdic.tray.TrayIcon;
 
@@ -44,6 +46,9 @@ import org.jdesktop.jdic.tray.TrayIcon;
  * @author Til Schneider, www.murfman.de
  */
 public class TrayIconManager {
+  
+  /** The localizer for this class. */
+  public static Localizer mLocalizer = new Localizer(TrayIconManager.class);
   
   /** The singleton. */
   private static TrayIconManager mSingleton;
@@ -78,7 +83,7 @@ public class TrayIconManager {
     JPopupMenu menu = new JPopupMenu();
     JMenuItem item;
 
-    item = new JMenuItem("Suchen");
+    item = new JMenuItem(mLocalizer.msg("search", "Search"));
     item.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent evt) {
         DesktopToolkit.openPageInBrowser("searchinput.jsp");
@@ -86,7 +91,7 @@ public class TrayIconManager {
     });
     menu.add(item);
 
-    item = new JMenuItem("Status");
+    item = new JMenuItem(mLocalizer.msg("status", "Status"));
     item.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent evt) {
         DesktopToolkit.openPageInBrowser("status.jsp");
@@ -94,7 +99,7 @@ public class TrayIconManager {
     });
     menu.add(item);
     
-    item = new JMenuItem("Einstellungen");
+    item = new JMenuItem(mLocalizer.msg("config", "Preferences"));
     item.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent evt) {
         DesktopToolkit.openPageInBrowser("config.jsp");
@@ -104,7 +109,7 @@ public class TrayIconManager {
 
     menu.addSeparator();
     
-    item = new JMenuItem("Beenden");
+    item = new JMenuItem(mLocalizer.msg("exit", "Exit"));
     item.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent evt) {
         Main.quit();
@@ -135,8 +140,7 @@ public class TrayIconManager {
     if (updateRunning) {
       ImageIcon icon = new ImageIcon(getClass().getResource("regain_icon_scan_16.gif"));
       mTrayIcon.setIcon(icon);
-      mTrayIcon.setCaption("Test");
-      mTrayIcon.setToolTip("regain - Index wird aktualisiert");
+      mTrayIcon.setToolTip("regain - " + mLocalizer.msg("indexUpdate", "Updating index"));
     } else {
       ImageIcon icon = new ImageIcon(getClass().getResource("regain_icon_16.gif"));
       mTrayIcon.setIcon(icon);

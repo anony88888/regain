@@ -30,6 +30,7 @@ package net.sf.regain.util.sharedtag.simple;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Locale;
 
 import simple.http.Request;
 import simple.util.net.Parameters;
@@ -141,6 +142,17 @@ public class SimplePageRequest extends PageRequest {
     return mRequest.getDate(name);
   }
 
+  
+  /**
+   * Gets the locale of the client.
+   * 
+   * @return The locale.
+   * @throws RegainException If getting the locale failed.
+   */
+  public Locale getLocale() throws RegainException {
+    return mRequest.getLanguage();
+  }
+  
 
   /**
    * Sets an attribute at the page context.

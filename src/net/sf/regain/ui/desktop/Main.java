@@ -29,6 +29,7 @@ package net.sf.regain.ui.desktop;
 
 import java.io.File;
 import java.net.ServerSocket;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -53,7 +54,7 @@ public class Main implements DesktopConstants {
   /** The logger for this class */
   private static Logger mLog = Logger.getLogger(Main.class);
 
-  
+
   /**
    * The main entry point.
    * 
@@ -74,6 +75,7 @@ public class Main implements DesktopConstants {
 
     // Initialize the search mask
     SimplePageRequest.setInitParameter("searchConfigFile", "conf/SearchConfiguration.xml");
+    SimplePageRequest.setInitParameter("webDir", "web");
     ExecuterParser.registerNamespace("search", "net.sf.regain.search.sharedlib");
     ExecuterParser.registerNamespace("config", "net.sf.regain.ui.desktop.config.sharedlib");
     ExecuterParser.registerNamespace("status", "net.sf.regain.ui.desktop.status.sharedlib");
