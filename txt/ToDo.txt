@@ -166,6 +166,8 @@ X Präparatoren in eigene Jars kapseln. Alle Jars werden in ein Verzeichnis
   Crawler: Arbeitspeicher sparen: Erst Dateien an mJobList anhängen, dann
   	Unterverzeichnisse. So wird die mJobList klein gehalten.
   Desktopsuche: Status-Seite: Ende von Logdatei zeigen
+  Neuer MS Word-Präparator: http://textmining.org
+  Neuer PDF-Präparator: PJX (http://www.etymon.com/epub.html)
 
   Desktopsuche: Nach Speichern der Konfiguration nur dann neu indexieren, wenn
     sich etwas geändert hat, das den Index verändert.

@@ -398,7 +398,6 @@ public class Crawler implements ErrorLogger {
         }
         catch (RegainException exc) {
           logError("Parsing HTML failed: " + rawDocument.getUrl(), exc, false);
-          mHtmlParsingProfiler.abortMeasuring();
         }
       }
 

@@ -962,9 +962,6 @@ public class IndexWriterManager {
     } else {
       targetDir = mNewIndexDir;
     }
-
-    // Delete the last breakpoint if there should be one
-    deleteOldIndex(mBreakpointIndexDir);
     
     // If there is already the target directory -> delete it
     deleteOldIndex(targetDir);
@@ -981,7 +978,10 @@ public class IndexWriterManager {
       catch (Exception exc) {}
     }
 
-    if (! renameSucceed) {
+    if (renameSucceed) {
+      // Delete the last breakpoint if there should be one
+      deleteOldIndex(mBreakpointIndexDir);
+    } else {
       throw new RegainException("Renaming " + mTempIndexDir + " to " + targetDir
         + " failed after " + (RENAME_TIMEOUT / 1000) + " seconds!");
     }
