@@ -241,7 +241,7 @@ public class DocumentFactory {
     doc.add(Field.Keyword("url", url));
 
     // Add the document's size
-    int size = rawDocument.getContent().length;
+    int size = rawDocument.getLength();
     doc.add(Field.UnIndexed("size", Integer.toString(size)));
 
     // Add last modified

@@ -122,6 +122,7 @@ X Desktopsuche: Status: Profiler-Ergebnisse anzeigen
 
 X Bug: Excel-Präparator kommt nicht mit allen Zahlen- und Datumsformaten klar.
 X Crawler: RawDocument: InputStream anbieten. Bei file-URL Daten nicht cachen.
+X Crawler: Fehler-Log nicht am Ende erstellen, sondern sofort und mit Stacktrace.
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -155,7 +156,6 @@ X Crawler: RawDocument: InputStream anbieten. Bei file-URL Daten nicht cachen.
   	(Dazu muss Start-List muss untereinander präfixfrei sein!)
   Crawler: Arbeitspeicher sparen: Erst Dateien an mJobList anhängen, dann
   	Unterverzeichnisse. So wird die mJobList klein gehalten.
-  Crawler: Fehler-Log nicht am Ende erstellen, sondern sofort und mit Stacktrace.
   Desktopsuche: Status-Seite: Ende von Logdatei zeigen
 
   Desktopsuche: Nach Speichern der Konfiguration nur dann neu indexieren, wenn

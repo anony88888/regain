@@ -75,14 +75,9 @@ public class Crawler {
   /** Die Liste der noch zu bearbeitenden Jobs. */
   private LinkedList mJobList;
 
-  /**
-   * Enthält alle bisher aufgetretenen Fehler.
-   * <p>
-   * Es werden Object[]s gespeichert, wobei das erste Element die Fehlermeldung
-   * beinhaltet und die zweite die Exception.
-   */
-  private LinkedList mErrorList;
-
+  /** The number of occured errors. */
+  private int mErrorCount;
+  
   /**
    * Die Anzahl der fatalen Fehler, die aufgetreten sind.
    * <p>
@@ -158,7 +153,6 @@ public class Crawler {
     mFoundUrlSet = new HashSet();
     mIgnoredUrlSet = new HashSet();
     mJobList = new LinkedList();
-    mErrorList = new LinkedList();
     mDeadlinkList = new LinkedList();
 
     mFatalErrorCount = 0;
@@ -490,7 +484,7 @@ public class Crawler {
     } else {
       // Prüfen, ob die Anzahl der abgebrochenen Dokumente über der Toleranzgranze
       // ist.
-      double failedDocCount = mDeadlinkList.size() + mErrorList.size();
+      double failedDocCount = mDeadlinkList.size() + mErrorCount;
       double totalDocCount = failedDocCount + entryCount;
       failedPercent = failedDocCount / totalDocCount;
       double maxAbortedPercent = mConfiguration.getMaxFailedDocuments();
@@ -533,7 +527,7 @@ public class Crawler {
       + "  Ignored URLs:       " + mIgnoredUrlSet.size() + lineSeparator
       + "  Documents in index: " + entryCount + lineSeparator
       + "  Dead links:         " + mDeadlinkList.size() + lineSeparator
-      + "  Errors:             " + mErrorList.size() + lineSeparator
+      + "  Errors:             " + mErrorCount + lineSeparator
       + "  Error ratio:        " + RegainToolkit.toPercentString(failedPercent));
   }
 
@@ -664,7 +658,7 @@ public class Crawler {
    * ausgeschalteter Indizierung im aktuellen Verzeichnis.
    */
   private void writeDeadlinkAndErrorList() {
-    if (mDeadlinkList.isEmpty() && mErrorList.isEmpty()) {
+    if (mDeadlinkList.isEmpty() && (mErrorCount == 0)) {
       // Nothing to do
       return;
     }
@@ -714,30 +708,8 @@ public class Crawler {
       }
 
       // Write the error list
-      if (! mErrorList.isEmpty()) {
-        stream = new FileOutputStream(new File(listDir, "errors.txt"));
-        printer = new PrintStream(stream);
-
-        msg = "There were " + mErrorList.size() + " errors:";
-        System.out.println(msg);
-        printer.println(msg);
-
-        Iterator iter = mErrorList.iterator();
-        for (int i = 0; iter.hasNext(); i++) {
-          Object[] tupel = (Object[]) iter.next();
-          String errorMsg = (String) tupel[0];
-          Throwable thr = (Throwable) tupel[1];
-
-          msg = "  Error #" + (i + 1) + ": " + errorMsg;
-          if (thr != null) {
-            msg += " - " + thr;
-          }
-          System.out.println(msg);
-          printer.println(msg);
-        }
-
-        printer.close();
-        stream.close();
+      if (mErrorCount > 0) {
+        mLog.warn("There were " + mErrorCount + " errors");
       }
     }
     catch (IOException exc) {
@@ -904,7 +876,7 @@ public class Crawler {
    * @see #getFatalErrorCount()
    */
   public int getErrorCount() {
-    return mErrorList.size();
+    return mErrorCount;
   }
 
 
@@ -935,8 +907,14 @@ public class Crawler {
       msg = "Fatal: " + msg;
     }
     mLog.error(msg, thr);
-    mErrorList.add(new Object[] { msg, thr });
-
+    try {
+      mIndexWriterManager.logError(msg, thr);
+    }
+    catch (RegainException exc) {
+      mLog.error("Logging error in error log of index failed", exc);
+    }
+    
+    mErrorCount ++;
     if (fatal) {
       mFatalErrorCount++;
     }

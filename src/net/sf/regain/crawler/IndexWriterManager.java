@@ -193,6 +193,21 @@ public class IndexWriterManager {
   /** Das Verzeichnis, in dem die Analyse-Dateien erstellt werden soll. */
   private File mAnalysisDir;
   
+  /** The file where the error log should be stored. */
+  private File mErrorLogFile;
+  
+  /**
+   * The stream used for writing errors to the error log of the index.
+   * May be <code>null</code>.
+   */
+  private FileOutputStream mErrorLogStream;
+  
+  /**
+   * The print writer used for writing errors to the error log of the index.
+   * May be <code>null</code>.
+   */
+  private PrintWriter mErrorLogWriter;
+  
   /**
    * The number of documents that were in the (old) index when the
    * IndexWriterManager was created.
@@ -244,6 +259,8 @@ public class IndexWriterManager {
     mQuarantineIndexDir = new File(indexDir, QUARANTINE_INDEX_SUBDIR);
     mTempIndexDir       = new File(indexDir, TEMP_INDEX_SUBDIR);
     mBreakpointIndexDir = new File(indexDir, BREAKPOINT_INDEX_SUBDIR);
+    
+    mErrorLogFile = new File(mTempIndexDir, "log/error.log");
 
     // Delete the old temp index directory if it should still exist
     if (mTempIndexDir.exists()) {
@@ -356,6 +373,31 @@ public class IndexWriterManager {
     //       be set to null in the same time.
     HashMap hash = mUrlsToDeleteHash;
     return (hash == null) ? 0 : hash.size();
+  }
+
+
+  /**
+   * Logs an error at the error log of the index.
+   * 
+   * @param msg The error message.
+   * @param thr The error to log.
+   * @throws RegainException If writing to the error log failed.
+   */
+  public void logError(String msg, Throwable thr) throws RegainException {
+    if (mErrorLogStream == null) {
+      try {
+        new File(mTempIndexDir, "log").mkdir();
+        mErrorLogStream = new FileOutputStream(mErrorLogFile, true);
+        mErrorLogWriter = new PrintWriter(mErrorLogStream);
+      }
+      catch (IOException exc) {
+        throw new RegainException("Opening error log file of the index failed");
+      }
+    }
+    
+    mErrorLogWriter.println(msg + ":");
+    thr.printStackTrace(mErrorLogWriter);
+    mErrorLogWriter.println();
   }
 
 
@@ -617,7 +659,7 @@ public class IndexWriterManager {
         mLog.debug("Adding document to index");
       }
       mIndexWriter.addDocument(doc);
-      mAddToIndexProfiler.stopMeasuring(rawDocument.getContent().length);
+      mAddToIndexProfiler.stopMeasuring(rawDocument.getLength());
     }
     catch (IOException exc) {
       mAddToIndexProfiler.abortMeasuring();
@@ -827,6 +869,20 @@ public class IndexWriterManager {
 
     // Switch to ALL_CLOSED_MODE
     setIndexMode(ALL_CLOSED_MODE);
+    
+    // Close the error log of the index
+    if (mErrorLogStream != null) {
+      mErrorLogWriter.close();
+      try {
+        mErrorLogStream.close();
+      }
+      catch (IOException exc) {
+        throw new RegainException("Closing error log file failed", exc);
+      }
+      
+      mErrorLogWriter = null;
+      mErrorLogStream = null;
+    }
   }
   
   
