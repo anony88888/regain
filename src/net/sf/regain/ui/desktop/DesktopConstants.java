@@ -53,11 +53,20 @@ public interface DesktopConstants {
   
   /** The directory where the configuration files are located. */
   public static final File CONFIG_DIR = new File("conf");
+
+  /** The directory where the default configuration files are located. */
+  public static final File DEFAULT_CONFIG_DIR = new File(CONFIG_DIR, "default");
   
   /** The file that holds the desktop configuration. */
   public static final File DESKTOP_CONFIG_FILE = new File(CONFIG_DIR, "DesktopConfiguration.xml");
+
+  /** The file that holds the default desktop configuration. */
+  public static final File DEFAULT_DESKTOP_CONFIG_FILE = new File(DEFAULT_CONFIG_DIR, "DesktopConfiguration.xml");
   
   /** The file that holds the crawler configuration. */
   public static final File CRAWLER_CONFIG_FILE = new File(CONFIG_DIR, "CrawlerConfiguration.xml");
+
+  /** The file that holds the crawler configuration. */
+  public static final File DEFAULT_CRAWLER_CONFIG_FILE = new File(DEFAULT_CONFIG_DIR, "CrawlerConfiguration.xml");
 
 }

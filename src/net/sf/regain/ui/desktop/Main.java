@@ -56,13 +56,12 @@ public class Main implements DesktopConstants {
   public static void main(String[] args) {
     // Initialize the configuration
     // (Copy all files from the default dir that don't exist in the config dir)
-    File defaultConfigDir = new File(CONFIG_DIR, "default");
-    String[] defaultFileArr = defaultConfigDir.list();
+    String[] defaultFileArr = DEFAULT_CONFIG_DIR.list();
     for (int i = 0; i < defaultFileArr.length; i++) {
       File confFile = new File(CONFIG_DIR, defaultFileArr[i]);
       if (! confFile.exists()) {
         // This config file does not exist -> Copy the default file
-        File defaultConfFile = new File(defaultConfigDir, defaultFileArr[i]);
+        File defaultConfFile = new File(DEFAULT_CONFIG_DIR, defaultFileArr[i]);
         try {
           RegainToolkit.copyFile(defaultConfFile, confFile);
         }

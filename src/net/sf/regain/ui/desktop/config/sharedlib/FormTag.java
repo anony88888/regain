@@ -283,10 +283,10 @@ public class FormTag extends SharedTag implements DesktopConstants {
     Node node;
     
     // Load the config files
-    Document desktopDoc = XmlToolkit.loadXmlDocument(DESKTOP_CONFIG_FILE);
+    Document desktopDoc = XmlToolkit.loadXmlDocument(DEFAULT_DESKTOP_CONFIG_FILE);
     Element desktopConfig = desktopDoc.getDocumentElement();
 
-    Document crawlerDoc = XmlToolkit.loadXmlDocument(CRAWLER_CONFIG_FILE);
+    Document crawlerDoc = XmlToolkit.loadXmlDocument(DEFAULT_CRAWLER_CONFIG_FILE);
     Element crawlerConfig = crawlerDoc.getDocumentElement();
 
     // Set the interval

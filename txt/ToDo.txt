@@ -141,7 +141,12 @@ X Praeparatoren in eigene Jars kapseln. Alle Jars werden in ein Verzeichnis
 X Desktopsuche: Task-Icon fuer Linux
 X Bug: File-Service: Datei von Netzlaufwerken (//fileserver/bla/blubb) werden
     nicht geladen (Forbidden)
+X Bug: Desktopsuche: Suchergebnisse: Umlaute werden falsch dargestellt.
+X Desktopsuche: Einstellungen: Beim Speichern als Grundgerüst
+  	default-Config-Dateien nutzen.
 
+Filiadata:
+----------
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, fuer die
     er auch Leserechte hat. (Aufwand: 2 Tage)
     -> Brauche Input von Michael Danner
@@ -152,16 +157,25 @@ X Bug: File-Service: Datei von Netzlaufwerken (//fileserver/bla/blubb) werden
       "field.feldName" hinzugefuegt werden.
     - Init-Parameter von configFile nach searchConfigFile umbenannt.
 
-  Bug: Desktopsuche: Suchergebnisse: Umlaute werden falsch dargestellt.
-  Changelog erstellen
-  Suchmaske: Breakpoints nutzen.
+Prio A:
+-------
   Bug: HTML-Praeparator kommt nicht mit allen Dateien klar (Siehe Mail von Jochen Stiepel)
+  Desktopsuche: Aktuelle Indexierung pausieren.
+  Desktopsuche: Manuelles Starten einer Indexierung.
+  Changelog erstellen
+
+Prio B:
+-------
+  Suchmaske: Breakpoints nutzen.
   Desktopsuche: Mime-Types konfigurierbar
   Desktopsuche: Zugriff von aussen fuer einstellbare Benutzer/Passwort-Paare
     erlauben.
   Desktopsuche: Schoenere Fehlerseite (errorpage benutzen)
-  Desktopsuche: Aktuelle Indexierung pausieren.
-  Desktopsuche: Manuelles Starten einer Indexierung.
+  Desktopsuche: Bessere Fehlerseite für QuerySyntaxException
+  Suchmaske: Icons passend zu den Dateiendungen
+
+Prio C:
+-------
   Crawler: Arbeitspeicher sparen: Dateien vom Dateisystem nicht ins
     mFoundUrlSet oder mIgnoredUrlSet aufnehmen. Beim Dateisystem ist durch die
     klare Baumstruktur sowieso klar, welche Dokumente schon bearbeitet wurden.
@@ -171,7 +185,6 @@ X Bug: File-Service: Datei von Netzlaufwerken (//fileserver/bla/blubb) werden
   Desktopsuche: Status-Seite: Ende von Logdatei zeigen
   Neuer MS Word-Praeparator: http://textmining.org
   Neuer PDF-Praeparator: PJX (http://www.etymon.com/epub.html)
-
   Desktopsuche: Nach Speichern der Konfiguration nur dann neu indexieren, wenn
     sich etwas geaendert hat, das den Index veraendert.
   Desktopsuche: JSP-Executer cachen.
