@@ -41,9 +41,9 @@ X Parameter für Präperatoren: (Aufwand: 4 Std.)
 X Jacob-Präperatoren nicht mehr als Default nutzen.
 X Suchmaske: Konfiguration in externe XML-Datei auslagern
     (Nicht mehr in web.xml)
+X Suchmaske: URL-Rewriting: Z.B. Indizierung von file://someserver/bla/blubb/...,
+    jedoch Anzeige im Browser mit http://intranet/blubb/... (Aufwand: 4 Std.)
 
-  URL-Mapping: Z.B. Indizierung von file://someserver/bla/blubb/..., jedoch
-    Anzeige im Browser mit http://intranet/blubb/... (Aufwand: 4 Std.)
   Index-Felder aus Pfad generieren. (Aufwand: 4 Std.)
     Z.B. bei Pfad "file://var/sicherung/dk100/..." Feld "system" mit Wert "dk100" indexieren.
     Oder bei "file://blubb/projects/Otto13/..." Feld "project" mit Wert "Otto13".

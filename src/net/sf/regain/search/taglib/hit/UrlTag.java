@@ -31,7 +31,10 @@ import java.io.IOException;
 
 import javax.servlet.jsp.JspWriter;
 
+import net.sf.regain.RegainException;
 import net.sf.regain.search.ExtendedJspException;
+import net.sf.regain.search.SearchContext;
+import net.sf.regain.search.SearchToolkit;
 
 import org.apache.lucene.document.Document;
 
@@ -57,7 +60,15 @@ public class UrlTag extends AbstractHitTag {
   protected void printEndTag(JspWriter out, Document hit)
     throws IOException, ExtendedJspException
   {
-    String url   = hit.get("url");
+    // Get the search context
+    SearchContext search;
+    try {
+      search = SearchToolkit.getSearchContextFromPageContext(pageContext);
+    } catch (RegainException exc) {
+      throw new ExtendedJspException("Error creating search context", exc);
+    }
+
+    String url = search.rewriteUrl(hit.get("url"));
 
     out.print(url);
   }

@@ -385,8 +385,9 @@ public class XmlToolkit {
   {
     Node child = XmlToolkit.getChild(node, childNodeName, false);
     if (child == null) {
+      // Try to get the cascaded child
       child = XmlToolkit.getChild(defaultNode, childNodeName, false);
-      if (child == null) {
+      if (mandatory && (child == null)) {
         throw new RegainException("Node '" + node.getNodeName()
             + "' or node '" + defaultNode.getNodeName()
             + "' must have a child named '" + childNodeName + "'!");

@@ -12,13 +12,6 @@
   Throwable exc = (Throwable) request.getAttribute("javax.servlet.jsp.jspException");
   %>
 
-  <!--
-  Stacktrace:
-  <%
-  exc.printStackTrace(new java.io.PrintWriter(out));
-  %>
-  -->
-
   <p>
   Ihre Suchanfrage konnte nicht verarbeitet werden.<br>
   Bitte &uuml;berpr&uuml;fen Sie Ihre Eingabe.<br>
@@ -42,6 +35,15 @@
       <input type="submit" value="Search"/>
     </p>
   </form>
+  
+  <%-- Add the stack trace as hidden text --%>
+
+  <pre style="color:FFFFFF; font-size:small;">  
+  Stacktrace:
+  <%
+  exc.printStackTrace(new java.io.PrintWriter(out));
+  %>
+  </pre>
 
 </body>
 </html>

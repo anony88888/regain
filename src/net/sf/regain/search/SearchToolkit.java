@@ -89,9 +89,7 @@ public class SearchToolkit {
 
       // Suchkontext erstellen und im pageContext speichern
       String query = pageContext.getRequest().getParameter("query");
-      context = new SearchContext(indexConfig.getDirectory(),
-          indexConfig.getOpenInNewWindowRegex(), indexConfig.getSearchFieldList(),
-          query);
+      context = new SearchContext(indexConfig, query);
       pageContext.setAttribute(SEARCH_CONTEXT_ATTR_NAME, context);
     }
 

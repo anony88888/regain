@@ -73,6 +73,7 @@ public class LinkTag extends AbstractHitTag {
   protected void printEndTag(JspWriter out, Document hit)
     throws IOException, ExtendedJspException
   {
+    // Get the search context
     SearchContext search;
     try {
       search = SearchToolkit.getSearchContextFromPageContext(pageContext);
@@ -80,15 +81,21 @@ public class LinkTag extends AbstractHitTag {
       throw new ExtendedJspException("Error creating search context", exc);
     }
 
-    String url   = hit.get("url");
+    String url   = search.rewriteUrl(hit.get("url"));
     String title = hit.get("title").trim();
     boolean openInNewWindow = search.getOpenUrlInNewWindow(url);
 
-    // URL nutzen, wenn kein Titel verfügbar ist.
+    // Rewrite the title
+    // NOTE: Sometimes the title is an URL. To normal titles this will have no
+    //       effect, because they don't start with an URL
+    title = search.rewriteUrl(title);
+    
+    // Use the URL as title if there is no title.
     if (title.length() == 0) {
       title = url;
     }
 
+    // Generate the link
     out.print("<a href=\"" + url + "\"");
     if (openInNewWindow) {
       out.print(" target=\"_blank\"");

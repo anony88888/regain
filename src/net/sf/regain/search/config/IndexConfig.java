@@ -41,7 +41,23 @@ public class IndexConfig {
    */
   private String[] mSearchFieldList;
   
-  
+  /**
+   * The URL rewrite rules.
+   * <p>
+   * Contains pairs of URL prefixes: The first prefix will be replaced by the
+   * second.
+   * <p>
+   * E.g.:
+   * <pre>
+   * new String[][] {
+   *   { "file://c:/webcontent", "http://www.mydomain.de" },
+   *   { "file://n:/docs", "file://///fileserver/public/docs" },
+   * };
+   * </pre>
+   */
+  private String[][] mRewriteRules;
+
+
   /**
    * Creates a new instance of IndexConfig.
    * 
@@ -50,14 +66,17 @@ public class IndexConfig {
    * @param openInNewWindowRegex The regular expression that identifies URLs
    *        that should be opened in a new window.
    * @param searchFieldList The index fields to search by default.
+   * @param rewriteRules The URL rewrite rules. Contains pairs of URL prefixes:
+   *        The first prefix will be replaced by the second.
    */
   public IndexConfig(String name, String directory, String openInNewWindowRegex,
-    String[] searchFieldList)
+    String[] searchFieldList, String[][] rewriteRules)
   {
     mName = name;
     mDirectory = directory;
     mOpenInNewWindowRegex = openInNewWindowRegex;
     mSearchFieldList = searchFieldList;
+    mRewriteRules = rewriteRules;
   }
   
   
@@ -105,6 +124,27 @@ public class IndexConfig {
    */
   public String[] getSearchFieldList() {
     return mSearchFieldList;
+  }
+
+  
+  /**
+   * Gets the URL rewrite rules.
+   * <p>
+   * The returned array contains pairs of URL prefixes: The first prefix will be
+   * replaced by the second.
+   * <p>
+   * E.g.:
+   * <pre>
+   * new String[][] {
+   *   { "file://c:/webcontent", "http://www.mydomain.de" },
+   *   { "file://n:/docs", "file://///fileserver/public/docs" },
+   * };
+   * </pre>
+   *
+   * @return The URL rewrite rules. May be null;
+   */
+  public String[][] getRewriteRules() {
+    return mRewriteRules;
   }
   
 }

@@ -451,7 +451,11 @@
    | Deploys the web content at the servlet engine.
    +-->
   <target name="deploy-web">
-    <mkdir dir="${deploy-target.dir}/${programname.file}"/>
+    <!--
+     | NOTE: We create the WEB-INF directory too, to ensure that it is written
+     |       in uppercase. Otherwise tomcat will complain.
+     +-->
+    <mkdir dir="${deploy-target.dir}/${programname.file}/WEB-INF"/>
 
     <echo message="Deploying the web content at ${deploy-target.dir}/${programname.file}" />
     <copy todir="${deploy-target.dir}/${programname.file}">

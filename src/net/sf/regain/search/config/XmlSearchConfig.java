@@ -60,7 +60,6 @@ public class XmlSearchConfig implements SearchConfig {
     mIndexHash = new HashMap();
     Node[] nodeArr = XmlToolkit.getChildArr(listNode, "index");
     for (int i = 0; i < nodeArr.length; i++) {
-      
       String name = XmlToolkit.getAttribute(nodeArr[i], "name");
       String directory = XmlToolkit.getChildText(nodeArr[i], "dir");
 
@@ -72,11 +71,42 @@ public class XmlSearchConfig implements SearchConfig {
       if (node != null) {
         searchFieldList = XmlToolkit.getTextAsWordList(node, true);
       }
+
+      node = XmlToolkit.getCascadedChild(nodeArr[i], defaultNode, "rewriteRules", false);
+      String[][] rewriteRules = readRewriteRules(node);
       
       IndexConfig indexConfig = new IndexConfig(name, directory,
-          openInNewWindowRegex, searchFieldList);
+          openInNewWindowRegex, searchFieldList, rewriteRules);
       mIndexHash.put(name, indexConfig);
     }
+  }
+  
+  
+  /**
+   * Reads the URL rewrite rules from a node
+   * 
+   * @param node The node to read from.
+   * @return The rewrite rules. May be null.
+   * @throws RegainException If the configration has errors.
+   */
+  private String[][] readRewriteRules(Node node)
+    throws RegainException
+  {
+    if (node == null) {
+      return null;
+    }
+    
+    Node[] ruleNodeArr = XmlToolkit.getChildArr(node, "rule");
+    String[][] rewriteRules = new String[ruleNodeArr.length][];
+    for (int i = 0; i < ruleNodeArr.length; i++) {
+      String prefix = XmlToolkit.getAttribute(ruleNodeArr[i], "prefix");
+      String replacement = XmlToolkit.getAttribute(ruleNodeArr[i], "replacement");
+      
+      // Add this rule
+      rewriteRules[i] = new String[] { prefix, replacement };
+    }
+    
+    return rewriteRules;
   }
   
   

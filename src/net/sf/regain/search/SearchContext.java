@@ -30,6 +30,7 @@ package net.sf.regain.search;
 import java.io.IOException;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.search.config.IndexConfig;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.search.*;
@@ -49,6 +50,9 @@ import org.apache.regexp.RESyntaxException;
  */
 public class SearchContext {
 
+  /** The configuration for the index. */
+  private IndexConfig mIndexConfig;
+  
   /** The Query text. */
   private String mQueryText;
 
@@ -69,17 +73,12 @@ public class SearchContext {
   /**
    * Creates a new instance of SearchContext.
    *
-   * @param indexDir The directory where the lucene search index is located.
-   * @param openInNewWindowRegex Der Reguläre Ausdruck, zu dem eine URL passen
-   *        muss, damit sie in einem neuen Fenster geöffnet wird.
-   * @param searchFieldArr The names of the fields that should be searched by
-   *        default.
+   * @param indexConfig The configuration for the index.
    * @param queryText The query text to search for.
    *
    * @throws RegainException If searching failed.
    */
-  public SearchContext(String indexDir, String openInNewWindowRegex,
-    String[] searchFieldArr, String queryText)
+  public SearchContext(IndexConfig indexConfig, String queryText)
     throws RegainException
   {
     long startTime = System.currentTimeMillis();
@@ -87,10 +86,11 @@ public class SearchContext {
     // AND als Default-Operation setzen
     // ChangeableQueryParser.setDefaultOperator(ChangeableQueryParser.AND_OPERATOR);
 
+    mIndexConfig = indexConfig;
     mQueryText = queryText;
 
     if (queryText != null) {
-      IndexSearcherManager manager = IndexSearcherManager.getInstance(indexDir);
+      IndexSearcherManager manager = IndexSearcherManager.getInstance(indexConfig.getDirectory());
 
       // Get the Analyzer
       Analyzer analyzer = manager.getAnalyzer();
@@ -99,6 +99,7 @@ public class SearchContext {
       try {
         query = new BooleanQuery();
 
+        String[] searchFieldArr = indexConfig.getSearchFieldList();
         for (int i = 0; i < searchFieldArr.length; i++) {
           QueryParser parser = new QueryParser(searchFieldArr[i], analyzer);
           parser.setOperator(QueryParser.DEFAULT_OPERATOR_AND);
@@ -127,6 +128,7 @@ public class SearchContext {
 
     mSearchTime = (int)(System.currentTimeMillis() - startTime);
 
+    String openInNewWindowRegex = indexConfig.getOpenInNewWindowRegex();
     if (openInNewWindowRegex != null) {
       try {
         mOpenInNewWindowRegex = new RE(openInNewWindowRegex);
@@ -228,6 +230,36 @@ public class SearchContext {
         return false;
       }
     }
+  }
+  
+  
+  /**
+   * Rewrites the given URL according to the rewrite rules specified in the
+   * index config.
+   * 
+   * @param url The URL to rewrite (comes from the index).
+   * @return The rewritten URL (shown to the user).
+   */
+  public String rewriteUrl(String url) {
+    if (url == null) {
+      return null;
+    }
+    
+    // Get the rules
+    String[][] rewriteRules = mIndexConfig.getRewriteRules();
+    if (rewriteRules != null) {
+      for (int i = 0; i < rewriteRules.length; i++) {
+        String[] rule = rewriteRules[i];
+        String prefix = rule[0];
+        if (url.startsWith(prefix)) {
+          String replacement = rule[1];
+          return replacement + url.substring(prefix.length());
+        }
+      }
+    }
+    
+    // The URL does not match any rewrite rule -> Don't change it
+    return url;
   }
 
 }

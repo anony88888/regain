@@ -38,6 +38,11 @@
     <index name="main">
       <!-- The directory where the index is located -->
       <dir>c:\Temp\searchindex</dir>
+      
+      <rewriteRules>
+        <rule prefix="file://c:/Temp/dokumente/doc" replacement="file://///knecht/test1"/>
+        <rule prefix="file://c:/Temp/dokumente/xls" replacement="file://///knecht/test2"/>
+      </rewriteRules>
     </index>
     
     <!-- The search index 'big' -->
