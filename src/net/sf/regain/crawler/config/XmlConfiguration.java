@@ -1,23 +1,23 @@
 /*
  * regain - A file search engine providing plenty of formats
  * Copyright (C) 2004  Til Schneider
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Contact: Til Schneider, info@murfman.de
- * 
+ *
  * CVS information:
  *  $RCSfile$
  *   $Source$
@@ -44,35 +44,35 @@ import org.w3c.dom.*;
  * Liest die konfigurierenden Einstellungen aus einer XML-Datei und stellt sie
  * zur Verf�gung.
  *
- * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
+ * @author Til Schneider, www.murfman.de
  */
 public class XmlConfiguration implements Configuration {
 
-  /** Der Host-Namen des Proxy-Servers. */  
+  /** Der Host-Namen des Proxy-Servers. */
   private String mProxyHost;
-  /** Der Port des Proxy-Servers. */  
+  /** Der Port des Proxy-Servers. */
   private String mProxyPort;
-  /** Der Benutzernamen f�r die Anmeldung beim Proxy-Server. */  
+  /** Der Benutzernamen f�r die Anmeldung beim Proxy-Server. */
   private String mProxyUser;
-  /** Das Passwort f�r die Anmeldung beim Proxy-Server. */  
+  /** Das Passwort f�r die Anmeldung beim Proxy-Server. */
   private String mProxyPassword;
   /**
    * Gibt an, ob URLs geladen werden sollen, die weder durchsucht noch indiziert
    * werden.
    */
   private boolean mLoadUnparsedUrls;
-  /** Gibt an, ob ein Suchindex erstellt werden soll. */  
+  /** Gibt an, ob ein Suchindex erstellt werden soll. */
   private boolean mBuildIndex;
   /**
    * Der Timeout f�r HTTP-Downloads. Dieser Wert bestimmt die maximale Zeit
    * in Sekunden, die ein HTTP-Download insgesamt dauern darf.
    */
   private int mHttpTimeoutSecs;
-  /** Das Verzeichnis, in dem der Suchindex stehen soll. */  
+  /** Das Verzeichnis, in dem der Suchindex stehen soll. */
   private String mIndexDir;
   /** Der zu verwendende Analyzer-Typ. */
   private String mAnalyzerType;
-  
+
   /** Enth�lt alle Worte, die nicht indiziert werden sollen. */
   private String[] mStopWordList;
   /**
@@ -80,8 +80,8 @@ public class XmlConfiguration implements Configuration {
    * werden sollen.
    */
   private String[] mExclusionList;
-  
-  /** Gibt an, ob Analyse-Deteien geschrieben werden sollen. */  
+
+  /** Gibt an, ob Analyse-Deteien geschrieben werden sollen. */
   private boolean mWriteAnalysisFiles;
   /**
    * Der maximale Prozentsatz von gescheiterten Dokumenten (0..100), der f�r
@@ -93,8 +93,8 @@ public class XmlConfiguration implements Configuration {
   private String mFinishedWithoutFatalsFileName;
   /** Der Name der Kontrolldatei f�r fehlerhafte Indexerstellung. */
   private String mFinishedWithFatalsFileName;
-    
-  /** Die StartUrls. */  
+
+  /** Die StartUrls. */
   private StartUrl[] mStartUrls;
 
   /** Die UrlPattern, die der HTML-Parser nutzen soll, um URLs zu identifizieren. */
@@ -104,11 +104,11 @@ public class XmlConfiguration implements Configuration {
    * wie eine Datei bearbeitet werden soll.
    */
   private UrlPattern[] mDirectoryParserUrlPatterns;
-  
-  /** Die Schwarze Liste. */  
+
+  /** Die Schwarze Liste. */
   private String[] mUrlPrefixBlackList;
-  /** Die Wei�e Liste */  
-  private WhiteListEntry[] mWhiteListEntryArr;  
+  /** Die Wei�e Liste */
+  private WhiteListEntry[] mWhiteListEntryArr;
   /**
    * Die HtmlContentExtractor, die den jeweiligen zu indizierenden Inhalt aus
    * den HTML-Dokumenten schneiden.
@@ -118,17 +118,17 @@ public class XmlConfiguration implements Configuration {
    * Die HtmlPathExtractor zur�ck, die den Pfad aus HTML-Dokumenten extrahieren.
    */
   private HtmlPathExtractor[] mHtmlPathExtractorArr;
-  
+
   /**
    * Die regul�ren Ausdr�cke, auf die die URL eines Dokuments passen muss,
    * damit anstatt des wirklichen Dokumententitels der Text des Links, der auf
    * das Dokument gezeigt hat, als Dokumententitel genutzt wird.
    */
   private String[] mUseLinkTextAsTitleRegexList;
-  
+
   /** Die Liste der Einstellungen f�r die Pr�peratoren. */
   private PreparatorSettings[] mPreparatorSettingsArr;
-  
+
 
 
 
@@ -165,7 +165,7 @@ public class XmlConfiguration implements Configuration {
 
   /**
    * L�dt eine XML-Datei und gibt ihren Inhalt als Document zur�ck.
-   * 
+   *
    * @param xmlFile Die zu ladende XML-Datei.
    * @return Das XML-Dokument der Datei
    * @throws RegainException Wenn der Inhalt der Datei nicht korrekt
@@ -195,7 +195,7 @@ public class XmlConfiguration implements Configuration {
         try { stream.close(); } catch (Exception exc) {}
       }
     }
-    
+
     return doc;
   }
 
@@ -204,7 +204,7 @@ public class XmlConfiguration implements Configuration {
   /**
    * Liest aus der Konfiguration, ob Dokumente geladen werden sollen, die weder
    * indiziert, noch auf URLs durchsucht werden.
-   * 
+   *
    * @param config Die Konfiguration, aus der gelesen werden soll.
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
@@ -213,10 +213,10 @@ public class XmlConfiguration implements Configuration {
     mLoadUnparsedUrls = XmlToolkit.getTextAsBoolean(node);
   }
 
-  
+
   /**
    * Liest den Timeout f�r HTTP-Downloads aus der Konfiguration.
-   * 
+   *
    * @param config Die Konfiguration, aus der gelesen werden soll.
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
@@ -224,17 +224,17 @@ public class XmlConfiguration implements Configuration {
     Node node = XmlToolkit.getChild(config, "httpTimeout");
     mHttpTimeoutSecs = XmlToolkit.getTextAsInt(node);
   }
-  
+
 
   /**
-   * Liest die Proxy-Einstellungen aus der Konfiguration. 
-   * 
+   * Liest die Proxy-Einstellungen aus der Konfiguration.
+   *
    * @param config Die Konfiguration, aus der gelesen werden soll.
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
   private void readProxyConfig(Node config) throws RegainException {
     Node node;
-    
+
     Node proxyNode = XmlToolkit.getChild(config, "proxy", false);
     if (proxyNode != null) {
       node = XmlToolkit.getChild(proxyNode, "host", false);
@@ -259,16 +259,16 @@ public class XmlConfiguration implements Configuration {
 
 
   /**
-   * Liest die Einstellungen aus der Konfiguration, die den Suchindex betreffen. 
-   * 
+   * Liest die Einstellungen aus der Konfiguration, die den Suchindex betreffen.
+   *
    * @param config Die Konfiguration, aus der gelesen werden soll.
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
   private void readIndexConfig(Node config) throws RegainException {
     Node node;
-    
+
     Node indexNode = XmlToolkit.getChild(config, "searchIndex");
-    
+
     node = XmlToolkit.getChild(indexNode, "dir");
     mIndexDir = XmlToolkit.getText(node);
     node = XmlToolkit.getChild(indexNode, "buildIndex");
@@ -288,13 +288,13 @@ public class XmlConfiguration implements Configuration {
 
   /**
    * Liest die Namen der Kontrolldateien aus der Konfiguration.
-   * 
+   *
    * @param config Die Konfiguration, aus der gelesen werden soll.
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
   private void readControlFileConfig(Node config) throws RegainException {
     Node node;
-    
+
     Node ctrNode = XmlToolkit.getChild(config, "controlFiles", false);
     if (ctrNode != null) {
       node = XmlToolkit.getChild(ctrNode, "finishedWithoutFatalsFile", false);
@@ -314,8 +314,8 @@ public class XmlConfiguration implements Configuration {
    * Liest die Liste der HTML-Inhalt-Extraktoren aus der Konfiguration.
    * <p>
    * Diese dienen dazu, den zu indizierenden Inhalt aus einem HTML-Dokument zu
-   * extrahieren. 
-   * 
+   * extrahieren.
+   *
    * @param config Die Konfiguration, aus der gelesen werden soll.
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
@@ -326,19 +326,19 @@ public class XmlConfiguration implements Configuration {
     for (int i = 0; i < nodeArr.length; i++) {
       node = XmlToolkit.getChild(nodeArr[i], "prefix");
       String prefix = XmlToolkit.getTextAsUrl(node);
-      
+
       String contentStartRegex = null;
       node = XmlToolkit.getChild(nodeArr[i], "startRegex", false);
       if (node != null) {
         contentStartRegex = XmlToolkit.getText(node);
       }
-      
+
       String contentEndRegex = null;
       node = XmlToolkit.getChild(nodeArr[i], "endRegex", false);
       if (node != null) {
         contentEndRegex = XmlToolkit.getText(node);
       }
-      
+
       String headlineRegex = null;
       int headlineRegexGroup = -1;
       node = XmlToolkit.getChild(nodeArr[i], "headlineRegex", false);
@@ -346,8 +346,8 @@ public class XmlConfiguration implements Configuration {
         headlineRegex = XmlToolkit.getText(node);
         headlineRegexGroup = XmlToolkit.getAttributeAsInt(node, "regexGroup");
       }
-      
-      mHtmlContentExtractorArr[i] = new HtmlContentExtractor(prefix,  
+
+      mHtmlContentExtractorArr[i] = new HtmlContentExtractor(prefix,
         contentStartRegex, contentEndRegex, headlineRegex, headlineRegexGroup);
     }
   }
@@ -359,7 +359,7 @@ public class XmlConfiguration implements Configuration {
    * <p>
    * Diese dienen dazu, den den Pfad aus HTML-Dokumenten extrahieren, �ber den
    * das Dokument zu erreichen ist.
-   * 
+   *
    * @param config Die Konfiguration, aus der gelesen werden soll.
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
@@ -370,7 +370,7 @@ public class XmlConfiguration implements Configuration {
     for (int i = 0; i < nodeArr.length; i++) {
       node = XmlToolkit.getChild(nodeArr[i], "prefix");
       String prefix = XmlToolkit.getTextAsUrl(node);
-      
+
       String pathStartRegex = null;
       node = XmlToolkit.getChild(nodeArr[i], "startRegex", false);
       if (node != null) {
@@ -382,12 +382,12 @@ public class XmlConfiguration implements Configuration {
       if (node != null) {
         pathEndRegex = XmlToolkit.getText(node);
       }
-      
+
       node = XmlToolkit.getChild(nodeArr[i], "pathNodeRegex");
       String pathElementRegex = XmlToolkit.getText(node);
       int pathElementUrlGroup = XmlToolkit.getAttributeAsInt(node, "urlRegexGroup");
       int pathElementTitleGroup = XmlToolkit.getAttributeAsInt(node, "titleRegexGroup");
-      
+
       mHtmlPathExtractorArr[i] = new HtmlPathExtractor(prefix,
         pathStartRegex, pathEndRegex, pathElementRegex,
         pathElementUrlGroup, pathElementTitleGroup);
@@ -397,8 +397,8 @@ public class XmlConfiguration implements Configuration {
 
 
   /**
-   * Liest die Start-URLs aus der Konfiguration. 
-   * 
+   * Liest die Start-URLs aus der Konfiguration.
+   *
    * @param config Die Konfiguration, aus der gelesen werden soll.
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
@@ -421,8 +421,8 @@ public class XmlConfiguration implements Configuration {
    * Liest die URL-Patterns f�r den HTML-Parser aus der Konfiguration.
    * <p>
    * Diese werden beim durchsuchen eines HTML-Dokuments dazu verwendet, URLs
-   * zu identifizieren. 
-   * 
+   * zu identifizieren.
+   *
    * @param config Die Konfiguration, aus der gelesen werden soll.
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
@@ -447,8 +447,8 @@ public class XmlConfiguration implements Configuration {
    * Liest die URL-Patterns f�r den Verzeichnis-Parser aus der Konfiguration.
    * <p>
    * Diese werden beim durchsuchen eines Verzeichnisses dazu verwendet, zu
-   * entscheiden, ob ein Dokument indiziert werden soll.  
-   * 
+   * entscheiden, ob ein Dokument indiziert werden soll.
+   *
    * @param config Die Konfiguration, aus der gelesen werden soll.
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
@@ -473,8 +473,8 @@ public class XmlConfiguration implements Configuration {
    * Liest die Schwarze Liste aus der Konfiguration.
    * <p>
    * Dokumente, deren URL mit einem Pr�fix aus der Schwarzen Liste beginnen,
-   * werden nicht bearbeitet. 
-   * 
+   * werden nicht bearbeitet.
+   *
    * @param config Die Konfiguration, aus der gelesen werden soll.
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
@@ -493,8 +493,8 @@ public class XmlConfiguration implements Configuration {
    * Liest die Wei�e Liste aus der Konfiguration.
    * <p>
    * Dokumente werden nur dann bearbeitet, wenn deren URL mit einem Pr�fix aus
-   * der Wei�en Liste beginnt. 
-   * 
+   * der Wei�en Liste beginnt.
+   *
    * @param config Die Konfiguration, aus der gelesen werden soll.
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
@@ -515,8 +515,8 @@ public class XmlConfiguration implements Configuration {
    * Liest die Liste der regul�ren Ausdr�cke aus der Konfiguration, auf die die
    * URL eines Dokuments passen muss, damit anstatt des wirklichen
    * Dokumententitels der Text des Links, der auf das Dokument gezeigt hat, als
-   * Dokumententitel genutzt wird. 
-   * 
+   * Dokumententitel genutzt wird.
+   *
    * @param config Die Konfiguration, aus der gelesen werden soll.
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
@@ -532,8 +532,8 @@ public class XmlConfiguration implements Configuration {
 
 
   /**
-   * Liest die Liste der Einstellungen f�r die Pr�peratoren. 
-   * 
+   * Liest die Liste der Einstellungen f�r die Pr�peratoren.
+   *
    * @param config Die Konfiguration, aus der gelesen werden soll.
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
@@ -547,7 +547,7 @@ public class XmlConfiguration implements Configuration {
 
       node = XmlToolkit.getChild(nodeArr[i], "class");
       String className = XmlToolkit.getText(node);
-      
+
       mPreparatorSettingsArr[i] = new PreparatorSettings(urlRegex, className);
     }
   }
@@ -559,7 +559,7 @@ public class XmlConfiguration implements Configuration {
    * wurde, wird <CODE>null</CODE> zur�ckgegeben.
    *
    * @return Der Host-Namen des Proxy-Servers.
-   */  
+   */
   public String getProxyHost() {
     return mProxyHost;
   }
@@ -571,7 +571,7 @@ public class XmlConfiguration implements Configuration {
    * wird <CODE>null</CODE> zur�ckgegeben.
    *
    * @return Der Port des Proxy-Servers.
-   */  
+   */
   public String getProxyPort() {
     return mProxyPort;
   }
@@ -583,7 +583,7 @@ public class XmlConfiguration implements Configuration {
    * kein Benutzernamen konfiguriert wurde, wird <CODE>null</CODE> zur�ckgegeben.
    *
    * @return Der Benutzernamen f�r die Anmeldung beim Proxy-Server.
-   */  
+   */
   public String getProxyUser() {
     return mProxyUser;
   }
@@ -595,7 +595,7 @@ public class XmlConfiguration implements Configuration {
    * Passwort konfiguriert wurde, wird <CODE>null</CODE> zur�ckgegeben.
    *
    * @return Das Passwort f�r die Anmeldung beim Proxy-Server.
-   */  
+   */
   public String getProxyPassword() {
     return mProxyPassword;
   }
@@ -604,13 +604,13 @@ public class XmlConfiguration implements Configuration {
   /**
    * Gibt den Timeout f�r HTTP-Downloads zur�ck. Dieser Wert bestimmt die
    * maximale Zeit in Sekunden, die ein HTTP-Download insgesamt dauern darf.
-   * 
+   *
    * @return Den Timeout f�r HTTP-Downloads
    */
   public int getHttpTimeoutSecs() {
     return mHttpTimeoutSecs;
   }
-  
+
 
   /**
    * Gibt zur�ck, ob URLs geladen werden sollen, die weder durchsucht noch
@@ -618,7 +618,7 @@ public class XmlConfiguration implements Configuration {
    *
    * @return Ob URLs geladen werden sollen, die weder durchsucht noch indiziert
    *         werden.
-   */  
+   */
   public boolean getLoadUnparsedUrls() {
     return mLoadUnparsedUrls;
   }
@@ -629,17 +629,17 @@ public class XmlConfiguration implements Configuration {
    * Gibt zur�ck, ob ein Suchindex erstellt werden soll.
    *
    * @return Ob ein Suchindex erstellt werden soll.
-   */  
+   */
   public boolean getBuildIndex() {
     return mBuildIndex;
   }
-    
+
 
   /**
    * Gibt das Verzeichnis zur�ck, in dem der Suchindex am Ende stehen soll.
    *
    * @return Das Verzeichnis, in dem der Suchindex am Ende stehen soll.
-   */  
+   */
   public String getIndexDir() {
     return mIndexDir;
   }
@@ -647,7 +647,7 @@ public class XmlConfiguration implements Configuration {
 
   /**
    * Gibt den zu verwendenden Analyzer-Typ zur�ck.
-   * 
+   *
    * @return en zu verwendenden Analyzer-Typ
    */
   public String getAnalyzerType() {
@@ -686,7 +686,7 @@ public class XmlConfiguration implements Configuration {
    * werden in einem Unterverzeichnis im Index-Verzeichnis angelegt.
    *
    * @return Ob Analyse-Deteien geschrieben werden sollen.
-   */  
+   */
   public boolean getWriteAnalysisFiles() {
     return mWriteAnalysisFiles;
   }
@@ -699,15 +699,15 @@ public class XmlConfiguration implements Configuration {
    * Dokumenten gr��er als dieser Prozentsatz, so wird der Index verworfen.
    * <p>
    * Gescheiterte Dokumente sind Dokumente die es entweder nicht gibt (Deadlink)
-   * oder die nicht ausgelesen werden konnten. 
-   * 
+   * oder die nicht ausgelesen werden konnten.
+   *
    * @return Den maximalen Prozentsatz von gescheiterten Dokumenten zur�ck.
    */
   public double getMaxFailedDocuments() {
     return mMaxFailedDocuments;
   }
 
-  
+
   /**
    * Gibt den Namen der Kontrolldatei f�r erfolgreiche Indexerstellung zur�ck.
    * <p>
@@ -716,8 +716,8 @@ public class XmlConfiguration implements Configuration {
    * <p>
    * Wenn keine Kontrolldatei erzeugt werden soll, dann wird <code>null</code>
    * zur�ckgegeben.
-   * 
-   * @return Der Name der Kontrolldatei f�r erfolgreiche Indexerstellung 
+   *
+   * @return Der Name der Kontrolldatei f�r erfolgreiche Indexerstellung
    */
   public String getFinishedWithoutFatalsFileName() {
     return mFinishedWithoutFatalsFileName;
@@ -732,19 +732,19 @@ public class XmlConfiguration implements Configuration {
    * <p>
    * Wenn keine Kontrolldatei erzeugt werden soll, dann wird <code>null</code>
    * zur�ckgegeben.
-   * 
-   * @return Der Name der Kontrolldatei f�r fehlerhafte Indexerstellung 
+   *
+   * @return Der Name der Kontrolldatei f�r fehlerhafte Indexerstellung
    */
   public String getFinishedWithFatalsFileName() {
     return mFinishedWithFatalsFileName;
   }
-  
+
 
   /**
    * Gibt die StartUrls zur�ck, bei denen der Crawler-Proze� beginnen soll.
    *
    * @return Die StartUrls.
-   */  
+   */
   public StartUrl[] getStartUrls() {
     return mStartUrls;
   }
@@ -756,7 +756,7 @@ public class XmlConfiguration implements Configuration {
    * identifizieren.
    *
    * @return Die UrlPattern f�r den HTML-Parser.
-   */  
+   */
   public UrlPattern[] getHtmlParserUrlPatterns() {
     return mHtmlParserUrlPatterns;
   }
@@ -768,7 +768,7 @@ public class XmlConfiguration implements Configuration {
    * entscheiden, ob und wie eine Datei bearbeitet werden soll.
    *
    * @return Die UrlPattern f�r den Verzeichnis-Parser.
-   */  
+   */
   public UrlPattern[] getDirectoryParserUrlPatterns() {
     return mDirectoryParserUrlPatterns;
   }
@@ -782,7 +782,7 @@ public class XmlConfiguration implements Configuration {
    * zu werden.
    *
    * @return Die Schwarze Liste.
-   */  
+   */
   public String[] getUrlPrefixBlackList() {
     return mUrlPrefixBlackList;
   }
@@ -796,7 +796,7 @@ public class XmlConfiguration implements Configuration {
    * bearbeitet zu werden.
    *
    * @return Die Wei�e Liste
-   */  
+   */
   public WhiteListEntry[] getWhiteList() {
     return mWhiteListEntryArr;
   }
@@ -811,7 +811,7 @@ public class XmlConfiguration implements Configuration {
    *
    * @return Die HtmlContentExtractor zur�ck, die den zu inizierenden Teil aus
    *         HTML-Dokumenten extrahieren.
-   */  
+   */
   public HtmlContentExtractor[] getHtmlContentExtractors() {
     return mHtmlContentExtractorArr;
   }
@@ -825,7 +825,7 @@ public class XmlConfiguration implements Configuration {
    * Wenn keine Liste vorhanden ist, wird <code>null</code> zur�ckgegeben.
    *
    * @return Die HtmlPathExtractor.
-   */  
+   */
   public HtmlPathExtractor[] getHtmlPathExtractors() {
     return mHtmlPathExtractorArr;
   }
@@ -848,7 +848,7 @@ public class XmlConfiguration implements Configuration {
 
   /**
    * Gibt die Liste der Einstellungen f�r die Pr�peratoren zur�ck.
-   * 
+   *
    * @return Die Liste der Einstellungen f�r die Pr�peratoren.
    */
   public PreparatorSettings[] getPreparatorSettingsList() {

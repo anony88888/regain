@@ -1,23 +1,23 @@
 /*
  * regain - A file search engine providing plenty of formats
  * Copyright (C) 2004  Til Schneider
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Contact: Til Schneider, info@murfman.de
- * 
+ *
  * CVS information:
  *  $RCSfile$
  *   $Source$
@@ -40,7 +40,7 @@ import net.sf.regain.search.*;
 /**
  * This Tag creates hyperlinks to navigate through the search result pages.
  *
- * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
+ * @author Til Schneider, www.murfman.de
  */
 public class NavigationTag extends AbstractSimpleTag {
 
@@ -55,8 +55,8 @@ public class NavigationTag extends AbstractSimpleTag {
 
   /** The message to use for labeling the forward link. */
   private String mMsgForward;
-  
-  /** Die Seite, auf die die Weiter-Links zeigen sollen. */ 
+
+  /** Die Seite, auf die die Weiter-Links zeigen sollen. */
   private String mTargetPage;
 
   /** Die zu verwendende Stylesheet-Klasse. (Kann null sein) */
@@ -82,12 +82,12 @@ public class NavigationTag extends AbstractSimpleTag {
   public void setMsgForward(String msgForward) {
     mMsgForward = msgForward;
   }
-  
-  
-  
+
+
+
   /**
    * Setzt die Seite, auf die die Weiter-Links zeigen sollen.
-   *   
+   *
    * @param targetPage Die Seite, auf die die Weiter-Links zeigen sollen.
    */
   public void setTargetPage(String targetPage) {
@@ -97,7 +97,7 @@ public class NavigationTag extends AbstractSimpleTag {
 
   /**
    * Setzt die zu verwendende Stylesheet-Klasse.
-   *   
+   *
    * @param styleSheetClass Die zu verwendende Stylesheet-Klasse.
    */
   public void setClass(String styleSheetClass) {
@@ -145,7 +145,7 @@ public class NavigationTag extends AbstractSimpleTag {
     // The first and the last button to show
     int fromButton = 0;
     int toButton = buttonCount - 1;
-    
+
     if (buttonCount > MAX_BUTTONS) {
       if (currButton < (MAX_BUTTONS / 2)) {
         // The button range starts at the first button (---X------.....)
@@ -210,7 +210,7 @@ public class NavigationTag extends AbstractSimpleTag {
     String encodedQuery = URLEncoder.encode(query, encoding);
     String encodedIndexName = URLEncoder.encode(indexName, encoding);
     */
-    
+
     out.print("<a href=\"" + targetPage + "?query=" + encodedQuery
       + "&index=" + encodedIndexName + "&maxresults=" + maxResults
       + "&fromresult=" + (button * maxResults) + "\"");

@@ -1,23 +1,23 @@
 /*
  * regain - A file search engine providing plenty of formats
  * Copyright (C) 2004  Til Schneider
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Contact: Til Schneider, info@murfman.de
- * 
+ *
  * CVS information:
  *  $RCSfile$
  *   $Source$
@@ -53,7 +53,7 @@ import org.apache.log4j.Category;
  * <CODE>false</CODE> gesetzt wurde, dann werden auch URLs ignoriert, die weder
  * durchsucht noch indiziert werden.
  *
- * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
+ * @author Til Schneider, www.murfman.de
  */
 public class Crawler {
 
@@ -69,7 +69,7 @@ public class Crawler {
   private HashSet mIgnoredUrlSet;
   /** Die Liste der noch zu bearbeitenden Jobs. */
   private LinkedList mJobList;
-  
+
   /**
    * Enthält alle bisher aufgetretenen Fehler.
    * <p>
@@ -77,7 +77,7 @@ public class Crawler {
    * beinhaltet und die zweite die Exception.
    */
   private LinkedList mErrorList;
-  
+
   /**
    * Die Anzahl der fatalen Fehler, die aufgetreten sind.
    * <p>
@@ -85,7 +85,7 @@ public class Crawler {
    * des Index verhindert wurde.
    */
   private int mFatalErrorCount;
-  
+
   /**
    * Enthält alle bisher gefundenen Dead-Links.
    * <p>
@@ -102,11 +102,11 @@ public class Crawler {
   private String[] mUrlPrefixBlackListArr;
   /**
    * Die Weiße Liste.
-   * 
+   *
    * @see WhiteListEntry
    */
   private WhiteListEntry[] mWhiteListEntryArr;
-  
+
   /** Die UrlPattern, die der HTML-Parser nutzen soll, um URLs zu identifizieren. */
   private UrlPattern[] mHtmlParserUrlPatternArr;
   /**
@@ -129,7 +129,7 @@ public class Crawler {
    * @see #mDirectoryParserPatternReArr
    */
   private UrlPattern[] mDirectoryParserUrlPatternArr;
-  
+
   /** Der Profiler der die gesamten Crawler-Jobs mißt. */
   private Profiler mCrawlerJobProfiler = new Profiler("Whole crawler jobs", "jobs");
   /** Der Profiler der das Durchsuchen von HTML-Dokumenten mißt. */
@@ -153,9 +153,9 @@ public class Crawler {
     mJobList = new LinkedList();
     mErrorList = new LinkedList();
     mDeadlinkList = new LinkedList();
-    
+
     mFatalErrorCount = 0;
-    
+
     RawDocument.setHttpTimeoutSecs(config.getHttpTimeoutSecs());
 
     mUrlPrefixBlackListArr = config.getUrlPrefixBlackList();
@@ -212,7 +212,7 @@ public class Crawler {
       // Indexing is disabled
       shouldBeIndexed = false;
     }
-    
+
     // Change all blanks to %20, since blanks are not allowed in URLs
     url = RegainToolkit.replace(url, " ", "%20");
 
@@ -287,7 +287,7 @@ public class Crawler {
   /**
    * Führt den Crawler-Prozeß aus und gibt am Ende die Statistik, die
    * Dead-Link-Liste und die Fehler-Liste aus.
-   * 
+   *
    * @param updateIndex Gibt an, ob ein bereits bestehender Index aktualisiert
    *        werden soll.
    * @param onlyEntriesArr Die Namen der Einträge in der Weißen Liste, die
@@ -296,7 +296,7 @@ public class Crawler {
    */
   public void run(boolean updateIndex, String[] onlyEntriesArr) {
     mCat.info("Starting crawling...");
-    
+
     // Initialize the IndexWriterManager if building the index is wanted
     IndexWriterManager indexManager = null;
     if (mConfiguration.getBuildIndex()) {
@@ -324,17 +324,17 @@ public class Crawler {
       addJob(url, "Start URL from configuration", shouldBeParsed,
           shouldBeIndexed, null);
     }
-    
+
     // Work in the job list
     while (! mJobList.isEmpty()) {
       mCrawlerJobProfiler.startMeasuring();
-      
+
       CrawlerJob job = (CrawlerJob) mJobList.removeFirst();
       String url = job.getUrl();
 
       boolean shouldBeParsed = job.shouldBeParsed();
       boolean shouldBeIndexed = job.shouldBeIndexed();
-      
+
       // Check whether this is a directory
       if (url.startsWith("file://")) {
         try {
@@ -370,7 +370,7 @@ public class Crawler {
         } else {
           logError("Loading " + url + " failed!", exc, false);
         }
-        
+
         continue;
       }
 
@@ -398,14 +398,14 @@ public class Crawler {
           logError("Indexing failed: " + rawDocument.getUrl(), exc, false);
         }
       }
-      
+
       // System-Ressourcen des RawDocument wieder frei geben.
       rawDocument.dispose();
 
       // Zeitmessung stoppen
       mCrawlerJobProfiler.stopMeasuring(rawDocument.getLength());
     }
-    
+
     // Nicht mehr vorhandene Dokumente aus dem Index löschen
     if (mConfiguration.getBuildIndex()) {
       mCat.info("Removing index entries of documents that do not exist any more...");
@@ -417,7 +417,7 @@ public class Crawler {
         logError("Removing non-existing documents from index failed", thr, true);
       }
     }
-    
+
     // Prüfen, ob Index leer ist
     int entryCount = 0;
     try {
@@ -444,7 +444,7 @@ public class Crawler {
           null, true);
       }
     }
-    
+
     // Fehler und Deadlink-Liste schreiben
     writeDeadlinkAndErrorList();
 
@@ -470,7 +470,7 @@ public class Crawler {
 
     // Systemspeziefischen Zeilenumbruch holen
     String lineSeparator = RegainToolkit.getLineSeparator();
-    
+
     mCat.info("Statistics:" + lineSeparator
       + "  Ignored URLs:       " + mIgnoredUrlSet.size() + lineSeparator
       + "  Documents in index: " + entryCount + lineSeparator
@@ -479,14 +479,14 @@ public class Crawler {
       + "  Error ratio:        " + RegainToolkit.toPercentString(failedPercent));
   }
 
-  
+
   /**
    * Erzeugt ein Array von URL-Präfixen, die von der Löschung aus dem Index
    * verschont bleiben sollen.
    * <p>
    * Diese Liste entspricht den Einträgen der Weißen Liste, deren
    * <code>shouldBeUpdated</code>-Flag auf <code>false</code> gesetzt ist.
-   * 
+   *
    * @return Die URL-Präfixen, die nicht aus dem Index gelöscht werden sollen.
    * @see WhiteListEntry#shouldBeUpdated()
    */
@@ -497,7 +497,7 @@ public class Crawler {
         list.add(mWhiteListEntryArr[i].getPrefix());
       }
     }
-    
+
     String[] asArr = new String[list.size()];
     list.toArray(asArr);
     return asArr;
@@ -507,7 +507,7 @@ public class Crawler {
   /**
    * Prüft, ob Einträge der Weißen Liste ignoriert werden sollen und ändert
    * die Weiße Liste entsprechend.
-   * 
+   *
    * @param onlyEntriesArr Die Namen der Einträge in der Weißen Liste, die
    *        bearbeitet werden sollen. Wenn <code>null</code> oder leer, dann
    *        werden alle Einträge bearbeitet.
@@ -518,7 +518,7 @@ public class Crawler {
     boolean updateIndex)
   {
     // NOTE: At that moment all white list entries are set to "should be updated"
-    
+
     if ((onlyEntriesArr != null) && (onlyEntriesArr.length != 0)) {
       if (updateIndex) {
         // First set all white list entries to "should NOT be updated".
@@ -536,7 +536,7 @@ public class Crawler {
               break;
             }
           }
-          
+
           if (entry == null) {
             // No matching white list entry found
             logError("There is no white list entry named '" + onlyEntriesArr[i]
@@ -545,7 +545,7 @@ public class Crawler {
             entry.setShouldBeUpdated(true);
           }
         }
-        
+
         // Log all ignored entries
         for (int i = 0; i < mWhiteListEntryArr.length; i++) {
           if (! mWhiteListEntryArr[i].shouldBeUpdated()) {
@@ -564,7 +564,7 @@ public class Crawler {
 
   /**
    * Schreibt die Deadlink- und Fehlerliste ins Logfile und nochmal in eine
-   * eigene Datei. Diese stehen in einem Unterverzeichnis namens 'log'. 
+   * eigene Datei. Diese stehen in einem Unterverzeichnis namens 'log'.
    * Bei eingeschalteter Indizierung steht dieses Unterverzeichnis im Index, bei
    * ausgeschalteter Indizierung im aktuellen Verzeichnis.
    */
@@ -573,7 +573,7 @@ public class Crawler {
       // Nothing to do
       return;
     }
-      
+
     // Get the directory where the files should be put in
     File listDir;
     if (mConfiguration.getBuildIndex()) {
@@ -598,31 +598,31 @@ public class Crawler {
       if (! mDeadlinkList.isEmpty()) {
         stream = new FileOutputStream(new File(listDir, "deadlinks.txt"));
         printer = new PrintStream(stream);
-        
+
         msg = "There were " + mDeadlinkList.size() + " dead links:";
         System.out.println(msg);
         printer.println(msg);
-        
+
         Iterator iter = mDeadlinkList.iterator();
         for (int i = 0; iter.hasNext(); i++) {
           Object[] tupel = (Object[]) iter.next();
           String url = (String) tupel[0];
           String sourceUrl = (String) tupel[1];
-          
+
           msg = "  Dead link #" + (i + 1) + ": '" + url + "' found in '" + sourceUrl + "'";
           System.out.println(msg);
           printer.println(msg);
         }
-        
+
         printer.close();
         stream.close();
       }
-      
+
       // Write the error list
       if (! mErrorList.isEmpty()) {
         stream = new FileOutputStream(new File(listDir, "errors.txt"));
         printer = new PrintStream(stream);
-        
+
         msg = "There were " + mErrorList.size() + " errors:";
         System.out.println(msg);
         printer.println(msg);
@@ -632,7 +632,7 @@ public class Crawler {
           Object[] tupel = (Object[]) iter.next();
           String errorMsg = (String) tupel[0];
           Throwable thr = (Throwable) tupel[1];
-          
+
           msg = "  Error #" + (i + 1) + ": " + errorMsg;
           if (thr != null) {
             msg += " - " + thr;
@@ -640,7 +640,7 @@ public class Crawler {
           System.out.println(msg);
           printer.println(msg);
         }
-        
+
         printer.close();
         stream.close();
       }
@@ -657,7 +657,7 @@ public class Crawler {
       }
     }
   }
-  
+
 
 
   /**
@@ -679,9 +679,9 @@ public class Crawler {
       return false;
     }
   }
-  
-  
-  
+
+
+
   /**
    * Durchsucht ein Verzeichnis nach URLs, also Dateien und Unterverzeichnissen,
    * und erzeugt für jeden Treffer einen neuen Job.
@@ -715,7 +715,7 @@ public class Crawler {
       }
     }
   }
-  
+
 
   /**
    * Durchsucht den Inhalt eines HTML-Dokuments nach URLs und erzeugt für jeden
@@ -741,7 +741,7 @@ public class Crawler {
 
         // Convert the URL to an absolute URL
         url = CrawlerToolkit.toAbsoluteUrl(url, parentUrl);
-        
+
         // Try to get a link text
         String linkText = getLinkText(contentAsString, offset);
 
@@ -755,7 +755,7 @@ public class Crawler {
 
   /**
    * Tries to extract a link text from a position where a URL was found.
-   * 
+   *
    * @param content The content to extract the link text from
    * @param offset The offset where o start looking
    * @return A link text or <code>null</code> if there was no link text found.
@@ -764,14 +764,14 @@ public class Crawler {
     // NOTE: if there is a link text the following code must be something
     //       like: ' someParam="someValue">The link text</a>'
     //       Assumed that the tag started with '<a href="aDocument.doc"'
-  
+
     // Find the end of the current tag
     int tagEnd = content.indexOf('>', offset);
     if (tagEnd == -1) {
       // No tag end found
       return null;
     }
-    
+
     // If there is a link text the next part must be: 'The link text</a>'
     // -> Find the start of the next tag
     int tagStart = content.indexOf('<', tagEnd);
@@ -779,7 +779,7 @@ public class Crawler {
       // No starting tag found
       return null;
     }
-    
+
     // Check whether the starting tag is a '</a>' tag.
     if ((content.length() > tagStart + 3)
       && (content.charAt(tagStart + 1) == '/')
@@ -804,7 +804,7 @@ public class Crawler {
   /**
    * Gibt die Anzahl der Fehler zurück (das beinhaltet fatale und nicht fatale
    * Fehler).
-   * 
+   *
    * @return Die Anzahl der Fehler.
    * @see #getFatalErrorCount()
    */
@@ -818,7 +818,7 @@ public class Crawler {
    * <p>
    * Fatale Fehler sind Fehler, durch die eine Erstellung oder Aktualisierung
    * des Index verhindert wurde.
-   * 
+   *
    * @return Die Anzahl der fatalen Fehler.
    * @see #getErrorCount()
    */
@@ -826,7 +826,7 @@ public class Crawler {
     return mFatalErrorCount;
   }
 
-  
+
   /**
    * Loggt einen Fehler und fügt ihn der Fehler-Liste hinzu.
    *
@@ -841,7 +841,7 @@ public class Crawler {
     }
     mCat.error(msg, thr);
     mErrorList.add(new Object[] { msg, thr });
-    
+
     if (fatal) {
       mFatalErrorCount++;
     }

@@ -1,23 +1,23 @@
 /*
  * regain - A file search engine providing plenty of formats
  * Copyright (C) 2004  Til Schneider
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Contact: Til Schneider, info@murfman.de
- * 
+ *
  * CVS information:
  *  $RCSfile$
  *   $Source$
@@ -43,7 +43,7 @@ import org.apache.lucene.document.Document;
  * The list tag encloses the JSP code that should be repeated for every shown
  * search hit.
  *
- * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
+ * @author Til Schneider, www.murfman.de
  */
 public class ListTag extends BodyTagSupport implements SearchConstants {
 
@@ -84,7 +84,7 @@ public class ListTag extends BodyTagSupport implements SearchConstants {
    * Called when the JSP parser reaches the start tag.
    * <p>
    * Initializes the list generation.
-   * 
+   *
    * @return Wie die Servlet-Engine weiter verfahren soll.
    * @throws ExtendedJspException Wenn die Erzeugung des Tagergebnisses fehl
    *         schlug.
@@ -130,7 +130,7 @@ public class ListTag extends BodyTagSupport implements SearchConstants {
   /**
    * Schreibt einen Treffer in die Seitenattribute, so dass er von den hit-Tags
    * gelesen werden kann.
-   * 
+   *
    * @param hitIndex Der Index des Treffers.
    * @throws ExtendedJspException Wenn der Treffer nicht gelesen werden konnte
    */
@@ -155,7 +155,7 @@ public class ListTag extends BodyTagSupport implements SearchConstants {
    * <p>
    * Decides whether there are more hits to generate HTML for. If yes the next
    * hit is put to the page attributes.
-   * 
+   *
    * @return Wie die Servlet-Engine weiter verfahren soll.
    * @throws ExtendedJspException Wenn die Erzeugung des Tagergebnisses fehl
    *         schlug.
@@ -165,7 +165,7 @@ public class ListTag extends BodyTagSupport implements SearchConstants {
 
     if (mCurrentResult <= mToResult) {
       writeHitToAttributes(mCurrentResult);
-      
+
       return EVAL_BODY_TAG;
     } else {
       return SKIP_BODY;
@@ -178,7 +178,7 @@ public class ListTag extends BodyTagSupport implements SearchConstants {
    * Called when the JSP parser reaches the end tag.
    * <p>
    * Writes the content of the tag to the enclosing JspWriter.
-   * 
+   *
    * @return Wie die Servlet-Engine weiter verfahren soll.
    * @throws ExtendedJspException Wenn die Erzeugung des Tagergebnisses fehl
    *         schlug.
@@ -198,7 +198,7 @@ public class ListTag extends BodyTagSupport implements SearchConstants {
     // clean up
     mSearch = null;
     mMsgNoResults = null;
-    
+
     return EVAL_PAGE;
   }
 

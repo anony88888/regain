@@ -1,23 +1,23 @@
 /*
  * regain - A file search engine providing plenty of formats
  * Copyright (C) 2004  Til Schneider
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Contact: Til Schneider, info@murfman.de
- * 
+ *
  * CVS information:
  *  $RCSfile$
  *   $Source$
@@ -45,7 +45,7 @@ import org.apache.regexp.RESyntaxException;
  * all hits the search had.
  *
  * @see SearchToolkit#getSearchContextFromPageContext(javax.servlet.jsp.PageContext)
- * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
+ * @author Til Schneider, www.murfman.de
  */
 public class SearchContext {
 
@@ -57,7 +57,7 @@ public class SearchContext {
 
   /** The time the search took. */
   private int mSearchTime;
-  
+
   /**
    * Der Reguläre Ausdruck, zu dem eine URL passen muss, damit sie in einem
    * neuen Fenster geöffnet wird.
@@ -86,9 +86,9 @@ public class SearchContext {
 
     // AND als Default-Operation setzen
     // ChangeableQueryParser.setDefaultOperator(ChangeableQueryParser.AND_OPERATOR);
-    
+
     mQueryText = queryText;
-    
+
     if (queryText != null) {
       IndexSearcherManager manager = IndexSearcherManager.getInstance(indexDir);
 
@@ -98,14 +98,14 @@ public class SearchContext {
       BooleanQuery query;
       try {
         query = new BooleanQuery();
-        
+
         for (int i = 0; i < searchFieldArr.length; i++) {
           QueryParser parser = new QueryParser(searchFieldArr[i], analyzer);
           parser.setOperator(QueryParser.DEFAULT_OPERATOR_AND);
           Query fieldQuery = parser.parse(queryText);
-          
+
           query.add(fieldQuery, false, false);
-          
+
           /*
           if (i == 0) {
             System.out.println("Query: '" + queryText + "' -> '"
@@ -141,7 +141,7 @@ public class SearchContext {
 
   /**
    * Gets the query text of the search.
-   * 
+   *
    * @return The query text.
    */
   public String getQueryText() {
@@ -158,7 +158,7 @@ public class SearchContext {
     if (mHits == null) {
       return 0;
     }
-    
+
     return mHits.length();
   }
 
@@ -214,7 +214,7 @@ public class SearchContext {
 
   /**
    * Gibt zurück, ob die URL in einem neuen Fenster geöffnet werden soll.
-   * 
+   *
    * @param url Die zu prüfende URL
    * @return Ob die URL in einem neuen Fenster geöffnet werden soll.
    */

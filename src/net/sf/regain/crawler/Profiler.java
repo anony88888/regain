@@ -1,23 +1,23 @@
 /*
  * regain - A file search engine providing plenty of formats
  * Copyright (C) 2004  Til Schneider
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Contact: Til Schneider, info@murfman.de
- * 
+ *
  * CVS information:
  *  $RCSfile$
  *   $Source$
@@ -38,17 +38,17 @@ import org.apache.log4j.Category;
 
 /**
  * Misst die Zeit und den Datendurchsatz für einen Verarbeitungsschritt.
- * 
- * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
+ *
+ * @author Til Schneider, www.murfman.de
  */
 public class Profiler {
-  
+
   /** Die Kategorie, die zum Loggen genutzt werden soll. */
   private static Category mCat = Category.getInstance(Profiler.class);
-  
+
   /** Eine Liste mit allen erzeugten Profilern. */
   private static ArrayList mProfilerList;
-  
+
   /** Der Name. */
   private String mName;
   /** Der Einheit, die gemessen wird. */
@@ -66,13 +66,13 @@ public class Profiler {
    * Messung läuft.
    */
   private long mMeasureStart = -1;
-  
-  
-  
+
+
+
   /**
    * Erzeugt eine neue Profiler-Instanz und registriert sie bei der
    * Profiler-Liste.
-   * 
+   *
    * @param name Der Name des Verarbeitungsschrittes, der mit diesem Profiler
    *        gemessen werden sollen.
    * @param unit Die Bezeichnung der Dinge, die der Verarbeitungsschritt
@@ -81,7 +81,7 @@ public class Profiler {
   public Profiler(String name, String unit) {
     mName = name;
     mUnit = unit;
-    
+
     registerProfiler(this);
   }
 
@@ -89,22 +89,22 @@ public class Profiler {
 
   /**
    * Registriert einen Profiler.
-   * 
+   *
    * @param profiler Der zu registrierende Profiler.
    */
   private static synchronized void registerProfiler(Profiler profiler) {
     if (mProfilerList == null) {
       mProfilerList = new ArrayList();
     }
-    
+
     mProfilerList.add(profiler);
   }
-  
-  
+
+
 
   /**
    * Startet eine Messung.
-   */  
+   */
   public void startMeasuring() {
     if (mMeasureStart != -1) {
       mCat.warn("A profiler measuring for " + mName + " was started, although "
@@ -112,14 +112,14 @@ public class Profiler {
     }
     mMeasureStart = System.currentTimeMillis();
   }
-  
-  
+
+
 
   /**
    * Stoppt eine Messung.
-   * 
+   *
    * @param bytes Die Anzahl der verarbeiteten Bytes.
-   */  
+   */
   public void stopMeasuring(long bytes) {
     if (mMeasureStart == -1) {
       mCat.warn("A profiler measuring for " + mName + " was stopped, although "
@@ -128,7 +128,7 @@ public class Profiler {
       mTotalTime += System.currentTimeMillis() - mMeasureStart;
       mTotalBytes += bytes;
       mMeasureCount++;
-      
+
       mMeasureStart = -1;
     }
   }
@@ -138,7 +138,7 @@ public class Profiler {
   /**
    * Bricht eine Messung ab. Eine Messung wird dann abgebrochen, wenn der
    * Verarbeitungsschritt nicht korrekt verlaufen ist, z.B. weil eine
-   * Exception geworfen wurde. 
+   * Exception geworfen wurde.
    */
   public void abortMeasuring() {
     if (mMeasureStart == -1) {
@@ -149,12 +149,12 @@ public class Profiler {
       mAbortedMeasureCount++;
     }
   }
-  
-  
-  
+
+
+
   /**
    * Gibt das Resultat der Messungen als String zurück.
-   * 
+   *
    * @return Das Resultat der Messungen
    */
   public String toString() {
@@ -169,27 +169,27 @@ public class Profiler {
       averageTime = mTotalTime / mMeasureCount;
       averageBytes = mTotalBytes / mMeasureCount;
     }
-    
+
     long dataRatePerSec = 0;
     double secs = mTotalTime / 1000.0;
     if (secs > 0) {
-      dataRatePerSec = (long) (mTotalBytes / secs); 
+      dataRatePerSec = (long) (mTotalBytes / secs);
     }
 
     // Berechnen, wie groß die Labels sein müssen
     int maxStaticLabelLength = 12;                   // "Average time"
     int maxDynamicLabelLength = 10 + mUnit.length(); // "Completed " + mUnit
     int minLabelLength = Math.max(maxStaticLabelLength, maxDynamicLabelLength);
-    
+
     // Systemspeziefischen Zeilenumbruch holen
     String lineSeparator = RegainToolkit.getLineSeparator();
 
-    // Statistik ausgeben    
+    // Statistik ausgeben
     StringBuffer buffer = new StringBuffer(mName + ":" + lineSeparator);
     if (mAbortedMeasureCount > 0) {
       appendLabel(buffer, "Aborted " + mUnit, minLabelLength);
       buffer.append(mAbortedMeasureCount + " " + mUnit + " (");
-      
+
       // Ausgeben, wieviel % der Messungen fehl schlugen
       int total = mAbortedMeasureCount + mMeasureCount;
       double errorPercent = (double) mAbortedMeasureCount / (double) total;
@@ -217,15 +217,15 @@ public class Profiler {
       appendLabel(buffer, "Data rate", minLabelLength);
       buffer.append(RegainToolkit.bytesToString(dataRatePerSec) + "/sec");
     }
-    
+
     return buffer.toString();
   }
 
 
   /**
    * Fügt bei einem StringBuffer eine Beschriftung hinzu. Dabei werden so viele
-   * Leerzeichen angehängt, dass alle Beschriftungen auf selber Höhe enden. 
-   * 
+   * Leerzeichen angehängt, dass alle Beschriftungen auf selber Höhe enden.
+   *
    * @param buffer Der StringBuffer bei dem die Beschriftung hinzugefügt werden
    *        soll.
    * @param label Die Beschriftung, die hinzugefügt werden soll.
@@ -238,17 +238,17 @@ public class Profiler {
     buffer.append("  ");
     buffer.append(label);
     buffer.append(": ");
-    
+
     int spaceCount = minLabelLength - label.length();
     for (int i = 0; i < spaceCount; i++) {
       buffer.append(' ');
     }
   }
-  
-  
+
+
   /**
    * Gibt einen für den Menschen gut lesbaren String für eine Zeit zurück.
-   * 
+   *
    * @param time Die Zeit in Millisekunden
    * @return Die Zeit als String
    */
@@ -260,7 +260,7 @@ public class Profiler {
     long mins = time % 60;
     time /= 60;
     long hours = time;
-    
+
     if ((hours != 0) || (mins != 0)) {
       return hours + ":"
         + ((mins > 9) ? "" : "0") + mins + ":"
@@ -270,47 +270,47 @@ public class Profiler {
       NumberFormat format = NumberFormat.getInstance();
       format.setMinimumFractionDigits(2);
       format.setMaximumFractionDigits(2);
-      
+
       String asString = format.format((double) secs + ((double) millis) / 1000.0);
-      
+
       return asString + " sec";
     }
     else {
       return millis + " millis";
     }
   }
-  
-  
+
+
 
   /**
    * Gibt zurück, ob dieser Profiler genutzt wurde. Das ist der Fall, wenn
    * mindestens eine Messung durchgeführt wurde.
-   * 
+   *
    * @return Ob dieser Profiler genutzt wurde.
-   */  
+   */
   public boolean wasUsed() {
     return (mMeasureCount > 0) || (mAbortedMeasureCount > 0);
   }
-  
-  
+
+
 
   /**
    * Gibt die Resultate sämtlicher genutzter Profiler zurück.
-   * 
+   *
    * @return Die Resultate sämtlicher genutzter Profiler.
-   */  
+   */
   public static String getProfilerResults() {
     StringBuffer buffer = new StringBuffer();
-    
+
     for (Iterator iter = mProfilerList.iterator(); iter.hasNext();) {
       Profiler profiler = (Profiler) iter.next();
-      
+
       if (profiler.wasUsed()) {
         buffer.append(profiler);
         buffer.append(RegainToolkit.getLineSeparator());
       }
     }
-    
+
     return buffer.toString();
   }
 

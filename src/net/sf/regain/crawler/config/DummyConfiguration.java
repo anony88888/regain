@@ -1,23 +1,23 @@
 /*
  * regain - A file search engine providing plenty of formats
  * Copyright (C) 2004  Til Schneider
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Contact: Til Schneider, info@murfman.de
- * 
+ *
  * CVS information:
  *  $RCSfile$
  *   $Source$
@@ -33,7 +33,7 @@ import net.sf.regain.crawler.preparator.html.HtmlPathExtractor;
 /**
  * Stellt alle zu konfigurierenden Einstellungen hardcodiert zur Verfügung.
  *
- * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
+ * @author Til Schneider, www.murfman.de
  */
 public class DummyConfiguration implements Configuration {
 
@@ -42,7 +42,7 @@ public class DummyConfiguration implements Configuration {
    * wurde, wird <CODE>null</CODE> zurückgegeben.
    *
    * @return Der Host-Namen des Proxy-Servers.
-   */  
+   */
   public String getProxyHost() {
     return "idatmpsrv";
   }
@@ -54,7 +54,7 @@ public class DummyConfiguration implements Configuration {
    * wird <CODE>null</CODE> zurückgegeben.
    *
    * @return Der Port des Proxy-Servers.
-   */  
+   */
   public String getProxyPort() {
     return "3128";
   }
@@ -66,7 +66,7 @@ public class DummyConfiguration implements Configuration {
    * kein Benutzernamen konfiguriert wurde, wird <CODE>null</CODE> zurückgegeben.
    *
    * @return Der Benutzernamen für die Anmeldung beim Proxy-Server.
-   */  
+   */
   public String getProxyUser() {
     return null;
   }
@@ -78,7 +78,7 @@ public class DummyConfiguration implements Configuration {
    * Passwort konfiguriert wurde, wird <CODE>null</CODE> zurückgegeben.
    *
    * @return Das Passwort für die Anmeldung beim Proxy-Server.
-   */  
+   */
   public String getProxyPassword() {
     return null;
   }
@@ -87,7 +87,7 @@ public class DummyConfiguration implements Configuration {
   /**
    * Gibt den Timeout für HTTP-Downloads zurück. Dieser Wert bestimmt die
    * maximale Zeit in Sekunden, die ein HTTP-Download insgesamt dauern darf.
-   * 
+   *
    * @return Den Timeout für HTTP-Downloads
    */
   public int getHttpTimeoutSecs() {
@@ -101,7 +101,7 @@ public class DummyConfiguration implements Configuration {
    *
    * @return Ob URLs geladen werden sollen, die weder durchsucht noch indiziert
    *         werden.
-   */  
+   */
   public boolean getLoadUnparsedUrls() {
     return false;
   }
@@ -112,17 +112,17 @@ public class DummyConfiguration implements Configuration {
    * Gibt zurück, ob ein Suchindex erstellt werden soll.
    *
    * @return Ob ein Suchindex erstellt werden soll.
-   */  
+   */
   public boolean getBuildIndex() {
     return true;
   }
-  
+
 
   /**
    * Gibt das Verzeichnis zurück, in dem der stehen soll.
    *
    * @return Das Verzeichnis, in dem der Suchindex stehen soll.
-   */  
+   */
   public String getIndexDir() {
     return "c:\\Temp\\searchIndex";
   }
@@ -130,7 +130,7 @@ public class DummyConfiguration implements Configuration {
 
   /**
    * Gibt den zu verwendenden Analyzer-Typ zurück.
-   * 
+   *
    * @return en zu verwendenden Analyzer-Typ
    */
   public String getAnalyzerType() {
@@ -169,12 +169,12 @@ public class DummyConfiguration implements Configuration {
    * werden in einem Unterverzeichnis im Index-Verzeichnis angelegt.
    *
    * @return Ob Analyse-Deteien geschrieben werden sollen.
-   */  
+   */
   public boolean getWriteAnalysisFiles() {
     return true;
   }
 
-  
+
   /**
    * Gibt den maximalen Prozentsatz von gescheiterten Dokumenten zurück. (0..1)
    * <p>
@@ -182,8 +182,8 @@ public class DummyConfiguration implements Configuration {
    * Dokumenten größer als dieser Prozentsatz, so wird der Index verworfen.
    * <p>
    * Gescheiterte Dokumente sind Dokumente die es entweder nicht gibt (Deadlink)
-   * oder die nicht ausgelesen werden konnten. 
-   * 
+   * oder die nicht ausgelesen werden konnten.
+   *
    * @return Den maximalen Prozentsatz von gescheiterten Dokumenten zurück.
    */
   public double getMaxFailedDocuments() {
@@ -199,8 +199,8 @@ public class DummyConfiguration implements Configuration {
    * <p>
    * Wenn keine Kontrolldatei erzeugt werden soll, dann wird <code>null</code>
    * zurückgegeben.
-   * 
-   * @return Der Name der Kontrolldatei für erfolgreiche Indexerstellung 
+   *
+   * @return Der Name der Kontrolldatei für erfolgreiche Indexerstellung
    */
   public String getFinishedWithoutFatalsFileName() {
     return null;
@@ -215,8 +215,8 @@ public class DummyConfiguration implements Configuration {
    * <p>
    * Wenn keine Kontrolldatei erzeugt werden soll, dann wird <code>null</code>
    * zurückgegeben.
-   * 
-   * @return Der Name der Kontrolldatei für fehlerhafte Indexerstellung 
+   *
+   * @return Der Name der Kontrolldatei für fehlerhafte Indexerstellung
    */
   public String getFinishedWithFatalsFileName() {
     return null;
@@ -227,7 +227,7 @@ public class DummyConfiguration implements Configuration {
    * Gibt die StartUrls zurück, bei denen der Crawler-Prozeß beginnen soll.
    *
    * @return Die StartUrls.
-   */  
+   */
   public StartUrl[] getStartUrls() {
     return new StartUrl[] {
       new StartUrl("http://www.dm-drogeriemarkt.de/CDA/Home/", true, true),
@@ -249,7 +249,7 @@ public class DummyConfiguration implements Configuration {
    * identifizieren.
    *
    * @return Die UrlPattern für den HTML-Parser.
-   */  
+   */
   public UrlPattern[] getHtmlParserUrlPatterns() {
     return new UrlPattern[] {
       new UrlPattern("=\"([^\"]*\\.html)\"", 1, true,  true),
@@ -265,7 +265,7 @@ public class DummyConfiguration implements Configuration {
    * entscheiden, ob und wie eine Datei bearbeitet werden soll.
    *
    * @return Die UrlPattern für den Verzeichnis-Parser.
-   */  
+   */
   public UrlPattern[] getDirectoryParserUrlPatterns() {
     return new UrlPattern[] {
       new UrlPattern(".*\\.(html|pdf|xls|doc|rtf|ppt)", -1, false,  true)
@@ -281,7 +281,7 @@ public class DummyConfiguration implements Configuration {
    * zu werden.
    *
    * @return Die Schwarze Liste.
-   */  
+   */
   public String[] getUrlPrefixBlackList() {
     return new String[] {
       "http://www.dm-drogeriemarkt.de/CDA/Suchen/",
@@ -298,7 +298,7 @@ public class DummyConfiguration implements Configuration {
    * bearbeitet zu werden.
    *
    * @return Die Weiße Liste
-   */  
+   */
   public WhiteListEntry[] getWhiteList() {
     return new WhiteListEntry[] {
       // new WhiteListEntry("http://www.dm-drogeriemarkt.de/", "dm-main"),
@@ -309,8 +309,8 @@ public class DummyConfiguration implements Configuration {
     };
   }
 
-  
-  
+
+
   /**
    * Gibt die HtmlContentExtractor zurück, die den zu inizierenden Teil aus
    * HTML-Dokumenten extrahieren.
@@ -319,7 +319,7 @@ public class DummyConfiguration implements Configuration {
    *
    * @return Die HtmlContentExtractor zurück, die den zu inizierenden Teil aus
    *         HTML-Dokumenten extrahieren.
-   */  
+   */
   public HtmlContentExtractor[] getHtmlContentExtractors() {
     return null;
   }
@@ -333,14 +333,14 @@ public class DummyConfiguration implements Configuration {
    * Wenn keine Liste vorhanden ist, wird <code>null</code> zurückgegeben.
    *
    * @return Die HtmlPathExtractor.
-   */  
+   */
   public HtmlPathExtractor[] getHtmlPathExtractors() {
     return null;
   }
 
 
 
-  
+
   /**
    * Gibt die regulären Ausdrücke zurück, auf die die URL eines Dokuments passen
    * muss, damit anstatt des wirklichen Dokumententitels der Text des Links, der
@@ -357,7 +357,7 @@ public class DummyConfiguration implements Configuration {
 
   /**
    * Gibt die Liste der Einstellungen für die Präperatoren zurück.
-   * 
+   *
    * @return Die Liste der Einstellungen für die Präperatoren.
    */
   public PreparatorSettings[] getPreparatorSettingsList() {
@@ -366,5 +366,5 @@ public class DummyConfiguration implements Configuration {
       new PreparatorSettings("\\.xml$", "net.sf.regain.crawler.document.XmlPreparator")
     };
   }
-  
+
 }

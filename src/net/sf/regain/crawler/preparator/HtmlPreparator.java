@@ -1,23 +1,23 @@
 /*
  * regain - A file search engine providing plenty of formats
  * Copyright (C) 2004  Til Schneider
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Contact: Til Schneider, info@murfman.de
- * 
+ *
  * CVS information:
  *  $RCSfile$
  *   $Source$
@@ -46,25 +46,25 @@ import org.apache.regexp.RESyntaxException;
  * Dabei werden die Rohdaten des Dokuments von Formatierungsinformation befreit,
  * es wird der Titel extrahiert.
  *
- * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
+ * @author Til Schneider, www.murfman.de
  */
 public class HtmlPreparator extends AbstractPreparator {
 
-  /** Die Kategorie, die zum Loggen genutzt werden soll. */  
+  /** Die Kategorie, die zum Loggen genutzt werden soll. */
   private static Category mCat = Category.getInstance(HtmlPreparator.class);
 
-  /** Die DocumentFactory. Wird genutzt, um Analyse-Dateien zu schreiben. */  
+  /** Die DocumentFactory. Wird genutzt, um Analyse-Dateien zu schreiben. */
   private DocumentFactory mDocumentFactory;
 
-  /** Ein regulärer Ausdruck, der den Titel eines HTMl-Dokuments findet. */  
+  /** Ein regulärer Ausdruck, der den Titel eines HTMl-Dokuments findet. */
   private RE mExtractHtmlTitleRE;
-  
+
   /**
    * Die HtmlContentExtractor, die den jeweiligen zu indizierenden Inhalt aus
    * den HTML-Dokumenten schneiden.
    */
   private HtmlContentExtractor[] mContentExtractorArr;
-  
+
   /**
    * Die HtmlPathExtractor, die den jeweiligen Pfad aus den HTML-Dokumenten
    * extrahieren.
@@ -111,17 +111,17 @@ public class HtmlPreparator extends AbstractPreparator {
    * @param rawDocument Das zu präpariernde Dokument.
    *
    * @throws RegainException Wenn die Präparation fehl schlug.
-   */  
+   */
   public void prepare(RawDocument rawDocument) throws RegainException {
     String url = rawDocument.getUrl();
     String contentAsString = rawDocument.getContentAsString();
-    
+
     // Get the title
     String title = extractHtmlTitle(contentAsString);
     setTitle(title);
 
     // Find the content extractor that is responsible for this document
-    HtmlContentExtractor contentExtractor = null;  
+    HtmlContentExtractor contentExtractor = null;
     if (mContentExtractorArr != null) {
       for (int i = 0; i < mContentExtractorArr.length; i++) {
         if (mContentExtractorArr[i].accepts(rawDocument)) {
@@ -129,14 +129,14 @@ public class HtmlPreparator extends AbstractPreparator {
         }
       }
     }
-    
+
     // Cut the content and extract the headlines
     String cuttedContent;
     String headlines;
     if (contentExtractor == null) {
       // There is no HtmlContentExtractor responsible for this document
       mCat.warn("No HTML content extractor is responsible for " + rawDocument.getUrl());
-      
+
       cuttedContent = rawDocument.getContentAsString();
       headlines = null;
     } else {
@@ -159,12 +159,12 @@ public class HtmlPreparator extends AbstractPreparator {
       // Write the headlines to an analysis file
       mDocumentFactory.writeAnalysisFile(url, "headlines", headlines);
 
-      // Set the headlines    
+      // Set the headlines
       setHeadlines(headlines);
     }
-    
+
     // Find the path extractor that is responsible for this document
-    HtmlPathExtractor pathExtractor = null;  
+    HtmlPathExtractor pathExtractor = null;
     if (mPathExtractorArr != null) {
       for (int i = 0; i < mPathExtractorArr.length; i++) {
         if (mPathExtractorArr[i].accepts(rawDocument)) {
@@ -172,7 +172,7 @@ public class HtmlPreparator extends AbstractPreparator {
         }
       }
     }
-    
+
     // Extract the path from the document
     if (pathExtractor != null) {
       PathElement[] path = pathExtractor.extractPath(rawDocument);
@@ -189,7 +189,7 @@ public class HtmlPreparator extends AbstractPreparator {
    * @param text Der zu säubernde HTML-Text.
    *
    * @return Der von Tags gesäberte Text
-   */  
+   */
   public static String cleanFromTags(String text) {
     StringBuffer clean = new StringBuffer();
 
@@ -252,7 +252,7 @@ public class HtmlPreparator extends AbstractPreparator {
    * @param text Den Text, dessen HTML-Entitäten gewandelt werden sollen.
    *
    * @return Der gewandelte Text.
-   */  
+   */
   public static String replaceHtmlEntities(String text) {
     StringBuffer clean = new StringBuffer();
 
@@ -297,7 +297,7 @@ public class HtmlPreparator extends AbstractPreparator {
    *        ermittelt werden soll.
    *
    * @return Den Titel des HTML-Dokuments.
-   */  
+   */
   private String extractHtmlTitle(String content) {
     if (mExtractHtmlTitleRE.match(content)) {
       return mExtractHtmlTitleRE.getParen(1);

@@ -1,23 +1,23 @@
 /*
  * regain - A file search engine providing plenty of formats
  * Copyright (C) 2004  Til Schneider
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Contact: Til Schneider, info@murfman.de
- * 
+ *
  * CVS information:
  *  $RCSfile$
  *   $Source$
@@ -38,13 +38,13 @@ import net.sf.regain.RegainToolkit;
 /**
  * A toolkit for the search JSPs containing helper methods.
  *
- * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
+ * @author Til Schneider, www.murfman.de
  */
 public class SearchToolkit {
 
   /** Der Name des PageContext-Attributs, unter dem der SearchContext abgelegt ist. */
   private static final String SEARCH_CONTEXT_ATTR_NAME = "SearchContext";
-  
+
   /** Die Standard-Liste der Felder in denen gesucht wird. */
   private static final String DEFAULT_SEARCH_FIELD_LIST = "content title headlines";
 
@@ -70,19 +70,19 @@ public class SearchToolkit {
     if (context == null) {
       ServletContext ctx = pageContext.getServletContext();
 
-      // Namen des Index holen      
+      // Namen des Index holen
       String indexName = pageContext.getRequest().getParameter("index");
       if (indexName == null) {
         throw new RegainException("Request parameter 'index' not specified");
       }
 
-      // Verzeichnis für diesen Namen erfragen      
+      // Verzeichnis für diesen Namen erfragen
       String indexDir = ctx.getInitParameter("indexDir." + indexName);
       if (indexDir == null) {
         throw new RegainException("Context parameter 'indexDir." + indexName
           + "' not set in the web.xml!");
       }
-      
+
       // Regex holen, zu der eine URL passen muss, damit sie in einem neuen
       // Fenster geöffnet wird.
       String param = "openInNewWindowRegex." + indexName;
@@ -91,7 +91,7 @@ public class SearchToolkit {
         // Globalen Eintrag probieren
         openInNewWindowRegex = ctx.getInitParameter("openInNewWindowRegex");
       }
-      
+
       // Liste der Felder holen, in denen gesucht werden soll
       String searchFieldList = ctx.getInitParameter("searchFieldList." + indexName);
       if (searchFieldList == null) {

@@ -1,23 +1,23 @@
 /*
  * regain - A file search engine providing plenty of formats
  * Copyright (C) 2004  Til Schneider
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Contact: Til Schneider, info@murfman.de
- * 
+ *
  * CVS information:
  *  $RCSfile$
  *   $Source$
@@ -37,7 +37,7 @@ import net.sf.regain.RegainToolkit;
 /**
  * Enth�lt Hilfsmethoden f�r den Crawler und seine Hilfsklassen.
  *
- * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
+ * @author Til Schneider, www.murfman.de
  */
 public class CrawlerToolkit {
 
@@ -116,7 +116,7 @@ public class CrawlerToolkit {
       out = new ByteArrayOutputStream();
 
       RegainToolkit.pipe(in, out);
-      
+
       out.close();
       return out.toByteArray();
     }
@@ -133,7 +133,7 @@ public class CrawlerToolkit {
     }
   }
 
-  
+
   /**
    * Writes data to a file
    *
@@ -156,12 +156,12 @@ public class CrawlerToolkit {
     }
     finally {
       if (stream != null) {
-        try { stream.close(); } catch (IOException exc) {}  
+        try { stream.close(); } catch (IOException exc) {}
       }
     }
   }
-  
-  
+
+
   /**
    * Schreibt einen String in eine Datei.
    *
@@ -175,8 +175,8 @@ public class CrawlerToolkit {
   {
     writeListToFile(new String[] { text }, file);
   }
-  
-  
+
+
   /**
    * Schreibt eine Wortliste in eine Datei.
    *
@@ -216,11 +216,11 @@ public class CrawlerToolkit {
       }
     }
   }
-  
-  
+
+
   /**
    * Kopiert eine Datei.
-   * 
+   *
    * @param from Die Quelldatei
    * @param to Die Zieldatei
    * @throws RegainException Wenn das Kopieren fehl schlug.
@@ -231,7 +231,7 @@ public class CrawlerToolkit {
     try {
       in = new FileInputStream(from);
       out = new FileOutputStream(to);
-      
+
       RegainToolkit.pipe(in, out);
     }
     catch (IOException exc) {
@@ -247,8 +247,8 @@ public class CrawlerToolkit {
       }
     }
   }
-  
-  
+
+
   /**
    * L�dt eine Datei vom Dateisystem und gibt den Inhalt zur�ck.
    *
@@ -267,9 +267,9 @@ public class CrawlerToolkit {
     try {
       in = new FileInputStream(file);
       out = new ByteArrayOutputStream((int) file.length());
-      
+
       RegainToolkit.pipe(in, out);
-      
+
       return out.toByteArray();
     }
     catch (IOException exc) {
@@ -347,18 +347,18 @@ public class CrawlerToolkit {
       throw new RegainException("URL must have the file:// protocol to get a "
         + "File for it");
     }
-    
+
     // Cut the file://
     String fileName = url.substring(7);
 
     // Replace %20 by spaces
     fileName = RegainToolkit.replace(fileName, "%20", " ");
-    
+
     return new File(fileName);
   }
 
-  
-  
+
+
   /**
    * Gibt die URL einer Datei zur�ck.
    *
@@ -367,13 +367,13 @@ public class CrawlerToolkit {
    */
   public static String fileToUrl(File file) {
     String fileName = file.getAbsolutePath();
-    
+
     // Replace spaces by %20
     fileName = RegainToolkit.replace(fileName, " ", "%20");
-    
+
     // Replace file separators by /
     fileName = RegainToolkit.replace(fileName, File.separator, "/");
-    
+
     return "file://" + fileName;
   }
 
@@ -395,5 +395,5 @@ public class CrawlerToolkit {
     }
     System.out.println();
   }
-  
+
 }

@@ -1,23 +1,23 @@
 /*
  * regain - A file search engine providing plenty of formats
  * Copyright (C) 2004  Til Schneider
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Contact: Til Schneider, info@murfman.de
- * 
+ *
  * CVS information:
  *  $RCSfile$
  *   $Source$
@@ -54,28 +54,28 @@ import org.apache.regexp.RESyntaxException;
  * sowie seine URL und seinen Titel enth�lt.
  *
  * @see Document
- * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
+ * @author Til Schneider, www.murfman.de
  */
 public class DocumentFactory {
 
-  /** Die Kategorie, die zum Loggen genutzt werden soll. */  
+  /** Die Kategorie, die zum Loggen genutzt werden soll. */
   private static Category mCat = Category.getInstance(DocumentFactory.class);
-  
+
   /** Die maximale L�nge der Zusammenfassung. */
   private static final int MAX_SUMMARY_LENGTH = 200;
 
   /**
    * Das Verzeichnis, in dem Analyse-Dateien erzeugt werden sollen. Ist
    * <CODE>null</CODE>, wenn keine Analyse-Dateien erzeugt werden sollen.
-   */  
+   */
   private File mAnalysisDir = null;
 
-  /** Die Pr�peratoren. */  
+  /** Die Pr�peratoren. */
   private Preparator[] mPreparatorArr;
-  
+
   /** Die Profiler, die die Bearbeitung durch die Pr�paratoren messen. */
   private Profiler[] mPreparatorProfilerArr;
-  
+
   /**
    * Die regul�ren Ausdr�cke, auf die die URL eines Dokuments passen muss,
    * damit anstatt des wirklichen Dokumententitels der Text des Links, der auf
@@ -108,7 +108,7 @@ public class DocumentFactory {
    * @throws RegainException Wenn entweder die Pr�paratoren nicht erstellt
    *         werden konnten oder wenn ein regul�rer Ausdruck einen Syntaxfehler
    *         hat.
-   */  
+   */
   public DocumentFactory(File analysisDir,
     PreparatorSettings[] preparatorSettingsArr,
     HtmlContentExtractor[] htmlContentExtractorArr,
@@ -126,15 +126,15 @@ public class DocumentFactory {
     }
     catch (RegainException exc) {
       throw new RegainException("Creating the document preparators failed", exc);
-    } 
-    
+    }
+
     // F�r jeden Pr�parator einen Profiler erstellen
     mPreparatorProfilerArr = new Profiler[mPreparatorArr.length];
     for (int i = 0; i < mPreparatorProfilerArr.length; i++) {
       String name = mPreparatorArr[i].getClass().getName();
       mPreparatorProfilerArr[i] = new Profiler("Preparator " + name, "docs");
     }
-    
+
     if (useLinkTextAsTitleRegexArr == null) {
       mUseLinkTextAsTitleReArr = new RE[0];
     } else {
@@ -155,8 +155,8 @@ public class DocumentFactory {
 
 
   /**
-   * Erzeugt aus den Einstellungen ein Array mit Pr�paratoren. 
-   * 
+   * Erzeugt aus den Einstellungen ein Array mit Pr�paratoren.
+   *
    * @param preparatorSettingsArr Die Liste der Einstellungen f�r die
    *        Pr�peratoren.
    * @param htmlContentExtractorArr Die HtmlContentExtractor, die den jeweiligen zu
@@ -175,12 +175,12 @@ public class DocumentFactory {
     Preparator[] preparatorArr = new Preparator[preparatorSettingsArr.length];
     for (int i = 0; i < preparatorArr.length; i++) {
       String className = preparatorSettingsArr[i].getPreparatorClassName();
-      
+
       if (className.startsWith(".")) {
         // This is a shortcut -> add the prefix
         className = "net.sf.regain.crawler.preparator" + className;
       }
-      
+
       // Pr�parator-Instanz erzeugen
       if (className.equals(HtmlPreparator.class.getName())) {
         // NOTE: Der HtmlPreparator bildet eine Ausnahme: Er wird nicht �ber
@@ -201,26 +201,26 @@ public class DocumentFactory {
         }
 
         Object obj;
-        try {        
+        try {
           obj = preparatorClass.newInstance();
         }
         catch (Exception exc) {
           throw new RegainException("Error creating instance of class "
             + className, exc);
         }
-        
+
         if (! (obj instanceof Preparator)) {
-          throw new RegainException("The class " + className + " does not " + 
+          throw new RegainException("The class " + className + " does not " +
             "implement " + Preparator.class.getName());
         }
-        
+
         preparatorArr[i] = (Preparator) obj;
       }
-      
+
       // Die URL-Regex beim Pr�parator setzten
       preparatorArr[i].setUrlRegex(preparatorSettingsArr[i].getUrlRegex());
     }
-    
+
     return preparatorArr;
   }
 
@@ -235,12 +235,12 @@ public class DocumentFactory {
    *
    * @return Das Lucene-Ducument mit den aufbereiteten Daten.
    * @throws RegainException Wenn bei der Erzeugung ein Fehler auftrat.
-   */  
+   */
   public Document createDocument(RawDocument rawDocument)
     throws RegainException
   {
     String url = rawDocument.getUrl();
-    
+
     // make a new, empty document
     Document doc = new Document();
 
@@ -250,7 +250,7 @@ public class DocumentFactory {
     // Add the document's size
     int size = rawDocument.getContent().length;
     doc.add(Field.UnIndexed("size", Integer.toString(size)));
-    
+
     // Add last modified
     Date lastModified = rawDocument.getLastModified();
     if (lastModified == null) {
@@ -278,7 +278,7 @@ public class DocumentFactory {
     if (rightPreparator == null) {
       throw new RegainException("No preparator feels responsible for " + url);
     }
-    
+
     // Extract the file type specific information
     String cleanedContent;
     String title;
@@ -300,7 +300,7 @@ public class DocumentFactory {
       path = rightPreparator.getPath();
 
       rightPreparator.cleanUp();
-      
+
       rightPreparatorProfiler.stopMeasuring(size);
     }
     catch (Throwable exc) {
@@ -308,20 +308,20 @@ public class DocumentFactory {
       throw new RegainException("Preparing " + url + " with preparator "
         + rightPreparator.getClass().getName() + " failed", exc);
     }
-    
+
     // Check the mandatory information
     if (cleanedContent == null) {
       throw new RegainException("Preparator "
         + rightPreparator.getClass().getName()
         + " did not extract the content of " + url);
     }
-    
+
     // Write the clean content to an analysis file
     writeAnalysisFile(url, "clean", cleanedContent);
 
     // Add the cleaned content of the document
     doc.add(Field.UnStored("content", cleanedContent));
-    
+
     // Check whether to use the link text as title
     for (int i = 0; i < mUseLinkTextAsTitleReArr.length; i++) {
       if (mUseLinkTextAsTitleReArr[i].match(url)) {
@@ -342,16 +342,16 @@ public class DocumentFactory {
     // Add the document's summary
     if (! hasContent(summary)) {
       summary = createSummaryFromContent(cleanedContent);
-    }  
+    }
     if (hasContent(summary)) {
       doc.add(Field.Text("summary", summary));
     }
-    
+
     // Add the document's headlines
     if (hasContent(headlines)) {
       doc.add(Field.Text("headlines", headlines));
     }
-    
+
     // Add the document's path
     if (path != null) {
       String asString = pathToString(path);
@@ -370,7 +370,7 @@ public class DocumentFactory {
   /**
    * Gibt zur�ck, ob der String einen Inhalt hat. Dies ist der Fall, wenn er
    * weder <code>null</code> noch ein Leerstring ist.
-   * 
+   *
    * @param str Der zu untersuchende String
    * @return Ob der String einen Inhalt hat.
    */
@@ -378,8 +378,8 @@ public class DocumentFactory {
     return (str != null) && (str.length() != 0);
   }
 
-  
-  
+
+
   /**
    * Erzeugt eine Zusammenfassung aus dem Inhalt eines Dokuments.
    * <p>
@@ -392,39 +392,39 @@ public class DocumentFactory {
    */
   private String createSummaryFromContent(String content) {
     int lastSpacePos = content.lastIndexOf(' ', MAX_SUMMARY_LENGTH);
-    
+
     if (lastSpacePos == -1) {
       return null;
     } else {
       return content.substring(0, lastSpacePos) + "...";
     }
   }
-  
-  
-  
+
+
+
   /**
    * Wandelt einen Pfad in einen String um.
-   * 
+   *
    * @param path Der Pfad
    * @return Der Pfad als String
    */
   private String pathToString(PathElement[] path) {
     StringBuffer buffer = new StringBuffer();
-    
+
     for (int i = 0; i < path.length; i++) {
       buffer.append(path[i].getUrl());
       buffer.append(' ');
       buffer.append(path[i].getTitle());
       buffer.append('\n');
     }
-    
+
     return buffer.toString();
   }
 
 
   /**
    * Schreibt eine Ananlyse-Datei mit dem Inhalt des Roh-Dokuments.
-   * 
+   *
    * @param rawDocument
    */
   private void writeContentAnalysisFile(RawDocument rawDocument) {
@@ -432,7 +432,7 @@ public class DocumentFactory {
       // Analysis is disabled -> nothing to do
       return;
     }
-    
+
     File file = getAnalysisFile(rawDocument.getUrl(), null);
     mWriteAnalysisProfiler.startMeasuring();
     try {
@@ -457,7 +457,7 @@ public class DocumentFactory {
    * @param url Die URL des Dokuments.
    * @param extension Der Erweiterung, die die Analyse-Datei erhalten soll.
    * @param content Der Inhalt, der in die Datei geschrieben werden soll.
-   */  
+   */
   public void writeAnalysisFile(String url, String extension, String content) {
     if (mAnalysisDir == null) {
       // Analysis is disabled -> nothing to do
@@ -480,7 +480,7 @@ public class DocumentFactory {
       writer = new OutputStreamWriter(stream);
 
       writer.write(content);
-      
+
       mWriteAnalysisProfiler.stopMeasuring(content.length());
     }
     catch (IOException exc) {
@@ -506,7 +506,7 @@ public class DocumentFactory {
    * @param extension Der Erweiterung, die die Analyse-Datei erhalten soll.
    *
    * @return Den Dateinamen einer Analyse-Datei.
-   */  
+   */
   private File getAnalysisFile(String url, String extension) {
     // Cut the protocol
     if (url.startsWith("http://") || url.startsWith("file://")) {
@@ -516,7 +516,7 @@ public class DocumentFactory {
     url = RegainToolkit.replace(url, ":", "_");
     url = RegainToolkit.replace(url, "/", "_");
 
-    if (extension == null) {    
+    if (extension == null) {
       return new File(mAnalysisDir, url);
     } else {
       return new File(mAnalysisDir, url + "." + extension);
@@ -541,7 +541,7 @@ public class DocumentFactory {
           + mPreparatorArr[i].getClass().getName(), thr);
       }
     }
-    
+
     // Ensure that no call of createDocument(RawDocument) is possible any more
     mPreparatorArr = null;
   }

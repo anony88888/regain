@@ -1,23 +1,23 @@
 /*
  * regain - A file search engine providing plenty of formats
  * Copyright (C) 2004  Til Schneider
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Contact: Til Schneider, info@murfman.de
- * 
+ *
  * CVS information:
  *  $RCSfile$
  *   $Source$
@@ -42,7 +42,7 @@ import org.apache.log4j.*;
  * Die Main-Klasse mit dem Programmeinstiegstpunkt. Sie lie�t die Konfiguration
  * aus, stellt die Proxy-Einstellungen ein und startet den Crawler.
  *
- * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
+ * @author Til Schneider, www.murfman.de
  */
 public class Main {
 
@@ -100,7 +100,7 @@ public class Main {
 
     PropertyConfigurator.configure(logConfigFile.getAbsolutePath());
     mCat.info("Logging initialized");
-    
+
     // Load crawler configuration
     File xmlFile = new File(crawlerConfigFileName);
     Configuration config;
@@ -127,7 +127,7 @@ public class Main {
     // Let the crawler do its job
     if (crawler != null) {
       crawler.run(updateIndex, onlyEntriesArr);
-      
+
       // Returncode ermitteln
       int returnCode;
       if (crawler.getErrorCount() > 0) {
@@ -146,7 +146,7 @@ public class Main {
         // are still threads running (e.g. the AwtEventThread).
         returnCode = 0;
       }
-      
+
       // Kontrolldatei erstellen
       if (returnCode == 100) {
         deleteControlFile(config.getFinishedWithoutFatalsFileName());
@@ -155,7 +155,7 @@ public class Main {
         deleteControlFile(config.getFinishedWithFatalsFileName());
         createControlFile(config.getFinishedWithoutFatalsFileName());
       }
-      
+
       // Beenden
       System.exit(returnCode);
     }
@@ -167,7 +167,7 @@ public class Main {
    * <p>
    * Falls es den Parameter nicht gibt, wird der Hilfetext ausgegeben und
    * beendet.
-   * 
+   *
    * @param args Die Parameter.
    * @param paramIdx Der Index des zu lesenden Parameter
    * @return Der Wert des Parameters
@@ -177,7 +177,7 @@ public class Main {
       return args[paramIdx];
     } else {
       showHelp();
-      
+
       // This will not happen, because showHelp() calls System.exit()
       return null;
     }
@@ -191,14 +191,14 @@ public class Main {
     System.out.println(
       "Allowed parameters:\n" +
       "  --help:             Shows this help page\n" +
-      "  -forceNewIndex:     Forces the creation of a new search index\n" + 
+      "  -forceNewIndex:     Forces the creation of a new search index\n" +
       "  -onlyEntries <CSV>: The white list entries to use, separated by comma (,)\n" +
       "                      (Default: all entries)" +
       "  -config <file>:     The configuration file to use\n" +
       "                      (Default: CrawlerConfiguration.xml)" +
       "  -logConfig <file>:  The logging configuration file to use\n" +
       "                      (Default: log4j.properties)");
-    
+
     System.exit(100);
   }
 
@@ -232,20 +232,20 @@ public class Main {
       System.setProperty("http.proxyPassword", httpProxyPassword);
       msg += " password: (" + httpProxyPassword.length() + " characters)";
     }
-    
+
     if (msg.length() != 0) {
       mCat.info("Using proxy:" + msg);
     } else {
       mCat.info("Using no proxy");
     }
   }
-  
-  
+
+
   /**
    * Erzeugt eine leere Datei.
    * <p>
    * Wenn die Erzeugung der Datei fehl schlug wird das gelogt.
-   * 
+   *
    * @param fileName Der Dateiname der zu erzeugenden Datei.
    */
   private static void createControlFile(String fileName) {
@@ -271,7 +271,7 @@ public class Main {
    * L�scht eine Datei.
    * <p>
    * Wenn die L�schung der Datei fehl schlug wird das gelogt.
-   * 
+   *
    * @param fileName Der Dateiname der zu l�schenden Datei.
    */
   private static void deleteControlFile(String fileName) {
@@ -284,5 +284,5 @@ public class Main {
       }
     }
   }
-    
+
 }

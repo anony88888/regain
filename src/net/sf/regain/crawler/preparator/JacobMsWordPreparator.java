@@ -1,23 +1,23 @@
 /*
  * regain - A file search engine providing plenty of formats
  * Copyright (C) 2004  Til Schneider
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Contact: Til Schneider, info@murfman.de
- * 
+ *
  * CVS information:
  *  $RCSfile$
  *   $Source$
@@ -46,7 +46,7 @@ import de.filiadata.lucene.spider.generated.msoffice2000.word.*;
  * Dabei werden die Rohdaten des Dokuments von Formatierungsinformation befreit,
  * es wird der Titel extrahiert.
  *
- * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
+ * @author Til Schneider, www.murfman.de
  */
 public class JacobMsWordPreparator extends AbstractPreparator {
 
@@ -63,7 +63,7 @@ public class JacobMsWordPreparator extends AbstractPreparator {
    * @param rawDocument Das zu präpariernde Dokument.
    *
    * @throws RegainException Wenn die Präparation fehl schlug.
-   */  
+   */
   public void prepare(RawDocument rawDocument) throws RegainException {
     if (mWordApplication == null) {
       // COM-Thread initialisieren
@@ -71,7 +71,7 @@ public class JacobMsWordPreparator extends AbstractPreparator {
 
       // Neue Word-Applikation erstellen
       mWordApplication = new Application();
-      
+
       // Word unsichtbar machen
       // mWordApplication.setVisible(false);
       Dispatch.put(mWordApplication, "Visible", new Variant(false));
@@ -96,7 +96,7 @@ public class JacobMsWordPreparator extends AbstractPreparator {
       HeaderFooter firstHeader = firstSection.getHeaders().item(headerFirstPage);
       String title = firstHeader.getRange().getText();
       setTitle(title);
-      
+
       // Text holen
       firstSection.getRange().select();
       Selection sel = mWordApplication.getSelection();
@@ -106,7 +106,7 @@ public class JacobMsWordPreparator extends AbstractPreparator {
       sel.copy();
       String content = sel.getText();
       setCleanedContent(content);
-      
+
       // Dokument schließen (ohne Speichern)
       doc.close(new Variant(false));
     }
@@ -146,38 +146,38 @@ public class JacobMsWordPreparator extends AbstractPreparator {
   If objWord Is Nothing Then
     objWord = New Word.Application
   End If
-  
+
   'Wenn Du keinen With-Block machst mußt Du bei VB überall das objWord
   'vornedran schreiben! So reicht ein "."
   With objWord
-  
+
     '### Word Sichtbar/unsichtbar ###
     .Visible = False
-    
+
     '### Oeffnen des Dokuments ###
     .Documents.Open("Dokumentenname").Activate()
-  
+
     '### Header+footer kopieren Anfang ###
-    
+
     '### Ueberschrift kopieren header ###
     .Documents.Item(("Dokumentenname").Activate()
     strUeberschrift = .ActiveDocument.Sections.Item(1).Headers.Item(Word.WdHeaderFooterIndex.wdHeaderFooterFirstPage).Range.Text
-                                       
+
     '### Hauptteil kopieren Anfang ###
     .Documents.Item(("Dokumentenname").Activate()
     .ActiveDocument.Sections.Item(1).Range.Select()
     Call .Selection.MoveEndWhile(cset:=vbCr, Count:=Word.WdConstants.wdBackward)
     .Selection.Copy()
     strVariable = .Selection.Text
-  
+
     '### kopiere textfeld in fussnote ###
     .Documents.Item("Dokumentenname").Activate()
     .ActiveDocument.StoryRanges.Item(7).Select()
     strText = .Selection.Text
-  
+
     '### um das ende zu markieren
     Call .ActiveDocument.Bookmarks.Item("\endofdoc").Select()
-  
+
     '### zum schliessen de dokumentes - ohn zu speichern                              Call
     .Documents.Close(savechanges:=Word.WdSaveOptions.wdDoNotSaveChanges)
   */

@@ -1,23 +1,23 @@
 /*
  * regain - A file search engine providing plenty of formats
  * Copyright (C) 2004  Til Schneider
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Contact: Til Schneider, info@murfman.de
- * 
+ *
  * CVS information:
  *  $RCSfile$
  *   $Source$
@@ -48,33 +48,33 @@ import org.pdfbox.util.PDFTextStripper;
  * Dabei werden die Rohdaten des Dokuments von Formatierungsinformation befreit,
  * es wird der Titel extrahiert.
  *
- * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
+ * @author Til Schneider, www.murfman.de
  */
 public class PdfPreparator extends AbstractPreparator {
-  
+
   /**
    * Präpariert ein Dokument für die Indizierung.
    *
    * @param rawDocument Das zu präpariernde Dokument.
    *
    * @throws RegainException Wenn die Präparation fehl schlug.
-   */  
+   */
   public void prepare(RawDocument rawDocument) throws RegainException {
     String url = rawDocument.getUrl();
-    
+
     ByteArrayInputStream stream = null;
     PDDocument pdfDocument = null;
-    
+
     try {
       // Create a InputStream that reads the content.
       byte[] content = rawDocument.getContent();
       stream = new ByteArrayInputStream(content);
-      
+
       // Parse the content
       PDFParser parser = new PDFParser(stream);
       parser.parse();
       pdfDocument = parser.getPDDocument();
-      
+
       // Decrypt the PDF-Dokument
       if (pdfDocument.isEncrypted()) {
         DecryptDocument decryptor = new DecryptDocument(pdfDocument);
@@ -86,17 +86,17 @@ public class PdfPreparator extends AbstractPreparator {
       //             after every word to the writer. That's why word a
       //             concatinated.
       StringWriter writer = new StringWriter();
-      
+
       // Clean the content and write it to a String
       // FixedPdfTextStripper stripper = new FixedPdfTextStripper();
       PDFTextStripper stripper = new PDFTextStripper();
 
       // code for PDFBox before 0.6.4
       stripper.writeText(pdfDocument.getDocument(), writer);
-      
+
       // code for PDFBox 0.6.4 or higher
       // stripper.writeText(pdfDocument, writer);
-      
+
       writer.close();
       setCleanedContent(writer.toString());
 
@@ -104,7 +104,7 @@ public class PdfPreparator extends AbstractPreparator {
       // NOTE: There is more information that could be read from a PFD-Dokument.
       //       See org.pdfbox.searchengine.lucene.LucenePDFDocument for details.
       PDDocumentInformation info = pdfDocument.getDocumentInformation();
-      
+
       if( info.getTitle() != null ) {
         setTitle(info.getTitle());
       }

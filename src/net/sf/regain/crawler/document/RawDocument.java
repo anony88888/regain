@@ -1,23 +1,23 @@
 /*
  * regain - A file search engine providing plenty of formats
  * Copyright (C) 2004  Til Schneider
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Contact: Til Schneider, info@murfman.de
- * 
+ *
  * CVS information:
  *  $RCSfile$
  *   $Source$
@@ -44,13 +44,13 @@ import org.apache.log4j.Category;
  * Falls der Inhalt des Dokuments zur besseren Bearbeitung in Form eines Strings
  * gebraucht wird, dann wird dieser zum spätest möglichen Zeitpunkt erstellt.
  *
- * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
+ * @author Til Schneider, www.murfman.de
  */
 public class RawDocument {
 
-  /** Die Kategorie, die zum Loggen genutzt werden soll. */  
+  /** Die Kategorie, die zum Loggen genutzt werden soll. */
   private static Category mCat = Category.getInstance(RawDocument.class);
-  
+
   /** Der Profiler der das Laden via HTTP mißt. */
   private static final Profiler HTTP_LOADING_PROFILER
     = new Profiler("Documents loaded with HTTP", "docs");
@@ -58,56 +58,56 @@ public class RawDocument {
   /** Der Profiler der das Laden vom Dateisystem mißt. */
   private static final Profiler FILE_LOADING_PROFILER
     = new Profiler("Documents loaded from the file system", "docs");
-  
+
   /**
    * Der Timeout für HTTP-Downloads. Dieser Wert bestimmt die maximale Zeit
    * in Sekunden, die ein HTTP-Download insgesamt dauern darf.
    */
   private static int mHttpTimeoutSecs = 180;
-  
-  /** Die URL des Dokuments. */  
+
+  /** Die URL des Dokuments. */
   private String mUrl;
-  
-  /** Die URL jenen Dokuments, in dem die URL dieses Dokuments gefunden wurde. */  
+
+  /** Die URL jenen Dokuments, in dem die URL dieses Dokuments gefunden wurde. */
   private String mSourceUrl;
-  
+
   /**
    * Der Text des Links in dem die URL gefunden wurde. Ist <code>null</code>,
    * falls die URL nicht in einem Link (also einem a-Tag) gefunden wurde oder
    * wenn aus sonstigen Gründen kein Link-Text vorhanden ist.
    */
   private String mSourceLinkText;
-  
+
   /**
    * Der Inhalt des Dokuments.
    * Ist <CODE>null</CODE>, wenn sich das Dokument in einer Datei befindet und
    * noch nicht angefragt wurde.
-   */  
+   */
   private byte[] mContent;
-  
+
   /**
    * Der Inhalt des Dokuments als String. Ist <CODE>null</CODE>, bis er zum
    * ersten mal angefragt wurde.
-   */  
+   */
   private String mContentAsString;
-  
+
   /**
    * Die Datei, in der sich der Inhalt des Dokuments befindet.
    * Ist <CODE>null</CODE>, wenn das Dokument über HTTP bezogen wird und noch
    * nicht angefragt wurde.
-   */  
+   */
   private File mContentAsFile;
-  
+
   /**
    * Ist die Datei {@link #mContentAsFile} temporär. Wenn <code>true</code>,
    * dann wird die Datei am Ende gelöscht.
-   * 
+   *
    * @see #dispose()
    */
   private boolean mContentAsFileIsTemporary;
-  
-  
-  
+
+
+
   /**
    * Erzeugt eine neue RawDocument-Instanz.
    *
@@ -134,23 +134,23 @@ public class RawDocument {
     }
   }
 
-  
+
   /**
    * Setzt den Timeout für HTTP-Downloads.
    * <p>
    * Dieser Wert bestimmt die maximale Zeit, die ein HTTP-Download insgesamt
    * dauern darf.
-   * 
+   *
    * @param httpTimeoutSecs Der neue Timeout.
    */
   public static void setHttpTimeoutSecs(int httpTimeoutSecs) {
     mHttpTimeoutSecs = httpTimeoutSecs;
   }
-  
+
 
   /**
    * Lädt Daten von einer URL.
-   * 
+   *
    * @param url Die URL.
    * @return Die Daten des Dokuments.
    * @throws RegainException Wenn das Laden fehl schlug.
@@ -160,14 +160,14 @@ public class RawDocument {
     HttpDownloadThread loaderThread
       = new HttpDownloadThread(url, Thread.currentThread());
     loaderThread.start();
-    
+
     // Warten bis entweder der Timeout abläuft, oder bis dieser Thread vom
     // HttpContentLoaderThread unterbrochen wird.
     try {
       Thread.sleep(mHttpTimeoutSecs * 1000);
     }
     catch (InterruptedException exc) {}
-    
+
     // Prüfen, ob wir mittlerweile den Inhalt haben
     byte[] content = loaderThread.getContent();
     if (content != null) {
@@ -176,25 +176,25 @@ public class RawDocument {
     } else {
       // Wir haben keinen Inhalt
       HTTP_LOADING_PROFILER.abortMeasuring();
-      
+
       // Prüfen, ob der Download fehl schlug
       if (loaderThread.getError() != null) {
         throw new RegainException("Loading Document by HTTP failed: " + url,
                                   loaderThread.getError());
       }
-      
+
       // Wir haben weder einen Inhalt noch einen Fehler
       // -> Der Download läuft noch
       // -> Da jedoch mittlerweile der Timeout abgelaufen ist -> Exception werfen
-      throw new RegainException("Loading Document by HTTP timed out after " + 
+      throw new RegainException("Loading Document by HTTP timed out after " +
           mHttpTimeoutSecs + " seconds: " + url);
     }
   }
-  
-  
+
+
   /**
    * Gibt die Länge des Dokuments zurück (in Bytes).
-   * 
+   *
    * @return Die Länge des Dokuments.
    */
   public int getLength() {
@@ -205,14 +205,14 @@ public class RawDocument {
       return (int) mContentAsFile.length();
     }
   }
-  
-  
+
+
   /**
    * Gibt zurück, wann das Dokument zuletzt geändert wurde.
    * <p>
    * Wenn die letzte Änderung nicht ermittelt werden kann (z.B. bei
    * HTTP-Dokumenten), dann wird <code>null</code> zurückgegeben.
-   * 
+   *
    * @return Wann das Dokument zuletzt geändert wurde.
    */
   public Date getLastModified() {
@@ -223,26 +223,26 @@ public class RawDocument {
       return null;
     }
   }
-  
-  
+
+
   /**
    * Gibt die URL des Dokuments zurück.
    *
    * @return Die URL des Dokuments.
-   */  
+   */
   public String getUrl() {
     return mUrl;
   }
-  
-  
-  
+
+
+
   /**
    * Gibt die URL jenen Dokuments zurück, in dem die URL dieses Dokuments
    * gefunden wurde.
    *
    * @return Die URL jenen Dokuments, in dem die URL dieses Dokuments gefunden
    *         wurde.
-   */  
+   */
   public String getSourceUrl() {
     return mSourceUrl;
   }
@@ -254,21 +254,21 @@ public class RawDocument {
    * <p>
    * Ist <code>null</code>, falls die URL nicht in einem Link (also einem a-Tag)
    * gefunden wurde oder wenn aus sonstigen Gründen kein Link-Text vorhanden ist.
-   * 
+   *
    * @return Der Text des Links zurück in dem die URL gefunden wurde.
    */
   public String getSourceLinkText() {
     return mSourceLinkText;
   }
-  
-  
-  
+
+
+
   /**
    * Gibt den Inhalt des Dokuments zurück.
    *
    * @return Der Inhalt des Dokuments.
    * @throws RegainException Wenn das Dokument nicht geladen werden konnte.
-   */  
+   */
   public byte[] getContent() throws RegainException {
     if (mContent == null) {
       // Das Dokument befindet sich in einer Datei -> Diese laden
@@ -284,12 +284,12 @@ public class RawDocument {
           + mContentAsFile, exc);
       }
     }
-    
+
     return mContent;
   }
-  
-  
-  
+
+
+
   /**
    * Gibt den Inhalt des Dokuments als String zurück.
    * <p>
@@ -297,26 +297,26 @@ public class RawDocument {
    *
    * @return Der Inhalt des Dokuments als String.
    * @throws RegainException Wenn das Dokument nicht geladen werden konnte.
-   */  
+   */
   public String getContentAsString() throws RegainException {
     if (mContentAsString == null) {
       mContentAsString = new String(getContent());
     }
-    
+
     return mContentAsString;
   }
-  
+
 
   /**
    * Schreibt den Inhalt des Dokuments in eine Datei.
-   * 
+   *
    * @param file Die Datei in die geschrieben werden soll.
    * @throws RegainException Wenn das Schreiben fehl schlug.
    */
   public void writeToFile(File file) throws RegainException {
     try {
       CrawlerToolkit.writeToFile(getContent(), file);
-      
+
       if (mContentAsFile == null) {
         // Falls das Dokument in Dateiform benötigt wird, dann diese Datei
         // nutzen.
@@ -329,7 +329,7 @@ public class RawDocument {
     }
   }
 
-  
+
   /**
    * Gibt den Datei des Dokuments zurück. Falls das Dokument nicht als Datei
    * existiert, wird eine temporäre Datei erzeugt.
@@ -338,12 +338,12 @@ public class RawDocument {
    * @throws RegainException Wenn entweder keine temporäre Datei erstellt werden
    *         konnte oder wenn nicht in die temporäre Datei geschrieben werden
    *         konnte.
-   */  
+   */
   public File getContentAsFile() throws RegainException {
     return getContentAsFile(false);
   }
-    
-  
+
+
   /**
    * Gibt den Datei des Dokuments zurück. Falls das Dokument nicht als Datei
    * existiert, wird eine temporäre Datei erzeugt.
@@ -355,14 +355,14 @@ public class RawDocument {
    * @throws RegainException Wenn entweder keine temporäre Datei erstellt werden
    *         konnte oder wenn nicht in die temporäre Datei geschrieben werden
    *         konnte.
-   */  
+   */
   public File getContentAsFile(boolean forceTempFile) throws RegainException {
     if ((mContentAsFile == null)
       || (forceTempFile && ! mContentAsFileIsTemporary))
     {
       // Das Dokument wurde via HTTP geladen
       // -> Inhalt in eine Datei schreiben
-      
+
       // Get the file extension
       String extension;
       int lastDot = mUrl.lastIndexOf('.');
@@ -371,7 +371,7 @@ public class RawDocument {
       } else {
         extension = mUrl.substring(lastDot);
       }
-      
+
       // Get an unused file
       File tmpFile;
       try {
@@ -380,18 +380,18 @@ public class RawDocument {
       catch (IOException exc) {
         throw new RegainException("Getting temporary File failed", exc);
       }
-      
+
       // Inhalt in temporäre Datei schreiben
       writeToFile(tmpFile);
-      
-      mContentAsFile = tmpFile;      
+
+      mContentAsFile = tmpFile;
       mContentAsFileIsTemporary = true;
     }
-    
+
     return mContentAsFile;
   }
-  
-  
+
+
   /**
    * Gibt alle genutzten System-Ressourcen, wie temporäre Dateien, wieder frei.
    * <p>
@@ -406,5 +406,5 @@ public class RawDocument {
       mContentAsFile.delete();
     }
   }
-  
+
 }

@@ -1,23 +1,23 @@
 /*
  * regain - A file search engine providing plenty of formats
  * Copyright (C) 2004  Til Schneider
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Contact: Til Schneider, info@murfman.de
- * 
+ *
  * CVS information:
  *  $RCSfile$
  *   $Source$
@@ -39,7 +39,7 @@ import org.w3c.dom.*;
  * Enthält Hilfsmethoden für die Extraktion von Daten aus dem DOM-Dokument einer
  * XML-Datei.
  *
- * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
+ * @author Til Schneider, www.murfman.de
  */
 public class XmlToolkit {
 
@@ -52,7 +52,7 @@ public class XmlToolkit {
    * @return Der Text des Knotens als boolean.
    * @throws RegainException Falls der Knoten keinen Text hat oder falls der
    *         Text nicht <CODE>true</CODE> oder <CODE>false</CODE> ist.
-   */  
+   */
   public static boolean getTextAsBoolean(Node node) throws RegainException {
     String asString = getText(node).trim();
     if (asString.equalsIgnoreCase("true")) {
@@ -75,7 +75,7 @@ public class XmlToolkit {
    * @return Der Text des Knotens als int.
    * @throws RegainException Falls der Knoten keinen Text hat oder falls der
    *         Text keine Ganzzahl ist.
-   */  
+   */
   public static int getTextAsInt(Node node) throws RegainException {
     String asString = getText(node).trim();
     try {
@@ -86,7 +86,7 @@ public class XmlToolkit {
           "' must be an integer: '" + asString + "'", exc);
     }
   }
-  
+
 
   /**
    * Extrahiert den Text eines Knotens, wandelt ihn in ein double und gibt das
@@ -97,7 +97,7 @@ public class XmlToolkit {
    * @return Der Text des Knotens als double.
    * @throws RegainException Falls der Knoten keinen Text hat oder falls der
    *         Text kein Gleitkommawert ist.
-   */  
+   */
   public static double getTextAsDouble(Node node) throws RegainException {
     String asString = getText(node).trim();
     try {
@@ -120,12 +120,12 @@ public class XmlToolkit {
    *
    * @return Der Text des Knotens Wort-Listen-Array.
    * @throws RegainException Falls der Knoten keinen Text hat.
-   */  
+   */
   public static String[] getTextAsWordList(Node node, boolean mandatory)
     throws RegainException
   {
     String asString = getText(node, mandatory);
-    
+
     if (asString == null) {
       return null;
     } else {
@@ -150,17 +150,17 @@ public class XmlToolkit {
    * @return Der Text des Knotens.
    * @throws RegainException Wenn der Knoten keinen Text hat oder wenn der Text
    *         keine gültige URL ist.
-   */  
+   */
   public static String getTextAsUrl(Node node) throws RegainException {
   	String asString = getText(node);
-  	
+
   	// Prüfen, ob der Text einen Backslash enthält
   	if (asString.indexOf('\\') != -1) {
       throw new RegainException("Text of node '" + node.getNodeName()
         + "' is not a valid URL. Use normal slashes instead of backslashes: '"
         + asString + "'");
   	}
-  	
+
   	return asString;
   }
 
@@ -173,7 +173,7 @@ public class XmlToolkit {
    *
    * @return Der Text des Knotens.
    * @throws RegainException Wenn der Knoten keinen Text hat.
-   */  
+   */
   public static String getText(Node node) throws RegainException {
     return getText(node, true);
   }
@@ -195,7 +195,7 @@ public class XmlToolkit {
    * @return Der Text des Knotens.
    * @throws RegainException Wenn der Knoten keinen Text hat und
    *         <CODE>mandatory</CODE> <CODE>true</CODE> ist.
-   */  
+   */
   public static String getText(Node node, boolean mandatory)
     throws RegainException
   {
@@ -203,7 +203,7 @@ public class XmlToolkit {
     if (textNode == null) {
       return null;
     }
-    
+
     String value = textNode.getNodeValue();
     if ((value == null) || (value.length() == 0)) {
       if (mandatory) {
@@ -229,7 +229,7 @@ public class XmlToolkit {
    *
    * @return Der Kindknoten
    * @throws RegainException Wenn der Knoten kein Kind mit diesem Namen hat.
-   */  
+   */
   public static Node getChild(Node node, String childNodeName) throws RegainException {
     return getChild(node, childNodeName, true);
   }
@@ -255,7 +255,7 @@ public class XmlToolkit {
    * @return Der Kindknoten
    * @throws RegainException Wenn der Knoten kein Kind mit diesem Namen hat und
    *         <CODE>mandatory</CODE> <CODE>true</CODE> ist.
-   */  
+   */
   public static Node getChild(Node node, String childNodeName, boolean mandatory)
     throws RegainException
   {
@@ -288,7 +288,7 @@ public class XmlToolkit {
    * @param childNodeName Der Name der Kindknoten.
    *
    * @return Die Kindknoten.
-   */  
+   */
   public static Node[] getChildArr(Node node, String childNodeName) {
     ArrayList list = new ArrayList();
 
@@ -318,7 +318,7 @@ public class XmlToolkit {
    * @throws RegainException Falls der Knoten kein solches Attribut hat oder
    *         falls der Wert des Attributs weder <CODE>true</CODE> noch
    *         <CODE>false</CODE> ist.
-   */  
+   */
   public static boolean getAttributeAsBoolean(Node node, String attributeName)
     throws RegainException
   {
@@ -346,7 +346,7 @@ public class XmlToolkit {
    * @return Den Attributwert als <CODE>int</CODE>.
    * @throws RegainException Falls der Knoten kein solches Attribut hat oder
    *         falls der Wert des Attributs keine Zahl ist.
-   */  
+   */
   public static int getAttributeAsInt(Node node, String attributeName)
     throws RegainException
   {
@@ -361,7 +361,7 @@ public class XmlToolkit {
     }
   }
 
-  
+
   /**
    * Gibt den Attributwert eines Knotens zurück.
    *
@@ -370,7 +370,7 @@ public class XmlToolkit {
    *
    * @return Den Attributwert.
    * @throws RegainException Falls der Knoten kein solches Attribut hat.
-   */  
+   */
   public static String getAttribute(Node node, String attributeName)
     throws RegainException
   {
@@ -389,7 +389,7 @@ public class XmlToolkit {
    * @return Den Attributwert.
    * @throws RegainException Falls der Knoten kein solches Attribut hat und
    *         <CODE>mandatory</CODE> <CODE>true</CODE> ist.
-   */  
+   */
   public static String getAttribute(Node node, String attributeName,
     boolean mandatory)
     throws RegainException

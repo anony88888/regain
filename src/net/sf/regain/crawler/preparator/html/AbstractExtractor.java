@@ -1,23 +1,23 @@
 /*
  * regain - A file search engine providing plenty of formats
  * Copyright (C) 2004  Til Schneider
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Contact: Til Schneider, info@murfman.de
- * 
+ *
  * CVS information:
  *  $RCSfile$
  *   $Source$
@@ -40,12 +40,12 @@ import org.apache.regexp.RESyntaxException;
  * <p>
  * Mit Hilfe eines URL-Präfixes wird bestimmt, ob dieser Extrahierer ein
  * konkretes Dokument bearbeiten kann oder nicht.
- * 
- * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
+ *
+ * @author Til Schneider, www.murfman.de
  */
 public class AbstractExtractor {
 
-  /** Die Kategorie, die zum Loggen genutzt werden soll. */  
+  /** Die Kategorie, die zum Loggen genutzt werden soll. */
   private static Category mCat = Category.getInstance(AbstractExtractor.class);
 
   /**
@@ -60,25 +60,25 @@ public class AbstractExtractor {
    * <p>
    * Ist <code>null</code>, wenn der gesamte Anfang des Dokuments extrahiert
    * werden soll.
-   */  
+   */
   private RE mFragmentStartRE;
-  
+
   /**
    * Der Reguläre Ausdruck, der die Stelle findet, wo das zu extrahierende
    * Fragment eines Dokuments beginnt.
    * <p>
    * Ist <code>null</code>, wenn der gesamte Anfang des Dokuments extrahiert
    * werden soll.
-   */  
+   */
   private String mFragmentStartRegex;
-  
+
   /**
    * Der compilierte Reguläre Ausdruck, der die Stelle findet, wo das zu
    * extrahierende Fragment eines Dokuments endet.
    * <p>
    * Ist <code>null</code>, wenn das gesamte Ende des Dokuments extrahiert
    * werden soll.
-   */  
+   */
   private RE mFragmentEndRE;
 
   /**
@@ -87,7 +87,7 @@ public class AbstractExtractor {
    * <p>
    * Ist <code>null</code>, wenn das gesamte Ende des Dokuments extrahiert
    * werden soll.
-   */  
+   */
   private String mFragmentEndRegex;
 
 
@@ -101,12 +101,12 @@ public class AbstractExtractor {
    *        das zu extrahierende Fragment eines Dokuments beginnt.
    *        <p>
    *        Ist <code>null</code> oder Leerstring, wenn der gesamte Anfang des
-   *        Dokuments extrahiert werden soll. 
+   *        Dokuments extrahiert werden soll.
    * @param fragmentEndRegex Der Reguläre Ausdruck, der die Stelle findet, wo
    *        das zu extrahierende Fragment eines Dokuments endet.
    *        <p>
    *        Ist <code>null</code> oder Leerstring, wenn das gesamte Ende des
-   *        Dokuments extrahiert werden soll. 
+   *        Dokuments extrahiert werden soll.
    * @throws RegainException Wenn ein Regulärer Ausdruck einen Syntaxfehler
    *         enthält.
    */
@@ -115,7 +115,7 @@ public class AbstractExtractor {
     throws RegainException
   {
     mPrefix = prefix;
-    
+
     try {
       if ((fragmentStartRegex != null) && (fragmentStartRegex.length() != 0)) {
         mFragmentStartRE = new RE(fragmentStartRegex, RE.MATCH_CASEINDEPENDENT);
@@ -130,9 +130,9 @@ public class AbstractExtractor {
       throw new RegainException("Syntax error in regular expression", exc);
     }
   }
-  
-  
-  
+
+
+
   /**
    * Gibt zurück, ob der Extrahierer das gegebene Dokument bearbeiten kann.
    * <p>
@@ -141,13 +141,13 @@ public class AbstractExtractor {
    * @param rawDocument Das zu prüfenden Dokuments.
    *
    * @return Ob der Extrahierer das gegebene Dokument bearbeiten kann.
-   */  
+   */
   public boolean accepts(RawDocument rawDocument) {
     return rawDocument.getUrl().startsWith(mPrefix);
   }
-  
-  
-  
+
+
+
   /**
    * Extrahiert das Fragment aus dem gegebenen Dokument.
    *
@@ -160,7 +160,7 @@ public class AbstractExtractor {
     throws RegainException
   {
     String content = rawDocument.getContentAsString();
-    
+
     // Find the fragment start
     int fragmentStart = 0;
     if (mFragmentStartRE != null) {
@@ -182,7 +182,7 @@ public class AbstractExtractor {
           + "match for '" + rawDocument.getUrl() + "'");
       }
     }
-    
+
     if ((fragmentStart == 0) && (fragmentEnd == content.length())) {
       // Nothing to do -> So don't waste ressources
       return content;
@@ -191,6 +191,6 @@ public class AbstractExtractor {
     }
   }
 
-  
+
 
 }

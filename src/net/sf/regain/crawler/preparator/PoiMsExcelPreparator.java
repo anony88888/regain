@@ -1,23 +1,23 @@
 /*
  * regain - A file search engine providing plenty of formats
  * Copyright (C) 2004  Til Schneider
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Contact: Til Schneider, info@murfman.de
- * 
+ *
  * CVS information:
  *  $RCSfile$
  *   $Source$
@@ -45,17 +45,17 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
  * Dabei werden die Rohdaten des Dokuments von Formatierungsinformation befreit,
  * es wird der Titel extrahiert.
  *
- * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
+ * @author Til Schneider, www.murfman.de
  */
 public class PoiMsExcelPreparator extends AbstractPreparator {
 
-  /** The currently preparing Excel workbook. */  
+  /** The currently preparing Excel workbook. */
   private HSSFWorkbook mWorkbook;
-  /** Contains all data formats used in the currently preparing Excel workbook. */  
+  /** Contains all data formats used in the currently preparing Excel workbook. */
   private HSSFDataFormat mDataFormat;
 
-  
-  
+
+
   /**
    * Erzeugt eine neue MsExcelPreparator-Instanz.
    */
@@ -63,14 +63,14 @@ public class PoiMsExcelPreparator extends AbstractPreparator {
   }
 
 
-  
+
   /**
    * Präpariert ein Dokument für die Indizierung.
    *
    * @param rawDocument Das zu präpariernde Dokument.
    *
    * @throws RegainException Wenn die Präparation fehl schlug.
-   */  
+   */
   public void prepare(RawDocument rawDocument) throws RegainException {
     ByteArrayInputStream stream = null;
     try {
@@ -78,16 +78,16 @@ public class PoiMsExcelPreparator extends AbstractPreparator {
       POIFSFileSystem poiFs = new POIFSFileSystem(stream);
       mWorkbook = new HSSFWorkbook(poiFs);
       mDataFormat = mWorkbook.createDataFormat();
-      
+
       StringBuffer cleanBuffer = new StringBuffer();
       for (int sheetIdx = 0; sheetIdx < mWorkbook.getNumberOfSheets(); sheetIdx++) {
         HSSFSheet sheet = mWorkbook.getSheetAt(sheetIdx);
-        
+
         if (sheet != null) {
           parseSheet(sheet, cleanBuffer);
         }
       }
-      
+
       setCleanedContent(cleanBuffer.toString());
     }
     catch (IOException exc) {
@@ -101,21 +101,21 @@ public class PoiMsExcelPreparator extends AbstractPreparator {
     }
   }
 
-  
-  
+
+
   /**
    * Durchsucht ein Excel-Sheet nach Text.
    *
    * @param sheet Das zu durchsuchende Excel-Sheet.
    * @param cleanBuffer Der StringBuffer, an den der gefundene Text angefügt
    *        werden soll.
-   */  
+   */
   private void parseSheet(HSSFSheet sheet, StringBuffer cleanBuffer) {
     int firstRow = sheet.getFirstRowNum();
     int lastRow = sheet.getLastRowNum();
     for (int rowIdx = firstRow; rowIdx <= lastRow; rowIdx++) {
       HSSFRow row = sheet.getRow(rowIdx);
-      
+
       if (row != null) {
         parseRow(row, cleanBuffer);
       }
@@ -130,28 +130,28 @@ public class PoiMsExcelPreparator extends AbstractPreparator {
    * @param row Das zu durchsuchende Excel-Zeile.
    * @param cleanBuffer Der StringBuffer, an den der gefundene Text angefügt
    *        werden soll.
-   */  
+   */
   private void parseRow(HSSFRow row, StringBuffer cleanBuffer) {
     short firstCell = row.getFirstCellNum();
     short lastCell = row.getLastCellNum();
     for (short cellIdx = firstCell; cellIdx <= lastCell; cellIdx++) {
       HSSFCell cell = row.getCell(cellIdx);
-      
+
       if (cell != null) {
         parseCell(cell, cleanBuffer);
       }
     }
   }
 
-  
-  
+
+
   /**
    * Durchsucht eine Excel-Zelle nach Text.
    *
    * @param cell Das zu durchsuchende Excel-Zelle.
    * @param cleanBuffer Der StringBuffer, an den der gefundene Text angefügt
    *        werden soll.
-   */  
+   */
   private void parseCell(HSSFCell cell, StringBuffer cleanBuffer) {
     String cellValue = null;
 
@@ -178,40 +178,40 @@ public class PoiMsExcelPreparator extends AbstractPreparator {
         cellValue = new java.text.DecimalFormat(format).format(numberValue);
       }
     }
-    
+
     if (cellValue != null) {
       cellValue = cellValue.trim();
       if (cellValue.length() != 0) {
         cleanBuffer.append(cellValue);
         cleanBuffer.append(" ");
-        
+
         if (getTitle() == null) {
           setTitle(cellValue);
         }
       }
     }
   }
-  
-  
-  
+
+
+
   /**
    * Prüft, ob die gegebene Excel-Zelle ein Datum enthält.
    *
    * @param cell Die zu prüfende Excel-Zelle.
    * @return Ob die gegebene Excel-Zelle ein Datum enthält.
-   */  
+   */
   private boolean isCellDateFormatted(HSSFCell cell) {
     short format = cell.getCellStyle().getDataFormat();
-    
+
     if (HSSFDateUtil.isValidExcelDate(cell.getNumericCellValue())) {
       if (HSSFDateUtil.isCellDateFormatted(cell)) {
         return true;
       } else {
         String fmtText = mDataFormat.getFormat(format);
-        
+
         if (fmtText != null) {
           fmtText = fmtText.toLowerCase();
-          
+
           if (fmtText.indexOf("d") >= 0
             || fmtText.indexOf("m") >= 0
             || fmtText.indexOf("y") >= 0
@@ -223,7 +223,7 @@ public class PoiMsExcelPreparator extends AbstractPreparator {
         }
       }
     }
-    
+
     return false;
   }
 
