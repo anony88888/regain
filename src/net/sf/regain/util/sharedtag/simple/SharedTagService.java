@@ -34,6 +34,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 import net.sf.regain.RegainToolkit;
+import net.sf.regain.ui.desktop.FileService;
 
 import simple.http.Request;
 import simple.http.Response;
@@ -54,6 +55,9 @@ public class SharedTagService extends BasicService {
   /** The parser to use for parsing JSP pages */
   private ExecuterParser mParser;
   
+  /** The service to pass file requests to. */
+  private FileService mFileService;
+  
   
   /**
    * Creates a new instance of SharedTagService.
@@ -64,6 +68,9 @@ public class SharedTagService extends BasicService {
     super(context);
     
     mParser = new ExecuterParser();
+    
+    // TODO: Find out, how simpleweb calls another service 
+    mFileService = new FileService(context);
   }
 
   
@@ -83,6 +90,13 @@ public class SharedTagService extends BasicService {
     }
     
     String fileName = context.getRequestPath(req.getURI());
+    
+    if (fileName.startsWith("/file/")) {
+      // TODO: Just a hack. Normally should there be a way simpleweb calls this
+      //       service.
+      mFileService.process(req, resp);
+      return;
+    }
     
     if (mBaseDir == null) {
       mBaseDir = new File(context.getBasePath());
@@ -140,7 +154,7 @@ public class SharedTagService extends BasicService {
    * @param file The to send.
    * @throws Exception If executing the JSP page failed.
    */
-  private void processFile(Request req, Response resp, File file)
+  public static void processFile(Request req, Response resp, File file)
     throws Exception
   {
     OutputStream out = null;
@@ -149,8 +163,6 @@ public class SharedTagService extends BasicService {
       out = resp.getOutputStream();
       in = new FileInputStream(file);
       RegainToolkit.pipe(in, out);
-      in.close();
-      out.close();
     }
     finally {
       if (in != null) {
@@ -161,5 +173,5 @@ public class SharedTagService extends BasicService {
       }
     }
   }
-  
+
 }

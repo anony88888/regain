@@ -344,7 +344,7 @@ public class Crawler {
       // Check whether this is a directory
       if (url.startsWith("file://")) {
         try {
-          File file = CrawlerToolkit.urlToFile(url);
+          File file = RegainToolkit.urlToFile(url);
           if (file.isDirectory()) {
             // This IS a directory -> Add all child files as Jobs
             if (shouldBeParsed) {
@@ -696,13 +696,13 @@ public class Crawler {
    */
   private void parseDirectory(File dir) {
     // Get the URL for the directory
-    String sourceUrl = CrawlerToolkit.fileToUrl(dir);
+    String sourceUrl = RegainToolkit.fileToUrl(dir);
 
     // Parse the directory
     File[] childArr = dir.listFiles();
     for (int childIdx = 0; childIdx < childArr.length; childIdx++) {
       // Get the URL for the current child file
-      String url = CrawlerToolkit.fileToUrl(childArr[childIdx]);
+      String url = RegainToolkit.fileToUrl(childArr[childIdx]);
 
       // Check wether this is a directory
       if (childArr[childIdx].isDirectory()) {

@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.CrawlerToolkit;
 import net.sf.regain.crawler.Profiler;
 
@@ -128,7 +129,7 @@ public class RawDocument {
     mSourceLinkText = sourceLinkText;
 
     if (url.startsWith("file://")) {
-      mContentAsFile = CrawlerToolkit.urlToFile(url);
+      mContentAsFile = RegainToolkit.urlToFile(url);
     } else {
       mContent = loadContent(url);
     }

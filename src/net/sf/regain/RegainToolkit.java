@@ -571,6 +571,50 @@ public class RegainToolkit {
   }
 
 
+  /**
+   * Gibt die Datei zur�ck, die hinter einer URL mit dem file:// Protokoll
+   * steht.
+   *
+   * @param url Die URL, f�r die die Datei zur�ckgegeben werden soll.
+   * @return Die zur URL passende Datei.
+   * @throws RegainException Wenn das Protokoll der URL nicht
+   *         <code>file://</code> ist.
+   */
+  public static File urlToFile(String url) throws RegainException {
+    if (! url.startsWith("file://")) {
+      throw new RegainException("URL must have the file:// protocol to get a "
+        + "File for it");
+    }
+  
+    // Cut the file://
+    String fileName = url.substring(7);
+  
+    // Replace %20 by spaces
+    fileName = replace(fileName, "%20", " ");
+  
+    return new File(fileName);
+  }
+
+
+  /**
+   * Gibt die URL einer Datei zur�ck.
+   *
+   * @param file Die Datei, deren URL zur�ckgegeben werden soll.
+   * @return Die URL der Datei.
+   */
+  public static String fileToUrl(File file) {
+    String fileName = file.getAbsolutePath();
+  
+    // Replace spaces by %20
+    fileName = replace(fileName, " ", "%20");
+  
+    // Replace file separators by /
+    fileName = replace(fileName, File.separator, "/");
+  
+    return "file://" + fileName;
+  }
+
+
   // inner class LowercasingReader
 
 

@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.CrawlerToolkit;
 import net.sf.regain.crawler.Profiler;
 import net.sf.regain.crawler.document.RawDocument;
@@ -133,10 +134,10 @@ public class PreparatorTest {
     }
     
     File[] docFileArr = typeDir.listFiles();
-    String sourceUrl = CrawlerToolkit.fileToUrl(typeDir);
+    String sourceUrl = RegainToolkit.fileToUrl(typeDir);
     for (int i = 0; i < docFileArr.length; i++) {
       if (docFileArr[i].isFile()) {
-        String url = CrawlerToolkit.fileToUrl(docFileArr[i]);
+        String url = RegainToolkit.fileToUrl(docFileArr[i]);
         System.out.println("Preparing document: " + url);
         try {
           RawDocument doc = new RawDocument(url, sourceUrl, null);

@@ -95,13 +95,23 @@ Wissenschaftliche Qualität
 Welcher Erkenntnisfortschritt konnte durch die dargestellten Arbeiten gewonnen werden?
 -------------------------------------------------
 
+regain orientiert sich sehr stark am aktuellen Stand der Technik. Neue wissenschaftliche Erkenntnisse wurde keine gewonnen.
+
 
 Welche Methodik lag dem Prozess der Entwicklung zu Grunde? Bitte skizzieren Sie kurz das Vorgehen.
 -------------------------------------------------
 
+Zunächst wurde die grundsätzliche Machbarkeit des Projekts anhand von Prototypen gezeigt. Daraufhin erfolgte die Entwicklung einer Architektur, die in einer ersten Version umgesetzt wurde. Der darauffolgende Entwicklungsprozess war iterativ und erfolgte in enger Zusammenarbeit mit dem Auftraggeber dm-drogerie markt.
+
 
 Welche Bedeutung hat die vorgestellte Entwicklung für die weitere wissenschaftliche Arbeit Ihres Instituts/Unternehmens?
 -------------------------------------------------
+
+Die Entwicklung von regain wird auf die wissenschaftliche Arbeit am STZ-IDA keinen besonders wegweisenden Einfluss haben.
+
+Im STZ-IDA wurden bereits zuvor Erfahrungen mit Suchmaschinen in Projekten, u.a. für Siemens Business Service, gemacht.
+
+Im Wesentlichen wurden durch regain Erfahrungen mit Basistechnologien und Open-Source-Projekten gesammelt, die zukünftigen Projekten zugute kommen werden.
 
 
 Praxiseignung
