@@ -11,7 +11,7 @@
 Name "${PROG_NAME} ${VERSION}"
 
 ; The file to write
-OutFile "${PUBLIC_DIR}\${PROG_NAME_FILE}_v${VERSION_FILE}_desktop.exe"
+OutFile "${PUBLIC_DIR}\${PROG_NAME_FILE}_v${VERSION_FILE}_desktop_win.exe"
 
 ; The default installation directory
 InstallDir "$PROGRAMFILES\${PROG_NAME}"
@@ -138,9 +138,9 @@ Section "${PROG_NAME} (erforderlich)"
 SectionEnd ; end the section
 
 
-SubSection /e "Verknüpfungen"
+SubSection /e "Verknï¿½pfungen"
 
-  Section "Verknüpfungen im Start-Menü"
+  Section "Verknï¿½pfungen im Start-Menï¿½"
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
   
       CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
@@ -163,7 +163,7 @@ SubSection /e "Verknüpfungen"
     !insertmacro MUI_STARTMENU_WRITE_END
   SectionEnd
   
-  Section "Verknüpfung im Autostart-Ordner"
+  Section "Verknï¿½pfung im Autostart-Ordner"
     CreateShortCut \
       "$SMSTARTUP\${PROG_NAME}.lnk" \
       "$INSTDIR\regain.exe"

@@ -88,10 +88,19 @@ public class DesktopToolkit implements DesktopConstants {
   public static void openPageInBrowser(String page) {
     String url = "http://localhost:" + mCurrentSocket.getLocalPort() + "/" + page;
     try {
+      String browser = getDesktopConfig().getBrowser();
+      if (browser != null) {
+        BrowserLauncher.setBrowser(browser);
+      }
+      
       BrowserLauncher.openURL(url);
     }
     catch (Exception exc) {
       mLog.error("Opening browser failed", exc);
+      
+      // Show the browser selector
+      BrowserSelectorFrame frame = new BrowserSelectorFrame(page);
+      frame.show();
     }
   }
   

@@ -57,8 +57,14 @@ public class XmlDesktopConfig implements DesktopConfig, DesktopConstants {
   /** The index update interval. */
   private int mInterval;
   
-  /**  */
+  /** The port of the webserver. */
   private int mPort;
+  
+  /**
+   * The executable of the browser. Is <code>null</code> if the browser should
+   * be auto-detected.
+   */
+  private String mBrowser;
   
   
   /**
@@ -95,6 +101,19 @@ public class XmlDesktopConfig implements DesktopConfig, DesktopConstants {
     return mPort;
   }
   
+  
+  /**
+   * Gets the executable of the browser that should be used for showing web
+   * pages. Returns <code>null</code> if the browser should be auto-detected. 
+   * 
+   * @return The executable of the browser.
+   * @throws RegainException If loading the config failed.
+   */
+  public String getBrowser() throws RegainException {
+    loadConfig();
+    return mBrowser;
+  }
+  
 
   /**
    * Loads the config if the config was not yet loaded or if the file has changed.
@@ -115,6 +134,9 @@ public class XmlDesktopConfig implements DesktopConfig, DesktopConstants {
 
       node = XmlToolkit.getChild(config, "port");
       mPort = (node == null) ? DEFAULT_PORT : XmlToolkit.getTextAsInt(node);
+
+      node = XmlToolkit.getChild(config, "browser");
+      mBrowser = (node == null) ? null : XmlToolkit.getText(node, false, true);
       
       mConfigFileLastModified = lastModified;
     }

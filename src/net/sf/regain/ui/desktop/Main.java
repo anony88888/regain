@@ -86,7 +86,7 @@ public class Main implements DesktopConstants {
     LOG_DIR.mkdir();
     PropertyConfigurator.configure(logConfigFile.getAbsolutePath());
     mLog.info("Logging initialized");
-    
+
     // Initialize the search mask
     SimplePageRequest.setInitParameter("searchConfigFile", "conf/SearchConfiguration.xml");
     SimplePageRequest.setInitParameter("webDir", "web");

@@ -118,15 +118,19 @@ public class TrayIconManager {
     menu.add(item);
     
     ImageIcon icon = new ImageIcon(getClass().getResource("regain_icon_16.gif"));
+
+    // NOTE: The SystemTray must be created get before the TrayIcon is created.
+    //       Otherwise a UnsatisfiedLinkError will raise on linux systems
+    SystemTray tray = SystemTray.getDefaultSystemTray();
     
     mTrayIcon = new TrayIcon(icon, "regain", menu);
+    mTrayIcon.setIconAutoSize(true);
     mTrayIcon.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent evt) {
         DesktopToolkit.openPageInBrowser("searchinput.jsp");
       }
     });
     
-    SystemTray tray = SystemTray.getDefaultSystemTray();
     tray.addTrayIcon(mTrayIcon);
   }
 

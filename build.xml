@@ -61,7 +61,7 @@
     <fileset dir="lib">
       <include name="*.jar"/>
     </fileset>
-    <fileset dir="lib/win">
+    <fileset dir="lib/${platform}">
       <include name="*.jar"/>
     </fileset>
   </path>
@@ -174,12 +174,19 @@
   <target name="prepare">
     <echo message="Extracting the lib jars ..." />
     <delete dir="temp/included-lib-classes"/>
-    <mkdir dir="temp/included-lib-classes"/>
-    <unjar dest="temp/included-lib-classes">
+    <mkdir dir="temp/included-lib-classes/common"/>
+    <unjar dest="temp/included-lib-classes/common">
       <fileset dir="lib">
         <include name="*.jar"/>
       </fileset>
+    </unjar>
+    <unjar dest="temp/included-lib-classes/win">
       <fileset dir="lib/win">
+        <include name="*.jar"/>
+      </fileset>
+    </unjar>
+    <unjar dest="temp/included-lib-classes/linux">
+      <fileset dir="lib/linux">
         <include name="*.jar"/>
       </fileset>
     </unjar>
@@ -288,23 +295,32 @@
       <fileset dir="txt" includes="SearchConfiguration.xml"/>
     </copy>
 
-    <copy todir="temp/runtime/desktop">
+    <copy todir="temp/runtime/desktop/win">
       <fileset dir="lib" includes="jacob.dll"/>
       <fileset dir="lib/win" includes="tray.dll"/>
     </copy>
-    <copy todir="temp/runtime/desktop/conf/default">
+    <copy todir="temp/runtime/desktop/linux">
+      <fileset dir="lib/linux" includes="libtray.so"/>
+    </copy>
+    <copy todir="temp/runtime/desktop/win/conf/default">
       <fileset dir="txt" includes="DesktopConfiguration.xml"/>
       <fileset dir="txt" includes="CrawlerConfiguration.xml"/>
       <fileset dir="txt" includes="SearchConfiguration.xml"/>
       <fileset dir="txt" includes="log4j.properties"/>
     </copy>
-    <copy todir="temp/runtime/desktop/web">
+    <copy todir="temp/runtime/desktop/linux/conf/default">
+      <fileset dir="temp/runtime/desktop/win/conf/default"/>
+    </copy>
+    <copy todir="temp/runtime/desktop/win/web">
       <fileset dir="web">
         <exclude name="SearchLib.tld"/>
         <exclude name="Web-inf"/>
         <exclude name="Web-inf/*"/>
         <exclude name="**/CVS/*"/>
       </fileset>
+    </copy>
+    <copy todir="temp/runtime/desktop/linux/web">
+      <fileset dir="temp/runtime/desktop/win/web"/>
     </copy>
 
     <!-- Create the preparator jars -->
@@ -391,8 +407,13 @@
     </antcall>      
 
     <!-- Copy the preparator jars to the desktop runtime, too -->
-    <copy todir="temp/runtime/desktop/preparator">
+    <copy todir="temp/runtime/desktop/win/preparator">
       <fileset dir="temp/runtime/crawler/preparator"/>
+    </copy>
+    <copy todir="temp/runtime/desktop/linux/preparator">
+      <fileset dir="temp/runtime/crawler/preparator">
+        <exclude name="JacobMsOfficePreparators.jar"/>
+      </fileset>
     </copy>
   </target>
 
@@ -422,32 +443,52 @@
   <target name="runtime" depends="runtime-fast">
     <echo message="Creating the jars ..." />
 
-    <jar jarfile="temp/runtime/desktop/${programname.file}.jar"
+    <fileset id="desktop-common-jars" dir="temp/included-lib-classes/common">
+      <include name="org/apache/lucene/**"/>
+      <include name="org/apache/log4j/**"/>
+      <include name="org/apache/regexp/**"/>
+    
+      <!-- XML stuff -->
+      <include name="javax/xml/**"/>
+      <include name="org/w3c/dom/**"/>
+      <include name="org/apache/xerces/**"/>
+
+      <!-- desktop specific stuff -->
+      <include name="simple/**"/>
+    </fileset>
+    <fileset id="desktop-common-classes" dir="temp/classes">
+      <exclude name="net/sf/regain/crawler/preparator/**"/>
+      <exclude name="net/sf/regain/util/sharedtag/taglib/**"/>
+      <exclude name="net/sf/regain/ui/server/**"/>
+    </fileset>
+    
+    <jar jarfile="temp/runtime/desktop/win/${programname.file}.jar"
          compress="false"
          index="true">
       <manifest>
         <attribute name="Main-Class" value="net.sf.regain.ui.desktop.Main"/>
       </manifest>
-      <fileset dir="temp/included-lib-classes">
-        <include name="org/apache/lucene/**"/>
-        <include name="org/apache/log4j/**"/>
-        <include name="org/apache/regexp/**"/>
-        
-        <!-- XML stuff -->
-        <include name="javax/xml/**"/>
-        <include name="org/w3c/dom/**"/>
-        <include name="org/apache/xerces/**"/>
-
-        <!-- desktop specific stuff -->
-        <include name="simple/**"/>
+      <fileset refid="desktop-common-jars"/>
+      <fileset refid="desktop-common-classes"/>
+      <fileset dir="temp/included-lib-classes/win">
         <include name="org/jdesktop/jdic/init/**"/>
         <include name="org/jdesktop/jdic/tray/**"/>
       </fileset>
-      <fileset dir="temp/classes">
-        <exclude name="net/sf/regain/crawler/preparator/**"/>
-        <exclude name="net/sf/regain/util/sharedtag/taglib/**"/>
-        <exclude name="net/sf/regain/ui/server/**"/>
+    </jar>
+    <jar jarfile="temp/runtime/desktop/linux/${programname.file}.jar"
+         compress="false"
+         index="true">
+      <manifest>
+        <attribute name="Main-Class" value="net.sf.regain.ui.desktop.Main"/>
+      </manifest>
+      <fileset refid="desktop-common-jars"/>
+      <fileset refid="desktop-common-classes"/>
+      <!--
+      <fileset dir="temp/included-lib-classes/linux">
+        <include name="org/jdesktop/jdic/init/**"/>
+        <include name="org/jdesktop/jdic/tray/**"/>
       </fileset>
+      -->
     </jar>
     
     <jar jarfile="temp/runtime/crawler/${programname.file}-crawler.jar"
@@ -595,11 +636,12 @@
    +-->
   <target name="run-desktop-fast" depends="runtime-fast">
     <java classname="net.sf.regain.ui.desktop.Main"
-          dir="temp/runtime/desktop"
+          dir="temp/runtime/desktop/${platform}"
           fork="true">
           <!--
           jvm="${java-1_2_2.dir}/bin/java"
           -->
+      <jvmarg value="-Djava.library.path=."/>
       <jvmarg value="-Xmx256M"/>
       <classpath>
         <path refid="classpath"/>
@@ -622,15 +664,27 @@
                   dir="temp/runtime/crawler"/>
       <zipfileset prefix="${programname.file}_v${version}/runtime/search"
                   dir="temp/runtime/search"/>
-      <zipfileset prefix="${programname.file}_v${version}/txt"
-                  dir="txt">
-        <include name="*.pdf"/>
-      </zipfileset>
       <zipfileset prefix="${programname.file}_v${version}"
                   dir="txt"
                   includes="license.txt"/>
     </zip>
 
+    <zip destfile="temp/public/${programname.file}_v${version}_destop_win.zip">
+      <zipfileset prefix="${programname.file}_v${version}/"
+                  dir="temp/runtime/desktop/win"/>
+      <zipfileset prefix="${programname.file}_v${version}"
+                  dir="txt"
+                  includes="license.txt"/>
+    </zip>
+
+    <zip destfile="temp/public/${programname.file}_v${version}_destop_linux.zip">
+      <zipfileset prefix="${programname.file}_v${version}/"
+                  dir="temp/runtime/desktop/linux"/>
+      <zipfileset prefix="${programname.file}_v${version}"
+                  dir="txt"
+                  includes="license.txt"/>
+    </zip>
+    
     <zip destfile="temp/public/${programname.file}_v${version}_doc.zip">
       <zipfileset prefix="${programname.file}_v${version}/doc"
                   dir="temp/doc"/>

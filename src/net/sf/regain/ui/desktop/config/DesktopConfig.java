@@ -51,5 +51,14 @@ public interface DesktopConfig {
    * @throws RegainException If loading the config failed.
    */
   public int getPort() throws RegainException;
+  
+  /**
+   * Gets the executable of the browser that should be used for showing web
+   * pages. Returns <code>null</code> if the browser should be auto-detected. 
+   * 
+   * @return The executable of the browser.
+   * @throws RegainException If loading the config failed.
+   */
+  public String getBrowser() throws RegainException;
 
 }

@@ -244,6 +244,10 @@ public class BrowserLauncher {
    */
   private BrowserLauncher() { }
   
+  public static void setBrowser(String customBrowser) {
+    browser = customBrowser;
+  }
+  
   /**
    * Called by a static initializer to load any classes, fields, and methods required at runtime
    * to locate the user's web browser.

@@ -46,7 +46,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Enthält Hilfsmethoden für die Extraktion von Daten aus dem DOM-Dokument einer
+ * Enthï¿½lt Hilfsmethoden fï¿½r die Extraktion von Daten aus dem DOM-Dokument einer
  * XML-Datei.
  *
  * @author Til Schneider, www.murfman.de
@@ -188,16 +188,16 @@ public class XmlToolkit {
 
   /**
    * Extrahiert den Text eines Knotens, wandelt ihn in einen boolean und gibt das
-   * Ergebnis zurück.
+   * Ergebnis zurï¿½ck.
    *
-   * @param node Der Knoten, dessen Text zurückgeben werden soll.
+   * @param node Der Knoten, dessen Text zurï¿½ckgeben werden soll.
    *
    * @return Der Text des Knotens als boolean.
    * @throws RegainException Falls der Knoten keinen Text hat oder falls der
    *         Text nicht <CODE>true</CODE> oder <CODE>false</CODE> ist.
    */
   public static boolean getTextAsBoolean(Node node) throws RegainException {
-    String asString = getText(node, true).trim();
+    String asString = getText(node, true, true);
     if (asString.equalsIgnoreCase("true")) {
       return true;
     } else if (asString.equalsIgnoreCase("false")) {
@@ -211,16 +211,16 @@ public class XmlToolkit {
 
   /**
    * Extrahiert den Text eines Knotens, wandelt ihn in ein int und gibt das
-   * Ergebnis zurück.
+   * Ergebnis zurï¿½ck.
    *
-   * @param node Der Knoten, dessen Text zurückgeben werden soll.
+   * @param node Der Knoten, dessen Text zurï¿½ckgeben werden soll.
    *
    * @return Der Text des Knotens als int.
    * @throws RegainException Falls der Knoten keinen Text hat oder falls der
    *         Text keine Ganzzahl ist.
    */
   public static int getTextAsInt(Node node) throws RegainException {
-    String asString = getText(node, true).trim();
+    String asString = getText(node, true, true);
     try {
       return Integer.parseInt(asString);
     }
@@ -233,16 +233,16 @@ public class XmlToolkit {
 
   /**
    * Extrahiert den Text eines Knotens, wandelt ihn in ein double und gibt das
-   * Ergebnis zurück.
+   * Ergebnis zurï¿½ck.
    *
-   * @param node Der Knoten, dessen Text zurückgeben werden soll.
+   * @param node Der Knoten, dessen Text zurï¿½ckgeben werden soll.
    *
    * @return Der Text des Knotens als double.
    * @throws RegainException Falls der Knoten keinen Text hat oder falls der
    *         Text kein Gleitkommawert ist.
    */
   public static double getTextAsDouble(Node node) throws RegainException {
-    String asString = getText(node, true).trim();
+    String asString = getText(node, true, true);
     try {
       return Double.parseDouble(asString);
     }
@@ -255,9 +255,9 @@ public class XmlToolkit {
 
   /**
    * Extrahiert den Text eines Knotens, wandelt ihn in ein String-Array um, das
-   * alle durch Leerzeichen getrennte Worte enthält.
+   * alle durch Leerzeichen getrennte Worte enthï¿½lt.
    *
-   * @param node Der Knoten, dessen Text zurückgeben werden soll.
+   * @param node Der Knoten, dessen Text zurï¿½ckgeben werden soll.
    * @param mandatory Gibt an, ob eine Exception geworfen werden soll, falls der
    *        Text fehlt.
    *
@@ -284,27 +284,27 @@ public class XmlToolkit {
 
 
   /**
-   * Gibt den Text eines Knotens zurück und prüft, ob er eine gültige URL ist.
+   * Gibt den Text eines Knotens zurï¿½ck und prï¿½ft, ob er eine gï¿½ltige URL ist.
    * <p>
-   * Der Text wird als gültige URL angesehen, wenn er keinen Backslash enthält.
+   * Der Text wird als gï¿½ltige URL angesehen, wenn er keinen Backslash enthï¿½lt.
    *
-   * @param node Der Knoten, dessen Text als URL zurückgeben werden soll.
+   * @param node Der Knoten, dessen Text als URL zurï¿½ckgeben werden soll.
    *
    * @return Der Text des Knotens.
    * @throws RegainException Wenn der Knoten keinen Text hat oder wenn der Text
-   *         keine gültige URL ist.
+   *         keine gï¿½ltige URL ist.
    */
   public static String getTextAsUrl(Node node) throws RegainException {
-  	String asString = getText(node, true);
+    String asString = getText(node, true);
 
-  	// Prüfen, ob der Text einen Backslash enthält
-  	if (asString.indexOf('\\') != -1) {
+    // Check whether the text contains a back slash
+    if (asString.indexOf('\\') != -1) {
       throw new RegainException("Text of node '" + node.getNodeName()
-        + "' is not a valid URL. Use normal slashes instead of backslashes: '"
-        + asString + "'");
-  	}
+              + "' is not a valid URL. Use normal slashes instead of backslashes: '"
+              + asString + "'");
+    }
 
-  	return asString;
+    return asString;
   }
 
 
@@ -323,16 +323,16 @@ public class XmlToolkit {
     return textNode.getNodeValue();
   }
 
-
+  
   /**
-   * Gibt den Text eines Knotens zurück.
+   * Gibt den Text eines Knotens zurï¿½ck.
    * <p>
-   * Wenn der Knoten keinen Text hat, dann entscheidet <CODE>mandatory</CODE> darüber,
+   * Wenn der Knoten keinen Text hat, dann entscheidet <CODE>mandatory</CODE> darï¿½ber,
    * ob eine Exception geworfen (<CODE>mandatory</CODE> ist <CODE>true</CODE>) oder
-   * ob <CODE>null</CODE> zurückgegeben werden soll (<CODE>mandatory</CODE> ist
+   * ob <CODE>null</CODE> zurï¿½ckgegeben werden soll (<CODE>mandatory</CODE> ist
    * <CODE>false</CODE>)
    *
-   * @param node Der Knoten, dessen Text zurückgeben werden soll.
+   * @param node Der Knoten, dessen Text zurï¿½ckgeben werden soll.
    * @param mandatory Gibt an, ob eine Exception geworfen werden soll, falls der
    *        Text fehlt.
    *
@@ -343,7 +343,35 @@ public class XmlToolkit {
   public static String getText(Node node, boolean mandatory)
     throws RegainException
   {
+    return getText(node, mandatory, false);
+  }
+  
+
+  /**
+   * Gibt den Text eines Knotens zurï¿½ck.
+   * <p>
+   * Wenn der Knoten keinen Text hat, dann entscheidet <CODE>mandatory</CODE> darï¿½ber,
+   * ob eine Exception geworfen (<CODE>mandatory</CODE> ist <CODE>true</CODE>) oder
+   * ob <CODE>null</CODE> zurï¿½ckgegeben werden soll (<CODE>mandatory</CODE> ist
+   * <CODE>false</CODE>)
+   *
+   * @param node Der Knoten, dessen Text zurï¿½ckgeben werden soll.
+   * @param mandatory Gibt an, ob eine Exception geworfen werden soll, falls der
+   *        Text fehlt.
+   * @param trimmed Specifies whether the text should be trimmed.
+   *
+   * @return Der Text des Knotens.
+   * @throws RegainException Wenn der Knoten keinen Text hat und
+   *         <CODE>mandatory</CODE> <CODE>true</CODE> ist.
+   */
+  public static String getText(Node node, boolean mandatory, boolean trimmed)
+    throws RegainException
+  {
     String text = getText(node);
+    
+    if (trimmed && (text != null)) {
+      text = text.trim();
+    }
     
     if (mandatory && ((text == null) || (text.length() == 0))) {
       throw new RegainException("Node '" + node.getNodeName() + "' has no text");
@@ -378,17 +406,17 @@ public class XmlToolkit {
   
   
   /**
-   * Gibt den Kindknoten mit einem bestimmten Namen zurück.
+   * Gibt den Kindknoten mit einem bestimmten Namen zurï¿½ck.
    * <p>
    * Falls der Knoten mehrere Kinder mit diesem Namen hat, so wird das erste Kind
-   * zurückgegeben.
+   * zurï¿½ckgegeben.
    * <p>
    * Falls der Knoten kein Kind mit diesem Name hat, dann entscheidet
-   * <CODE>mandatory</CODE> darüber, ob eine Exception geworfen
+   * <CODE>mandatory</CODE> darï¿½ber, ob eine Exception geworfen
    * (<CODE>mandatory</CODE> ist <CODE>true</CODE>) oder ob <CODE>null</CODE>
-   * zurückgegeben werden soll (<CODE>mandatory</CODE> ist <CODE>false</CODE>)
+   * zurï¿½ckgegeben werden soll (<CODE>mandatory</CODE> ist <CODE>false</CODE>)
    *
-   * @param node Der Knoten, dessen Kind zurückgegeben werden soll.
+   * @param node Der Knoten, dessen Kind zurï¿½ckgegeben werden soll.
    * @param childNodeName Der Name des Kindknotens.
    * @param mandatory Gibt an, ob eine Exception geworfen werden soll, falls der
    *        Knoten kein Kind mit diesem Namen hat.
@@ -413,12 +441,12 @@ public class XmlToolkit {
 
 
   /**
-   * Gibt alle Kindknoten mit einem bestimmten Namen zurück.
+   * Gibt alle Kindknoten mit einem bestimmten Namen zurï¿½ck.
    * <p>
    * Falls der Knoten kein Kind mit diesem Namen hat, so wird ein leeres Array
-   * zurückgegeben.
+   * zurï¿½ckgegeben.
    *
-   * @param node Der Knoten, dessen Kinder zurückgegeben werden soll.
+   * @param node Der Knoten, dessen Kinder zurï¿½ckgegeben werden soll.
    * @param childNodeName Der Name der Kindknoten.
    *
    * @return Die Kindknoten.
@@ -525,10 +553,10 @@ public class XmlToolkit {
 
 
   /**
-   * Gibt den Attributwert eines Knotens als <CODE>boolean</CODE> zurück.
+   * Gibt den Attributwert eines Knotens als <CODE>boolean</CODE> zurï¿½ck.
    *
-   * @param node Der Knoten, dessen Attribut zurückgegeben werden soll.
-   * @param attributeName Der Name des Attributs, das zurückgegeben werden soll.
+   * @param node Der Knoten, dessen Attribut zurï¿½ckgegeben werden soll.
+   * @param attributeName Der Name des Attributs, das zurï¿½ckgegeben werden soll.
    *
    * @return Den Attributwert als <CODE>boolean</CODE>.
    * @throws RegainException Falls der Knoten kein solches Attribut hat oder
@@ -584,10 +612,10 @@ public class XmlToolkit {
 
 
   /**
-   * Gibt den Attributwert eines Knotens als <CODE>int</CODE> zurück.
+   * Gibt den Attributwert eines Knotens als <CODE>int</CODE> zurï¿½ck.
    *
-   * @param node Der Knoten, dessen Attribut zurückgegeben werden soll.
-   * @param attributeName Der Name des Attributs, das zurückgegeben werden soll.
+   * @param node Der Knoten, dessen Attribut zurï¿½ckgegeben werden soll.
+   * @param attributeName Der Name des Attributs, das zurï¿½ckgegeben werden soll.
    *
    * @return Den Attributwert als <CODE>int</CODE>.
    * @throws RegainException Falls der Knoten kein solches Attribut hat oder
@@ -627,10 +655,10 @@ public class XmlToolkit {
 
 
   /**
-   * Gibt den Attributwert eines Knotens zurück.
+   * Gibt den Attributwert eines Knotens zurï¿½ck.
    *
-   * @param node Der Knoten, dessen Attribut zurückgegeben werden soll.
-   * @param attributeName Der Name des Attributs, das zurückgegeben werden soll.
+   * @param node Der Knoten, dessen Attribut zurï¿½ckgegeben werden soll.
+   * @param attributeName Der Name des Attributs, das zurï¿½ckgegeben werden soll.
    * @param mandatory Gibt an, ob eine Exception geworfen werden soll, falls der
    *        Knoten kein solches Attribut hat.
    *
