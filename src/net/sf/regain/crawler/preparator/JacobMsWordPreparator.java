@@ -111,6 +111,7 @@ public class JacobMsWordPreparator extends AbstractPreparator {
       ComThread.InitSTA();
 
       // Neue Word-Applikation erstellen
+      mLog.info("Starting MS Word");
       mWordApplication = new Application();
 
       // Word unsichtbar machen
@@ -275,6 +276,7 @@ public class JacobMsWordPreparator extends AbstractPreparator {
       try {
         // Word schlieﬂen
         mWordApplication.quit();
+        mLog.info("Closed MS Word");
       }
       catch (Throwable thr) {
         throw new RegainException("Using COM failed.", thr);
