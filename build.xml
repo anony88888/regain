@@ -486,8 +486,8 @@
     </fileset>
     <fileset id="desktop-common-classes" dir="temp/classes">
       <exclude name="net/sf/regain/crawler/preparator/**"/>
-      <exclude name="net/sf/regain/util/sharedtag/taglib/**"/>
       <exclude name="net/sf/regain/ui/server/**"/>
+      <exclude name="net/sf/regain/util/sharedtag/taglib/**"/>
     </fileset>
     
     <jar jarfile="temp/runtime/desktop/win/${programname.file}.jar"
@@ -553,11 +553,10 @@
     <war destfile="temp/runtime/search/webapps/${programname.file}.war"
          webxml="web/Web-inf/web.xml">
       <classes dir="temp/classes">
-        <include name="net/sf/regain/*.class"/>
-        <include name="net/sf/regain/search/**"/>
-        <include name="net/sf/regain/ui/server/**"/>
-        <include name="net/sf/regain/util/sharedtag/**"/>
+        <exclude name="net/sf/regain/crawler/**"/>
+        <exclude name="net/sf/regain/ui/desktop/**"/>
         <exclude name="net/sf/regain/util/sharedtag/simple/**"/>
+        <exclude name="net/sf/regain/util/ui/**"/>
       </classes>
       <lib dir="lib">
         <include name="${lucene.jar}"/>
@@ -565,9 +564,8 @@
         <include name="${log4j.jar}"/>
       </lib>
       <fileset dir="web">
-        <include name="*.tld"/>
-        <include name="*.jsp"/>
-        <exclude name="settings.jsp"/>
+        <include name="*"/>
+        <include name="img/*"/>
       </fileset>
       <fileset dir="temp/runtime/desktop/win/web">
         <include name="version"/>
@@ -821,6 +819,9 @@
     <copy todir="${deploy-target.dir}/${programname.file}/WEB-INF/classes">
       <fileset dir="temp/classes">
         <exclude name="net/sf/regain/crawler/**"/>
+        <exclude name="net/sf/regain/ui/desktop/**"/>
+        <exclude name="net/sf/regain/util/sharedtag/simple/**"/>
+        <exclude name="net/sf/regain/util/ui/**"/>
       </fileset>
     </copy>
 
