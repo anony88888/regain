@@ -211,7 +211,7 @@ public class IndexSearcherManager {
       File exclusionListFile = new File(mWorkingIndexDir, "exclusionList.txt");
       String[] exclusionList = readWordListFromFile(exclusionListFile);
       
-      // NOTE: Make shure to use the same analyzer in the spider
+      // NOTE: Make shure to use the same analyzer in the crawler
       mAnalyzer = RegainToolkit.createAnalyzer(analyzerType, stopWordList,
                                                exclusionList);
     }

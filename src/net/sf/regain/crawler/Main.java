@@ -61,7 +61,7 @@ public class Main {
    */
   public static void main(String[] args) {
     // Kommandozeilenparameter lesen
-    String spiderConfigFileName = "CrawlerConfiguration.xml";
+    String crawlerConfigFileName = "CrawlerConfiguration.xml";
     String logConfigFileName = LOG4J_PROP_FILE_NAME;
     String[] onlyEntriesArr = null;
     boolean updateIndex = true;
@@ -79,7 +79,7 @@ public class Main {
       }
       else if (args[i].equalsIgnoreCase("-config")) {
         i++;
-        spiderConfigFileName = readParam(args, i);
+        crawlerConfigFileName = readParam(args, i);
       }
       else if (args[i].equalsIgnoreCase("-logConfig")) {
         i++;
@@ -101,8 +101,8 @@ public class Main {
     PropertyConfigurator.configure(logConfigFile.getAbsolutePath());
     mCat.info("Logging initialized");
     
-    // Load spider configuration
-    File xmlFile = new File(spiderConfigFileName);
+    // Load crawler configuration
+    File xmlFile = new File(crawlerConfigFileName);
     Configuration config;
     try {
       config = new XmlConfiguration(xmlFile);
@@ -115,23 +115,23 @@ public class Main {
     // Proxy settings
     initProxy(config);
 
-    // Create spider
-    Crawler spider = null;
+    // Create crawler
+    Crawler crawler = null;
     try {
-      spider = new Crawler(config);
+      crawler = new Crawler(config);
     }
     catch (RegainException exc) {
-      mCat.error("There was an error when initializing the spider!", exc);
+      mCat.error("There was an error when initializing the crawler!", exc);
     }
 
-    // Let the spider do its job
-    if (spider != null) {
-      spider.run(updateIndex, onlyEntriesArr);
+    // Let the crawler do its job
+    if (crawler != null) {
+      crawler.run(updateIndex, onlyEntriesArr);
       
       // Returncode ermitteln
       int returnCode;
-      if (spider.getErrorCount() > 0) {
-        if (spider.getFatalErrorCount() > 0) {
+      if (crawler.getErrorCount() > 0) {
+        if (crawler.getFatalErrorCount() > 0) {
           // We return 100 for fatal errors
           returnCode = 100;
         } else {
@@ -195,7 +195,7 @@ public class Main {
       "  -onlyEntries <CSV>: The white list entries to use, separated by comma (,)\n" +
       "                      (Default: all entries)" +
       "  -config <file>:     The configuration file to use\n" +
-      "                      (Default: SpiderConfiguration.xml)" +
+      "                      (Default: CrawlerConfiguration.xml)" +
       "  -logConfig <file>:  The logging configuration file to use\n" +
       "                      (Default: log4j.properties)");
     

@@ -131,7 +131,7 @@ public class Crawler {
   private UrlPattern[] mDirectoryParserUrlPatternArr;
   
   /** Der Profiler der die gesamten Crawler-Jobs mißt. */
-  private Profiler mSpiderJobProfiler = new Profiler("Whole spider jobs", "jobs");
+  private Profiler mCrawlerJobProfiler = new Profiler("Whole crawler jobs", "jobs");
   /** Der Profiler der das Durchsuchen von HTML-Dokumenten mißt. */
   private Profiler mHtmlParsingProfiler
     = new Profiler("Parsed HTML documents", "docs");
@@ -295,7 +295,7 @@ public class Crawler {
    *        werden alle Einträge bearbeitet.
    */
   public void run(boolean updateIndex, String[] onlyEntriesArr) {
-    mCat.info("Starting spidering...");
+    mCat.info("Starting crawling...");
     
     // Initialize the IndexWriterManager if building the index is wanted
     IndexWriterManager indexManager = null;
@@ -327,7 +327,7 @@ public class Crawler {
     
     // Work in the job list
     while (! mJobList.isEmpty()) {
-      mSpiderJobProfiler.startMeasuring();
+      mCrawlerJobProfiler.startMeasuring();
       
       CrawlerJob job = (CrawlerJob) mJobList.removeFirst();
       String url = job.getUrl();
@@ -344,7 +344,7 @@ public class Crawler {
             if (shouldBeParsed) {
               parseDirectory(file);
             }
-            mSpiderJobProfiler.stopMeasuring(0);
+            mCrawlerJobProfiler.stopMeasuring(0);
             continue;
           }
         }
@@ -403,7 +403,7 @@ public class Crawler {
       rawDocument.dispose();
 
       // Zeitmessung stoppen
-      mSpiderJobProfiler.stopMeasuring(rawDocument.getLength());
+      mCrawlerJobProfiler.stopMeasuring(rawDocument.getLength());
     }
     
     // Nicht mehr vorhandene Dokumente aus dem Index löschen
@@ -464,7 +464,7 @@ public class Crawler {
       }
     }
 
-    mCat.info("... Finished spidering\n");
+    mCat.info("... Finished crawling\n");
 
     mCat.info(Profiler.getProfilerResults());
 
