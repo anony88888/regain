@@ -33,7 +33,7 @@ import net.sf.regain.crawler.CrawlerToolkit;
 /**
  * Thread, der einen HTTP-Download übernimmt.
  * <p>
- * Hilfsklasse für {@link RawDocument#loadContent(String)}.
+ * Hilfsklasse für {@link RawDocument}.
  * 
  * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
  */
