@@ -672,7 +672,7 @@
       </zipfileset>
     </zip>
 
-    <zip destfile="temp/public/${programname.file}_v${version}_destop_win.zip">
+    <zip destfile="temp/public/${programname.file}_v${version}_desktop_win.zip">
       <zipfileset prefix="${programname.file}_v${version}/"
                   dir="temp/runtime/desktop/win"/>
       <zipfileset prefix="${programname.file}_v${version}"
@@ -683,7 +683,7 @@
       </zipfileset>
     </zip>
 
-    <zip destfile="temp/public/${programname.file}_v${version}_destop_linux.zip">
+    <zip destfile="temp/public/${programname.file}_v${version}_desktop_linux.zip">
       <zipfileset prefix="${programname.file}_v${version}/"
                   dir="temp/runtime/desktop/linux"/>
       <zipfileset prefix="${programname.file}_v${version}"
