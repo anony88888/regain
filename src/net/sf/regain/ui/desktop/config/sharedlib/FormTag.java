@@ -34,17 +34,19 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.XmlToolkit;
 import net.sf.regain.ui.desktop.DesktopConstants;
+import net.sf.regain.ui.desktop.DesktopToolkit;
+import net.sf.regain.ui.desktop.config.DesktopConfig;
 import net.sf.regain.util.sharedtag.PageRequest;
 import net.sf.regain.util.sharedtag.PageResponse;
 import net.sf.regain.util.sharedtag.SharedTag;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * Generates the settings form. Saves the new settings sent to the page and
@@ -80,25 +82,30 @@ public class FormTag extends SharedTag implements DesktopConstants {
     String[] dirblacklist;
     String[] sitelist;
     String[] siteblacklist;
+    int port;
     if (interval == -1) {
       // This is the first call -> Load the settings
-      Document desktopDoc = XmlToolkit.loadXmlDocument(DESKTOP_CONFIG_FILE);
+      DesktopConfig desktopConfig = DesktopToolkit.getDesktopConfig();
       Document crawlerDoc = XmlToolkit.loadXmlDocument(CRAWLER_CONFIG_FILE);
       
-      interval      = getInterval(desktopDoc);
+      interval      = desktopConfig.getInterval();
       dirlist       = getStartlistEntries(crawlerDoc, FILE_PROTOCOL);
       dirblacklist  = getBlacklistEntries(crawlerDoc, FILE_PROTOCOL);
       sitelist      = getStartlistEntries(crawlerDoc, HTTP_PROTOCOL);
       siteblacklist = getBlacklistEntries(crawlerDoc, HTTP_PROTOCOL);
+      port          = desktopConfig.getPort();
     } else {
       // There were new settings sent -> Check the input
       ArrayList errorList = new ArrayList();
       
+      // Get the input
       dirlist       = request.getParametersNotNull("dirlist");
       dirblacklist  = request.getParametersNotNull("dirblacklist");
       sitelist      = request.getParametersNotNull("sitelist");
       siteblacklist = request.getParametersNotNull("siteblacklist");
+      port          = request.getParameterAsInt("port", DEFAULT_PORT);
 
+      // Check the input
       checkDirectoryList(errorList, dirlist);
       checkDirectoryList(errorList, dirblacklist);
       checkWebsiteList(errorList, sitelist);
@@ -106,7 +113,8 @@ public class FormTag extends SharedTag implements DesktopConstants {
       
       if (errorList.isEmpty()) {
         // There were no errors -> Save the values
-        saveSettings(interval, dirlist, dirblacklist, sitelist, siteblacklist);
+        saveSettings(interval, dirlist, dirblacklist, sitelist, siteblacklist, port);
+        DesktopToolkit.checkWebserver();
         response.print("Ihre Einstellungen wurden gespeichert!");
       } else {
         // There were errors -> Show them
@@ -124,6 +132,7 @@ public class FormTag extends SharedTag implements DesktopConstants {
     request.setContextAttribute("settings.dirblacklist", dirblacklist);
     request.setContextAttribute("settings.sitelist", sitelist);
     request.setContextAttribute("settings.siteblacklist", siteblacklist);
+    request.setContextAttribute("settings.port", Integer.toString(port));
     
     String action = getParameter("action", true);
     response.print("<form name=\"settings\" action=\"" + action + "\" " +
@@ -188,22 +197,6 @@ public class FormTag extends SharedTag implements DesktopConstants {
         errorList.add("'" + sitelist[i] + "' ist keine HTTP URL");
       }
     }
-  }
-  
-  
-  /**
-   * Gets the index update interval from the desktop configuration.
-   * 
-   * @param desktopDoc The document that holds the desktop configuration.
-   * @return The index update interval.
-   * @throws RegainException If reading the config failed.
-   */
-  private int getInterval(Document desktopDoc)
-    throws RegainException
-  {
-    Element config = desktopDoc.getDocumentElement();
-    Node interval = XmlToolkit.getChild(config, "interval", true);
-    return XmlToolkit.getTextAsInt(interval);
   }
 
   
@@ -280,10 +273,11 @@ public class FormTag extends SharedTag implements DesktopConstants {
    * @param dirblacklist The list of directories that should be excluded.
    * @param sitelist The list of websites that should be indexed.
    * @param siteblacklist The list of websites that should be excluded.
+   * @param port The port of the webserver.
    * @throws RegainException If saving the config failed.
    */
   private void saveSettings(int interval, String[] dirlist,
-    String[] dirblacklist, String[] sitelist, String[] siteblacklist)
+    String[] dirblacklist, String[] sitelist, String[] siteblacklist, int port)
     throws RegainException
   {
     Node node;
@@ -340,6 +334,10 @@ public class FormTag extends SharedTag implements DesktopConstants {
       String url = HTTP_PROTOCOL + siteblacklist[i];
       node = XmlToolkit.addChildWithText(crawlerDoc, blacklistNode, "prefix", url);
     }
+    
+    // Set the port
+    Node portNode = XmlToolkit.getOrAddChild(desktopDoc, desktopConfig, "port");
+    XmlToolkit.setText(desktopDoc, portNode, Integer.toString(port));
     
     // Pretty print the nodes
     XmlToolkit.prettyPrint(crawlerDoc, startlistNode);

@@ -28,27 +28,22 @@
 package net.sf.regain.ui.desktop.config.sharedlib;
 
 import net.sf.regain.RegainException;
-import net.sf.regain.util.io.Localizer;
-import net.sf.regain.util.io.MultiLocalizer;
 import net.sf.regain.util.sharedtag.PageRequest;
 import net.sf.regain.util.sharedtag.PageResponse;
 import net.sf.regain.util.sharedtag.SharedTag;
 
 /**
- * Generates a editable list.
+ * Generates a textfield for a certain setting.
  * <p>
  * Tag Parameters:
  * <ul>
  * <li><code>name</code>: The name of the setting.</li>
+ * <li><code>size</code>: The size of the textfield.</li>
  * </ul>
  *
  * @author Til Schneider, www.murfman.de
  */
-public class EditlistTag extends SharedTag {
-
-  /** The MultiLocalizer for this class. */
-  private static MultiLocalizer mMultiLocalizer = new MultiLocalizer(EditlistTag.class);
-
+public class TextTag extends SharedTag {
 
   /**
    * Called when the parser reaches the end tag.
@@ -60,35 +55,13 @@ public class EditlistTag extends SharedTag {
   public void printEndTag(PageRequest request, PageResponse response)
     throws RegainException
   {
-    Localizer localizer = mMultiLocalizer.getLocalizer(request.getLocale());
+    int size = getParameterAsInt("size", 15);
 
-    // Get the name of the edit list
     String name = getParameter("name", true);
+    String currValue = (String) request.getContextAttribute("settings." + name);
     
-    // Get the current value
-    String[] currValueArr = (String[]) request.getContextAttribute("settings." + name);
-    
-    response.print("<select id=\"" + name + "-list\" name=\"" + name + "\" " +
-        "size=\"5\" onClick=\"showListSelection('" + name + "')\" multiple");
-    String styleSheetClass = getParameter("class");
-    if (styleSheetClass != null) {
-      response.print(" class=\"" + styleSheetClass + "\"");
-    }
-    response.print(">");
-    for (int i = 0; i < currValueArr.length; i++) {
-      response.print("<option>" + currValueArr[i] + "</option>");
-    }
-    response.print("</select><br/>");
-    
-    response.print("<input type=\"text\" id=\"" + name + "-entry\"");
-    if (styleSheetClass != null) {
-      response.print(" class=\"" + styleSheetClass + "\"");
-    }
-    response.print("/>");
-    response.print("<button type=\"button\" onClick=\"addToList('" + name + "')\">"
-        + localizer.msg("add", "Add") + "</button>");
-    response.print("<button type=\"button\" onClick=\"removeFromList('" + name + "')\">"
-        + localizer.msg("remove", "Remove") + "</button>");
+    response.print("<input type=\"text\" size=\"" + size + "\" name=\"" +
+        name + "\" value=\"" + currValue + "\"/>");
   }
-
+  
 }

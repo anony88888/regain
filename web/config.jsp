@@ -46,6 +46,11 @@
           <div class="hint"><search:msg key="website.hint"/></div>
           <config:editlist name="siteblacklist" class="editlist"/>
         </p>
+        
+        <p>
+          <h4><search:msg key="webserver"/></h4>
+          <search:msg key="portNumber"/> <config:text name="port" size="4"/>
+        </p>
     
         <p>
           <br>

@@ -28,23 +28,14 @@
 package net.sf.regain.ui.desktop;
 
 import java.io.File;
-import java.net.ServerSocket;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.util.sharedtag.simple.ExecuterParser;
-import net.sf.regain.util.sharedtag.simple.SharedTagService;
 import net.sf.regain.util.sharedtag.simple.SimplePageRequest;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-
-import simple.http.ProtocolHandler;
-import simple.http.connect.Connection;
-import simple.http.connect.ConnectionFactory;
-import simple.http.load.MapperEngine;
-import simple.http.serve.FileContext;
-import simple.http.serve.HandlerFactory;
 
 /**
  * Starts the desktop search.
@@ -112,21 +103,9 @@ public class Main implements DesktopConstants {
     
     // Start the server
     try {
-      FileContext context = new FileContext(new File("web"));
-      
-      MapperEngine engine = new MapperEngine(context);
-      
-      engine.load("SharedTagService", SharedTagService.class.getName());
-      engine.link("*", "SharedTagService");
-      
-      ProtocolHandler handler = HandlerFactory.getInstance(engine);
-      
-      Connection connection = ConnectionFactory.getConnection(handler);
-
-      mLog.info("Listening on port " + DEFAULT_PORT + "...");
-      connection.connect(new ServerSocket(DEFAULT_PORT));
+      DesktopToolkit.checkWebserver();
     }
-    catch (Exception exc) {
+    catch (RegainException exc) {
       exc.printStackTrace();
       System.exit(1); // Abort
     }

@@ -31,6 +31,7 @@ import java.io.File;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.XmlToolkit;
+import net.sf.regain.ui.desktop.DesktopConstants;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -42,7 +43,7 @@ import org.w3c.dom.Node;
  *
  * @author Til Schneider, www.murfman.de
  */
-public class XmlDesktopConfig implements DesktopConfig {
+public class XmlDesktopConfig implements DesktopConfig, DesktopConstants {
   
   /** The logger for this class */
   private static Logger mLog = Logger.getLogger(XmlDesktopConfig.class);
@@ -55,6 +56,9 @@ public class XmlDesktopConfig implements DesktopConfig {
   
   /** The index update interval. */
   private int mInterval;
+  
+  /**  */
+  private int mPort;
   
   
   /**
@@ -76,10 +80,21 @@ public class XmlDesktopConfig implements DesktopConfig {
    */
   public int getInterval() throws RegainException {
     loadConfig();
-    
     return mInterval;
   }
 
+
+  /**
+   * Gets the port of the webserver.
+   * 
+   * @return The port of the webserver.
+   * @throws RegainException If loading the config failed.
+   */
+  public int getPort() throws RegainException {
+    loadConfig();
+    return mPort;
+  }
+  
 
   /**
    * Loads the config if the config was not yet loaded or if the file has changed.
@@ -97,6 +112,9 @@ public class XmlDesktopConfig implements DesktopConfig {
       
       Node node = XmlToolkit.getChild(config, "interval", true);
       mInterval = XmlToolkit.getTextAsInt(node);
+
+      node = XmlToolkit.getChild(config, "port");
+      mPort = (node == null) ? DEFAULT_PORT : XmlToolkit.getTextAsInt(node);
       
       mConfigFileLastModified = lastModified;
     }

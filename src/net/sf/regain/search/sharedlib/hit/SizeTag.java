@@ -58,7 +58,7 @@ public class SizeTag extends AbstractHitTag {
       try {
         int size = Integer.parseInt(sizeAsString);
 
-        response.print(RegainToolkit.bytesToString(size));
+        response.print(RegainToolkit.bytesToString(size, request.getLocale()));
       } catch (NumberFormatException exc) {
         throw new RegainException("Field 'size' is not a number: '"
           + sizeAsString + "'");

@@ -716,7 +716,22 @@ public class XmlToolkit {
     return childNode;
   }
 
-  
+
+  /**
+   * Gets a child node or creates it if no such node exists. 
+   * 
+   * @param doc The document the node comes from.
+   * @param node The node were to get the child from or where to add the child.
+   * @param childNodeName The name of the child node to get or add.
+   * @return The child node.
+   */
+  public static Node getOrAddChild(Document doc, Node node, String childNodeName) {
+    Node child = getChild(node, childNodeName);
+    if (child == null) {
+      child = addChild(doc, node, childNodeName);
+    }
+    return child;
+  }
 
 
   /**

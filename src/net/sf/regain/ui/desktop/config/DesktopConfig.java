@@ -44,4 +44,12 @@ public interface DesktopConfig {
    */
   public int getInterval() throws RegainException;
 
+  /**
+   * Gets the port of the webserver.
+   * 
+   * @return The port of the webserver.
+   * @throws RegainException If loading the config failed.
+   */
+  public int getPort() throws RegainException;
+
 }

@@ -108,6 +108,7 @@ X Desktopsuche: Status: Aktueller Index: Größe in MB, Anzahl Dokumente.
     Aktuelle Indexierung: Aktuelle Anzahl Indexierte Dokumente.
 X Desktopsuche: Bei Update-Installation alte Konfiguration nicht überschreiben.
 X Openoffice-Präparator
+X Desktopsuche: Port einstellbar
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -117,8 +118,6 @@ X Openoffice-Präparator
     - Such-JSP: Zusätzliche Eingabefelder für bestimmte Felder können mit
       "field.feldName" hinzugefügt werden.
     - Init-Parameter von configFile nach searchConfigFile umbenannt.
-
-  Desktopsuche: Port einstellbar
 
   Desktopsuche: Task-Icon für Linux
   Desktopsuche: Mime-Types konfigurierbar
@@ -142,3 +141,4 @@ X Openoffice-Präparator
     Präperatoren lassen sich leichter austauschen (insbesondere verschiedene
     Versionen der selben Implementierung). Außerdem können andere auch
     Präperatoren anbieten, die dann sehr einfach eingebunden werden können.
+  Desktopsuche: JSP-Executer cachen.

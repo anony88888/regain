@@ -28,11 +28,22 @@
 package net.sf.regain.ui.desktop;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.ServerSocket;
 
 import org.apache.log4j.Logger;
 
+import simple.http.ProtocolHandler;
+import simple.http.connect.Connection;
+import simple.http.connect.ConnectionFactory;
+import simple.http.load.MapperEngine;
+import simple.http.serve.FileContext;
+import simple.http.serve.HandlerFactory;
+
+import net.sf.regain.RegainException;
 import net.sf.regain.ui.desktop.config.DesktopConfig;
 import net.sf.regain.ui.desktop.config.XmlDesktopConfig;
+import net.sf.regain.util.sharedtag.simple.SharedTagService;
 import net.sf.regain.util.ui.BrowserLauncher;
 
 /**
@@ -47,6 +58,12 @@ public class DesktopToolkit implements DesktopConstants {
   
   /** The desktop configuration. */
   private static DesktopConfig mConfig;
+  
+  /** The simpleweb connection */
+  private static Connection mSimplewebConnection;
+  
+  /** The current webserver socket. */
+  private static ServerSocket mCurrentSocket;
 
 
   /**
@@ -69,12 +86,60 @@ public class DesktopToolkit implements DesktopConstants {
    * @param page The page to open.
    */
   public static void openPageInBrowser(String page) {
-    String url = "http://localhost:" + DEFAULT_PORT + "/" + page;
+    String url = "http://localhost:" + mCurrentSocket.getLocalPort() + "/" + page;
     try {
       BrowserLauncher.openURL(url);
     }
     catch (Exception exc) {
       mLog.error("Opening browser failed", exc);
+    }
+  }
+  
+  
+  /**
+   * Checks whether the webserver is running on the right port.
+   * 
+   * @throws RegainException If creating or remapping the webserver failed.
+   */
+  public static void checkWebserver() throws RegainException {
+    int port = getDesktopConfig().getPort();
+    if ((mCurrentSocket == null) || (mCurrentSocket.getLocalPort() != port)) {
+      if (mCurrentSocket != null) {
+        // The port has changed -> Close the old socket
+        try {
+          mCurrentSocket.close();
+        }
+        catch (IOException exc) {
+          throw new RegainException("Closing the old socket failed", exc);
+        }
+      }
+      
+      // Create the simpleweb connection if nessesary
+      if (mSimplewebConnection == null) {
+        try {
+          FileContext context = new FileContext(new File("web"));
+          MapperEngine engine = new MapperEngine(context);
+          
+          engine.load("SharedTagService", SharedTagService.class.getName());
+          engine.link("*", "SharedTagService");
+          
+          ProtocolHandler handler = HandlerFactory.getInstance(engine);
+          
+          mSimplewebConnection = ConnectionFactory.getConnection(handler);
+        }
+        catch (Exception exc) {
+          throw new RegainException("Creating simpleweb server failed", exc);
+        }
+      }
+
+      mLog.info("Listening on port " + port + "...");
+      try {
+        mCurrentSocket = new ServerSocket(port);
+      }
+      catch (IOException exc) {
+        throw new RegainException("Creating socket for port " + port + " failed.", exc);
+      }
+      mSimplewebConnection.connect(mCurrentSocket);
     }
   }
   
