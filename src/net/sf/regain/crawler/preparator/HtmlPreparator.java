@@ -32,6 +32,7 @@ import java.util.Map;
 import net.sf.regain.RegainException;
 import net.sf.regain.crawler.CrawlerToolkit;
 import net.sf.regain.crawler.config.PreparatorConfig;
+import net.sf.regain.crawler.document.AbstractPreparator;
 import net.sf.regain.crawler.document.PathElement;
 import net.sf.regain.crawler.document.RawDocument;
 import net.sf.regain.crawler.preparator.html.HtmlContentExtractor;
@@ -69,18 +70,23 @@ public class HtmlPreparator extends AbstractPreparator {
    * extrahieren.
    */
   private HtmlPathExtractor[] mPathExtractorArr;
+  
+
+  /**
+   * Creates a new instance of HtmlPreparator.
+   */
+  public HtmlPreparator() {
+    super(new RE("(^http://[^/]*$)|(^http://.*/[^\\.]*$)|(\\.(/|html|htm)$)"));
+  }
 
 
   /**
-   * Reads the configuration for this preparator.
-   * <p>
-   * Does nothing by default. May be overridden by subclasses to actual read the
-   * config.
+   * Initializes the preparator.
    * 
-   * @param config The configuration
+   * @param config The configuration.
    * @throws RegainException If the configuration has an error.
    */
-  protected void readConfig(PreparatorConfig config) throws RegainException {
+  public void init(PreparatorConfig config) throws RegainException {
     // Read the content extractors
     Map[] sectionArr = config.getSectionsWithName("contentExtractor");
     mContentExtractorArr = new HtmlContentExtractor[sectionArr.length];

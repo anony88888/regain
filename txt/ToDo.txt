@@ -113,6 +113,9 @@ X Desktopsuche: Status: Aktueller Index: Größe in MB, Anzahl Dokumente.
 X Desktopsuche: Bei Update-Installation alte Konfiguration nicht überschreiben.
 X Openoffice-Präparator
 X Desktopsuche: Port einstellbar
+
+** Version 1.1 Beta 1 am 10.03.05 **
+
 X Crawler: Regelmäßig Breakpoints setzen: IndexWriter und IndexReader schließen
     und aktuellen Stand in gesondertes Verzeichnis kopieren. Falls Indexierung
     abgebrochen wurde auf diesem Breakpoint aufsetzten.
@@ -123,22 +126,28 @@ X Desktopsuche: Status: Profiler-Ergebnisse anzeigen
 X Bug: Excel-Präparator kommt nicht mit allen Zahlen- und Datumsformaten klar.
 X Crawler: RawDocument: InputStream anbieten. Bei file-URL Daten nicht cachen.
 X Crawler: Fehler-Log nicht am Ende erstellen, sondern sofort und mit Stacktrace.
+X Präparatoren in eigene Jars kapseln. Alle Jars werden in ein Verzeichnis
+    gepackt und beim Start geladen. Wenn mehrere Präparatoren viel gemeinsamen
+    Code haben, dann können sie zusammen in ein Jar gepackt werden.
+    So ist im regain.jar nur das, was regain selbst braucht und die
+    Präparatoren lassen sich leichter austauschen (insbesondere verschiedene
+    Versionen der selben Implementierung). Außerdem können andere auch
+    Präparatoren anbieten, die dann sehr einfach eingebunden werden können.
+    Die Konfiguration der Präparatoren steckt weiterhin in der
+    CrawlerConfiguration.xml, allerdings müssen dort nicht mehr alle
+    Präparatoren angegeben werden. Die Präparatoren werden in der Reihenfolge
+    abgearbeitet, in der sie konfiguriert sind. (Die nicht konfigurierten
+    Präparatoren in unbestimmter Reihenfolge danach).
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
-  Multiindexsuche: (Aufwand: 4 Std., vorerst zurückgestellt)
+    -> Brauche Input von Michael Danner
+  Multiindexsuche: (Aufwand: 4 Std.)
     Mit der selben Suchmaske mehrere Indizes durchsuchen
   Handbuch aktualisieren:
     - Such-JSP: Zusätzliche Eingabefelder für bestimmte Felder können mit
       "field.feldName" hinzugefügt werden.
     - Init-Parameter von configFile nach searchConfigFile umbenannt.
-
-  Präparatoren in eigene Jars kapseln. Alle Jars werden in ein Verzeichnis
-    gepackt und beim Start geladen.
-    So ist im regain.jar nur das, was regain selbst braucht und die
-    Präparatoren lassen sich leichter austauschen (insbesondere verschiedene
-    Versionen der selben Implementierung). Außerdem können andere auch
-    Präparatoren anbieten, die dann sehr einfach eingebunden werden können.
 
   Changelog erstellen
   Suchmaske: Breakpoints nutzen.

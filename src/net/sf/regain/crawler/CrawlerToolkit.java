@@ -35,8 +35,7 @@ import org.apache.log4j.Logger;
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.config.CrawlerConfig;
-import net.sf.regain.crawler.preparator.html.HtmlEntities;
-
+import net.sf.regain.util.io.HtmlEntities;
 
 /**
  * Enth�lt Hilfsmethoden f�r den Crawler und seine Hilfsklassen.

@@ -34,6 +34,7 @@ import java.util.Map;
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.config.PreparatorConfig;
+import net.sf.regain.crawler.document.AbstractPreparator;
 
 import com.jacob.com.Dispatch;
 import com.jacob.com.Variant;
@@ -56,8 +57,13 @@ public abstract class AbstractJacobMsOfficePreparator extends AbstractPreparator
 
   /**
    * Creates a new instance of JacobMsWordPreparator.
+   * 
+   * @param extentionArr The file extensions a URL must have one to be accepted
+   *        by this preparator.
    */
-  public AbstractJacobMsOfficePreparator() {
+  public AbstractJacobMsOfficePreparator(String[] extentionArr) {
+    super(extentionArr);
+    
     // NOTE: See: http://mypage.bluewin.ch/reprobst/WordFAQ/DokEigen.htm#DokEigen04
     mPropertyMap = new HashMap();
     mPropertyMap.put("propTitle",       new Variant(1));  // german: Titel
@@ -94,15 +100,12 @@ public abstract class AbstractJacobMsOfficePreparator extends AbstractPreparator
 
 
   /**
-   * Reads the configuration for this preparator.
-   * <p>
-   * Does nothing by default. May be overridden by subclasses to actual read the
-   * config.
+   * Initializes the preparator.
    * 
-   * @param config The configuration
+   * @param config The configuration.
    * @throws RegainException If the configuration has an error.
    */
-  protected void readConfig(PreparatorConfig config) throws RegainException {
+  public void init(PreparatorConfig config) throws RegainException {
     super.readConfig(config);
     
     Map main = config.getSectionWithName("main");

@@ -33,6 +33,7 @@ import java.io.StringWriter;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
+import net.sf.regain.crawler.document.AbstractPreparator;
 import net.sf.regain.crawler.document.RawDocument;
 import net.sf.regain.crawler.preparator.rtf.RtfFilterReader;
 
@@ -46,6 +47,14 @@ import net.sf.regain.crawler.preparator.rtf.RtfFilterReader;
  * @author Til Schneider, www.murfman.de
  */
 public class SimpleRtfPreparator extends AbstractPreparator {
+
+  /**
+   * Creates a new instance of SimpleRtfPreparator.
+   */
+  public SimpleRtfPreparator() {
+    super("rtf");
+  }
+
 
   /**
    * Präpariert ein Dokument für die Indizierung.

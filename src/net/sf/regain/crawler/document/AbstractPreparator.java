@@ -25,19 +25,15 @@
  *   $Author$
  * $Revision$
  */
-package net.sf.regain.crawler.preparator;
+package net.sf.regain.crawler.document;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.crawler.config.PreparatorConfig;
-import net.sf.regain.crawler.document.PathElement;
-import net.sf.regain.crawler.document.Preparator;
-import net.sf.regain.crawler.document.RawDocument;
 
 import org.apache.regexp.RE;
-import org.apache.regexp.RESyntaxException;
 
 
 /**
@@ -72,31 +68,78 @@ public abstract class AbstractPreparator implements Preparator {
 
 
   /**
-   * Erzeugt eine neue Instanz.
+   * Creates a new instance of AbstractPreparator.
+   * 
+   * @param urlRegex The regex a URL must match to to be accepted by this
+   *        preparator.
+   * @see #accepts(RawDocument)
    */
-  public AbstractPreparator() {
+  public AbstractPreparator(RE urlRegex) {
+    mUrlRegex = urlRegex;
+  }
+
+  
+  /**
+   * Creates a new instance of AbstractPreparator.
+   * 
+   * @param extention The file extension a URL must have to be accepted by
+   *        this preparator.
+   * @see #accepts(RawDocument)
+   */
+  public AbstractPreparator(String extention) {
+    this(new RE("\\." + extention + "$"));
+  }
+
+
+  /**
+   * Creates a new instance of AbstractPreparator.
+   * 
+   * @param extentionArr The file extensions a URL must have one to be accepted
+   *        by this preparator.
+   * @see #accepts(RawDocument)
+   */
+  public AbstractPreparator(String[] extentionArr) {
+    this(createExtentionRegex(extentionArr));
+  }
+
+
+  /**
+   * Creates a regex that matches a set of file extensions.
+   * 
+   * @param extentionArr The file extensions to create the regex for.
+   * @return The regex.
+   */
+  private static RE createExtentionRegex(String[] extentionArr) {
+    String urlRegex;
+    if (extentionArr.length == 0) {
+      throw new IllegalArgumentException("extentionArr is empty");
+    }
+    else {
+      StringBuffer buffer = new StringBuffer("\\.(");
+      for (int i = 0; i < extentionArr.length; i++) {
+        if (i > 0) {
+          buffer.append("|");
+        }
+        buffer.append(extentionArr[i]);
+      }
+      buffer.append(")$");
+      urlRegex = buffer.toString();
+    }
+    
+    return new RE(urlRegex);
   }
 
 
   /**
    * Initializes the preparator.
+   * <p>
+   * Does nothing by default. May be overridden by subclasses.
    *
-   * @param regex The regular expression a URL must match to, to be prepared by
-   *        this preparator.
    * @param config The configuration for this preparator.
    * @throws RegainException If the regular expression or the configuration
    *         has an error.
    */
-  public void init(String regex, PreparatorConfig config) throws RegainException {
-    try {
-      mUrlRegex = new RE(regex);
-    }
-    catch (RESyntaxException exc) {
-      throw new RegainException("URL-Regex for preparator " + getClass().getName()
-        + " has wrong syntax: '" + regex + "'", exc);
-    }
-    
-    readConfig(config);
+  public void init(PreparatorConfig config) throws RegainException {
   }
 
   
@@ -109,7 +152,8 @@ public abstract class AbstractPreparator implements Preparator {
    * @param config The configuration
    * @throws RegainException If the configuration has an error.
    */
-  protected void readConfig(PreparatorConfig config) throws RegainException {
+  protected final void readConfig(PreparatorConfig config) throws RegainException {
+    // TODO: Remove this method
   }
 
 
@@ -119,7 +163,7 @@ public abstract class AbstractPreparator implements Preparator {
    *
    * @param rawDocument The document to check.
    * @return Whether the preparator is able to process the given document.
-   * @see #init(String, PreparatorConfig)
+   * @see #init(PreparatorConfig)
    */
   public boolean accepts(RawDocument rawDocument) {
     return mUrlRegex.match(rawDocument.getUrl());

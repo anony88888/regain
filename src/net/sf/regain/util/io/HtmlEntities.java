@@ -1,4 +1,4 @@
-package net.sf.regain.crawler.preparator.html;
+package net.sf.regain.util.io;
 
 /* ====================================================================
  * The Apache Software License, Version 1.1

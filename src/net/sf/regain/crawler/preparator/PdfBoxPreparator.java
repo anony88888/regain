@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.crawler.document.AbstractPreparator;
 import net.sf.regain.crawler.document.RawDocument;
 
 import org.pdfbox.encryption.DocumentEncryption;
@@ -50,7 +51,15 @@ import org.pdfbox.util.PDFTextStripper;
  *
  * @author Til Schneider, www.murfman.de
  */
-public class PdfPreparator extends AbstractPreparator {
+public class PdfBoxPreparator extends AbstractPreparator {
+
+  /**
+   * Creates a new instance of PdfBoxPreparator.
+   */
+  public PdfBoxPreparator() {
+    super("pdf");
+  }
+
 
   /**
    * Präpariert ein Dokument für die Indizierung.

@@ -84,19 +84,24 @@ public class JacobMsWordPreparator extends AbstractJacobMsOfficePreparator {
    * configured. 
    */
   private HashSet mHeadlineStyleNameSet;
+  
+
+  /**
+   * Creates a new instance of JacobMsPowerPointPreparator.
+   */
+  public JacobMsWordPreparator() {
+    super(new String[] { "doc", "dot" });
+  }
 
 
   /**
-   * Reads the configuration for this preparator.
-   * <p>
-   * Does nothing by default. May be overridden by subclasses to actual read the
-   * config.
+   * Initializes the preparator.
    * 
    * @param config The configuration
    * @throws RegainException If the configuration has an error.
    */
-  protected void readConfig(PreparatorConfig config) throws RegainException {
-    super.readConfig(config);
+  public void init(PreparatorConfig config) throws RegainException {
+    super.init(config);
     
     Map main = config.getSectionWithName("main");
     if (main != null) {

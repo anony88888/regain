@@ -185,14 +185,6 @@ public interface CrawlerConfig {
   public UrlPattern[] getHtmlParserUrlPatterns();
 
   /**
-   * Gibt die UrlPattern zurück, die der Verzeichnis-Parser nutzt, um zu
-   * entscheiden, ob und wie eine Datei bearbeitet werden soll.
-   *
-   * @return Die UrlPattern für den Verzeichnis-Parser.
-   */
-  public UrlPattern[] getDirectoryParserUrlPatterns();
-
-  /**
    * Gibt die Schwarze Liste zurück.
    * <p>
    * Diese enthält Präfixe, die eine URL <I>nicht</I> haben darf, um bearbeitet

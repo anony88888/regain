@@ -29,6 +29,7 @@ package net.sf.regain.crawler.preparator;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.crawler.CrawlerToolkit;
+import net.sf.regain.crawler.document.AbstractPreparator;
 import net.sf.regain.crawler.document.RawDocument;
 
 /**
@@ -41,11 +42,11 @@ import net.sf.regain.crawler.document.RawDocument;
 public class XmlPreparator extends AbstractPreparator {
 
   /**
-   * Erzeugt eine neue XmlPreparator-Instanz.
+   * Creates a new instance of XmlPreparator.
    */
   public XmlPreparator() {
+    super("xml");
   }
-
 
 
   /**

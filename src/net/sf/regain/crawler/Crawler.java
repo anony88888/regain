@@ -60,7 +60,7 @@ import org.apache.regexp.RESyntaxException;
  *
  * @author Til Schneider, www.murfman.de
  */
-public class Crawler {
+public class Crawler implements ErrorLogger {
 
   /** The logger for this class */
   private static Logger mLog = Logger.getLogger(Crawler.class);
@@ -117,19 +117,6 @@ public class Crawler {
    */
   private RE[] mHtmlParserPatternReArr;
 
-  /**
-   * Die UrlPattern, die der Verzeichnis-Parser nutzt, um zu entscheiden, ob und
-   * wie eine Datei bearbeitet werden soll.
-   */
-  private RE[] mDirectoryParserPatternReArr;
-  /**
-   * Die Regulären Ausdrücke, die zu den jeweiligen UrlPattern für den
-   * Verzeichnis-Parser gehören.
-   *
-   * @see #mDirectoryParserPatternReArr
-   */
-  private UrlPattern[] mDirectoryParserUrlPatternArr;
-
   /** Der Profiler der die gesamten Crawler-Jobs mißt. */
   private Profiler mCrawlerJobProfiler = new Profiler("Whole crawler jobs", "jobs");
   /** Der Profiler der das Durchsuchen von HTML-Dokumenten mißt. */
@@ -171,19 +158,6 @@ public class Crawler {
       }
       catch (RESyntaxException exc) {
         throw new RegainException("Regular exception of HTML parser pattern #"
-          + (i + 1) + " has a wrong syntax: '" + regex + "'", exc);
-      }
-    }
-
-    mDirectoryParserUrlPatternArr = config.getDirectoryParserUrlPatterns();
-    mDirectoryParserPatternReArr = new RE[mDirectoryParserUrlPatternArr.length];
-    for (int i = 0; i < mDirectoryParserPatternReArr.length; i++) {
-      String regex = mDirectoryParserUrlPatternArr[i].getRegexPattern();
-      try {
-        mDirectoryParserPatternReArr[i] = new RE(regex);
-      }
-      catch (RESyntaxException exc) {
-        throw new RegainException("Regular exception of directory parser pattern #"
           + (i + 1) + " has a wrong syntax: '" + regex + "'", exc);
       }
     }
@@ -430,9 +404,11 @@ public class Crawler {
 
       // Index the content
       if (shouldBeIndexed) {
-        mLog.info("Indexing " + rawDocument.getUrl());
+        if (mLog.isDebugEnabled()) {
+          mLog.debug("Indexing " + rawDocument.getUrl());
+        }
         try {
-          mIndexWriterManager.addToIndex(rawDocument);
+          mIndexWriterManager.addToIndex(rawDocument, this);
         }
         catch (RegainException exc) {
           logError("Indexing failed: " + rawDocument.getUrl(), exc, false);
@@ -748,7 +724,6 @@ public class Crawler {
   }
 
 
-
   /**
    * Durchsucht ein Verzeichnis nach URLs, also Dateien und Unterverzeichnissen,
    * und erzeugt für jeden Treffer einen neuen Job.
@@ -767,18 +742,11 @@ public class Crawler {
 
       // Check wether this is a directory
       if (childArr[childIdx].isDirectory()) {
-        // It is -> Add a job
+        // It's a directory -> Add a parse job
         addJob(url, sourceUrl, true, false, null);
       } else {
-        // It's a file -> Check whether one of the regex match to this filename
-        for (int i = 0; i < mDirectoryParserPatternReArr.length; i++) {
-          if (mDirectoryParserPatternReArr[i].match(url)) {
-            // This one matches -> add a appropriate job
-            boolean shouldBeIndexed = mDirectoryParserUrlPatternArr[i].getShouldBeIndexed();
-            addJob(url, sourceUrl, false, shouldBeIndexed, null);
-            break; // Don't add multiple jobs
-          }
-        }
+        // It's a file -> Add a index job
+        addJob(url, sourceUrl, false, true, null);
       }
     }
   }
@@ -895,14 +863,14 @@ public class Crawler {
 
 
   /**
-   * Loggt einen Fehler und fügt ihn der Fehler-Liste hinzu.
+   * Loggs an error.
    *
-   * @param msg Die Fehlermeldung
-   * @param thr Der Fehler
-   * @param fatal War der Fehler fatal. (Wurde dadurch die Erstellung oder
-   *        Aktualisierung des Index verhindert?)
+   * @param msg The error message.
+   * @param thr The error
+   * @param fatal Specifies whether the error was fatal. An error is fatal if
+   *        it caused that the index could not be created.
    */
-  private void logError(String msg, Throwable thr, boolean fatal) {
+  public void logError(String msg, Throwable thr, boolean fatal) {
     if (fatal) {
       msg = "Fatal: " + msg;
     }

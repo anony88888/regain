@@ -33,8 +33,8 @@ import javax.swing.text.Document;
 import javax.swing.text.rtf.RTFEditorKit;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.crawler.document.AbstractPreparator;
 import net.sf.regain.crawler.document.RawDocument;
-
 
 /**
  * Präpariert ein RTF-Dokument für die Indizierung. Dazu wird der RTF-Parser
@@ -50,14 +50,12 @@ public class SwingRtfPreparator extends AbstractPreparator {
   private RTFEditorKit mRTFEditorKit;
 
 
-
   /**
-   * Erzeugt eine neue RtfPreparator-Instanz.
+   * Creates a new instance of SwingRtfPreparator.
    */
   public SwingRtfPreparator() {
-    mRTFEditorKit = new RTFEditorKit();
+    super("rtf");
   }
-
 
 
   /**
@@ -68,6 +66,10 @@ public class SwingRtfPreparator extends AbstractPreparator {
    * @throws RegainException Wenn die Präparation fehl schlug.
    */
   public void prepare(RawDocument rawDocument) throws RegainException {
+    if (mRTFEditorKit == null) {
+      mRTFEditorKit = new RTFEditorKit();
+    }
+
     InputStream stream = null;
     try {
       stream = rawDocument.getContentAsStream();
@@ -86,6 +88,19 @@ public class SwingRtfPreparator extends AbstractPreparator {
         try { stream.close(); } catch (Exception exc) {}
       }
     }
+  }
+
+
+  /**
+   * Frees all resources reserved by the preparator.
+   * <p>
+   * Is called at the end of the crawler process after all documents were
+   * processed.
+   * 
+   * @throws RegainException If freeing the resources failed.
+   */
+  public void close() throws RegainException {
+    mRTFEditorKit = null;
   }
 
 }

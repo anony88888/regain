@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.crawler.document.AbstractPreparator;
 import net.sf.regain.crawler.document.RawDocument;
 
 import org.apache.poi.hdf.extractor.WordDocument;
@@ -49,11 +50,11 @@ import org.apache.poi.hdf.extractor.WordDocument;
 public class PoiMsWordPreparator extends AbstractPreparator {
 
   /**
-   * Erzeugt eine neue MsWordPreparator-Instanz.
+   * Creates a new instance of PoiMsWordPreparator.
    */
   public PoiMsWordPreparator() {
+    super(new String[] { "doc", "dot" });
   }
-
 
 
   /**

@@ -36,13 +36,26 @@ import java.util.zip.ZipFile;
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.CrawlerToolkit;
+import net.sf.regain.crawler.document.AbstractPreparator;
 import net.sf.regain.crawler.document.RawDocument;
 
 /**
+ * Preparates OpenOffice, StarOffice and OpenDocument documents.
  *
  * @author Til Schneider, www.murfman.de
  */
 public class OpenOfficePreparator extends AbstractPreparator {
+
+  /**
+   * Creates a new instance of OpenOfficePreparator.
+   */
+  public OpenOfficePreparator() {
+    super(new String[] { "sds", "sdc", "sdw", "sgl", "sda", "sdd", "sdf", "sxw",
+           "stw", "sxg", "sxc", "stc", "sxi", "sti", "sxd", "std", "sxm", "odt",
+           "ott", "oth", "odm", "odg", "otg", "odp", "otp", "ods", "ots", "odc",
+           "odf", "odb", "odi" });
+  }
+
 
   /**
    * Prepares a document for indexing.

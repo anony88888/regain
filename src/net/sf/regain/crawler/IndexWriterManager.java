@@ -59,9 +59,10 @@ import org.apache.lucene.search.TermQuery;
  * Kontrolliert und kapselt die Erstellung des Suchindex.
  * <p>
  * <b>Anwendung:</b><br>
- * Rufen Sie für jedes Dokument {@link #addToIndex(RawDocument)} auf. Rufen Sie
- * am Ende {@link #close(boolean)} auf, um den Index zu schließen. Danach sind
- * keine weiteren Aufrufe von {@link #addToIndex(RawDocument)} erlaubt.
+ * Rufen Sie für jedes Dokument {@link #addToIndex(RawDocument, ErrorLogger)}
+ * auf. Rufen Sie am Ende {@link #close(boolean)} auf, um den Index zu
+ * schließen. Danach sind keine weiteren Aufrufe von
+ * {@link #addToIndex(RawDocument, ErrorLogger)} erlaubt.
  *
  * @author Til Schneider, www.murfman.de
  */
@@ -556,10 +557,13 @@ public class IndexWriterManager {
    * Anhand der URL wird der Typ des Dokuments erkannt.
    *
    * @param rawDocument Das zu indizierende Dokument.
+   * @param errorLogger The error logger to use for logging errors.
    *
    * @throws RegainException Wenn das Hinzufügen zum Index scheiterte.
    */
-  public void addToIndex(RawDocument rawDocument) throws RegainException {
+  public void addToIndex(RawDocument rawDocument, ErrorLogger errorLogger)
+    throws RegainException
+  {
     // Prüfen, ob es einen aktuellen Indexeintrag gibt
     if (mUpdateIndex) {
       boolean removeOldEntry = false;
@@ -608,17 +612,19 @@ public class IndexWriterManager {
             if (diff > 60000L) {
               // Das Dokument ist mehr als eine Minute neuer
               // -> Der Eintrag ist nicht aktuell -> Alten Eintrag löschen
-              mLog.info("Index entry is outdated. Creating a new one... ("
-                + docLastModified + " > " + indexLastModified + ")");
+              mLog.info("Index entry is outdated. Creating a new one (" +
+                  docLastModified + " > " + indexLastModified + "): " +
+                  rawDocument.getUrl());
               removeOldEntry = true;
             } else {
               // Der Indexeintrag ist aktuell -> Wir sind fertig
-              mLog.info("Index entry is already up to date");
+              mLog.info("Index entry is already up to date: " + rawDocument.getUrl());
               return;
             }
           } else {
             // Wir kennen das Änderungsdatum nicht -> Alten Eintrag löschen
-            mLog.info("Index entry has no last-modified field. Creating a new one...");
+            mLog.info("Index entry has no last-modified field. " +
+                "Creating a new one: " + rawDocument.getUrl());
             removeOldEntry = true;
           }
         }
@@ -633,7 +639,7 @@ public class IndexWriterManager {
     }
 
     // Neuen Eintrag erzeugen
-    createNewIndexEntry(rawDocument);
+    createNewIndexEntry(rawDocument, errorLogger);
   }
 
 
@@ -641,30 +647,31 @@ public class IndexWriterManager {
    * Erzeugt für ein Dokument einen neuen Indexeintrag.
    *
    * @param rawDocument Das Dokument für das der Eintrag erzeugt werden soll
+   * @param errorLogger The error logger to use for logging errors.
    * @throws RegainException Wenn die Erzeugung fehl schlug.
    */
-  private void createNewIndexEntry(RawDocument rawDocument)
+  private void createNewIndexEntry(RawDocument rawDocument, ErrorLogger errorLogger)
     throws RegainException
   {
     // Dokument erzeugen
     if (mLog.isDebugEnabled()) {
       mLog.debug("Creating document");
     }
-    Document doc = mDocumentFactory.createDocument(rawDocument);
+    Document doc = mDocumentFactory.createDocument(rawDocument, errorLogger);
 
     // Dokument in den Index aufnehmen
-    mAddToIndexProfiler.startMeasuring();
-    try {
-      setIndexMode(ADDING_MODE);
-      if (mLog.isDebugEnabled()) {
-        mLog.debug("Adding document to index");
+    if (doc != null) {
+      mLog.info("Adding to index: " + rawDocument.getUrl());
+      mAddToIndexProfiler.startMeasuring();
+      try {
+        setIndexMode(ADDING_MODE);
+        mIndexWriter.addDocument(doc);
+        mAddToIndexProfiler.stopMeasuring(rawDocument.getLength());
       }
-      mIndexWriter.addDocument(doc);
-      mAddToIndexProfiler.stopMeasuring(rawDocument.getLength());
-    }
-    catch (IOException exc) {
-      mAddToIndexProfiler.abortMeasuring();
-      throw new RegainException("Adding document to index failed", exc);
+      catch (IOException exc) {
+        mAddToIndexProfiler.abortMeasuring();
+        throw new RegainException("Adding document to index failed", exc);
+      }
     }
   }
 

@@ -91,6 +91,9 @@ Section "${PROG_NAME} (erforderlich)"
   SetOutPath $INSTDIR\conf\default
   File temp\runtime\desktop\conf\default\*
 
+  SetOutPath $INSTDIR\preparator
+  File temp\runtime\desktop\preparator\*
+
   SetOutPath $INSTDIR\web
   File temp\runtime\desktop\web\*
 

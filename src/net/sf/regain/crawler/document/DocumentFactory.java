@@ -37,6 +37,7 @@ import java.util.Map;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
+import net.sf.regain.crawler.ErrorLogger;
 import net.sf.regain.crawler.Profiler;
 import net.sf.regain.crawler.config.AuxiliaryField;
 import net.sf.regain.crawler.config.CrawlerConfig;
@@ -109,7 +110,8 @@ public class DocumentFactory {
 
     // Create the preparators
     try {
-      mPreparatorArr = createPreparatorArr(config.getPreparatorSettingsList());
+      PreparatorSettings[] prepConf = config.getPreparatorSettingsList();
+      mPreparatorArr = PreparatorFactory.getInstance().createPreparatorArr(prepConf);
     }
     catch (RegainException exc) {
       throw new RegainException("Creating the document preparators failed", exc);
@@ -141,79 +143,100 @@ public class DocumentFactory {
   }
 
 
-
   /**
-   * Creates an array of preparators from the settings.
+   * Creates a lucene {@link Document} from a {@link RawDocument}.
    *
-   * @param preparatorSettingsArr The list with the preparator settings.
-   * @return The preparators. 
-   * @throws RegainException If the creation of a preparator failed.
+   * @param rawDocument The raw document.
+   * @param errorLogger The error logger to use for logging errors.
+   *
+   * @return The lucene document with the prepared data or <code>null</code> if
+   *         the document couldn't be created.
    */
-  private Preparator[] createPreparatorArr(
-    PreparatorSettings[] preparatorSettingsArr)
-    throws RegainException
-  {
-    Preparator[] preparatorArr = new Preparator[preparatorSettingsArr.length];
-    for (int i = 0; i < preparatorArr.length; i++) {
-      String className = preparatorSettingsArr[i].getPreparatorClassName();
-
-      if (className.startsWith(".")) {
-        // This is a shortcut -> add the prefix
-        className = "net.sf.regain.crawler.preparator" + className;
+  public Document createDocument(RawDocument rawDocument, ErrorLogger errorLogger) {
+    // Find the preparator that will prepare this URL
+    Document doc = null;
+    boolean preparatorFound = false;
+    for (int i = 0; i < mPreparatorArr.length; i++) {
+      if (mPreparatorArr[i].accepts(rawDocument)) {
+        // This preparator can prepare this URL
+        preparatorFound = true;
+        
+        try {
+          doc = createDocument(mPreparatorArr[i], mPreparatorProfilerArr[i], rawDocument);
+          break;
+        }
+        catch (RegainException exc) {
+          errorLogger.logError("Preparing " + rawDocument.getUrl() +
+              " with preparator " + mPreparatorArr[i].getClass().getName() +
+              " failed", exc, false);
+        }
       }
-
-      // Pr�parator-Instanz erzeugen
-      Class preparatorClass;
-      try {
-        preparatorClass = Class.forName(className);
-      }
-      catch (ClassNotFoundException exc) {
-        throw new RegainException("The class '" + className
-          + "' does not exist", exc);
-      }
-
-      Object obj;
-      try {
-        obj = preparatorClass.newInstance();
-      }
-      catch (Exception exc) {
-        throw new RegainException("Error creating instance of class "
-          + className, exc);
-      }
-
-      if (! (obj instanceof Preparator)) {
-        throw new RegainException("The class " + className + " does not " +
-          "implement " + Preparator.class.getName());
-      }
-
-      preparatorArr[i] = (Preparator) obj;
-
-      // Die URL-Regex beim Pr�parator setzten
-      preparatorArr[i].init(preparatorSettingsArr[i].getUrlRegex(),
-          preparatorSettingsArr[i].getPreparatorConfig());
+    }
+    
+    if (! preparatorFound) {
+      mLog.info("No preparator feels responsible for " + rawDocument.getUrl());
     }
 
-    return preparatorArr;
+    // return the document
+    return doc;
   }
 
-
-
+  
   /**
-   * Die Fabrikmethode, die aus einem Roh-Dokument ein Lucene-Ducument erzeugt,
-   * das nur noch den, von Formatierungen ges�uberten, Text des Dokuments, sowie
-   * seine URL und seinen Titel enth�lt.
-   *
-   * @param rawDocument Das Roh-Dokument.
-   *
-   * @return Das Lucene-Ducument mit den aufbereiteten Daten.
-   * @throws RegainException Wenn bei der Erzeugung ein Fehler auftrat.
+   * Creates a lucene {@link Document} from a {@link RawDocument} using a
+   * certain Preparator.
+   * 
+   * @param preparator The preparator to use.
+   * @param preparatorProfiler The profile of the preparator.
+   * @param rawDocument The raw document.
+   * @return The lucene document with the prepared data.
+   * @throws RegainException If creating the document failed.
    */
-  public Document createDocument(RawDocument rawDocument)
+  private Document createDocument(Preparator preparator, Profiler preparatorProfiler,
+    RawDocument rawDocument)
     throws RegainException
   {
     String url = rawDocument.getUrl();
+    
+    // Extract the file type specific information
+    String cleanedContent;
+    String title;
+    String summary;
+    String headlines;
+    PathElement[] path;
+    Map additionalFieldMap;
+    if (mLog.isDebugEnabled()) {
+      mLog.debug("Using preparator " + preparator.getClass().getName()
+        + " for " + rawDocument);
+    }
+    preparatorProfiler.startMeasuring();
+    try {
+      preparator.prepare(rawDocument);
 
-    // make a new, empty document
+      cleanedContent     = preparator.getCleanedContent();
+      title              = preparator.getTitle();
+      summary            = preparator.getSummary();
+      headlines          = preparator.getHeadlines();
+      path               = preparator.getPath();
+      additionalFieldMap = preparator.getAdditionalFields();
+
+      preparator.cleanUp();
+
+      preparatorProfiler.stopMeasuring(rawDocument.getLength());
+    }
+    catch (Throwable thr) {
+      preparatorProfiler.abortMeasuring();
+      throw new RegainException("Preparing " + url
+        + " with preparator " + preparator.getClass().getName() + " failed", thr);
+    }
+
+    // Check the mandatory information
+    if (cleanedContent == null) {
+      throw new RegainException("Preparator " + preparator.getClass().getName()
+        + " did not extract the content of " + url);
+    }
+
+    // Preparing suceed -> Create a new, empty document
     Document doc = new Document();
     
     // Create the auxiliary fields
@@ -256,60 +279,6 @@ public class DocumentFactory {
 
     // Write the raw content to an analysis file
     writeContentAnalysisFile(rawDocument);
-
-    // Find the preparator that will prepare this URL
-    Preparator rightPreparator = null;
-    Profiler rightPreparatorProfiler = null;
-    for (int i = 0; i < mPreparatorArr.length; i++) {
-      if (mPreparatorArr[i].accepts(rawDocument)) {
-        rightPreparator = mPreparatorArr[i];
-        rightPreparatorProfiler = mPreparatorProfilerArr[i];
-        break;
-      }
-    }
-
-    if (rightPreparator == null) {
-      throw new RegainException("No preparator feels responsible for " + url);
-    }
-
-    // Extract the file type specific information
-    String cleanedContent;
-    String title;
-    String summary;
-    String headlines;
-    PathElement[] path;
-    Map additionalFieldMap;
-    if (mLog.isDebugEnabled()) {
-      mLog.debug("Using preparator " + rightPreparator.getClass().getName()
-        + " for " + url);
-    }
-    rightPreparatorProfiler.startMeasuring();
-    try {
-      rightPreparator.prepare(rawDocument);
-
-      cleanedContent = rightPreparator.getCleanedContent();
-      title = rightPreparator.getTitle();
-      summary = rightPreparator.getSummary();
-      headlines = rightPreparator.getHeadlines();
-      path = rightPreparator.getPath();
-      additionalFieldMap = rightPreparator.getAdditionalFields();
-
-      rightPreparator.cleanUp();
-
-      rightPreparatorProfiler.stopMeasuring(size);
-    }
-    catch (Throwable exc) {
-      rightPreparatorProfiler.abortMeasuring();
-      throw new RegainException("Preparing " + url + " with preparator "
-        + rightPreparator.getClass().getName() + " failed", exc);
-    }
-
-    // Check the mandatory information
-    if (cleanedContent == null) {
-      throw new RegainException("Preparator "
-        + rightPreparator.getClass().getName()
-        + " did not extract the content of " + url);
-    }
     
     // Add the additional fields
     if (additionalFieldMap != null) {

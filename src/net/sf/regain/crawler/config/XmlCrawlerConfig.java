@@ -96,11 +96,6 @@ public class XmlCrawlerConfig implements CrawlerConfig {
 
   /** Die UrlPattern, die der HTML-Parser nutzen soll, um URLs zu identifizieren. */
   private UrlPattern[] mHtmlParserUrlPatterns;
-  /**
-   * Die UrlPattern, die der Verzeichnis-Parser nutzt, um zu entscheiden, ob und
-   * wie eine Datei bearbeitet werden soll.
-   */
-  private UrlPattern[] mDirectoryParserUrlPatterns;
 
   /** Die Schwarze Liste. */
   private String[] mUrlPrefixBlackList;
@@ -140,7 +135,6 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     readControlFileConfig(config);
     readStartUrls(config);
     readHtmlParserUrlPatterns(config);
-    readDirectoryParserUrlPatterns(config);
     readBlackList(config);
     readWhiteList(config);
     readUseLinkTextAsTitleRegexList(config);
@@ -304,33 +298,6 @@ public class XmlCrawlerConfig implements CrawlerConfig {
   }
 
 
-
-  /**
-   * Liest die URL-Patterns f�r den Verzeichnis-Parser aus der Konfiguration.
-   * <p>
-   * Diese werden beim durchsuchen eines Verzeichnisses dazu verwendet, zu
-   * entscheiden, ob ein Dokument indiziert werden soll.
-   *
-   * @param config Die Konfiguration, aus der gelesen werden soll.
-   * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
-   */
-  private void readDirectoryParserUrlPatterns(Node config) throws RegainException {
-    Node node = XmlToolkit.getChild(config, "directoryParserPatternList", true);
-    Node[] nodeArr = XmlToolkit.getChildArr(node, "pattern");
-    mDirectoryParserUrlPatterns = new UrlPattern[nodeArr.length];
-    for (int i = 0; i < nodeArr.length; i++) {
-      String regexPattern = XmlToolkit.getText(nodeArr[i], true);
-      int regexUrlGroup = -1;
-      boolean shouldBeParsed = false;
-      boolean shouldBeIndexed = XmlToolkit.getAttributeAsBoolean(nodeArr[i], "index");
-
-      mDirectoryParserUrlPatterns[i] = new UrlPattern(regexPattern, regexUrlGroup,
-        shouldBeParsed, shouldBeIndexed);
-    }
-  }
-
-
-
   /**
    * Liest die Schwarze Liste aus der Konfiguration.
    * <p>
@@ -407,9 +374,8 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     Node[] nodeArr = XmlToolkit.getChildArr(node, "preparator");
     mPreparatorSettingsArr = new PreparatorSettings[nodeArr.length];
     for (int i = 0; i < nodeArr.length; i++) {
-      node = XmlToolkit.getChild(nodeArr[i], "urlPattern", true);
-      String urlRegex = XmlToolkit.getText(node, true);
-
+      boolean enabled = XmlToolkit.getAttributeAsBoolean(nodeArr[i], "enabled", true);
+      
       node = XmlToolkit.getChild(nodeArr[i], "class", true);
       String className = XmlToolkit.getText(node, true);
 
@@ -419,7 +385,7 @@ public class XmlCrawlerConfig implements CrawlerConfig {
         prepConfig = readPreparatorConfig(node, xmlFile);
       }
       
-      mPreparatorSettingsArr[i] = new PreparatorSettings(urlRegex, className, prepConfig);
+      mPreparatorSettingsArr[i] = new PreparatorSettings(enabled, className, prepConfig);
     }
   }
 
@@ -695,19 +661,6 @@ public class XmlCrawlerConfig implements CrawlerConfig {
   public UrlPattern[] getHtmlParserUrlPatterns() {
     return mHtmlParserUrlPatterns;
   }
-
-
-
-  /**
-   * Gibt die UrlPattern zur�ck, die der Verzeichnis-Parser nutzt, um zu
-   * entscheiden, ob und wie eine Datei bearbeitet werden soll.
-   *
-   * @return Die UrlPattern f�r den Verzeichnis-Parser.
-   */
-  public UrlPattern[] getDirectoryParserUrlPatterns() {
-    return mDirectoryParserUrlPatterns;
-  }
-
 
 
   /**

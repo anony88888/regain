@@ -41,7 +41,7 @@ import net.sf.regain.crawler.config.PreparatorConfig;
  * <p>
  * The procedure of preparation is the following:
  * <ul>
- *   <li>First {@link #init(String, PreparatorConfig)} is called.</li>
+ *   <li>First {@link #init(PreparatorConfig)} is called.</li>
  *   <li>For each document {@link #accepts(RawDocument)} is called.<br>
  *     If <code>true</code> was returned the actual preparation of the document
  *     is made:
@@ -67,21 +67,17 @@ public interface Preparator {
   /**
    * Initializes the preparator.
    *
-   * @param regex The regular expression a URL must match to, to be prepared by
-   *        this preparator.
    * @param config The configuration for this preparator.
    * @throws RegainException When the regular expression or the configuration
    *         has an error.
    */
-  public void init(String regex, PreparatorConfig config) throws RegainException;
+  public void init(PreparatorConfig config) throws RegainException;
 
   /**
-   * Gets whether the preparator is able to process the given document. This is
-   * the case, if its URL matches the URL regex.
+   * Gets whether the preparator is able to process the given document.
    *
    * @param rawDocument The document to check.
    * @return Whether the preparator is able to process the given document.
-   * @see #init(String, PreparatorConfig)
    */
   public boolean accepts(RawDocument rawDocument);
 

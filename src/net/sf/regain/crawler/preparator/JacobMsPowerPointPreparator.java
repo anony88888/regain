@@ -54,21 +54,26 @@ public class JacobMsPowerPointPreparator extends AbstractJacobMsOfficePreparator
    */
   private Application mPowerPointApplication;
 
-  
+
   /**
-   * Reads the configuration for this preparator.
-   * <p>
-   * Does nothing by default. May be overridden by subclasses to actual read the
-   * config.
+   * Creates a new instance of JacobMsPowerPointPreparator.
+   */
+  public JacobMsPowerPointPreparator() {
+    super(new String[] { "ppt", "pot" });
+  }
+
+
+  /**
+   * Initializes the preparator.
    * 
    * @param config The configuration
    * @throws RegainException If the configuration has an error.
    */
-  protected void readConfig(PreparatorConfig config) throws RegainException {
+  public void init(PreparatorConfig config) throws RegainException {
     // NOTE: This method is not nessesary since it only calls the super method,
     //       but I defined it to ensure that the super call is not forgotten
     //       when there should be a config some day.
-    super.readConfig(config);
+    super.init(config);
   }
 
 

@@ -306,15 +306,150 @@
         <exclude name="**/CVS/*"/>
       </fileset>
     </copy>
+
+    <!-- Create the preparator jars -->
+    <mkdir dir="temp/runtime/crawler/preparator"/>
+    <jar jarfile="temp/runtime/crawler/preparator/PoiMsOfficePreparators.jar"
+         compress="false" index="true">
+      <manifest>
+        <attribute name="Preparator-Classes" value=".PoiMsExcelPreparator;.PoiMsWordPreparator"/>
+      </manifest>
+      <fileset dir="temp/included-lib-classes">
+        <include name="font_metrics.properties"/>
+        <include name="org/apache/poi/**"/>
+      </fileset>
+      <fileset dir="temp/classes">
+        <include name="net/sf/regain/crawler/preparator/PoiMs*"/>
+      </fileset>
+    </jar>
+
+    <jar jarfile="temp/runtime/crawler/preparator/JacobMsOfficePreparators.jar"
+         compress="false" index="true">
+      <manifest>
+        <attribute name="Preparator-Classes" value=".JacobMsExcelPreparator;.JacobMsWordPreparator;.JacobMsPowerPointPreparator"/>
+      </manifest>
+      <fileset dir="temp/included-lib-classes">
+        <include name="com/jacob/**"/>
+        <include name="de/filiadata/lucene/spider/generated/msoffice2000/**"/>
+      </fileset>
+      <fileset dir="temp/classes">
+        <include name="net/sf/regain/crawler/preparator/AbstractJacobMsOfficePreparator.*"/>
+        <include name="net/sf/regain/crawler/preparator/JacobMs*"/>
+      </fileset>
+    </jar>
+
+    <jar jarfile="temp/runtime/crawler/preparator/HtmlPreparator.jar"
+         compress="false" index="true">
+      <manifest>
+        <attribute name="Preparator-Classes" value=".HtmlPreparator"/>
+      </manifest>
+      <fileset dir="temp/classes">
+        <include name="net/sf/regain/crawler/preparator/HtmlPreparator.*"/>
+        <include name="net/sf/regain/crawler/preparator/html/**"/>
+      </fileset>
+    </jar>
+
+    <jar jarfile="temp/runtime/crawler/preparator/SimpleRtfPreparator.jar"
+         compress="false" index="true">
+      <manifest>
+        <attribute name="Preparator-Classes" value=".SimpleRtfPreparator"/>
+      </manifest>
+      <fileset dir="temp/classes">
+        <include name="net/sf/regain/crawler/preparator/SimpleRtfPreparator.*"/>
+        <include name="net/sf/regain/crawler/preparator/rtf/**"/>
+      </fileset>
+    </jar>
+
+    <jar jarfile="temp/runtime/crawler/preparator/PdfBoxPreparator.jar"
+         compress="false" index="true">
+      <manifest>
+        <attribute name="Preparator-Classes" value=".PdfBoxPreparator"/>
+      </manifest>
+      <fileset dir="temp/included-lib-classes">
+        <include name="org/pdfbox/**"/>
+        <include name="Resources/**"/>
+      </fileset>
+      <fileset dir="temp/classes">
+        <include name="net/sf/regain/crawler/preparator/PdfBoxPreparator.*"/>
+      </fileset>
+    </jar>
+
+    <antcall target="-jarSimplePreparator">
+      <param name="classname" value="OpenOfficePreparator"/>
+    </antcall>      
+    
+    <antcall target="-jarSimplePreparator">
+      <param name="classname" value="PlainTextPreparator"/>
+    </antcall>      
+
+    <antcall target="-jarSimplePreparator">
+      <param name="classname" value="SwingRtfPreparator"/>
+    </antcall>      
+
+    <antcall target="-jarSimplePreparator">
+      <param name="classname" value="XmlPreparator"/>
+    </antcall>      
+
+    <!-- Copy the preparator jars to the desktop runtime, too -->
+    <copy todir="temp/runtime/desktop/preparator">
+      <fileset dir="temp/runtime/crawler/preparator"/>
+    </copy>
+  </target>
+
+
+  <!--
+   | Helper target for runtime-fast.
+   |
+   | Creates a simple preparator jar. A simple preparator is a preparator
+   | having one class and no libs.
+   +-->
+  <target name="-jarSimplePreparator" if="classname">
+    <jar jarfile="temp/runtime/crawler/preparator/${classname}.jar"
+         compress="false" index="true">
+      <manifest>
+        <attribute name="Preparator-Classes" value=".${classname}"/>
+      </manifest>
+      <fileset dir="temp/classes">
+        <include name="net/sf/regain/crawler/preparator/${classname}.*"/>
+      </fileset>
+    </jar>
   </target>
 
 
   <!--
    | Creates the runtime directory.
    +-->
-  <target name="runtime" depends="runtime-fast, prepare">
+  <target name="runtime" depends="runtime-fast">
     <echo message="Creating the jars ..." />
 
+    <jar jarfile="temp/runtime/desktop/${programname.file}.jar"
+         compress="false"
+         index="true">
+      <manifest>
+        <attribute name="Main-Class" value="net.sf.regain.ui.desktop.Main"/>
+      </manifest>
+      <fileset dir="temp/included-lib-classes">
+        <include name="org/apache/lucene/**"/>
+        <include name="org/apache/log4j/**"/>
+        <include name="org/apache/regexp/**"/>
+        
+        <!-- XML stuff -->
+        <include name="javax/xml/**"/>
+        <include name="org/w3c/dom/**"/>
+        <include name="org/apache/xerces/**"/>
+
+        <!-- desktop specific stuff -->
+        <include name="simple/**"/>
+        <include name="org/jdesktop/jdic/init/**"/>
+        <include name="org/jdesktop/jdic/tray/**"/>
+      </fileset>
+      <fileset dir="temp/classes">
+        <exclude name="net/sf/regain/crawler/preparator/**"/>
+        <exclude name="net/sf/regain/util/sharedtag/taglib/**"/>
+        <exclude name="net/sf/regain/ui/server/**"/>
+      </fileset>
+    </jar>
+    
     <jar jarfile="temp/runtime/crawler/${programname.file}-crawler.jar"
          compress="false"
          index="true">
@@ -322,17 +457,19 @@
         <attribute name="Main-Class" value="net.sf.regain.crawler.Main"/>
       </manifest>
       <fileset dir="temp/included-lib-classes">
-        <exclude name="*"/>
-        <exclude name="META-INF/**"/>
-        <exclude name="license/**"/>
-        <exclude name="test/**"/>
-        <exclude name="javax/servlet/**"/>
-        <exclude name="org/jdesktop/jdic/**"/>
-        <exclude name="simple/**"/>
+        <include name="org/apache/lucene/**"/>
+        <include name="org/apache/log4j/**"/>
+        <include name="org/apache/regexp/**"/>
+
+        <!-- XML stuff -->
+        <include name="javax/xml/**"/>
+        <include name="org/w3c/dom/**"/>
+        <include name="org/apache/xerces/**"/>
       </fileset>
       <fileset dir="temp/classes">
         <include name="net/sf/regain/*.class"/>
         <include name="net/sf/regain/crawler/**"/>
+        <exclude name="net/sf/regain/crawler/preparator/**"/>
       </fileset>
     </jar>
 
@@ -356,28 +493,6 @@
         <exclude name="settings.jsp"/>
       </fileset>
     </war>
-    
-	  <jar jarfile="temp/runtime/desktop/${programname.file}.jar"
-	       compress="false"
-	       index="true">
-	    <manifest>
-	      <attribute name="Main-Class" value="net.sf.regain.ui.desktop.Main"/>
-	    </manifest>
-	    <fileset dir="temp/included-lib-classes">
-	      <exclude name="*"/>
-	      <exclude name="META-INF/**"/>
-	      <exclude name="license/**"/>
-	      <exclude name="test/**"/>
-        <exclude name="javax/servlet/**"/>
-        <exclude name="org/jdesktop/jdic/browser/**"/>
-        <exclude name="org/jdesktop/jdic/desktop/**"/>
-        <exclude name="org/jdesktop/jdic/filetypes/**"/>
-	    </fileset>
-	    <fileset dir="temp/classes">
-	      <exclude name="net/sf/regain/util/sharedtag/taglib/**"/>
-	      <exclude name="net/sf/regain/ui/server/**"/>
-	    </fileset>
-	  </jar>
   </target>
 
 
@@ -392,7 +507,7 @@
   <!--
    | Creates a windows executable using Jsmooth
    +-->
-  <target name="jsmoothgen" depends="runtime">
+  <target name="jsmoothgen" depends="clean-all, prepare, runtime">
     <echo message="Creating the exe file ..." />
     <jsmoothgen project="jsmooth/exe-creation.jsmooth" skeletonroot="jsmooth/skeletons"/> 
   </target>
@@ -401,7 +516,7 @@
   <!--
    | Creates a Windows installer for the project.
    +-->
-  <target name="installer" depends="clean-all, jsmoothgen">
+  <target name="installer" depends="jsmoothgen">
     <mkdir dir="temp/public"/>
     <exec executable="installer/makensis.exe"
           failonerror="true">

@@ -25,38 +25,23 @@
  *   $Author$
  * $Revision$
  */
-package net.sf.regain.crawler.preparator;
-
-import net.sf.regain.RegainException;
-import net.sf.regain.crawler.document.AbstractPreparator;
-import net.sf.regain.crawler.document.RawDocument;
+package net.sf.regain.crawler;
 
 /**
- * Präpariert ein Plain-Text-Dokument für die Indizierung.
- * <p>
- * Das Dokument wird dabei unverändert übernommen befreit.
- *
- * @author Til Schneider, www.murfman.de
+ * Loggs errors.
+ * 
+ * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
  */
-public class PlainTextPreparator extends AbstractPreparator {
+public interface ErrorLogger {
 
   /**
-   * Creates a new instance of PlainTextPreparator.
-   */
-  public PlainTextPreparator() {
-    super("txt");
-  }
-
-
-  /**
-   * Präpariert ein Dokument für die Indizierung.
+   * Loggs an error.
    *
-   * @param rawDocument Das zu präpariernde Dokument.
-   *
-   * @throws RegainException Wenn die Präparation fehl schlug.
+   * @param msg The error message.
+   * @param thr The error
+   * @param fatal Specifies whether the error was fatal. An error is fatal if
+   *        it caused that the index could not be created.
    */
-  public void prepare(RawDocument rawDocument) throws RegainException {
-    setCleanedContent(rawDocument.getContentAsString());
-  }
+  public void logError(String msg, Throwable thr, boolean fatal);
 
 }

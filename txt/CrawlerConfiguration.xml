@@ -116,9 +116,17 @@
 -->
 
 
+<!--
+ | The preparators in the order they should be applied. Preparators that aren't listed
+ | here will be applied after the listed ones.
+ |
+ | You can use this list...
+ |   ... to define the priority (= order) of the preparators
+ |   ... to disable preparators
+ |   ... to configure preparators
+ +-->
 <preparatorList>
   <preparator>
-    <urlPattern>(^http://[^/]*$)|(^http://.*/[^\.]*$)|(\.(/|html|htm)$)</urlPattern>
     <class>.HtmlPreparator</class>
     <config>
       <!--
@@ -174,32 +182,13 @@
       -->
     </config>
   </preparator>
+  
   <preparator>
-    <urlPattern>\.txt$</urlPattern>
-    <class>.PlainTextPreparator</class>
-  </preparator>
-  <preparator>
-    <urlPattern>\.xml$</urlPattern>
-    <class>.XmlPreparator</class>
-  </preparator>
-  <preparator>
-    <urlPattern>\.pdf$</urlPattern>
-    <class>.PdfPreparator</class>
-  </preparator>
-  <preparator>
-    <urlPattern>\.(sds|sdc|sdw|sgl|sda|sdd|sdf|sxw|stw|sxg|sxc|stc|sxi|sti|sxd|std|sxm|odt|ott|oth|odm|odg|otg|odp|otp|ods|ots|odc|odf|odb|odi)$</urlPattern>
-    <class>.OpenOfficePreparator</class>
-  </preparator>
-  <preparator>
-    <urlPattern>\.xls$</urlPattern>
     <class>.PoiMsExcelPreparator</class>
   </preparator>
-  <!--
-  <preparator>
-    <urlPattern>\.xls$</urlPattern>
+  <preparator enabled="false">
     <class>.JacobMsExcelPreparator</class>
     <config>
-      -->
       <!--
        | properties:
        |   The semicolon separated list of document properties that should be
@@ -210,23 +199,18 @@
        |     totalEditTime, pages, words, characters, security, category,
        |     manager, company, bytes, lines, paras, hyperlinkBase, charsWSpaces
        +-->
-      <!--
       <section name="main">
         <param name="properties">author</param>
       </section>
     </config>
   </preparator>
-  -->
+  
   <preparator>
-    <urlPattern>\.doc$</urlPattern>
     <class>.PoiMsWordPreparator</class>
   </preparator>
-  <!--
-  <preparator>
-    <urlPattern>\.doc$</urlPattern>
+  <preparator enabled="false">
     <class>.JacobMsWordPreparator</class>
     <config>
-      -->
       <!--
        | headlineStyles:
        |   The semicolon separated list of Word style names (format templates)
@@ -241,17 +225,14 @@
        |     totalEditTime, pages, words, characters, security, category,
        |     manager, company, bytes, lines, paras, hyperlinkBase, charsWSpaces
        +-->
-      <!--
       <section name="main">
         <param name="headlineStyles">Überschrift 1;Überschrift 2</param>
         <param name="properties">author</param>
       </section>
     </config>
   </preparator>
-  -->
-  <!--
-  <preparator>
-    <urlPattern>\.ppt$</urlPattern>
+  
+  <preparator enabled="false">
     <class>.JacobMsPowerPointPreparator</class>
     <config>
       -->
@@ -266,17 +247,17 @@
        |     manager, company, bytes, lines, paras, slides, notes, hiddenSlides,
        |     mmClips, hyperlinkBase, charsWSpaces
        +-->
-      <!--
       <section name="main">
         <param name="properties">author</param>
       </section>
     </config>    
   </preparator>
-  -->
+  
   <preparator>
-    <urlPattern>\.rtf$</urlPattern>
-    <!--<class>.SwingRtfPreparator</class>-->
     <class>.SimpleRtfPreparator</class>
+  </preparator>
+  <preparator>
+    <class>.SwingRtfPreparator</class>
   </preparator>
 </preparatorList>
 
@@ -284,18 +265,9 @@
 <!-- The regular expressions that indetify URLs in HTML. -->
 <htmlParserPatternList>
   <pattern parse="true" index="true" regexGroup="1">="([^"]*\.(htm|html))"</pattern>
-  <pattern parse="false" index="true" regexGroup="1">="([^"]*\.(pdf|xls|doc|rtf|sds|sdc|sdw|sgl|sda|sdd|sdf|sxw|stw|sxg|sxc|stc|sxi|sti|sxd|std|sxm|odt|ott|oth|odm|odg|otg|odp|otp|ods|ots|odc|odf|odb|odi))"</pattern>
   <pattern parse="false" index="false" regexGroup="1">="([^"]*\.(js|css|jpg|gif|png))"</pattern>
+  <pattern parse="false" index="true" regexGroup="1">="([^"]*\.[^\."]{3})"</pattern>
 </htmlParserPatternList>
-
-
-<!--
- | The regular expressions that identify file names that should be processed
- | by the spider.
- +-->
-<directoryParserPatternList>
-  <pattern index="true">\.(html|pdf|ppt|xls|doc|rtf|sds|sdc|sdw|sgl|sda|sdd|sdf|sxw|stw|sxg|sxc|stc|sxi|sti|sxd|std|sxm|odt|ott|oth|odm|odg|otg|odp|otp|ods|ots|odc|odf|odb|odi)$</pattern>
-</directoryParserPatternList>
 
 
 <!-- The list of URLs where the spidering will start. -->

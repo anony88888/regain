@@ -34,13 +34,13 @@ package net.sf.regain.crawler.config;
  * @author Til Schneider, www.murfman.de
  */
 public class PreparatorSettings {
+  
+  /** The default preparator package. */
+  public static final String DEFAULT_PREPARATOR_PACKAGE = "net.sf.regain.crawler.preparator";
 
-  /**
-   * The regular expression that identifies a URL that should be handled with
-   * the preparator.
-   */
-  private String mUrlRegex;
-
+  /** Specifies whether the preparator is enabled. */
+  private boolean mIsEnabled;
+  
   /**
    * The class name of the preparator. The class must implement
    * {@link net.sf.regain.crawler.document.Preparator Preparator}.
@@ -56,30 +56,32 @@ public class PreparatorSettings {
   /**
    * Creates a new instance of PreparatorSettings.
    * 
-   * @param urlRegex The regular expression that identifies a URL that should be
-   *        handled with the preparator.
+   * @param isEnabled Specifies whether the preparator is enabled.
    * @param preparatorClassName The class name of the preparator. The class must
    *        implement {@link net.sf.regain.crawler.document.Preparator Preparator}.
    * @param preparatorConfig The configuration of the preparator.
    */
-  public PreparatorSettings(String urlRegex, String preparatorClassName,
+  public PreparatorSettings(boolean isEnabled, String preparatorClassName,
     PreparatorConfig preparatorConfig)
   {
-    mUrlRegex = urlRegex;
-    mPreparatorClassName = preparatorClassName;
+    mIsEnabled = isEnabled;
     mPreparatorConfig = preparatorConfig;
+    
+    if (preparatorClassName.startsWith(".")) {
+      mPreparatorClassName = DEFAULT_PREPARATOR_PACKAGE + preparatorClassName;
+    } else {
+      mPreparatorClassName = preparatorClassName;
+    }
   }
 
 
   /**
-   * Gets the regular expression that identifies a URL that should be handled
-   * with the preparator.
-   *
-   * @return The regular expression that identifies a URL that should be handled
-   *         with the preparator.
+   * Gets whether the preparator is enabled.
+   * 
+   * @return Whether the preparator is enabled.
    */
-  public String getUrlRegex() {
-    return mUrlRegex;
+  public boolean isEnabled() {
+    return mIsEnabled;
   }
 
 

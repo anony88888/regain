@@ -257,21 +257,6 @@ public class DummyCrawlerConfig implements CrawlerConfig {
   }
 
 
-
-  /**
-   * Gibt die UrlPattern zurück, die der Verzeichnis-Parser nutzt, um zu
-   * entscheiden, ob und wie eine Datei bearbeitet werden soll.
-   *
-   * @return Die UrlPattern für den Verzeichnis-Parser.
-   */
-  public UrlPattern[] getDirectoryParserUrlPatterns() {
-    return new UrlPattern[] {
-      new UrlPattern(".*\\.(html|pdf|xls|doc|rtf|ppt)", -1, false,  true)
-    };
-  }
-
-
-
   /**
    * Gibt die Schwarze Liste zurück.
    * <p>
@@ -330,10 +315,8 @@ public class DummyCrawlerConfig implements CrawlerConfig {
    */
   public PreparatorSettings[] getPreparatorSettingsList() {
     return new PreparatorSettings[] {
-      new PreparatorSettings("\\.(/|html|htm)$",
-          "net.sf.regain.crawler.document.HtmlPreparator", new PreparatorConfig()),
-      new PreparatorSettings("\\.xml$",
-          "net.sf.regain.crawler.document.XmlPreparator", new PreparatorConfig())
+      new PreparatorSettings(true, "net.sf.regain.crawler.document.HtmlPreparator", new PreparatorConfig()),
+      new PreparatorSettings(true, "net.sf.regain.crawler.document.XmlPreparator", new PreparatorConfig())
     };
   }
 

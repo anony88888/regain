@@ -35,6 +35,7 @@ import java.util.Date;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
+import net.sf.regain.crawler.document.AbstractPreparator;
 import net.sf.regain.crawler.document.RawDocument;
 
 import org.apache.log4j.Logger;
@@ -65,6 +66,14 @@ public class PoiMsExcelPreparator extends AbstractPreparator {
   private HSSFWorkbook mWorkbook;
   /** Contains all data formats used in the currently preparing Excel workbook. */
   private HSSFDataFormat mDataFormat;
+
+
+  /**
+   * Creates a new instance of PoiMsExcelPreparator.
+   */
+  public PoiMsExcelPreparator() {
+    super(new String[] { "xls", "xlt" });
+  }
 
 
   /**
