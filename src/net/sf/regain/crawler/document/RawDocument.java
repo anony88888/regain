@@ -27,8 +27,11 @@
  */
 package net.sf.regain.crawler.document;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 
 import net.sf.regain.RegainException;
@@ -305,6 +308,31 @@ public class RawDocument {
     }
 
     return mContentAsString;
+  }
+
+
+  /**
+   * Gets the content of the document as stream. The stream must be closed by
+   * the caller.
+   * 
+   * @return The content of the document as stream.
+   * @throws RegainException If creating the stream failed.
+   */
+  public InputStream getContentAsStream()
+    throws RegainException
+  {
+    if (mContent != null) {
+      return new ByteArrayInputStream(mContent);
+    } else {
+      // This document must be a file
+      try {
+        return new FileInputStream(mContentAsFile);
+      }
+      catch (Throwable thr) {
+        throw new RegainException("Creating stream for file failed: " +
+            mContentAsFile, thr);
+      }
+    }
   }
 
 

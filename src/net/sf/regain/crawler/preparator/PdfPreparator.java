@@ -27,7 +27,7 @@
  */
 package net.sf.regain.crawler.preparator;
 
-import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 
@@ -62,13 +62,12 @@ public class PdfPreparator extends AbstractPreparator {
   public void prepare(RawDocument rawDocument) throws RegainException {
     String url = rawDocument.getUrl();
 
-    ByteArrayInputStream stream = null;
+    InputStream stream = null;
     PDDocument pdfDocument = null;
 
     try {
       // Create a InputStream that reads the content.
-      byte[] content = rawDocument.getContent();
-      stream = new ByteArrayInputStream(content);
+      stream = rawDocument.getContentAsStream();
 
       // Parse the content
       PDFParser parser = new PDFParser(stream);

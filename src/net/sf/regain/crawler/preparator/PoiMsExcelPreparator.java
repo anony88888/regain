@@ -27,7 +27,7 @@
  */
 package net.sf.regain.crawler.preparator;
 
-import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -75,9 +75,9 @@ public class PoiMsExcelPreparator extends AbstractPreparator {
    * @throws RegainException Wenn die Präparation fehl schlug.
    */
   public void prepare(RawDocument rawDocument) throws RegainException {
-    ByteArrayInputStream stream = null;
+    InputStream stream = null;
     try {
-      stream = new ByteArrayInputStream(rawDocument.getContent());
+      stream = rawDocument.getContentAsStream();
       POIFSFileSystem poiFs = new POIFSFileSystem(stream);
       mWorkbook = new HSSFWorkbook(poiFs);
       mDataFormat = mWorkbook.createDataFormat();

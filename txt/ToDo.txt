@@ -1,3 +1,7 @@
+X Urversion
+
+** Version 1.0 **
+
 X Aktualisierung auf die neusten Versionen der genutzten Projekte, sofern
     Ergebnis dadurch nicht schlechter wird. (Aufwand: 8 Std.)
     Updates:
@@ -113,7 +117,11 @@ X Crawler: Regelmäßig Breakpoints setzen: IndexWriter und IndexReader schließen
     und aktuellen Stand in gesondertes Verzeichnis kopieren. Falls Indexierung
     abgebrochen wurde auf diesem Breakpoint aufsetzten.
 X Desktopsuche: Status: Profiler-Ergebnisse anzeigen
+
+** Version 1.1 Beta 2 am 12.03.05 **
+
 X Bug: Excel-Präparator kommt nicht mit allen Zahlen- und Datumsformaten klar.
+X Crawler: RawDocument: InputStream anbieten. Bei file-URL Daten nicht cachen.
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -147,6 +155,7 @@ X Bug: Excel-Präparator kommt nicht mit allen Zahlen- und Datumsformaten klar.
   	(Dazu muss Start-List muss untereinander präfixfrei sein!)
   Crawler: Arbeitspeicher sparen: Erst Dateien an mJobList anhängen, dann
   	Unterverzeichnisse. So wird die mJobList klein gehalten.
+  Crawler: Fehler-Log nicht am Ende erstellen, sondern sofort und mit Stacktrace.
   Desktopsuche: Status-Seite: Ende von Logdatei zeigen
 
   Desktopsuche: Nach Speichern der Konfiguration nur dann neu indexieren, wenn

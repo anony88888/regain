@@ -27,7 +27,7 @@
  */
 package net.sf.regain.crawler.preparator;
 
-import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 import javax.swing.text.Document;
 import javax.swing.text.rtf.RTFEditorKit;
@@ -68,9 +68,9 @@ public class SwingRtfPreparator extends AbstractPreparator {
    * @throws RegainException Wenn die Präparation fehl schlug.
    */
   public void prepare(RawDocument rawDocument) throws RegainException {
-    ByteArrayInputStream stream = null;
+    InputStream stream = null;
     try {
-      stream = new ByteArrayInputStream(rawDocument.getContent());
+      stream = rawDocument.getContentAsStream();
       Document doc = mRTFEditorKit.createDefaultDocument();
       mRTFEditorKit.read(stream, doc, 0);
 

@@ -27,8 +27,8 @@
  */
 package net.sf.regain.crawler.preparator;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 
 import net.sf.regain.RegainException;
@@ -64,9 +64,9 @@ public class PoiMsWordPreparator extends AbstractPreparator {
    * @throws RegainException Wenn die Präparation fehl schlug.
    */
   public void prepare(RawDocument rawDocument) throws RegainException {
-    ByteArrayInputStream stream = null;
+    InputStream stream = null;
     try {
-      stream = new ByteArrayInputStream(rawDocument.getContent());
+      stream = rawDocument.getContentAsStream();
       WordDocument doc = new WordDocument(stream);
 
       StringWriter cleanWriter = new StringWriter();
