@@ -30,6 +30,7 @@ package net.sf.regain.search.sharedlib.hit;
 import java.net.URLEncoder;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.RegainToolkit;
 import net.sf.regain.search.SearchContext;
 import net.sf.regain.search.SearchToolkit;
 import net.sf.regain.util.sharedtag.PageRequest;
@@ -82,7 +83,13 @@ public class LinkTag extends AbstractHitTag {
     // Pass file URLs to the file servlet
     String href = url;
     if (url.startsWith("file://")) {
-      href = "file/" + URLEncoder.encode(url.substring(7));
+      // URL encode the URL
+      String urlEncoded = URLEncoder.encode(url.substring(7));
+      
+      // Restore the slashes
+      urlEncoded = RegainToolkit.replace(urlEncoded, "%2F", "/");
+      
+      href = "file/" + urlEncoded;
 
       String indexName = request.getParameter("index");
       if (indexName != null) {
