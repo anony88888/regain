@@ -866,15 +866,6 @@ public class IndexWriterManager {
         + " The method removeObsoleteEntires(...) has to be called first.");
     }
 
-    // Index optimieren
-    try {
-      setIndexMode(ADDING_MODE);
-      mIndexWriter.optimize();
-    }
-    catch (IOException exc) {
-      throw new RegainException("Finishing IndexWriter failed", exc);
-    }
-
     // Switch to ALL_CLOSED_MODE
     setIndexMode(ALL_CLOSED_MODE);
     
@@ -942,6 +933,15 @@ public class IndexWriterManager {
    * @throws RegainException Wenn der Index nicht geschlossen werden konnte.
    */
   public void close(boolean putIntoQuarantine) throws RegainException {
+    // Index optimieren
+    try {
+      setIndexMode(ADDING_MODE);
+      mIndexWriter.optimize();
+    }
+    catch (IOException exc) {
+      throw new RegainException("Finishing IndexWriter failed", exc);
+    }
+
     // Prepare the final 'breakpoint'
     prepareBreakpoint();
     
