@@ -85,6 +85,7 @@ X Desktopsuche: Installer
 X Desktopsuche: Besseres Seiten-Design
 X Desktopsuche: Willkommensseite anzeigen, wenn keine Start-URLs definiert sind.
 X Desktopsuche: file-Treffer über http bereitstellen
+X Bug: Indexierung von Webseiten geht nicht
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -99,9 +100,7 @@ X Desktopsuche: file-Treffer über http bereitstellen
     - Such-JSP: Zusätzliche Eingabefelder für bestimmte Felder können mit
       "field.feldName" hinzugefügt werden.
     - Init-Parameter von configFile nach searchConfigFile umbenannt.
-
   
-  Bug: Indexierung von Webseiten geht nicht
   Desktopsuche: search.jsp: Forward zu searchinput.jsp, wenn query nicht gesetzt.
   Desktopsuche: Status
     - Wann wurde der Index zuletzt aktualisiert

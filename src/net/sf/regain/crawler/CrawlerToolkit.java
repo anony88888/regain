@@ -321,16 +321,22 @@ public class CrawlerToolkit {
           String domain = parentUrl.substring(0, firstSlashPos);
           url = domain + url;
         } else {
-          throw new IllegalArgumentException("Parent URL is not absolute: " + parentUrl);
+          // The parentUrl is a domain without a path, e.g. "http://www.murfman.de"
+          // -> Use the whole parentUrl
+          // NOTE: url start with a /
+          url = parentUrl + url;
         }
       } else {
         // This URL is really relative
         int lastSlashPos = parentUrl.lastIndexOf('/');
-        if (lastSlashPos != -1) {
+        // NOTE: http:// has 7 chars
+        if (lastSlashPos > 7) {
           String domainWidthPath = parentUrl.substring(0, lastSlashPos + 1);
           url = domainWidthPath + url;
         } else {
-          throw new IllegalArgumentException("Parent URL is not absolute: " + parentUrl);
+          // The parentUrl is a domain without a path, e.g. "http://www.murfman.de"
+          // -> Use the whole parentUrl
+          url = parentUrl + "/" + url;
         }
       }
     }
