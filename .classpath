@@ -4,7 +4,7 @@
 	<classpathentry kind="src" path="test/src"/>
 	<classpathentry kind="lib" path="jacobgen/lib/jacobgen.jar"/>
 	<classpathentry kind="lib" path="lib/jacob.jar"/>
-	<classpathentry kind="lib" path="lib/jacobgen-msoffice2000.jar"/>
+	<classpathentry sourcepath="C:/tschneider/Projekte/regain/jacobgen/packed/jacobgen-msoffice2000_src.zip" kind="lib" path="lib/jacobgen-msoffice2000.jar"/>
 	<classpathentry kind="lib" path="lib/servlet.jar"/>
 	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry sourcepath="C:/tschneider/Ressourcen/Xerces-J/2.6.2/Xerces-J-src.2.6.2.zip" kind="lib" path="lib/xml-apis.jar"/>
