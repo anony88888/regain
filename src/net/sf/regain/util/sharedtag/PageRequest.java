@@ -39,7 +39,8 @@ import net.sf.regain.RegainException;
 public abstract class PageRequest {
 
   /**
-   * Gets a request parameter that was given to page via GET or POST.
+   * Gets the request parameter with the given name that was given to the page
+   * via GET or POST.
    * 
    * @param name The name of the parameter.
    * @return The given parameter or <code>null</code> if no such parameter was
@@ -47,6 +48,66 @@ public abstract class PageRequest {
    * @throws RegainException If getting the parameter failed.
    */
   public abstract String getParameter(String name) throws RegainException;
+
+
+  /**
+   * Gets all request parameters with the given name that were given to the page
+   * via GET or POST.
+   * <p>
+   * If you prefer getting an empty array if no such parameter was given instead
+   * of getting <code>null</code>, use {@link #getParametersNotNull(String)}
+   * instead.
+   * 
+   * @param name The name of the parameter.
+   * @return The parameters or <code>null</code> if no such parameter was
+   *         given.
+   * @throws RegainException If getting the parameter failed.
+   */
+  public abstract String[] getParameters(String name) throws RegainException;
+
+  
+  /**
+   * Gets all request parameters with the given name that were given to the page
+   * via GET or POST.
+   * <p>
+   * Unlike {@link #getParameters(String)} this method returns an empty array if
+   * no such parameter was given (not <code>null</code>).
+   * 
+   * @param name The name of the parameter.
+   * @return The parameters or an empty array if no such parameter was given.
+   * @throws RegainException If getting the parameter failed.
+   */
+  public String[] getParametersNotNull(String name) throws RegainException {
+    String[] paramArr = getParameters(name);
+    if (paramArr == null) {
+      return new String[0];
+    } else {
+      return paramArr;
+    }
+  }
+  
+
+  /**
+   * Gets all request parameters with the given name that were given to the page
+   * via GET or POST.
+   * 
+   * @param name The name of the parameter.
+   * @param mandatory Specifies whether the parameter is mandatory.
+   * @return The parameters or <code>null</code> if no such parameter was
+   *         given and mandatory is <code>false</code>..
+   * @throws RegainException If mandatory is <code>true</code> and the parameter
+   *         was not specified.
+   */
+  public String[] getParameters(String name, boolean mandatory)
+    throws RegainException
+  {
+    String[] paramArr = getParameters(name);
+    if (mandatory && ((paramArr == null) || (paramArr.length == 0))) {
+      throw new RegainException("Page parameter '" + name + "' was not specified");
+    } else {
+      return paramArr;
+    }
+  }
 
   
   /**

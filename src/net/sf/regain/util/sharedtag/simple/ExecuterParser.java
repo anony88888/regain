@@ -27,6 +27,8 @@
  */
 package net.sf.regain.util.sharedtag.simple;
 
+import java.util.HashMap;
+
 import net.sf.regain.RegainException;
 import net.sf.regain.util.sharedtag.SharedTag;
 
@@ -41,20 +43,39 @@ import org.apache.regexp.RE;
 public class ExecuterParser {
   
   /** The regex that matches a JSP tag. */
-  private static RE mJspTagRegex;
+  private RE mJspTagRegex;
   
   /** The regex that matches a parameter. */
-  private static RE mParamRegex;
+  private RE mParamRegex;
+  
+  /** The registered SharedTag namespaces. */
+  private static HashMap mNamespaceHash;
   
   
   /**
    * Creates a new instance of ExecuterParser.
    */
   public ExecuterParser() {
-    if (mJspTagRegex == null) {
-      mJspTagRegex = new RE("<([\\w/]*):(\\w*)(([^>\"]*\"[^\"]*\")*\\w*/?)>");
-      mParamRegex = new RE("(\\w+)\\s*=\\s*\"([^\"]*)\"");
+    // NOTE: The regex objects are not static in order to be able to use
+    //       several ExecuterParser instances in concurrent threads
+    mJspTagRegex = new RE("<([\\w/]*):(\\w*)(([^>\"]*\"[^\"]*\")*\\w*/?)>");
+    mParamRegex = new RE("(\\w+)\\s*=\\s*\"([^\"]*)\"");
+  }
+  
+  
+  /**
+   * Registers a SharedTag namespace.
+   * 
+   * @param namespace The namespace to register.
+   * @param packageName The package where the SharedTags classes of this
+   *        namespace are in.
+   */
+  public static void registerNamespace(String namespace, String packageName) {
+    if (mNamespaceHash == null) {
+      mNamespaceHash = new HashMap();
     }
+    
+    mNamespaceHash.put(namespace, packageName);
   }
   
 
@@ -197,9 +218,14 @@ public class ExecuterParser {
     String params)
     throws RegainException
   {
-    String className = "net.sf.regain.search.sharedlib";
+    String packageName = (String) mNamespaceHash.get(namespace);
+    if (packageName == null) {
+      throw new RegainException("Unknown tag namespace: '" + namespace + "'");
+    }
     
-    // Add the packages (E.g. stats_size)
+    String className = packageName;
+    
+    // Add the sub packages (E.g. stats_size)
     int linePos;
     String cutTagName = tagName;
     while ((linePos = cutTagName.indexOf('_')) != -1) {
@@ -237,8 +263,6 @@ public class ExecuterParser {
       String name = mParamRegex.getParen(1);
       String value = mParamRegex.getParen(2);
       tag.setParameter(name, value);
-      
-      System.out.println("Param for " + tag + " '" + name + "'='" + value + "'");
       
       pos = mParamRegex.getParenEnd(0);
     }

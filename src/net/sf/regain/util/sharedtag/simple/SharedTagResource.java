@@ -28,41 +28,39 @@
 package net.sf.regain.util.sharedtag.simple;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.PrintStream;
 
 import net.sf.regain.RegainException;
-import net.sf.regain.RegainToolkit;
 import net.sf.regain.util.sharedtag.PageRequest;
 import net.sf.regain.util.sharedtag.PageWriter;
 import simple.http.Request;
 import simple.http.Response;
 import simple.http.serve.BasicResource;
+import simple.http.serve.Context;
 
 /**
- * A simpleweb resource representing one JSP.
+ * A simpleweb resource representing one JSP page.
  *
  * @see simple.http.serve.Resource
  * @author Til Schneider, www.murfman.de
  */
 public class SharedTagResource extends BasicResource {
   
-  /** The root executer holding the parsed JSP. */
+  /** The root executer holding the parsed JSP page. */
   private Executer mRootTagExecuter;
   
   
   /**
    * Creates a new instance of SharedTagResource.
    * 
-   * @param jspFile The JSP file to parse.
+   * @param context The context of this resource.
+   * @param root The root executer holding the parsed JSP page.
    * @throws RegainException If parsing the JSP file failed.
    */
-  public SharedTagResource(File jspFile) throws RegainException {
-    String jspCode = RegainToolkit.readStringFromFile(jspFile);
-    mRootTagExecuter = new ExecuterParser().parse(jspCode);
-
-    // System.out.println(jspFile.getAbsolutePath() + ":");
-    // mRootTagExecuter.printTag();
+  public SharedTagResource(Context context, Executer root) throws RegainException {
+    super(context);
+    
+    mRootTagExecuter = root;
   }
 
 

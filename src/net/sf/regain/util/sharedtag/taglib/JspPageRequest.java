@@ -31,6 +31,7 @@ import java.util.Enumeration;
 
 import javax.servlet.jsp.PageContext;
 
+import net.sf.regain.RegainException;
 import net.sf.regain.util.sharedtag.PageRequest;
 
 /**
@@ -65,7 +66,21 @@ public class JspPageRequest extends PageRequest {
     return mPageContext.getRequest().getParameter(name);
   }
 
-  
+
+  /**
+   * Gets all request parameters with the given name that were given to the page
+   * via GET or POST.
+   * 
+   * @param name The name of the parameter.
+   * @return The parameters or <code>null</code> if no such parameter was
+   *         given.
+   * @throws RegainException If getting the parameter failed.
+   */
+  public String[] getParameters(String name) throws RegainException {
+    return mPageContext.getRequest().getParameterValues(name);
+  }
+
+
   /**
    * Gets the names of the given parameters.
    * 

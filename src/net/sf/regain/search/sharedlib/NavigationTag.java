@@ -75,8 +75,6 @@ public class NavigationTag extends SharedTag implements SearchConstants {
       return;
     }
     
-    String indexName = request.getParameter("index", true);
-
     SearchContext search = SearchToolkit.getSearchContext(request);
 
     int fromResult = request.getParameterAsInt(PARAM_FROM_RESULT, 0);
@@ -106,6 +104,7 @@ public class NavigationTag extends SharedTag implements SearchConstants {
       }
     }
 
+    String indexName = search.getIndexName();
     if (currButton > 0) {
       String msgBack = getParameter("msgBack", true);
       printLink(out, currButton - 1, query, maxResults, indexName, msgBack);

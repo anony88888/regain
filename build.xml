@@ -281,14 +281,16 @@
       <fileset dir="lib" includes="jacob.dll"/>
     </copy>
     <copy todir="temp/runtime/desktop/conf">
+      <fileset dir="txt" includes="DesktopConfiguration.xml"/>
       <fileset dir="txt" includes="CrawlerConfiguration.xml"/>
       <fileset dir="txt" includes="SearchConfiguration.xml"/>
       <fileset dir="txt" includes="log4j.properties"/>
     </copy>
     <copy todir="temp/runtime/desktop/web">
       <fileset dir="web">
-        <exclude name="**/WEB-INF/*"/>
-        <exclude name="**/Web-inf/*"/>
+        <exclude name="SearchLib.tld"/>
+        <exclude name="Web-inf"/>
+        <exclude name="Web-inf/*"/>
         <exclude name="**/CVS/*"/>
       </fileset>
     </copy>
@@ -328,8 +330,11 @@
         <include name="${lucene.jar}"/>
         <include name="${regexp.jar}"/>
       </lib>
-      <fileset dir="web" includes="*.jsp"/>
-      <fileset dir="web" includes="*.tld"/>
+      <fileset dir="web">
+        <include name="*.tld"/>
+        <include name="*.jsp"/>
+        <exclude name="settings.jsp"/>
+      </fileset>
     </war>
   </target>
 

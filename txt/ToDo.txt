@@ -72,6 +72,11 @@ X SharedTags: Die selben Tags für Taglib-Technologie und simpleweb-Technologie
     nutzen.
 X SharedTags: JSP-Parser für simpleweb
 X DesktopSuche: Such-JSPs unter simpleweb zum Laufen bekommen.
+X Desktopsuche: Einstellungen
+    - Wie oft soll er aktualisiert werden
+    - Welche Verzeichnisse sollen indiziert werden sollen
+    - Welche Verzeichnisse sollen ausgelassen werden
+    - Welche Webseiten sollen indiziert werden
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -85,6 +90,16 @@ X DesktopSuche: Such-JSPs unter simpleweb zum Laufen bekommen.
   Handbuch aktualisieren:
     - Such-JSP: Zusätzliche Eingabefelder für bestimmte Felder können mit
       "field.feldName" hinzugefügt werden.
+
+  Desktopsuche: Suche: Automatisch geänderte Konfiguration laden
+  Desktopsuche: Periodisch den Crawler aufrufen
+  Desktopsuche: Status
+    - Wann wurde der Index zuletzt aktualisiert
+    - Fortschritt bei laufender Aktualisierung
+  Desktopsuche: Task-Icon mit Menü
+  Desktopsuche: Installer
+  Desktopsuche: Jsmooth
+  Desktopsuche: Seiten-Design aufpeppen
 
 Rückfragen:
 

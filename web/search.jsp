@@ -1,15 +1,14 @@
-<%@page contentType="text/html" errorPage="ErrorPage.jsp"%>
-<%@page import="net.sf.regain.search.SearchConstants" %>
+<%@page contentType="text/html" errorPage="errorpage.jsp"%>
 <%@taglib uri="SearchLib.tld" prefix="search" %>
 
 <html>
 <head>
-  <title>Suche nach <search:param name="query"/></title>
+  <title>regain - Suche nach <search:param name="query"/></title>
 </head>
 
 <body>
 
-  <form name="search" action="SearchOutput.jsp" method="get">
+  <form name="search" action="search.jsp" method="get">
     <search:input_hiddenparam name="index"/>
     <p>
       <b>Suchen nach: </b>
@@ -54,13 +53,13 @@
 
   Ergebnisseite:
   <search:navigation
-  	targetPage="SearchOutput.jsp"
+  	targetPage="search.jsp"
   	msgBack="&lt;&lt; Zur&uuml;ck"
   	msgForward="Weiter &gt;&gt;"/>
 
   <br/>
 
-  <form name="search" action="SearchOutput.jsp" method="get">
+  <form name="search" action="search.jsp" method="get">
     <search:input_hiddenparam name="index"/>
     <p>
       <b>Suchen nach: </b>

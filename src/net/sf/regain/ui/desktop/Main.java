@@ -30,6 +30,7 @@ package net.sf.regain.ui.desktop;
 import java.io.File;
 import java.net.ServerSocket;
 
+import net.sf.regain.util.sharedtag.simple.ExecuterParser;
 import net.sf.regain.util.sharedtag.simple.SharedTagService;
 import net.sf.regain.util.sharedtag.simple.SimplePageRequest;
 import simple.http.ProtocolHandler;
@@ -53,7 +54,9 @@ public class Main {
    */
   public static void main(String[] args) {
     SimplePageRequest.setInitParameter("configFile", "conf/SearchConfiguration.xml");
-
+    ExecuterParser.registerNamespace("search", "net.sf.regain.search.sharedlib");
+    ExecuterParser.registerNamespace("settings", "net.sf.regain.ui.desktop.settings.sharedlib");
+    
     try {
       FileContext context = new FileContext(new File("web"));
       

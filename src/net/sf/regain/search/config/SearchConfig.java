@@ -23,4 +23,12 @@ public interface SearchConfig {
    */
   public IndexConfig getIndexConfig(String indexName);
   
+  /**
+   * Gets the name of the default index.
+   * 
+   * @return The name of the default index or <code>null</code> if no default
+   *         index was specified.
+   */
+  public String getDefaultIndexName();
+  
 }

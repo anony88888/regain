@@ -81,6 +81,25 @@ public class SimplePageRequest extends PageRequest {
     }
   }
 
+  
+  /**
+   * Gets all request parameters with the given name that were given to the page
+   * via GET or POST.
+   * 
+   * @param name The name of the parameter.
+   * @return The parameters or <code>null</code> if no such parameter was
+   *         given.
+   * @throws RegainException If getting the parameter failed.
+   */
+  public String[] getParameters(String name) throws RegainException {
+    try {
+      return mRequest.getParameters().getParameters(name);
+    }
+    catch (IOException exc) {
+      throw new RegainException("Getting parameter " + name + " failed", exc);
+    }
+  }
+  
 
   /**
    * Gets the names of the given parameters.

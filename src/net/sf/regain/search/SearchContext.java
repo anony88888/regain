@@ -138,6 +138,16 @@ public class SearchContext {
       }
     }
   }
+  
+  
+  /**
+   * Gets the name of the index.
+   * 
+   * @return The name of the index.
+   */
+  public String getIndexName() {
+    return mIndexConfig.getName();
+  }
 
 
   /**

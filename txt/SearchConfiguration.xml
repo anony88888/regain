@@ -35,20 +35,20 @@
     </defaultSettings>
     
     <!-- The search index 'main' -->
-    <index name="main">
+    <index name="main" default="true">
       <!-- The directory where the index is located -->
-      <dir>c:\Temp\searchindex</dir>
-      
-      <rewriteRules>
-        <rule prefix="file://c:/Temp/dokumente/doc" replacement="file://///knecht/test1"/>
-        <rule prefix="file://c:/Temp/dokumente/xls" replacement="file://///knecht/test2"/>
-      </rewriteRules>
+      <dir>searchindex</dir>
     </index>
     
-    <!-- The search index 'big' -->
-    <index name="big">
+    <!-- The search index 'example' -->
+    <index name="example">
       <!-- The directory where the index is located -->
-      <dir>c:\Temp\searchindex_big</dir>
+      <dir>c:\Temp\searchindex_example</dir>
+      
+      <rewriteRules>
+        <rule prefix="file://c:/Temp/dokumente/doc" replacement="file:////knecht/test1"/>
+        <rule prefix="file://c:/Temp/dokumente/xls" replacement="file:////knecht/test2"/>
+      </rewriteRules>
     </index>
   </indexList>
 

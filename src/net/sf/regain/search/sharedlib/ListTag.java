@@ -158,17 +158,4 @@ public class ListTag extends SharedTag implements SearchConstants {
     }
   }
 
-
-  /**
-   * Called when the parser reaches the end tag.
-   *  
-   * @param out The writer where to write the code.
-   * @param request The page request.
-   * @throws RegainException If there was an exception.
-   */
-  public void printEndTag(PageWriter out, PageRequest request)
-    throws RegainException
-  {
-  }
-
 }

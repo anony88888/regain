@@ -51,6 +51,9 @@ public class SharedTagService extends BasicService {
   /** The base directory where the provided files are located. */
   private File mBaseDir;
   
+  /** The parser to use for parsing JSP pages */
+  private ExecuterParser mParser;
+  
   
   /**
    * Creates a new instance of SharedTagService.
@@ -59,6 +62,8 @@ public class SharedTagService extends BasicService {
    */
   public SharedTagService(Context context) {
     super(context);
+    
+    mParser = new ExecuterParser();
   }
 
   
@@ -70,6 +75,13 @@ public class SharedTagService extends BasicService {
    * @throws Exception If executing the JSP page failed.
    */
   public void process(Request req, Response resp) throws Exception {
+    // Check whether this request comes from localhost
+    boolean localhost = req.getInetAddress().isLoopbackAddress();
+    if (! localhost) {
+      // This request does not come from localhost -> Send 403 Forbidden
+      handle(req, resp, 403);
+    }
+    
     String fileName = context.getRequestPath(req.getURI());
     
     if (mBaseDir == null) {
@@ -82,8 +94,10 @@ public class SharedTagService extends BasicService {
         processDirectory(req, resp, file);
       }
       else if (file.getName().endsWith(".jsp")) {
-        SharedTagResource res = new SharedTagResource(file);
-        res.handle(req, resp);
+        String jspCode = RegainToolkit.readStringFromFile(file);
+        Executer root = mParser.parse(jspCode);
+        SharedTagResource resource = new SharedTagResource(context, root);
+        resource.handle(req, resp);
       }
       else {
         processFile(req, resp, file);

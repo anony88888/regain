@@ -157,7 +157,7 @@ public class XmlCrawlerConfig implements CrawlerConfig {
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
   private void readLoadUnparsedUrls(Element config) throws RegainException {
-    Node node = XmlToolkit.getChild(config, "loadUnparsedUrls");
+    Node node = XmlToolkit.getChild(config, "loadUnparsedUrls", true);
     mLoadUnparsedUrls = XmlToolkit.getTextAsBoolean(node);
   }
 
@@ -169,7 +169,7 @@ public class XmlCrawlerConfig implements CrawlerConfig {
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
   private void readHttpTimeoutSecs(Element config) throws RegainException {
-    Node node = XmlToolkit.getChild(config, "httpTimeout");
+    Node node = XmlToolkit.getChild(config, "httpTimeout", true);
     mHttpTimeoutSecs = XmlToolkit.getTextAsInt(node);
   }
 
@@ -183,23 +183,23 @@ public class XmlCrawlerConfig implements CrawlerConfig {
   private void readProxyConfig(Node config) throws RegainException {
     Node node;
 
-    Node proxyNode = XmlToolkit.getChild(config, "proxy", false);
+    Node proxyNode = XmlToolkit.getChild(config, "proxy");
     if (proxyNode != null) {
-      node = XmlToolkit.getChild(proxyNode, "host", false);
+      node = XmlToolkit.getChild(proxyNode, "host");
       if (node != null) {
-        mProxyHost = XmlToolkit.getText(node);
+        mProxyHost = XmlToolkit.getText(node, true);
       }
-      node = XmlToolkit.getChild(proxyNode, "port", false);
+      node = XmlToolkit.getChild(proxyNode, "port");
       if (node != null) {
-        mProxyPort = XmlToolkit.getText(node);
+        mProxyPort = XmlToolkit.getText(node, true);
       }
-      node = XmlToolkit.getChild(proxyNode, "user", false);
+      node = XmlToolkit.getChild(proxyNode, "user");
       if (node != null) {
-        mProxyUser = XmlToolkit.getText(node);
+        mProxyUser = XmlToolkit.getText(node, true);
       }
-      node = XmlToolkit.getChild(proxyNode, "password", false);
+      node = XmlToolkit.getChild(proxyNode, "password");
       if (node != null) {
-        mProxyPassword = XmlToolkit.getText(node);
+        mProxyPassword = XmlToolkit.getText(node, true);
       }
     }
   }
@@ -215,21 +215,21 @@ public class XmlCrawlerConfig implements CrawlerConfig {
   private void readIndexConfig(Node config) throws RegainException {
     Node node;
 
-    Node indexNode = XmlToolkit.getChild(config, "searchIndex");
+    Node indexNode = XmlToolkit.getChild(config, "searchIndex", true);
 
-    node = XmlToolkit.getChild(indexNode, "dir");
-    mIndexDir = XmlToolkit.getText(node);
-    node = XmlToolkit.getChild(indexNode, "buildIndex");
+    node = XmlToolkit.getChild(indexNode, "dir", true);
+    mIndexDir = XmlToolkit.getText(node, true);
+    node = XmlToolkit.getChild(indexNode, "buildIndex", true);
     mBuildIndex = XmlToolkit.getTextAsBoolean(node);
-    node = XmlToolkit.getChild(indexNode, "analyzerType");
-    mAnalyzerType = XmlToolkit.getText(node);
-    node = XmlToolkit.getChild(indexNode, "stopwordList");
-    mStopWordList = XmlToolkit.getTextAsWordList(node, false);
-    node = XmlToolkit.getChild(indexNode, "exclusionList");
+    node = XmlToolkit.getChild(indexNode, "analyzerType", true);
+    mAnalyzerType = XmlToolkit.getText(node, true);
+    node = XmlToolkit.getChild(indexNode, "stopwordList", true);
+    mStopWordList = XmlToolkit.getTextAsWordList(node, true);
+    node = XmlToolkit.getChild(indexNode, "exclusionList", true);
     mExclusionList = XmlToolkit.getTextAsWordList(node, false);
-    node = XmlToolkit.getChild(indexNode, "writeAnalysisFiles");
+    node = XmlToolkit.getChild(indexNode, "writeAnalysisFiles", true);
     mWriteAnalysisFiles = XmlToolkit.getTextAsBoolean(node);
-    node = XmlToolkit.getChild(indexNode, "maxFailedDocuments");
+    node = XmlToolkit.getChild(indexNode, "maxFailedDocuments", true);
     mMaxFailedDocuments = XmlToolkit.getTextAsDouble(node) / 100.0;
   }
 
@@ -243,16 +243,16 @@ public class XmlCrawlerConfig implements CrawlerConfig {
   private void readControlFileConfig(Node config) throws RegainException {
     Node node;
 
-    Node ctrNode = XmlToolkit.getChild(config, "controlFiles", false);
+    Node ctrNode = XmlToolkit.getChild(config, "controlFiles");
     if (ctrNode != null) {
-      node = XmlToolkit.getChild(ctrNode, "finishedWithoutFatalsFile", false);
+      node = XmlToolkit.getChild(ctrNode, "finishedWithoutFatalsFile");
       if (node != null) {
-        mFinishedWithoutFatalsFileName = XmlToolkit.getText(node).trim();
+        mFinishedWithoutFatalsFileName = XmlToolkit.getText(node, true).trim();
       }
 
-      node = XmlToolkit.getChild(ctrNode, "finishedWithFatalsFile", false);
+      node = XmlToolkit.getChild(ctrNode, "finishedWithFatalsFile");
       if (node != null) {
-        mFinishedWithFatalsFileName = XmlToolkit.getText(node).trim();
+        mFinishedWithFatalsFileName = XmlToolkit.getText(node, true).trim();
       }
     }
   }
@@ -265,7 +265,7 @@ public class XmlCrawlerConfig implements CrawlerConfig {
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
   private void readStartUrls(Node config) throws RegainException {
-    Node node = XmlToolkit.getChild(config, "startlist");
+    Node node = XmlToolkit.getChild(config, "startlist", true);
     Node[] nodeArr = XmlToolkit.getChildArr(node, "start");
     mStartUrls = new StartUrl[nodeArr.length];
     for (int i = 0; i < nodeArr.length; i++) {
@@ -289,11 +289,11 @@ public class XmlCrawlerConfig implements CrawlerConfig {
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
   private void readHtmlParserUrlPatterns(Node config) throws RegainException {
-    Node node = XmlToolkit.getChild(config, "htmlParserPatternList");
+    Node node = XmlToolkit.getChild(config, "htmlParserPatternList", true);
     Node[] nodeArr = XmlToolkit.getChildArr(node, "pattern");
     mHtmlParserUrlPatterns = new UrlPattern[nodeArr.length];
     for (int i = 0; i < nodeArr.length; i++) {
-      String regexPattern = XmlToolkit.getText(nodeArr[i]);
+      String regexPattern = XmlToolkit.getText(nodeArr[i], true);
       int regexGroup = XmlToolkit.getAttributeAsInt(nodeArr[i], "regexGroup");
       boolean parse = XmlToolkit.getAttributeAsBoolean(nodeArr[i], "parse");
       boolean index = XmlToolkit.getAttributeAsBoolean(nodeArr[i], "index");
@@ -315,11 +315,11 @@ public class XmlCrawlerConfig implements CrawlerConfig {
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
   private void readDirectoryParserUrlPatterns(Node config) throws RegainException {
-    Node node = XmlToolkit.getChild(config, "directoryParserPatternList");
+    Node node = XmlToolkit.getChild(config, "directoryParserPatternList", true);
     Node[] nodeArr = XmlToolkit.getChildArr(node, "pattern");
     mDirectoryParserUrlPatterns = new UrlPattern[nodeArr.length];
     for (int i = 0; i < nodeArr.length; i++) {
-      String regexPattern = XmlToolkit.getText(nodeArr[i]);
+      String regexPattern = XmlToolkit.getText(nodeArr[i], true);
       int regexUrlGroup = -1;
       boolean shouldBeParsed = false;
       boolean shouldBeIndexed = XmlToolkit.getAttributeAsBoolean(nodeArr[i], "index");
@@ -341,11 +341,11 @@ public class XmlCrawlerConfig implements CrawlerConfig {
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
   private void readBlackList(Node config) throws RegainException {
-    Node node = XmlToolkit.getChild(config, "blacklist");
+    Node node = XmlToolkit.getChild(config, "blacklist", true);
     Node[] nodeArr = XmlToolkit.getChildArr(node, "prefix");
     mUrlPrefixBlackList = new String[nodeArr.length];
     for (int i = 0; i < nodeArr.length; i++) {
-      mUrlPrefixBlackList[i] = XmlToolkit.getText(nodeArr[i]);
+      mUrlPrefixBlackList[i] = XmlToolkit.getText(nodeArr[i], true);
     }
   }
 
@@ -361,12 +361,12 @@ public class XmlCrawlerConfig implements CrawlerConfig {
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
   private void readWhiteList(Node config) throws RegainException {
-    Node node = XmlToolkit.getChild(config, "whitelist");
+    Node node = XmlToolkit.getChild(config, "whitelist", true);
     Node[] nodeArr = XmlToolkit.getChildArr(node, "prefix");
     mWhiteListEntryArr = new WhiteListEntry[nodeArr.length];
     for (int i = 0; i < nodeArr.length; i++) {
-      String prefix = XmlToolkit.getText(nodeArr[i]);
-      String name = XmlToolkit.getAttribute(nodeArr[i], "name", false);
+      String prefix = XmlToolkit.getText(nodeArr[i], true);
+      String name = XmlToolkit.getAttribute(nodeArr[i], "name");
       mWhiteListEntryArr[i] = new WhiteListEntry(prefix, name);
     }
   }
@@ -383,11 +383,11 @@ public class XmlCrawlerConfig implements CrawlerConfig {
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
   private void readUseLinkTextAsTitleRegexList(Node config) throws RegainException {
-    Node node = XmlToolkit.getChild(config, "useLinkTextAsTitleList");
+    Node node = XmlToolkit.getChild(config, "useLinkTextAsTitleList", true);
     Node[] nodeArr = XmlToolkit.getChildArr(node, "urlPattern");
     mUseLinkTextAsTitleRegexList = new String[nodeArr.length];
     for (int i = 0; i < nodeArr.length; i++) {
-      mUseLinkTextAsTitleRegexList[i] = XmlToolkit.getText(nodeArr[i]);
+      mUseLinkTextAsTitleRegexList[i] = XmlToolkit.getText(nodeArr[i], true);
     }
   }
 
@@ -403,17 +403,17 @@ public class XmlCrawlerConfig implements CrawlerConfig {
   private void readPreparatorSettingsList(Node config, File xmlFile)
     throws RegainException
   {
-    Node node = XmlToolkit.getChild(config, "preparatorList");
+    Node node = XmlToolkit.getChild(config, "preparatorList", true);
     Node[] nodeArr = XmlToolkit.getChildArr(node, "preparator");
     mPreparatorSettingsArr = new PreparatorSettings[nodeArr.length];
     for (int i = 0; i < nodeArr.length; i++) {
-      node = XmlToolkit.getChild(nodeArr[i], "urlPattern");
-      String urlRegex = XmlToolkit.getText(node);
+      node = XmlToolkit.getChild(nodeArr[i], "urlPattern", true);
+      String urlRegex = XmlToolkit.getText(node, true);
 
-      node = XmlToolkit.getChild(nodeArr[i], "class");
-      String className = XmlToolkit.getText(node);
+      node = XmlToolkit.getChild(nodeArr[i], "class", true);
+      String className = XmlToolkit.getText(node, true);
 
-      node = XmlToolkit.getChild(nodeArr[i], "config", false);
+      node = XmlToolkit.getChild(nodeArr[i], "config");
       PreparatorConfig prepConfig = null;
       if (node != null) {
         prepConfig = readPreparatorConfig(node, xmlFile);
@@ -433,13 +433,13 @@ public class XmlCrawlerConfig implements CrawlerConfig {
   private void readAuxiliaryFieldList(Node config)
     throws RegainException
   {
-    Node node = XmlToolkit.getChild(config, "auxiliaryFieldList", false);
+    Node node = XmlToolkit.getChild(config, "auxiliaryFieldList");
     if (node != null) {
       Node[] nodeArr = XmlToolkit.getChildArr(node, "auxiliaryField");
       mAuxiliaryFieldArr = new AuxiliaryField[nodeArr.length];
       for (int i = 0; i < nodeArr.length; i++) {
-        String fieldName = XmlToolkit.getAttribute(nodeArr[i], "name");
-        String urlRegex = XmlToolkit.getText(nodeArr[i]);
+        String fieldName = XmlToolkit.getAttribute(nodeArr[i], "name", true);
+        String urlRegex = XmlToolkit.getText(nodeArr[i], true);
         int urlRegexGroup = XmlToolkit.getAttributeAsInt(nodeArr[i], "regexGroup");
         
         mAuxiliaryFieldArr[i] = new AuxiliaryField(fieldName, urlRegex, urlRegexGroup);
@@ -460,7 +460,7 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     throws RegainException
   {
     // Check whether the config is in a extra file
-    String extraFileName = XmlToolkit.getAttribute(prepConfig, "file", false);
+    String extraFileName = XmlToolkit.getAttribute(prepConfig, "file");
     if (extraFileName != null) {
       File extraFile = new File(xmlFile.getParentFile(), extraFileName);
       Document doc = XmlToolkit.loadXmlDocument(extraFile);
@@ -471,14 +471,14 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     PreparatorConfig config = new PreparatorConfig();
     Node[] sectionArr = XmlToolkit.getChildArr(prepConfig, "section");
     for (int secIdx = 0; secIdx < sectionArr.length; secIdx++) {
-      String sectionName = XmlToolkit.getAttribute(sectionArr[secIdx], "name");
+      String sectionName = XmlToolkit.getAttribute(sectionArr[secIdx], "name", true);
 
       // Read the params
       HashMap paramMap = new HashMap();
       Node[] paramArr = XmlToolkit.getChildArr(sectionArr[secIdx], "param");
       for (int paramIdx = 0; paramIdx < paramArr.length; paramIdx++) {
-        String paramName = XmlToolkit.getAttribute(paramArr[paramIdx], "name");
-        String paramValue = XmlToolkit.getText(paramArr[paramIdx]);
+        String paramName = XmlToolkit.getAttribute(paramArr[paramIdx], "name", true);
+        String paramValue = XmlToolkit.getText(paramArr[paramIdx], true);
         paramMap.put(paramName, paramValue);
       }
       

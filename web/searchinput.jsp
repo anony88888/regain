@@ -7,8 +7,7 @@
 
 <body>
 
-  <form name="search" action="SearchOutput.jsp" method="get">
-    <input name="index" type="hidden" value="main">
+  <form name="search" action="search.jsp" method="get">
     <p>
       <b>Suchen nach: </b>
       <input name="query" size="44"/>

@@ -78,7 +78,11 @@ public class SearchToolkit {
       // Get the name of the index
       String indexName = request.getParameter("index");
       if (indexName == null) {
-        throw new RegainException("Request parameter 'index' not specified");
+        indexName = mConfig.getDefaultIndexName();
+      }
+      if (indexName == null) {
+        throw new RegainException("Request parameter 'index' not specified and " +
+            "no default index configured");
       }
       
       // Get the configuration for that index
@@ -129,7 +133,6 @@ public class SearchToolkit {
   {
     if (mConfig == null) {
       String configFileName = request.getInitParameter("configFile");
-      System.out.println("configFileName: " + configFileName);
       File configFile = new File(configFileName);
       
       try {
