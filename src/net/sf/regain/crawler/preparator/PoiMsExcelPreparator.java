@@ -29,14 +29,23 @@ package net.sf.regain.crawler.preparator;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.document.RawDocument;
 
-import org.apache.poi.hssf.usermodel.*;
+import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-
 
 /**
  * Präpariert ein Microsoft-Excel-Dokument für die Indizierung mit Hilfe der
@@ -49,19 +58,13 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
  */
 public class PoiMsExcelPreparator extends AbstractPreparator {
 
+  /** The logger for this class */
+  private static Logger mLog = Logger.getLogger(AbstractPreparator.class);
+  
   /** The currently preparing Excel workbook. */
   private HSSFWorkbook mWorkbook;
   /** Contains all data formats used in the currently preparing Excel workbook. */
   private HSSFDataFormat mDataFormat;
-
-
-
-  /**
-   * Erzeugt eine neue MsExcelPreparator-Instanz.
-   */
-  public PoiMsExcelPreparator() {
-  }
-
 
 
   /**
@@ -161,22 +164,42 @@ public class PoiMsExcelPreparator extends AbstractPreparator {
     else if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
       HSSFCellStyle style = cell.getCellStyle();
       short formatId = style.getDataFormat();
-      String format = mDataFormat.getFormat(formatId);
-      format = RegainToolkit.replace(format, "\\ ", " ");
+      String formatPattern = mDataFormat.getFormat(formatId);
+      formatPattern = RegainToolkit.replace(formatPattern, "\\ ", " ");
 
       if (isCellDateFormatted(cell)) {
         // This is a date
-        format = RegainToolkit.replace(format, "mmmm", "MMMM");
-        format = RegainToolkit.replace(format, "/", ".");
-        format = RegainToolkit.replace(format, ";", "\\;");
+        formatPattern = RegainToolkit.replace(formatPattern, "mmmm", "MMMM");
+        formatPattern = RegainToolkit.replace(formatPattern, "/", ".");
+        SimpleDateFormat format;
+        try {
+          format = new SimpleDateFormat(formatPattern);
+        }
+        catch (Throwable thr) {
+          if (mLog.isDebugEnabled()) {
+            mLog.debug("Creating date format failed: '" + formatPattern + "'", thr);
+          }
+          format = new SimpleDateFormat();
+        }
 
         double numberValue = cell.getNumericCellValue();
-        java.util.Date date = HSSFDateUtil.getJavaDate(numberValue);
-        cellValue = new java.text.SimpleDateFormat(format).format(date);
+        Date date = HSSFDateUtil.getJavaDate(numberValue);
+        cellValue = format.format(date);
       } else {
         // This is a Number
+        DecimalFormat format;
+        try {
+          format = new DecimalFormat(formatPattern);
+        }
+        catch (Throwable thr) {
+          if (mLog.isDebugEnabled()) {
+            mLog.debug("Creating number format failed: '" + formatPattern + "'", thr);
+          }
+          format = new DecimalFormat();
+        }
+
         double numberValue = cell.getNumericCellValue();
-        cellValue = new java.text.DecimalFormat(format).format(numberValue);
+        cellValue = format.format(numberValue);
       }
     }
 
