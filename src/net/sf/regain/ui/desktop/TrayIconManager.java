@@ -117,7 +117,7 @@ public class TrayIconManager {
     mTrayIcon = new TrayIcon(icon, "regain", menu);
     mTrayIcon.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent evt) {
-        DesktopToolkit.openPageInBrowser("search.jsp");
+        DesktopToolkit.openPageInBrowser("searchinput.jsp");
       }
     });
     
