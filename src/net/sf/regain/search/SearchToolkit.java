@@ -54,6 +54,9 @@ import org.apache.lucene.search.TermQuery;
  */
 public class SearchToolkit {
 
+  /** The name of the page context attribute that holds the search query. */
+  private static final String SEARCH_QUERY_CONTEXT_ATTR_NAME = "SearchQuery";
+  
   /** The name of the page context attribute that holds the SearchContext. */
   private static final String SEARCH_CONTEXT_ATTR_NAME = "SearchContext";
 
@@ -112,6 +115,51 @@ public class SearchToolkit {
     return config;
   }
   
+  
+  /**
+   * Gets the search query.
+   * 
+   * @param request The request to get the query from.
+   * @return The search query.
+   * @throws RegainException If getting the query failed.
+   */
+  public static String getSearchQuery(PageRequest request)
+    throws RegainException
+  {
+    String queryString = (String) request.getContextAttribute(SEARCH_QUERY_CONTEXT_ATTR_NAME);
+    if (queryString == null) {
+      // Get the query parameter
+      StringBuffer query = new StringBuffer();
+      String queryParam = request.getParameter("query");
+      if (queryParam != null) {
+        query.append(queryParam);
+      }
+      
+      // Append the additional fields to the query
+      Enumeration enum = request.getParameterNames();
+      while (enum.hasMoreElements()) {
+        String paramName = (String) enum.nextElement();
+        if (paramName.startsWith(FIELD_PREFIX)) {
+          // This is an additional field -> Append it to the query
+          String fieldName = paramName.substring(FIELD_PREFIX.length());
+          String fieldValue = request.getParameter(paramName);
+          
+          if (fieldValue != null) {
+            fieldValue = fieldValue.trim();
+            if (fieldValue.length() != 0) {
+              query.append(" " + fieldName + ":\"" + fieldValue + "\"");
+            }
+          }
+        }
+      }
+      
+      queryString = query.toString().trim();
+      request.setContextAttribute(SEARCH_QUERY_CONTEXT_ATTR_NAME, queryString);
+    }
+    
+    return queryString;
+  }
+  
 
   /**
    * Gets the SearchContext from the PageContext.
@@ -134,22 +182,7 @@ public class SearchToolkit {
       IndexConfig indexConfig = getIndexConfig(request);
 
       // Get the query
-      String query = request.getParameter("query");
-      
-      // Append the additional fields to the query
-      Enumeration enum = request.getParameterNames();
-      while (enum.hasMoreElements()) {
-        String paramName = (String) enum.nextElement();
-        if (paramName.startsWith(FIELD_PREFIX)) {
-          // This is an additional field -> Append it to the query
-          String fieldName = paramName.substring(FIELD_PREFIX.length());
-          String fieldValue = request.getParameter(paramName).trim();
-          
-          if (fieldValue.length() != 0) {
-            query += " " + fieldName + ":\"" + fieldValue + "\"";
-          }
-        }
-      }
+      String query = getSearchQuery(request);
       
       // Create the SearchContext and store it in the page context
       context = new SearchContext(indexConfig, query);

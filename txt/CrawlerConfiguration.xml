@@ -339,10 +339,8 @@
  | Having done this you may search for "Offer project:otto23" and you will get
  | only hits from this project directory.
  +-->
-<!--
 <auxiliaryFieldList>
-  <auxiliaryField name="project" regexGroup="1">^file://c:/Temp/dokumente/([^/]*)</auxiliaryField>
+  <auxiliaryField name="extension" regexGroup="1">\.([^\.]*)$</auxiliaryField>
 </auxiliaryFieldList>
--->
 
 </configuration>

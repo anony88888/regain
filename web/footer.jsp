@@ -1,5 +1,5 @@
 <p class="footerLinks">
-  <a href="searchinput.jsp">Suche</a> &middot; <a href="status.jsp">Status</a> &middot; <a href="config.jsp">Einstellungen</a>
+  <a href="searchinput.jsp">Suche</a> &middot; <a href="advancedsearch.jsp">Erweiterte Suche</a> &middot; <a href="status.jsp">Status</a> &middot; <a href="config.jsp">Einstellungen</a>
   &middot; &copy; 2005 Til Schneider
 </p>
 

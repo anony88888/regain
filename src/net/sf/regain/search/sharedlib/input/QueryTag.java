@@ -29,6 +29,7 @@ package net.sf.regain.search.sharedlib.input;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
+import net.sf.regain.search.SearchToolkit;
 import net.sf.regain.util.sharedtag.PageRequest;
 import net.sf.regain.util.sharedtag.PageResponse;
 import net.sf.regain.util.sharedtag.SharedTag;
@@ -62,7 +63,7 @@ public class QueryTag extends SharedTag {
     int size = getParameterAsInt("size", INPUTFIELD_SIZE);
     response.print("<input name=\"query\" size=\"" + size + "\" value=\"");
 
-    String query = request.getParameter("query");
+    String query = SearchToolkit.getSearchQuery(request);
     if (query != null) {
       response.print(RegainToolkit.replace(query, "\"", "&quot;"));
     }

@@ -99,10 +99,10 @@ X Jacob-Präperatoren: Indizierung der Office-Dokumenten-Beschreibungs-Felder.
     Dazu Preparator-Schnittstelle erweitern um: Map getAdditionalFields()
     Folgende Felder extrahieren: Möglichst alles aus Eigenschaften/Zusammenfassung
     Einstellbar, welche Felder aufgenommen werden sollen.
+X Expertensuche: Tag für Combobox, die distinct values eines Feldes beinhaltet.
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
-  Expertensuche: Tag für Combobox, die distinct values eines Feldes beinhaltet.
   Multiindexsuche: (Aufwand: 4 Std., vorerst zurückgestellt)
     Mit der selben Suchmaske mehrere Indizes durchsuchen
   Handbuch aktualisieren:

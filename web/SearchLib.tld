@@ -21,6 +21,17 @@
   </tag>
 
   <tag>
+    <name>input_fieldlist</name>
+    <tagclass>net.sf.regain.ui.server.taglib.input.FieldlistTag</tagclass>
+    <bodycontent>empty</bodycontent>
+
+    <attribute>
+      <name>field</name>
+      <required>true</required>
+    </attribute>
+  </tag>
+
+  <tag>
     <name>input_query</name>
     <tagclass>net.sf.regain.ui.server.taglib.input.QueryTag</tagclass>
     <bodycontent>empty</bodycontent>
@@ -29,6 +40,12 @@
   <tag>
     <name>input_maxresults</name>
     <tagclass>net.sf.regain.ui.server.taglib.input.MaxresultsTag</tagclass>
+    <bodycontent>empty</bodycontent>
+  </tag>
+
+  <tag>
+    <name>stats_query</name>
+    <tagclass>net.sf.regain.ui.server.taglib.stats.QueryTag</tagclass>
     <bodycontent>empty</bodycontent>
   </tag>
 

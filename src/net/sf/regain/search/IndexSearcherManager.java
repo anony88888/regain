@@ -32,12 +32,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.index.TermEnum;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
@@ -102,11 +106,20 @@ public class IndexSearcherManager {
    */
   private IndexSearcher mIndexSearcher;
 
+  /** The IndexReader to use for reading information from an index. */
+  private IndexReader mIndexReader;
+  
   /** Der Analyzer, der für Suchen verwendet werden soll. */
   private Analyzer mAnalyzer;
 
   /** Der Thread, der alle 10 Sekunden prüft, ob ein neuer Suchindex vorhanden ist. */
   private Thread mIndexUpdateThread;
+  
+  /**
+   * Holds for a field name (String) all distinct values the index has for that
+   * field (String[]).
+   */
+  private HashMap mFieldTermHash;
 
 
 
@@ -187,6 +200,65 @@ public class IndexSearcherManager {
     catch (IOException exc) {
       throw new RegainException("Searching query failed", exc);
     }
+  }
+
+
+  /**
+   * Gets all distinct values a index has for a certain field. The values are
+   * sorted alphabetically.
+   * 
+   * @param field The field to get the values for.
+   * @return All distinct values the index has for the field.
+   * @throws RegainException If reading the values failed.
+   */
+  public synchronized String[] getFieldValues(String field) throws RegainException {
+    if (mFieldTermHash == null) {
+      mFieldTermHash = new HashMap();
+    }
+    
+    String[] valueArr = (String[]) mFieldTermHash.get(field);
+    if (valueArr == null) {
+      if (mIndexReader == null) {
+        if (! mWorkingIndexDir.exists()) {
+          checkForIndexUpdate();
+        }
+  
+        try {
+          mIndexReader = IndexReader.open(mWorkingIndexDir.getAbsolutePath());
+        }
+        catch (IOException exc) {
+          throw new RegainException("Creating index reader failed", exc);
+        }
+      }
+      
+      // Read the terms
+      try {
+        TermEnum termEnum = mIndexReader.terms();
+
+        ArrayList valueList = new ArrayList();
+        while(termEnum.next()) {
+          Term term = termEnum.term();
+          if (term.field().equals(field)) {
+            valueList.add(term.text());
+          }
+        }
+        
+        // Convert the list into an array.
+        valueArr = new String[valueList.size()];
+        valueList.toArray(valueArr);
+        
+        // Sort the array
+        Arrays.sort(valueArr);
+      }
+      catch (IOException exc) {
+        throw new RegainException("Reading terms from index failed", exc);
+      }
+      
+      // Cache the values
+      mFieldTermHash.put(field, valueArr);
+    }
+    
+    return valueArr;
   }
 
 
@@ -295,7 +367,6 @@ public class IndexSearcherManager {
   }
 
 
-
   /**
    * Prüft, ob ein neuer Index vorhanden ist. Wenn ja, dann wird die Suche auf den
    * neuen Index umgestellt.
@@ -322,6 +393,21 @@ public class IndexSearcherManager {
         // will be needed
         mIndexSearcher = null;
         mAnalyzer = null;
+      }
+      
+      // Close the IndexReader
+      if (mIndexReader != null) {
+        try {
+          mIndexReader.close();
+        }
+        catch (IOException exc) {
+          throw new RegainException("Closing index reader failed", exc);
+        }
+
+        // Force the creation of a new IndexReader and mFieldTermHash next time
+        // it will be needed
+        mIndexReader = null;
+        mFieldTermHash = null;
       }
 
       // Remove the old beackup if it should still exist

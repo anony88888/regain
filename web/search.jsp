@@ -3,7 +3,7 @@
 
 <html>
 <head>
-  <title>regain - Suche nach <search:param name="query"/></title>
+  <title>regain - Suche nach <search:stats_query/></title>
   <link href="regain.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -26,7 +26,7 @@
   <table class="content">
     <tr class="headline">
       <td>
-        Ergebnisse für <b><search:param name="query"/></b>
+        Ergebnisse für <b><search:stats_query/></b>
       </td>
       <td class="headlineRight">
         Ergebnisse <b><search:stats_from/></b>-<b><search:stats_to/></b>

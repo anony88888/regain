@@ -74,8 +74,8 @@ public class CheckTag extends SharedTag {
     }
     
     // Check whether there is a query
-    String query = request.getParameter("query");
-    if (query == null) {
+    String query = SearchToolkit.getSearchQuery(request);
+    if ((query == null) || (query.length() == 0)) {
       // There was no query specified -> Forward to the noQueryUrl
       String noQueryUrl = getParameter("noQueryUrl", true);
       response.sendRedirect(noQueryUrl);
