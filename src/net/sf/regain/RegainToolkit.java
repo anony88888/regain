@@ -64,7 +64,7 @@ public class RegainToolkit {
   private static final int SIZE_GB = 1024 * 1024 * 1024;
 
   /** Der gecachte, systemspeziefische Zeilenumbruch. */
-  private static String lineSeparator;
+  private static String mLineSeparator;
 
 
 
@@ -174,6 +174,52 @@ public class RegainToolkit {
         try { in.close(); } catch (IOException exc) {}
       }
     }
+  }
+  
+  
+  /**
+   * Copies a directory.
+   * 
+   * @param fromDir The source directory.
+   * @param toDir The target directory.
+   * @param copySubDirs Specifies whether to copy sub directories.
+   * @param excludeExtension The file extension to exclude.
+   * @throws RegainException If copying the index failed.
+   */
+  public static void copyDirectory(File fromDir, File toDir,
+    boolean copySubDirs, String excludeExtension)
+    throws RegainException
+  {
+    File[] indexFiles = fromDir.listFiles();
+    for (int i = 0; i < indexFiles.length; i++) {
+      String fileName = indexFiles[i].getName();
+      File targetFile = new File(toDir, fileName);
+      if (indexFiles[i].isDirectory()) {
+        if (copySubDirs) {
+          targetFile.mkdir();
+          copyDirectory(indexFiles[i], targetFile, copySubDirs, excludeExtension);
+        }
+      }
+      else if ((excludeExtension == null) || (! fileName.endsWith(excludeExtension))) {
+        RegainToolkit.copyFile(indexFiles[i], targetFile);
+      }
+    }
+  }
+
+
+  /**
+   * Copies a directory.
+   * 
+   * @param fromDir The source directory.
+   * @param toDir The target directory.
+   * @param copySubDirs Specifies whether to copy sub directories.
+   * @throws RegainException If copying the index failed.
+   */
+  public static void copyDirectory(File fromDir, File toDir,
+    boolean copySubDirs)
+    throws RegainException
+  {
+    copyDirectory(fromDir, toDir, copySubDirs, null);
   }
   
   
@@ -689,11 +735,11 @@ public class RegainToolkit {
    * @return Der Zeilenumbruch.
    */
   public static String getLineSeparator() {
-    if (lineSeparator == null) {
-      lineSeparator = System.getProperty("line.separator");
+    if (mLineSeparator == null) {
+      mLineSeparator = System.getProperty("line.separator");
     }
 
-    return lineSeparator;
+    return mLineSeparator;
   }
 
 

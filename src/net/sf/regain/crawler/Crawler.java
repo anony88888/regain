@@ -369,16 +369,11 @@ public class Crawler {
     useOnlyWhiteListEntries(onlyEntriesArr, updateIndex);
 
     // Add the start URLs
-    StartUrl[] startUrlArr = mConfiguration.getStartUrls();
-    for (int i = 0; i < startUrlArr.length; i++) {
-      String url = startUrlArr[i].getUrl();
-      boolean shouldBeParsed = startUrlArr[i].getShouldBeParsed();
-      boolean shouldBeIndexed = startUrlArr[i].getShouldBeIndexed();
-
-      addJob(url, "Start URL from configuration", shouldBeParsed,
-          shouldBeIndexed, null);
-    }
-
+    addStartUrls();
+    
+    // Remember the last time when a breakpoint was created
+    long lastBreakpointTime = System.currentTimeMillis();
+    
     // Work in the job list
     while (! mJobList.isEmpty()) {
       mCrawlerJobProfiler.startMeasuring();
@@ -398,6 +393,8 @@ public class Crawler {
             if (shouldBeParsed) {
               parseDirectory(file);
             }
+            
+            // A directory can't be parsed or indexed -> continue
             mCrawlerJobProfiler.stopMeasuring(0);
             continue;
           }
@@ -415,16 +412,11 @@ public class Crawler {
       }
       catch (RegainException exc) {
         // Check whether the exception was caused by a dead link
-        if (isExceptionFromDeadLink(exc)) {
-          // Don't put this exception in the error list, because it's already in
-          // the dead link list. (Use mCat.error() directly)
-          mLog.error("Dead link: '" + url + "'. Found in '" + job.getSourceUrl()
-                     + "'", exc);
-          mDeadlinkList.add(new Object[] { url, job.getSourceUrl() });
-        } else {
-          logError("Loading " + url + " failed!", exc, false);
-        }
+        handleDocumentLoadingException(exc, job);
 
+        // This document does not exist -> We can't parse or index anything
+        // -> continue
+        mCrawlerJobProfiler.abortMeasuring();
         continue;
       }
 
@@ -458,6 +450,17 @@ public class Crawler {
 
       // Zeitmessung stoppen
       mCrawlerJobProfiler.stopMeasuring(rawDocument.getLength());
+      
+      // Check whether to create a breakpoint
+      if (System.currentTimeMillis() > lastBreakpointTime + 10 * 60 * 1000) {
+        try {
+          mIndexWriterManager.createBreakpoint();
+        }
+        catch (RegainException exc) {
+          logError("Creating breakpoint failed", exc, false);
+        }
+        lastBreakpointTime = System.currentTimeMillis();
+      }
     }
 
     // Nicht mehr vorhandene Dokumente aus dem Index löschen
@@ -465,7 +468,7 @@ public class Crawler {
       mLog.info("Removing index entries of documents that do not exist any more...");
       try {
         String[] prefixesToKeepArr = createPrefixesToKeep();
-        mIndexWriterManager.removeObsoleteEntires(mFoundUrlSet, prefixesToKeepArr);
+        mIndexWriterManager.removeObsoleteEntries(mFoundUrlSet, prefixesToKeepArr);
       }
       catch (Throwable thr) {
         logError("Removing non-existing documents from index failed", thr, true);
@@ -532,6 +535,43 @@ public class Crawler {
       + "  Dead links:         " + mDeadlinkList.size() + lineSeparator
       + "  Errors:             " + mErrorList.size() + lineSeparator
       + "  Error ratio:        " + RegainToolkit.toPercentString(failedPercent));
+  }
+
+
+  /**
+   * Handles an exception caused by a failed document loadung. Checks whether
+   * the exception was caused by a dead link and puts it to the dead link list
+   * if necessary.
+   * 
+   * @param exc The exception to check.
+   * @param job The job of the document.
+   */
+  private void handleDocumentLoadingException(RegainException exc, CrawlerJob job) {
+    if (isExceptionFromDeadLink(exc)) {
+      // Don't put this exception in the error list, because it's already in
+      // the dead link list. (Use mCat.error() directly)
+      mLog.error("Dead link: '" + job.getUrl() + "'. Found in '" + job.getSourceUrl()
+                 + "'", exc);
+      mDeadlinkList.add(new Object[] { job.getUrl(), job.getSourceUrl() });
+    } else {
+      logError("Loading " + job.getUrl() + " failed!", exc, false);
+    }
+  }
+
+
+  /**
+   * Adds all start URL to the job list.
+   */
+  private void addStartUrls() {
+    StartUrl[] startUrlArr = mConfiguration.getStartUrls();
+    for (int i = 0; i < startUrlArr.length; i++) {
+      String url = startUrlArr[i].getUrl();
+      boolean shouldBeParsed = startUrlArr[i].getShouldBeParsed();
+      boolean shouldBeIndexed = startUrlArr[i].getShouldBeIndexed();
+
+      addJob(url, "Start URL from configuration", shouldBeParsed,
+          shouldBeIndexed, null);
+    }
   }
 
 

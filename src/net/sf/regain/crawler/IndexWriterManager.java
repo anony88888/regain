@@ -92,6 +92,17 @@ public class IndexWriterManager {
    * werden soll.
    */
   private static final String TEMP_INDEX_SUBDIR = "temp";
+  
+  /**
+   * The name of the index sub directory that contains a breakpoint.
+   * <p>
+   * NOTE: The crawler creates periodically so called breakpoints. If the
+   * crawler should be stopped before it is finished it can use a breakpoint
+   * to go on the next time. Besides the search mask can use a breakpoint if no
+   * other index exists. So the user can already search before the first index
+   * was fully created.
+   */
+  private static final String BREAKPOINT_INDEX_SUBDIR = "breakpoint";
 
   /**
    * Gibt an, ob die Terme sortiert in die Terme-Datei geschrieben werden soll.
@@ -110,20 +121,25 @@ public class IndexWriterManager {
   private static final long RENAME_TIMEOUT = 60000; // 1 min
 
   /**
-   * Der Hinzufüge-Modus.
+   * The adding mode.
    * @see #setIndexMode(int)
    */
   private static final int ADDING_MODE = 1;
   /**
-   * Der Lösch-Modus.
+   * The deleting mode.
    * @see #setIndexMode(int)
    */
   private static final int DELETING_MODE = 2;
   /**
-   * Der Beendet-Modus.
+   * The searching mode.
    * @see #setIndexMode(int)
    */
-  private static final int FINISHED_MODE = 3;
+  private static final int SEARCHING_MODE = 3;
+  /**
+   * The all closed mode.
+   * @see #setIndexMode(int)
+   */
+  private static final int ALL_CLOSED_MODE = 4;
 
   /** Der Analyzer, der vom IndexWriter genutzt werden soll. */
   private Analyzer mAnalyzer;
@@ -171,6 +187,9 @@ public class IndexWriterManager {
   /** Das Verzeichnis, in dem der neue Suchindex aufgebaut werden soll. */
   private File mTempIndexDir;
 
+  /** The directory to create breakpoint indices. */
+  private File mBreakpointIndexDir;
+
   /** Das Verzeichnis, in dem die Analyse-Dateien erstellt werden soll. */
   private File mAnalysisDir;
   
@@ -182,6 +201,9 @@ public class IndexWriterManager {
 
   /** Der Profiler der das Hinzufügen zum Index mißt. */
   private Profiler mAddToIndexProfiler = new Profiler("Indexed documents", "docs");
+
+  /** The profiler for the breakpoint creation. */
+  private Profiler mBreakpointProfiler = new Profiler("Created breakpoints", "breakpoints");
 
   /**
    * Enthält die URL und den LastUpdated-String aller Dokumente, deren Einträge
@@ -221,6 +243,7 @@ public class IndexWriterManager {
     mNewIndexDir        = new File(indexDir, NEW_INDEX_SUBDIR);
     mQuarantineIndexDir = new File(indexDir, QUARANTINE_INDEX_SUBDIR);
     mTempIndexDir       = new File(indexDir, TEMP_INDEX_SUBDIR);
+    mBreakpointIndexDir = new File(indexDir, BREAKPOINT_INDEX_SUBDIR);
 
     // Delete the old temp index directory if it should still exist
     if (mTempIndexDir.exists()) {
@@ -259,13 +282,6 @@ public class IndexWriterManager {
     }
 
     if (updateIndex) {
-      // Check whether we need a IndexSearcher
-      try {
-        mIndexSearcher = new IndexSearcher(mTempIndexDir.getAbsolutePath());
-      } catch (IOException exc) {
-        throw new RegainException("Creating IndexSearcher failed", exc);
-      }
-
       // Force an unlock of the index (we just created a copy so this is save)
       setIndexMode(DELETING_MODE);
       try {
@@ -344,32 +360,34 @@ public class IndexWriterManager {
 
 
   /**
-   * Setzt den aktuellen Modus.
+   * Sets the current mode
    * <p>
-   * Es gibt folgende Modi:
+   * The are the following modes:
    * <ul>
-   *   <li>Hinzufüge-Modus: Hier ist der mIndexWriter und mIndexSearcher
-   *     geöffnet, der mIndexReader ist ausgeschalten. In diesem Modus können
-   *     Dokumente zum Index hinzugefügt und gesucht werden.</li>
-   *   <li>Lösch-Modus: Hier sind mIndexReader und mIndexSearcher geöffnet, der
-   *     mIndexWriter ist ausgeschalten. In diesem Modus können Dokumente aus
-   *     dem Index gelöscht und gesucht werden.</li>
-   *   <li>Beendet-Modus: Hier sind alle Zugriffe auf den Index ausgeschalten:
-   *     mIndexWriter, mIndexReader und mIndexSearcher. In diesem Modus kann
-   *     gar nicht auf den Index zugegriffen werden.
+   *   <li>Adding mode: The mIndexWriter is opened, the mIndexSearcher may be
+   *     opened, the mIndexReader is closed. In this mode documents may be added
+   *     to the index.</li>
+   *   <li>Deleting mode: The mIndexReader is opened, the mIndexSearcher may be
+   *     opened, the mIndexWriter is closed. In this mode documents may be
+   *     removed from the index.</li>
+   *   <li>Searching mode: The mIndexReader is opened, the mIndexWriter or
+   *     mIndexReader may be opened. In this mode documents may be searched.
+   *   <li>All closed mode: All access to the index ist closed:
+   *     mIndexWriter, mIndexReader and mIndexSearcher. In this mode the index
+   *     can't be accessed at all.
    * </ul>
    * <p>
-   * Falls der Index bereits im entsprechenden Modus ist, dann passiert nichts.
-   * Diese Methode ist in diesem Fall sehr schnell.
+   * If the index already is in the wanted mode nothing happens. This method is
+   * very fast in this case.
    *
-   * @param mode Der Modus, in den der Index versetzt werden soll. Muss entweder
-   *        {@link #ADDING_MODE}, {@link #DELETING_MODE} oder
-   *        {@link #FINISHED_MODE} sein.
-   * @throws RegainException Wenn beim schließen oder öffnen etwas schief ging.
+   * @param mode The mode the index should have. Must be one of
+   *        {@link #ADDING_MODE}, {@link #DELETING_MODE} or
+   *        {@link #ALL_CLOSED_MODE}.
+   * @throws RegainException If closing or opening failed.
    */
   private void setIndexMode(int mode) throws RegainException {
-    // Close the mIndexReader in ADDING_MODE and FINISHED_MODE
-    if ((mode == ADDING_MODE) || (mode == FINISHED_MODE)) {
+    // Close the mIndexReader in ADDING_MODE and ALL_CLOSED_MODE
+    if ((mode == ADDING_MODE) || (mode == ALL_CLOSED_MODE)) {
       if (mIndexReader != null) {
         try {
           mIndexReader.close();
@@ -380,8 +398,8 @@ public class IndexWriterManager {
       }
     }
 
-    // Close the mIndexWriter in DELETING_MODE and FINISHED_MODE
-    if ((mode == DELETING_MODE) || (mode == FINISHED_MODE)) {
+    // Close the mIndexWriter in DELETING_MODE and ALL_CLOSED_MODE
+    if ((mode == DELETING_MODE) || (mode == ALL_CLOSED_MODE)) {
       if (mIndexWriter != null) {
         try {
           mIndexWriter.close();
@@ -392,8 +410,8 @@ public class IndexWriterManager {
       }
     }
 
-    // Close the mIndexSearcher in FINISHED_MODE
-    if ((mode == FINISHED_MODE) && (mIndexSearcher != null)) {
+    // Close the mIndexSearcher in ALL_CLOSED_MODE
+    if ((mode == ALL_CLOSED_MODE) && (mIndexSearcher != null)) {
       try {
         mIndexSearcher.close();
         mIndexSearcher = null;
@@ -421,10 +439,20 @@ public class IndexWriterManager {
         throw new RegainException("Creating IndexReader failed", exc);
       }
     }
+    
+    // Open the mIndexSearcher in SEARCHING_MODE
+    if ((mode == SEARCHING_MODE) && (mIndexSearcher == null)) {
+      mLog.info("Switching to index mode: searching mode");
+      try {
+        mIndexSearcher = new IndexSearcher(mTempIndexDir.getAbsolutePath());
+      } catch (IOException exc) {
+        throw new RegainException("Creating IndexSearcher failed", exc);
+      }
+    }
 
-    // Tell the user, when the index is finished
-    if (mode == FINISHED_MODE) {
-      mLog.info("Switching to index mode: finished mode");
+    // Tell the user, when switching to ALL_CLOSED_MODE
+    if (mode == ALL_CLOSED_MODE) {
+      mLog.info("Switching to index mode: all closed mode");
     }
   }
 
@@ -441,9 +469,11 @@ public class IndexWriterManager {
   private boolean copyExistingIndex(File indexDir, String analyzerType)
     throws RegainException
   {
-    // Neuesten, kompletten Index finden
+    // Find the newest index
     File oldIndexDir;
-    if (mNewIndexDir.exists()) {
+    if (mBreakpointIndexDir.exists()) {
+      oldIndexDir = mBreakpointIndexDir;
+    } else if (mNewIndexDir.exists()) {
       oldIndexDir = mNewIndexDir;
     } else {
       // Es gibt keinen neuen Index -> Wir müssen den Index nehmen, der gerade
@@ -471,15 +501,7 @@ public class IndexWriterManager {
 
     // Index in Arbeitsverzeichnis kopieren
     mLog.info("Updating index from " + oldIndexDir.getAbsolutePath());
-    File[] indexFiles = oldIndexDir.listFiles();
-    for (int i = 0; i < indexFiles.length; i++) {
-      String fileName = indexFiles[i].getName();
-      if ((! indexFiles[i].isDirectory()) && (! fileName.endsWith(".txt"))) {
-        // Datei ist weder Verzeichnis, noch Textdatei -> kopieren
-        File target = new File(mTempIndexDir, fileName);
-        RegainToolkit.copyFile(indexFiles[i], target);
-      }
-    }
+    RegainToolkit.copyDirectory(oldIndexDir, mTempIndexDir, false, ".txt");
 
     return true;
   }
@@ -504,6 +526,7 @@ public class IndexWriterManager {
       Query query = new TermQuery(urlTerm);
       Document doc;
       try {
+        setIndexMode(SEARCHING_MODE);
         Hits hits = mIndexSearcher.search(query);
         if (hits.length() > 0) {
           if (hits.length() > 1) {
@@ -604,20 +627,18 @@ public class IndexWriterManager {
 
 
   /**
-   * Geht durch den Index und löscht alle veralteten Einträge.
+   * Goes through the index and deletes all obsolete entries.
    * <p>
-   * Veraltet sind alle Einträge, die entweder vom IndexWriterManager fürs Löschen
-   * vorgemerkt wurden Siehe {@link #mUrlsToDeleteHash} oder die weder im
-   * urlToKeepSet stehen noch zu einem Eintrag des prefixesToKeepArr passen.
+   * Entries are obsolete if they are marked for deletion by the
+   * IndexWriterManager (see {@link #mUrlsToDeleteHash}) or if the don't neither
+   * match an entry of the urlToKeepSet nor of the prefixesToKeepArr.
    *
-   * @param urlToKeepSet Die zu verschonenden URLs
-   * @param prefixesToKeepArr URL-Präfixe für zu verschonende URLs. Wenn eine
-   *        URL einem dieser Präfixe entspricht, dann soll sie auch verschont
-   *        werden.
-   * @throws RegainException Wenn ein Indexeintrag entweder nicht gelesen oder
-   *         nicht gelöscht werden konnte.
+   * @param urlToKeepSet The URLs that shouldn't be deleted.
+   * @param prefixesToKeepArr URL prefixes that should be spared. 
+   * @throws RegainException If an index entry could either not be read or
+   *         deleted.
    */
-  public void removeObsoleteEntires(HashSet urlToKeepSet,
+  public void removeObsoleteEntries(HashSet urlToKeepSet,
     String[] prefixesToKeepArr)
     throws RegainException
   {
@@ -627,7 +648,15 @@ public class IndexWriterManager {
       // -> Wir sind fertig
       return;
     }
+    
+    if ((mUrlsToDeleteHash == null) && (urlToKeepSet == null)
+        && (prefixesToKeepArr == null))
+    {
+      // There is nothing to delete -> Fast return
+      return;
+    }
 
+    // Go through the index
     setIndexMode(DELETING_MODE);
     int docCount = mIndexReader.numDocs();
     for (int docIdx = 0; docIdx < docCount; docIdx++) {
@@ -652,6 +681,10 @@ public class IndexWriterManager {
           // Prüfen, ob dieser Eintrag zum Löschen vorgesehen ist
           if (isMarkedForDeletion(doc)) {
             shouldBeDeleted = true;
+          }
+          // Check whether all other documents should NOT be deleted
+          else if ((urlToKeepSet == null) && (prefixesToKeepArr == null)) {
+            shouldBeDeleted = false;
           }
           // Prüfen, ob dieser Eintrag zu verschonen ist
           else if (urlToKeepSet.contains(url)) {
@@ -686,6 +719,20 @@ public class IndexWriterManager {
     mUrlsToDeleteHash = null;
   }
 
+  
+  /**
+   * Goes through the index and deletes all obsolete entries.
+   * <p>
+   * Entries are obsolete if they are marked for deletion by the
+   * IndexWriterManager (see {@link #mUrlsToDeleteHash}).
+   *
+   * @throws RegainException If an index entry could either not be read or
+   *         deleted.
+   */
+  private void removeObsoleteEntries() throws RegainException {
+    removeObsoleteEntries(null, null);
+  }
+  
 
   /**
    * Merkt ein Dokument für die spätere Löschung vor.
@@ -756,24 +803,20 @@ public class IndexWriterManager {
     }
   }
 
-
+  
   /**
-   * Optimiert und schließt den Index
-   *
-   * @param putIntoQuarantine Gibt an, ob der Index in Quarantäne soll.
-   * @throws RegainException Wenn der Index nicht geschlossen werden konnte.
+   * Prepares a breakpoint.
+   * 
+   * @throws RegainException If preparing the breakpoint failed.
    */
-  public void close(boolean putIntoQuarantine) throws RegainException {
-    // Ressourcen der DocumentFactory freigeben
-    mDocumentFactory.close();
-
+  private void prepareBreakpoint() throws RegainException {
     // Testen, ob noch Einträge für die Löschung vorgesehen sind
     if (mUrlsToDeleteHash != null) {
       throw new RegainException("There are still documents marked for deletion."
         + " The method removeObsoleteEntires(...) has to be called first.");
     }
 
-    // Index optimieren und schließen
+    // Index optimieren
     try {
       setIndexMode(ADDING_MODE);
       mIndexWriter.optimize();
@@ -782,8 +825,64 @@ public class IndexWriterManager {
       throw new RegainException("Finishing IndexWriter failed", exc);
     }
 
-    // Switch to FINISHED_MODE
-    setIndexMode(FINISHED_MODE);
+    // Switch to ALL_CLOSED_MODE
+    setIndexMode(ALL_CLOSED_MODE);
+  }
+  
+  
+  /**
+   * Creates a breakpoint.
+   * 
+   * @throws RegainException If creating the breakpoint failed.
+   */
+  public void createBreakpoint() throws RegainException {
+    mLog.info("Creating a breakpoint...");
+    try {
+      mBreakpointProfiler.startMeasuring();
+      
+      // Remove the entries that were marked for deletion 
+      removeObsoleteEntries();
+      
+      // Prepare the breakpoint
+      prepareBreakpoint();
+      
+      // Delete the old breakpoint if it exists
+      deleteOldIndex(mBreakpointIndexDir);
+      
+      // Copy the current working index to the breakpoint directory
+      // NOTE: We copy to a temp directory and rename it when we are finished.
+      File copyDir = new File(mBreakpointIndexDir.getAbsolutePath() + "_tmp");
+      RegainToolkit.deleteDirectory(copyDir);
+      copyDir.mkdir();
+      RegainToolkit.copyDirectory(mTempIndexDir, copyDir, false);
+      if (! copyDir.renameTo(mBreakpointIndexDir)) {
+        throw new RegainException("Renaming temporary copy directory failed: " +
+            copyDir.getAbsolutePath());
+      }
+
+      // Stop measuring
+      long breakpointSize = RegainToolkit.getDirectorySize(mBreakpointIndexDir);
+      mBreakpointProfiler.stopMeasuring(breakpointSize);
+    }
+    catch (RegainException exc) {
+      mBreakpointProfiler.abortMeasuring();
+      throw exc;
+    }
+  }
+
+
+  /**
+   * Optimiert und schließt den Index
+   *
+   * @param putIntoQuarantine Gibt an, ob der Index in Quarantäne soll.
+   * @throws RegainException Wenn der Index nicht geschlossen werden konnte.
+   */
+  public void close(boolean putIntoQuarantine) throws RegainException {
+    // Prepare the final 'breakpoint'
+    prepareBreakpoint();
+    
+    // Ressourcen der DocumentFactory freigeben
+    mDocumentFactory.close();
 
     // Write all terms in the index into a file
     if (mAnalysisDir != null) {
@@ -800,23 +899,13 @@ public class IndexWriterManager {
       targetDir = mNewIndexDir;
     }
 
+    // Delete the last breakpoint if there should be one
+    deleteOldIndex(mBreakpointIndexDir);
+    
     // If there is already the target directory -> delete it
-    if (targetDir.exists()) {
-      // We rename it before deletion so there will be no problems when the
-      // search mask tries not to switch to the new index during deletion. This
-      // case is very unlikely but it may happen once in 100.000 years...
-      File secureDir = new File(targetDir.getAbsolutePath() + "_del");
-      if (targetDir.renameTo(secureDir)) {
-        RegainToolkit.deleteDirectory(secureDir);
-      } else {
-        // It really happend: The search mask tries to get the new index right now.
-        // -> In this case we do nothing (The new index will stay in the temp dir
-        //    and the next operation (renaming temp to new) will fail).
-      }
-    }
+    deleteOldIndex(targetDir);
 
     // Let the new index become the working index
-
     // Workaround: Siehe Javadoc von RENAME_TIMEOUT
     long deadline = System.currentTimeMillis() + RENAME_TIMEOUT;
     boolean renameSucceed = false;
@@ -831,6 +920,28 @@ public class IndexWriterManager {
     if (! renameSucceed) {
       throw new RegainException("Renaming " + mTempIndexDir + " to " + targetDir
         + " failed after " + (RENAME_TIMEOUT / 1000) + " seconds!");
+    }
+  }
+
+
+  /**
+   * Delets an old index directory.
+   * 
+   * @param oldIndexDir The old index directory.
+   * @throws RegainException If deleting failed.
+   */
+  private void deleteOldIndex(File oldIndexDir) throws RegainException {
+    if (oldIndexDir.exists()) {
+      // We rename it before deletion so there will be no problems when the
+      // search mask tries not to switch to the new index during deletion. This
+      // case is very unlikely but it may happen once in 100.000 years...
+      File secureDir = new File(oldIndexDir.getAbsolutePath() + "_del");
+      if (oldIndexDir.renameTo(secureDir)) {
+        RegainToolkit.deleteDirectory(secureDir);
+      } else {
+        throw new RegainException("Deleting old index failed: " +
+            oldIndexDir.getAbsolutePath());
+      }
     }
   }
 

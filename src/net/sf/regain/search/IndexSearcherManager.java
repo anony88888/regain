@@ -122,7 +122,6 @@ public class IndexSearcherManager {
   private HashMap mFieldTermHash;
 
 
-
   /**
    * Erzeugt eine neue IndexWriterManager-Instanz.
    *
@@ -434,7 +433,7 @@ public class IndexSearcherManager {
         mFieldTermHash = null;
       }
 
-      // Remove the old beackup if it should still exist
+      // Remove the old backup if it should still exist
       if (mBackupIndexDir.exists()) {
         RegainToolkit.deleteDirectory(mBackupIndexDir);
       }

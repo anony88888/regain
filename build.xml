@@ -104,6 +104,8 @@
     <echo message="  run-crawler      Runs the crawler."/>
     <echo message="  run-crawler-fast Runs the crawler without building the jars."/>
     <echo message="  run-desktop-fast Runs the desktop without building the jars."/>
+    <echo message="  jsmoothgen       Creates a windows executable using Jsmooth."/>
+    <echo message="  installer        Creates a Windows installer for the project."/>
     <echo message="  public           Creates all the stuff that can be downloaded."/>
     <echo message="  deploy-web       Deploys the web content at the servlet engine."/>
     <echo message="  deploy-classes   Deploys the web content at the servlet engine."/>
