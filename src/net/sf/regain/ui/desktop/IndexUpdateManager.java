@@ -27,7 +27,6 @@
  */
 package net.sf.regain.ui.desktop;
 
-import java.io.File;
 import java.util.Date;
 
 import net.sf.regain.RegainException;
@@ -43,17 +42,11 @@ import org.apache.log4j.Logger;
  *
  * @author Til Schneider, www.murfman.de
  */
-public class IndexUpdateManager {
+public class IndexUpdateManager implements DesktopConstants {
   
   /** The logger for this class */
   private static Logger mLog = Logger.getLogger(IndexUpdateManager.class);
 
-  /** The name of the XML file that holds the crawler configuration. */
-  private static final String CRAWLER_CONFIG_FILE = "conf/CrawlerConfiguration.xml";
-  
-  /** The name of the file that holds the timestamp of the last index update. */
-  private static final String LAST_UPDATE_FILE = "searchindex/lastupdate";
-  
   /** The singleton. */
   private static IndexUpdateManager mSingleton;
   
@@ -89,6 +82,17 @@ public class IndexUpdateManager {
   
   
   /**
+   * Gets the crawler that processes the current index update.
+   * 
+   * @return The crawler that processes the current index update or
+   *         <code>null</code> if there is currently no index update running.
+   */
+  public Crawler getCurrentCrawler() {
+    return mCrawler;
+  }
+  
+  
+  /**
    * The run method of the thread that checks whether an index update is
    * nessesary.
    */
@@ -115,13 +119,9 @@ public class IndexUpdateManager {
    * @throws RegainException If updating the index failed.
    */
   private synchronized void checkUpdate() throws RegainException {
-    long lastUpdate = getIndexLastUpdate();
-    long interval = DesktopToolkit.getDesktopConfig().getInterval();
-    long nextUpdateTime = lastUpdate + interval * 1000 * 60;
-    if (System.currentTimeMillis() >= nextUpdateTime) {
+    if (indexNeedsUpdate()) {
       // The index must be updated
-      File xmlFile = new File(CRAWLER_CONFIG_FILE);
-      CrawlerConfig config = new XmlCrawlerConfig(xmlFile);
+      CrawlerConfig config = new XmlCrawlerConfig(CRAWLER_CONFIG_FILE);
       
       // Check whether to show the welcome page
       if (config.getStartUrls().length == 0) {
@@ -153,6 +153,9 @@ public class IndexUpdateManager {
           // Save the time when the index was last updated
           saveIndexLastUpdate();
           
+          // Remove the needsupdate file
+          NEEDSUPDATE_FILE.delete();
+          
           // Run the garbage collector
           System.gc();
   
@@ -169,14 +172,19 @@ public class IndexUpdateManager {
    * @return The timestamp of the last index update.
    * @throws RegainException If getting the timestamp failed.
    */
-  private long getIndexLastUpdate() throws RegainException {
-    File lastUpdateFile = new File(LAST_UPDATE_FILE);
-    if (lastUpdateFile.exists()) {
-      String lastUpdate = RegainToolkit.readStringFromFile(lastUpdateFile);
-      return RegainToolkit.stringToLastModified(lastUpdate).getTime();
+  private boolean indexNeedsUpdate() throws RegainException {
+    if (NEEDSUPDATE_FILE.exists()) {
+      return true;
+    } else if (LASTUPDATE_FILE.exists()) {
+      String lastUpdateAsString = RegainToolkit.readStringFromFile(LASTUPDATE_FILE);
+      long lastUpdate = RegainToolkit.stringToLastModified(lastUpdateAsString).getTime();
+      long interval = DesktopToolkit.getDesktopConfig().getInterval();
+      long nextUpdateTime = lastUpdate + interval * 1000 * 60;
+      
+      return System.currentTimeMillis() >= nextUpdateTime;
     } else {
       // The lastupdate file does not exist -> There was never an index created
-      return -1;
+      return true;
     }
   }
 
@@ -185,10 +193,9 @@ public class IndexUpdateManager {
    * Saves the current time as the last index update.
    */
   private void saveIndexLastUpdate() {
-    File lastUpdateFile = new File(LAST_UPDATE_FILE);
     try {
       String lastUpdate = RegainToolkit.lastModifiedToString(new Date());
-      CrawlerToolkit.writeToFile(lastUpdate, lastUpdateFile);
+      CrawlerToolkit.writeToFile(lastUpdate, LASTUPDATE_FILE);
     }
     catch (RegainException exc) {
       mLog.error("Writing last update file failed", exc);

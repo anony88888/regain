@@ -84,7 +84,16 @@ public class Profiler {
 
     registerProfiler(this);
   }
-
+  
+  
+  /**
+   * Gets the number of measures.
+   * 
+   * @return The number of measures.
+   */
+  public int getMeasureCount() {
+    return mMeasureCount;
+  }
 
 
   /**
@@ -271,7 +280,7 @@ public class Profiler {
       format.setMinimumFractionDigits(2);
       format.setMaximumFractionDigits(2);
 
-      String asString = format.format((double) secs + ((double) millis) / 1000.0);
+      String asString = format.format((double) secs + (double) millis / 1000.0);
 
       return asString + " sec";
     }

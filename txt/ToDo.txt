@@ -87,6 +87,9 @@ X Desktopsuche: Willkommensseite anzeigen, wenn keine Start-URLs definiert sind.
 X Desktopsuche: file-Treffer über http bereitstellen
 X Bug: Indexierung von Webseiten geht nicht
 X Desktopsuche: FileService: Mime-Types setzen
+X Desktopsuche: Status
+    - Wann wurde der Index zuletzt aktualisiert
+    - Fortschritt bei laufender Aktualisierung
 
   Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, für die
     er auch Leserechte hat. (Aufwand: 2 Tage)
@@ -103,11 +106,7 @@ X Desktopsuche: FileService: Mime-Types setzen
     - Init-Parameter von configFile nach searchConfigFile umbenannt.
   
   Desktopsuche: search.jsp: Forward zu searchinput.jsp, wenn query nicht gesetzt.
-  Desktopsuche: Status
-    - Wann wurde der Index zuletzt aktualisiert
-    - Fortschritt bei laufender Aktualisierung
 
-  Bug: "http://www.murfman.de" wird geparst, aber nicht indexiert
   Desktopsuche: Task-Icon für Linux
   Desktopsuche: Mime-Types konfigurierbar
 

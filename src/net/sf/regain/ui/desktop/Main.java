@@ -48,7 +48,7 @@ import simple.http.serve.HandlerFactory;
  *
  * @author Til Schneider, www.murfman.de
  */
-public class Main {
+public class Main implements DesktopConstants {
   
   /** The logger for this class */
   private static Logger mLog = Logger.getLogger(Main.class);
@@ -68,7 +68,7 @@ public class Main {
       return; // Abort
     }
 
-    new File("log").mkdir();
+    LOG_DIR.mkdir();
     PropertyConfigurator.configure(logConfigFile.getAbsolutePath());
     mLog.info("Logging initialized");
 
@@ -76,12 +76,13 @@ public class Main {
     SimplePageRequest.setInitParameter("searchConfigFile", "conf/SearchConfiguration.xml");
     ExecuterParser.registerNamespace("search", "net.sf.regain.search.sharedlib");
     ExecuterParser.registerNamespace("config", "net.sf.regain.ui.desktop.config.sharedlib");
+    ExecuterParser.registerNamespace("status", "net.sf.regain.ui.desktop.status.sharedlib");
     
     // Start the Tray icon
     TrayIconManager.getInstance().init();
     
     // Start the index update manager
-    new File("searchindex").mkdir();
+    INDEX_DIR.mkdir();
     IndexUpdateManager.getInstance().init();
     
     // Start the server

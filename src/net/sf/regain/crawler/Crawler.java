@@ -193,7 +193,16 @@ public class Crawler {
       }
     }
   }
-
+  
+  
+  /**
+   * Gets the number of processed documents.
+   * 
+   * @return The number of processed documents.
+   */
+  public int getFinishedJobCount() {
+    return mCrawlerJobProfiler.getMeasureCount();
+  }
 
 
   /**
@@ -238,14 +247,18 @@ public class Crawler {
 
       if (accepted) {
         mFoundUrlSet.add(url);
-        mLog.info("Found new URL: " + url);
+        if (mLog.isDebugEnabled()) {
+          mLog.debug("Found new URL: " + url);
+        }
 
         CrawlerJob job = new CrawlerJob(url, sourceUrl, sourceLinkText,
                                       shouldBeParsed, shouldBeIndexed);
         mJobList.add(job);
       } else {
         mIgnoredUrlSet.add(url);
-        mLog.info("Ignoring URL: " + url);
+        if (mLog.isDebugEnabled()) {
+          mLog.debug("Ignoring URL: " + url);
+        }
       }
     }
   }

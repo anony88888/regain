@@ -181,7 +181,9 @@ public class HtmlPreparator extends AbstractPreparator {
     String headlines;
     if (contentExtractor == null) {
       // There is no HtmlContentExtractor responsible for this document
-      mLog.warn("No HTML content extractor is responsible for " + rawDocument.getUrl());
+      if (mLog.isDebugEnabled()) {
+        mLog.debug("No HTML content extractor is responsible for " + rawDocument.getUrl());
+      }
 
       cuttedContent = rawDocument.getContentAsString();
       headlines = null;

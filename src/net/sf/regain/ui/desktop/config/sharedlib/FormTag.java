@@ -28,6 +28,8 @@
 package net.sf.regain.ui.desktop.config.sharedlib;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -39,6 +41,7 @@ import org.w3c.dom.Node;
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.XmlToolkit;
+import net.sf.regain.ui.desktop.DesktopConstants;
 import net.sf.regain.util.sharedtag.PageRequest;
 import net.sf.regain.util.sharedtag.PageWriter;
 import net.sf.regain.util.sharedtag.SharedTag;
@@ -49,7 +52,7 @@ import net.sf.regain.util.sharedtag.SharedTag;
  *
  * @author Til Schneider, www.murfman.de
  */
-public class FormTag extends SharedTag {
+public class FormTag extends SharedTag implements DesktopConstants {
   
   /** The URL prefix of file URLs. */
   private static final String FILE_PROTOCOL = "file://";
@@ -79,11 +82,8 @@ public class FormTag extends SharedTag {
     String[] siteblacklist;
     if (interval == -1) {
       // This is the first call -> Load the settings
-      File desktopFile = new File("conf/DesktopConfiguration.xml");
-      Document desktopDoc = XmlToolkit.loadXmlDocument(desktopFile);
-
-      File crawlerFile = new File("conf/CrawlerConfiguration.xml");
-      Document crawlerDoc = XmlToolkit.loadXmlDocument(crawlerFile);
+      Document desktopDoc = XmlToolkit.loadXmlDocument(DESKTOP_CONFIG_FILE);
+      Document crawlerDoc = XmlToolkit.loadXmlDocument(CRAWLER_CONFIG_FILE);
       
       interval      = getInterval(desktopDoc);
       dirlist       = getStartlistEntries(crawlerDoc, FILE_PROTOCOL);
@@ -289,12 +289,10 @@ public class FormTag extends SharedTag {
     Node node;
     
     // Load the config files
-    File desktopFile = new File("conf/DesktopConfiguration.xml");
-    Document desktopDoc = XmlToolkit.loadXmlDocument(desktopFile);
+    Document desktopDoc = XmlToolkit.loadXmlDocument(DESKTOP_CONFIG_FILE);
     Element desktopConfig = desktopDoc.getDocumentElement();
 
-    File crawlerFile = new File("conf/CrawlerConfiguration.xml");
-    Document crawlerDoc = XmlToolkit.loadXmlDocument(crawlerFile);
+    Document crawlerDoc = XmlToolkit.loadXmlDocument(CRAWLER_CONFIG_FILE);
     Element crawlerConfig = crawlerDoc.getDocumentElement();
 
     // Set the interval
@@ -349,11 +347,17 @@ public class FormTag extends SharedTag {
     XmlToolkit.prettyPrint(crawlerDoc, blacklistNode);
     
     // Save the config
-    XmlToolkit.saveXmlDocument(desktopFile, desktopDoc);
-    XmlToolkit.saveXmlDocument(crawlerFile, crawlerDoc);
+    XmlToolkit.saveXmlDocument(DESKTOP_CONFIG_FILE, desktopDoc);
+    XmlToolkit.saveXmlDocument(CRAWLER_CONFIG_FILE, crawlerDoc);
     
-    // Remove the lastupdate file, so the index will be updated
-    new File("searchindex/lastupdate").delete();
+    // Create the needsupdate file, so the index will be updated
+    try {
+      FileOutputStream out = new FileOutputStream(NEEDSUPDATE_FILE);
+      out.close();
+    }
+    catch (IOException exc) {
+      throw new RegainException("Creating needsupdate file failed", exc);
+    }
   }
 
 }
