@@ -118,10 +118,9 @@ public class Crawler implements ErrorLogger {
   private RE[] mHtmlParserPatternReArr;
 
   /** Der Profiler der die gesamten Crawler-Jobs mi�t. */
-  private Profiler mCrawlerJobProfiler = new Profiler("Whole crawler jobs", "jobs");
+  private Profiler mCrawlerJobProfiler;
   /** Der Profiler der das Durchsuchen von HTML-Dokumenten mi�t. */
-  private Profiler mHtmlParsingProfiler
-    = new Profiler("Parsed HTML documents", "docs");
+  private Profiler mHtmlParsingProfiler;
   
   /** The IndexWriterManager to use for adding documents to the index. */
   private IndexWriterManager mIndexWriterManager;
@@ -139,6 +138,9 @@ public class Crawler implements ErrorLogger {
    */
   public Crawler(CrawlerConfig config) throws RegainException {
     Profiler.clearRegisteredProfilers();
+    
+    mCrawlerJobProfiler = new Profiler("Whole crawler jobs", "jobs");
+    mHtmlParsingProfiler = new Profiler("Parsed HTML documents", "docs");
     
     mConfiguration = config;
 
