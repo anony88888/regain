@@ -38,7 +38,7 @@ import java.util.LinkedList;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
-import net.sf.regain.crawler.config.Configuration;
+import net.sf.regain.crawler.config.CrawlerConfig;
 import net.sf.regain.crawler.config.StartUrl;
 import net.sf.regain.crawler.config.UrlPattern;
 import net.sf.regain.crawler.config.WhiteListEntry;
@@ -67,7 +67,7 @@ public class Crawler {
   private static Logger mLog = Logger.getLogger(Crawler.class);
 
   /** Die Konfiguration mit den Einstellungen. */
-  private Configuration mConfiguration;
+  private CrawlerConfig mConfiguration;
 
   /** Enthält alle bereits gefundenen URLs, die nicht ignoriert wurden. */
   private HashSet mFoundUrlSet;
@@ -151,7 +151,7 @@ public class Crawler {
    *
    * @throws RegainException Wenn die regulären Ausdrücke fehlerhaft sind.
    */
-  public Crawler(Configuration config) throws RegainException {
+  public Crawler(CrawlerConfig config) throws RegainException {
     mConfiguration = config;
 
     mFoundUrlSet = new HashSet();

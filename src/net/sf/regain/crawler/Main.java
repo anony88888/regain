@@ -103,9 +103,9 @@ public class Main {
 
     // Load crawler configuration
     File xmlFile = new File(crawlerConfigFileName);
-    Configuration config;
+    CrawlerConfig config;
     try {
-      config = new XmlConfiguration(xmlFile);
+      config = new XmlCrawlerConfig(xmlFile);
     }
     catch (RegainException exc) {
       mLog.error("Loading XML Configuration failed", exc);
@@ -209,7 +209,7 @@ public class Main {
    * @param config Die Konfiguration, aus der die Einstellungen gelesen werden
    *        sollen.
    */
-  private static void initProxy(Configuration config) {
+  private static void initProxy(CrawlerConfig config) {
     String httpProxyHost = config.getProxyHost();
     String httpProxyPort = config.getProxyPort();
     String httpProxyUser = config.getProxyUser();

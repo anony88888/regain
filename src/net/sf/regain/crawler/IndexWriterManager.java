@@ -39,7 +39,7 @@ import java.util.HashSet;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
-import net.sf.regain.crawler.config.Configuration;
+import net.sf.regain.crawler.config.CrawlerConfig;
 import net.sf.regain.crawler.document.DocumentFactory;
 import net.sf.regain.crawler.document.RawDocument;
 
@@ -197,7 +197,7 @@ public class IndexWriterManager {
    *
    * @throws RegainException Wenn der neue Index nicht vorbereitet werden konnte.
    */
-  public IndexWriterManager(Configuration config, boolean updateIndex)
+  public IndexWriterManager(CrawlerConfig config, boolean updateIndex)
     throws RegainException
   {
     mUpdateIndex = updateIndex;

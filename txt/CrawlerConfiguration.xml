@@ -5,10 +5,10 @@
   <!ENTITY lt "&#x3C;">
 ]>
 
-<configuration xmlns='http://xml.netbeans.org/examples/targetNS'
-  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-  xsi:schemaLocation='http://xml.netbeans.org/examples/targetNS file:SpiderConfiguration.xsd'>
-
+<!--
+ | Configuration for the regain crawler (for creating a search index)
+ +-->
+<configuration>
 
 <!-- Proxy settings -->
 <proxy>

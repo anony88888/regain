@@ -25,15 +25,17 @@
  *   $Author$
  * $Revision$
  */
-package net.sf.regain.crawler.config;
+package net.sf.regain;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import net.sf.regain.RegainException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.*;
-
 
 /**
  * Enthält Hilfsmethoden für die Extraktion von Daten aus dem DOM-Dokument einer
@@ -43,6 +45,42 @@ import org.w3c.dom.*;
  */
 public class XmlToolkit {
 
+  /**
+   * Loads an XML file and returns its content as Document.
+   *
+   * @param xmlFile The XML file to load.
+   * @return The XML document of the file.
+   * @throws RegainException If loading the XML file failed.
+   */
+  public static Document loadXmlDocument(File xmlFile) throws RegainException {
+    DocumentBuilder builder;
+    try {
+      builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+    }
+    catch (Exception exc) {
+      throw new RegainException("Creating XML document builder failed!", exc);
+    }
+
+    Document doc;
+    FileInputStream stream = null;
+    try {
+      stream = new FileInputStream(xmlFile);
+      doc = builder.parse(stream);
+    }
+    catch (Exception exc) {
+      throw new RegainException("Parsing XML failed: "
+                                + xmlFile.getAbsolutePath(), exc);
+    }
+    finally {
+      if (stream != null) {
+        try { stream.close(); } catch (Exception exc) {}
+      }
+    }
+
+    return doc;
+  }
+  
+  
   /**
    * Extrahiert den Text eines Knotens, wandelt ihn in einen boolean und gibt das
    * Ergebnis zurück.
@@ -233,9 +271,8 @@ public class XmlToolkit {
   public static Node getChild(Node node, String childNodeName) throws RegainException {
     return getChild(node, childNodeName, true);
   }
-
-
-
+  
+  
   /**
    * Gibt den Kindknoten mit einem bestimmten Namen zurück.
    * <p>
@@ -306,6 +343,75 @@ public class XmlToolkit {
     return nodeArr;
   }
 
+  
+  /**
+   * Gets a child node from a parent node. If the parent node has no such child
+   * the child of the <code>defaultNode</code> is used.
+   * 
+   * @param node The node to get the child from.
+   * @param defaultNode The node to get the child from if <code>node</code> has
+   *        no such child.
+   * @param childNodeName The name of the child.
+   * @return The child with the given name.
+   * @throws RegainException If both the <code>node</code> and the
+   *         <code>defaultNode</code> have no child with the given name. 
+   */
+  public static Node getCascadedChild(Node node, Node defaultNode,
+    String childNodeName)
+    throws RegainException
+  {
+    return getCascadedChild(node, defaultNode, childNodeName, true);
+  }
+  
+  
+  /**
+   * Gets a child node from a parent node. If the parent node has no such child
+   * the child of the <code>defaultNode</code> is used.
+   * 
+   * @param node The node to get the child from.
+   * @param defaultNode The node to get the child from if <code>node</code> has
+   *        no such child.
+   * @param childNodeName The name of the child.
+   * @param mandatory Specifies whether to throw an exception if none of the
+   *        nodes have such a child.
+   * @return The child with the given name.
+   * @throws RegainException If both the <code>node</code> and the
+   *         <code>defaultNode</code> have no child with the given name and
+   *         <code>mandatory</code> is <code>true</code>. 
+   */
+  public static Node getCascadedChild(Node node, Node defaultNode,
+    String childNodeName, boolean mandatory)
+    throws RegainException
+  {
+    Node child = XmlToolkit.getChild(node, childNodeName, false);
+    if (child == null) {
+      child = XmlToolkit.getChild(defaultNode, childNodeName, false);
+      if (child == null) {
+        throw new RegainException("Node '" + node.getNodeName()
+            + "' or node '" + defaultNode.getNodeName()
+            + "' must have a child named '" + childNodeName + "'!");
+      }
+    }
+    
+    return child;
+  }
+  
+
+  /**
+   * Gets the text of a child node.
+   * 
+   * @param node The (parent) node that has the child to get the text from.
+   * @param childNodeName The name of the child node.
+   * @return The text of the child node
+   * @throws RegainException If the given node has no child with the given name
+   *         of if the child node has no text.
+   */
+  public static String getChildText(Node node, String childNodeName)
+    throws RegainException
+  {
+    Node child = getChild(node, childNodeName);
+    return getText(child);
+  }
 
 
   /**

@@ -87,7 +87,9 @@
     <echo message="  dump-info     Dumps some information (VM-Version...)."/>
     <echo message="  clean         Deletes the classes directory."/>
     <echo message="  clean-runtime Deletes the runtime directory."/>
-    <echo message="  clean-all     Deletes all generated directories. (without public)"/>
+    <echo message="  clean-all     Deletes all generated directories."/>
+    <echo message="                (Without public and the deployed stuff)"/>
+    <echo message="  clean-web     Deletes the deployed stuff (Without the config)."/>
     <echo message="  prepare       Prepares the compilation. (Extracts the libs)"/>
     <echo message="  doc           Generates the JavaDoc documentation."/>
     <echo message="  make          Compiles the source code."/>
@@ -99,8 +101,7 @@
     <echo message="  run           Runs the project."/>
     <echo message="  fast-run      Runs the project without building the jars."/>
     <echo message="  public        Creates all the stuff that can be downloaded."/>
-    <echo message="  install       Installs the project in the tomcat directory."/>
-    <echo message="  restart       (Re)starts the tomcat server."/>
+    <echo message="  deploy-war    Deploys the war file at the servlet engine."/>
     <echo message="  all           Creates all (Same as public)."/>
   </target>
 
@@ -132,7 +133,6 @@
   </target>
 
 
-
   <!--
    | Deletes the runtime directory
    +-->
@@ -140,18 +140,26 @@
     <delete dir="temp/runtime"/>
   </target>
 
-  
-  
+
   <!--
-   | Deletes all generated directories.
+   | Deletes all generated directories (Without public and the deployed stuff).
    +-->
   <target name="clean-all" depends="clean, clean-runtime">
     <delete dir="temp/included-lib-classes"/>
     <delete dir="temp/doc"/>
   </target>
 
-  
-  
+
+  <!--
+   | Deletes the deployed stuff (Without the config).
+   +-->
+  <target name="clean-web">
+    <echo message="Deleting the deployed stuff from ${deploy-target.dir}"/>
+    <delete dir="${deploy-target.dir}/${programname.file}"/>
+    <delete file="${deploy-target.dir}/${programname.file}.war"/>
+  </target>
+
+
   <!--
    | Prepares the compilation. (Extracts the libs)
    +-->
@@ -258,7 +266,6 @@
       <fileset dir="txt" includes="license.txt"/>
     </copy>
 
-    <mkdir dir="temp/runtime/crawler"/>
     <mkdir dir="temp/runtime/crawler/log"/>
     <copy todir="temp/runtime/crawler">
       <fileset dir="lib" includes="jacob.dll"/>
@@ -266,10 +273,9 @@
       <fileset dir="txt" includes="log4j.properties"/>
     </copy>
 
-    <mkdir dir="temp/runtime/search"/>
-    <mkdir dir="temp/runtime/search/conf"/>
-    <copy todir="temp/runtime/search/conf">
-      <fileset dir="txt" includes="regain.properties"/>
+    <mkdir dir="temp/runtime/search/conf/regain"/>
+    <copy todir="temp/runtime/search/conf/regain">
+      <fileset dir="txt" includes="SearchConfiguration.xml"/>
     </copy>
   </target>
 
@@ -430,21 +436,66 @@
   </target>
 
 
-
   <!--
-   | Installs the project in the tomcat directory.
+   | Deploys the war file at the servlet engine.
    +-->
-  <target name="install" depends="runtime">
-    <echo message="Removing the current project installation from the tomcat directory..." />
-    <delete dir="${tomcat-runtime.dir}/webapps/LuceneSearch"/>
-
-    <echo message="Installing the project in the tomcat directory..." />
-    <copy todir="${tomcat-runtime.dir}/webapps">
-      <fileset dir="temp/runtime" includes="regain.war"/>
+  <target name="deploy-war" depends="runtime, clean-web">
+    <echo message="Deploying the war file at ${deploy-target.dir}...." />
+    <copy todir="${deploy-target.dir}">
+      <fileset dir="temp/runtime" includes="${programname.file}.war"/>
     </copy>
   </target>
 
 
+  <!--
+   | Deploys the web content at the servlet engine.
+   +-->
+  <target name="deploy-web">
+    <mkdir dir="${deploy-target.dir}/${programname.file}"/>
+
+    <echo message="Deploying the web content at ${deploy-target.dir}/${programname.file}" />
+    <copy todir="${deploy-target.dir}/${programname.file}">
+      <fileset dir="web">
+        <include name="**"/>
+        <exclude name="**/CVS/*"/>
+      </fileset>
+    </copy>
+  </target>
+
+
+  <!--
+   | Deploys the classes and libs at the servlet engine.
+   +-->
+  <target name="deploy-classes" depends="make">
+    <mkdir dir="${deploy-target.dir}/${programname.file}/WEB-INF/classes"/>
+    <copy todir="${deploy-target.dir}/${programname.file}/WEB-INF/classes">
+      <fileset dir="temp/classes">
+        <exclude name="net/sf/regain/crawler/**"/>
+      </fileset>
+    </copy>
+
+    <mkdir dir="${deploy-target.dir}/${programname.file}/WEB-INF/lib"/>
+	<copy todir="${deploy-target.dir}/${programname.file}/WEB-INF/lib">
+	  <fileset dir="lib">
+	    <include name="${lucene.jar}"/>
+	    <include name="${regexp.jar}"/>
+	  </fileset>
+	</copy>
+  </target>
+
+  
+  <!--
+   | Deploys the config at the servlet engine.
+   +-->
+  <target name="deploy-config">
+    <mkdir dir="${deploy-target.dir}/../conf/regain"/>
+    <copy todir="${deploy-target.dir}/../conf/regain">
+      <fileset dir="txt">
+        <include name="SearchConfiguration.xml"/>
+      </fileset>
+    </copy>
+  </target>
+  
 
   <!--
    | Creates all.

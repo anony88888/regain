@@ -27,12 +27,13 @@
  */
 package net.sf.regain.crawler.config;
 
+
 /**
- * Stellt alle zu konfigurierenden Einstellungen zur Verfügung.
+ * Stellt alle zu konfigurierenden Einstellungen hardcodiert zur Verfügung.
  *
  * @author Til Schneider, www.murfman.de
  */
-public interface Configuration {
+public class DummyCrawlerConfig implements CrawlerConfig {
 
   /**
    * Gibt den Host-Namen des Proxy-Servers zurück. Wenn kein Host konfiguriert
@@ -40,7 +41,11 @@ public interface Configuration {
    *
    * @return Der Host-Namen des Proxy-Servers.
    */
-  public String getProxyHost();
+  public String getProxyHost() {
+    return "idatmpsrv";
+  }
+
+
 
   /**
    * Gibt den Port des Proxy-Servers zurück. Wenn kein Port konfiguriert wurde,
@@ -48,7 +53,11 @@ public interface Configuration {
    *
    * @return Der Port des Proxy-Servers.
    */
-  public String getProxyPort();
+  public String getProxyPort() {
+    return "3128";
+  }
+
+
 
   /**
    * Gibt den Benutzernamen für die Anmeldung beim Proxy-Server zurück. Wenn
@@ -56,7 +65,11 @@ public interface Configuration {
    *
    * @return Der Benutzernamen für die Anmeldung beim Proxy-Server.
    */
-  public String getProxyUser();
+  public String getProxyUser() {
+    return null;
+  }
+
+
 
   /**
    * Gibt das Passwort für die Anmeldung beim Proxy-Server zurück. Wenn kein
@@ -64,7 +77,10 @@ public interface Configuration {
    *
    * @return Das Passwort für die Anmeldung beim Proxy-Server.
    */
-  public String getProxyPassword();
+  public String getProxyPassword() {
+    return null;
+  }
+
 
   /**
    * Gibt den Timeout für HTTP-Downloads zurück. Dieser Wert bestimmt die
@@ -72,7 +88,10 @@ public interface Configuration {
    *
    * @return Den Timeout für HTTP-Downloads
    */
-  public int getHttpTimeoutSecs();
+  public int getHttpTimeoutSecs() {
+    return 180;
+  }
+
 
   /**
    * Gibt zurück, ob URLs geladen werden sollen, die weder durchsucht noch
@@ -81,35 +100,52 @@ public interface Configuration {
    * @return Ob URLs geladen werden sollen, die weder durchsucht noch indiziert
    *         werden.
    */
-  public boolean getLoadUnparsedUrls();
+  public boolean getLoadUnparsedUrls() {
+    return false;
+  }
+
+
 
   /**
    * Gibt zurück, ob ein Suchindex erstellt werden soll.
    *
    * @return Ob ein Suchindex erstellt werden soll.
    */
-  public boolean getBuildIndex();
+  public boolean getBuildIndex() {
+    return true;
+  }
+
 
   /**
-   * Gibt das Verzeichnis zurück, in dem der Suchindex stehen soll.
+   * Gibt das Verzeichnis zurück, in dem der stehen soll.
    *
    * @return Das Verzeichnis, in dem der Suchindex stehen soll.
    */
-  public String getIndexDir();
+  public String getIndexDir() {
+    return "c:\\Temp\\searchIndex";
+  }
+
 
   /**
    * Gibt den zu verwendenden Analyzer-Typ zurück.
    *
    * @return en zu verwendenden Analyzer-Typ
    */
-  public String getAnalyzerType();
+  public String getAnalyzerType() {
+    return "german";
+  }
+
 
   /**
    * Gibt alle Worte zurück, die nicht indiziert werden sollen.
    *
    * @return Alle Worte, die nicht indiziert werden sollen.
    */
-  public String[] getStopWordList();
+  public String[] getStopWordList() {
+    return null;
+  }
+
+
 
   /**
    * Gibt alle Worte zurück, die bei der Indizierung nicht vom Analyzer
@@ -118,7 +154,11 @@ public interface Configuration {
    * @return Alle Worte, die bei der Indizierung nicht vom Analyzer
    *         verändert werden sollen.
    */
-  public String[] getExclusionList();
+  public String[] getExclusionList() {
+    return null;
+  }
+
+
 
   /**
    * Gibt zurück, ob Analyse-Deteien geschrieben werden sollen.
@@ -128,7 +168,10 @@ public interface Configuration {
    *
    * @return Ob Analyse-Deteien geschrieben werden sollen.
    */
-  public boolean getWriteAnalysisFiles();
+  public boolean getWriteAnalysisFiles() {
+    return true;
+  }
+
 
   /**
    * Gibt den maximalen Prozentsatz von gescheiterten Dokumenten zurück. (0..1)
@@ -141,7 +184,10 @@ public interface Configuration {
    *
    * @return Den maximalen Prozentsatz von gescheiterten Dokumenten zurück.
    */
-  public double getMaxFailedDocuments();
+  public double getMaxFailedDocuments() {
+    return 0.1;
+  }
+
 
   /**
    * Gibt den Namen der Kontrolldatei für erfolgreiche Indexerstellung zurück.
@@ -154,7 +200,10 @@ public interface Configuration {
    *
    * @return Der Name der Kontrolldatei für erfolgreiche Indexerstellung
    */
-  public String getFinishedWithoutFatalsFileName();
+  public String getFinishedWithoutFatalsFileName() {
+    return null;
+  }
+
 
   /**
    * Gibt den Namen der Kontrolldatei für fehlerhafte Indexerstellung zurück.
@@ -167,14 +216,31 @@ public interface Configuration {
    *
    * @return Der Name der Kontrolldatei für fehlerhafte Indexerstellung
    */
-  public String getFinishedWithFatalsFileName();
+  public String getFinishedWithFatalsFileName() {
+    return null;
+  }
+
 
   /**
    * Gibt die StartUrls zurück, bei denen der Crawler-Prozeß beginnen soll.
    *
    * @return Die StartUrls.
    */
-  public StartUrl[] getStartUrls();
+  public StartUrl[] getStartUrls() {
+    return new StartUrl[] {
+      new StartUrl("http://www.dm-drogeriemarkt.de/CDA/Home/", true, true),
+      /*
+      new StartUrl("http://www.dm-drogeriemarkt.de/CDA/verteilerseite/0,2098,0-15-X,00.html", true, true),
+      new StartUrl("http://www.dm-drogeriemarkt.de/CDA/verteilerseite/0,1651,0-16-X,00.html", true, true),
+      new StartUrl("http://www.dm-drogeriemarkt.de/CDA/verteilerseite/0,1651,0-17-X,00.html", true, true),
+      new StartUrl("http://www.dm-drogeriemarkt.de/CDA/verteilerseite/0,1651,0-18-X,00.html", true, true),
+      new StartUrl("http://www.dm-drogeriemarkt.de/CDA/verteilerseite/0,1651,0-19-X,00.html", true, true),
+      new StartUrl("http://www.dm-drogeriemarkt.de/CDA/verteilerseite/0,1651,0-173-X,00.html", true, true)
+      */
+    };
+  }
+
+
 
   /**
    * Gibt die UrlPattern zurück, die der HTML-Parser nutzen soll, um URLs zu
@@ -182,7 +248,15 @@ public interface Configuration {
    *
    * @return Die UrlPattern für den HTML-Parser.
    */
-  public UrlPattern[] getHtmlParserUrlPatterns();
+  public UrlPattern[] getHtmlParserUrlPatterns() {
+    return new UrlPattern[] {
+      new UrlPattern("=\"([^\"]*\\.html)\"", 1, true,  true),
+      new UrlPattern("=\"([^\"]*\\.(pdf|xls|doc|rtf|ppt))\"",  1, false, true),
+      new UrlPattern("=\"([^\"]*\\.(js|css|jpg|gif|png))\"",  1, false, false)
+    };
+  }
+
+
 
   /**
    * Gibt die UrlPattern zurück, die der Verzeichnis-Parser nutzt, um zu
@@ -190,7 +264,13 @@ public interface Configuration {
    *
    * @return Die UrlPattern für den Verzeichnis-Parser.
    */
-  public UrlPattern[] getDirectoryParserUrlPatterns();
+  public UrlPattern[] getDirectoryParserUrlPatterns() {
+    return new UrlPattern[] {
+      new UrlPattern(".*\\.(html|pdf|xls|doc|rtf|ppt)", -1, false,  true)
+    };
+  }
+
+
 
   /**
    * Gibt die Schwarze Liste zurück.
@@ -200,7 +280,14 @@ public interface Configuration {
    *
    * @return Die Schwarze Liste.
    */
-  public String[] getUrlPrefixBlackList();
+  public String[] getUrlPrefixBlackList() {
+    return new String[] {
+      "http://www.dm-drogeriemarkt.de/CDA/Suchen/",
+      "http://www.dm-drogeriemarkt.de/CDA/content/print/"
+    };
+  }
+
+
 
   /**
    * Gibt die Weiße Liste zurück.
@@ -210,7 +297,17 @@ public interface Configuration {
    *
    * @return Die Weiße Liste
    */
-  public WhiteListEntry[] getWhiteList();
+  public WhiteListEntry[] getWhiteList() {
+    return new WhiteListEntry[] {
+      // new WhiteListEntry("http://www.dm-drogeriemarkt.de/", "dm-main"),
+      new WhiteListEntry("http://www.dm-drogeriemarkt.de/CDA/Home/", "dm-home"),
+      new WhiteListEntry("http://www.dm-drogeriemarkt.de/CDA/images/", "dm-images"),
+      new WhiteListEntry("http://www.dm-drogeriemarkt.de/CDA/verteilerseite/0,1651,", "dm-test1"),
+      new WhiteListEntry("http://www.dm-drogeriemarkt.de/CDA/content/0,1647,0-171", "dm-test2"),
+    };
+  }
+
+
 
   /**
    * Gibt die regulären Ausdrücke zurück, auf die die URL eines Dokuments passen
@@ -220,13 +317,24 @@ public interface Configuration {
    * @return Die regulären Ausdrücke, die Dokumente bestimmen, für die der
    *         Linktext als Titel genommen werden soll.
    */
-  public String[] getUseLinkTextAsTitleRegexList();
+  public String[] getUseLinkTextAsTitleRegexList() {
+    return null;
+  }
+
+
 
   /**
    * Gibt die Liste der Einstellungen für die Präperatoren zurück.
    *
    * @return Die Liste der Einstellungen für die Präperatoren.
    */
-  public PreparatorSettings[] getPreparatorSettingsList();
+  public PreparatorSettings[] getPreparatorSettingsList() {
+    return new PreparatorSettings[] {
+      new PreparatorSettings("\\.(/|html|htm)$",
+          "net.sf.regain.crawler.document.HtmlPreparator", new PreparatorConfig()),
+      new PreparatorSettings("\\.xml$",
+          "net.sf.regain.crawler.document.XmlPreparator", new PreparatorConfig())
+    };
+  }
 
 }

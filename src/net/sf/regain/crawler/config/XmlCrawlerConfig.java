@@ -28,18 +28,14 @@
 package net.sf.regain.crawler.config;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.HashMap;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import net.sf.regain.RegainException;
+import net.sf.regain.XmlToolkit;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
 
 /**
  * Liest die konfigurierenden Einstellungen aus einer XML-Datei und stellt sie
@@ -47,7 +43,7 @@ import org.w3c.dom.Node;
  *
  * @author Til Schneider, www.murfman.de
  */
-public class XmlConfiguration implements Configuration {
+public class XmlCrawlerConfig implements CrawlerConfig {
 
   /** Der Host-Namen des Proxy-Servers. */
   private String mProxyHost;
@@ -132,8 +128,8 @@ public class XmlConfiguration implements Configuration {
    * @throws RegainException Falls die Konfiguration nicht korrekt gelesen werden
    *         konnte.
    */
-  public XmlConfiguration(File xmlFile) throws RegainException {
-    Document doc = loadXmlDocument(xmlFile);
+  public XmlCrawlerConfig(File xmlFile) throws RegainException {
+    Document doc = XmlToolkit.loadXmlDocument(xmlFile);
     Element config = doc.getDocumentElement();
 
     readProxyConfig(config);
@@ -149,45 +145,6 @@ public class XmlConfiguration implements Configuration {
     readUseLinkTextAsTitleRegexList(config);
     readPreparatorSettingsList(config, xmlFile);
   }
-
-
-
-  /**
-   * L�dt eine XML-Datei und gibt ihren Inhalt als Document zur�ck.
-   *
-   * @param xmlFile Die zu ladende XML-Datei.
-   * @return Das XML-Dokument der Datei
-   * @throws RegainException Wenn der Inhalt der Datei nicht korrekt
-   *         geparst werden konnte.
-   */
-  private Document loadXmlDocument(File xmlFile) throws RegainException {
-    DocumentBuilder builder;
-    try {
-      builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-    }
-    catch (Exception exc) {
-      throw new RegainException("Creating XML document builder failed!", exc);
-    }
-
-    Document doc;
-    FileInputStream stream = null;
-    try {
-      stream = new FileInputStream(xmlFile);
-      doc = builder.parse(stream);
-    }
-    catch (Exception exc) {
-      throw new RegainException("Parsing XML failed: "
-                                + xmlFile.getAbsolutePath(), exc);
-    }
-    finally {
-      if (stream != null) {
-        try { stream.close(); } catch (Exception exc) {}
-      }
-    }
-
-    return doc;
-  }
-
 
 
   /**
@@ -480,7 +437,7 @@ public class XmlConfiguration implements Configuration {
     String extraFileName = XmlToolkit.getAttribute(prepConfig, "file", false);
     if (extraFileName != null) {
       File extraFile = new File(xmlFile.getParentFile(), extraFileName);
-      Document doc = loadXmlDocument(extraFile);
+      Document doc = XmlToolkit.loadXmlDocument(extraFile);
       prepConfig = doc.getDocumentElement();
     }
     

@@ -39,7 +39,7 @@ X Parameter für Präperatoren: (Aufwand: 4 Std.)
     Präperatoren sollen in der Konfiguration parametrisierbar werden. Diese
     Parameter sollen optional in extra Datei ausgelagert werden können.
 X Jacob-Präperatoren nicht mehr als Default nutzen.
-X Suchmaske: Konfiguration in externe Properties-Datei auslagern
+X Suchmaske: Konfiguration in externe XML-Datei auslagern
     (Nicht mehr in web.xml)
 
   URL-Mapping: Z.B. Indizierung von file://someserver/bla/blubb/..., jedoch
@@ -74,7 +74,7 @@ X Suchmaske: Konfiguration in externe Properties-Datei auslagern
     - Parameternamen für Suchmaske umbenannt.
 
 Rückfragen:
-  
+
   Word-Preperator: Gezielte Indizierung + Möglichkeit zur Auswertung der
     Office-Dokumenten-Beschreibungs-Felder.
     -> Welche Felder sollen konkret extrahiert werden.

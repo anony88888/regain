@@ -27,13 +27,12 @@
  */
 package net.sf.regain.crawler.config;
 
-
 /**
- * Stellt alle zu konfigurierenden Einstellungen hardcodiert zur Verfügung.
+ * Stellt alle zu konfigurierenden Einstellungen zur Verfügung.
  *
  * @author Til Schneider, www.murfman.de
  */
-public class DummyConfiguration implements Configuration {
+public interface CrawlerConfig {
 
   /**
    * Gibt den Host-Namen des Proxy-Servers zurück. Wenn kein Host konfiguriert
@@ -41,11 +40,7 @@ public class DummyConfiguration implements Configuration {
    *
    * @return Der Host-Namen des Proxy-Servers.
    */
-  public String getProxyHost() {
-    return "idatmpsrv";
-  }
-
-
+  public String getProxyHost();
 
   /**
    * Gibt den Port des Proxy-Servers zurück. Wenn kein Port konfiguriert wurde,
@@ -53,11 +48,7 @@ public class DummyConfiguration implements Configuration {
    *
    * @return Der Port des Proxy-Servers.
    */
-  public String getProxyPort() {
-    return "3128";
-  }
-
-
+  public String getProxyPort();
 
   /**
    * Gibt den Benutzernamen für die Anmeldung beim Proxy-Server zurück. Wenn
@@ -65,11 +56,7 @@ public class DummyConfiguration implements Configuration {
    *
    * @return Der Benutzernamen für die Anmeldung beim Proxy-Server.
    */
-  public String getProxyUser() {
-    return null;
-  }
-
-
+  public String getProxyUser();
 
   /**
    * Gibt das Passwort für die Anmeldung beim Proxy-Server zurück. Wenn kein
@@ -77,10 +64,7 @@ public class DummyConfiguration implements Configuration {
    *
    * @return Das Passwort für die Anmeldung beim Proxy-Server.
    */
-  public String getProxyPassword() {
-    return null;
-  }
-
+  public String getProxyPassword();
 
   /**
    * Gibt den Timeout für HTTP-Downloads zurück. Dieser Wert bestimmt die
@@ -88,10 +72,7 @@ public class DummyConfiguration implements Configuration {
    *
    * @return Den Timeout für HTTP-Downloads
    */
-  public int getHttpTimeoutSecs() {
-    return 180;
-  }
-
+  public int getHttpTimeoutSecs();
 
   /**
    * Gibt zurück, ob URLs geladen werden sollen, die weder durchsucht noch
@@ -100,52 +81,35 @@ public class DummyConfiguration implements Configuration {
    * @return Ob URLs geladen werden sollen, die weder durchsucht noch indiziert
    *         werden.
    */
-  public boolean getLoadUnparsedUrls() {
-    return false;
-  }
-
-
+  public boolean getLoadUnparsedUrls();
 
   /**
    * Gibt zurück, ob ein Suchindex erstellt werden soll.
    *
    * @return Ob ein Suchindex erstellt werden soll.
    */
-  public boolean getBuildIndex() {
-    return true;
-  }
-
+  public boolean getBuildIndex();
 
   /**
-   * Gibt das Verzeichnis zurück, in dem der stehen soll.
+   * Gibt das Verzeichnis zurück, in dem der Suchindex stehen soll.
    *
    * @return Das Verzeichnis, in dem der Suchindex stehen soll.
    */
-  public String getIndexDir() {
-    return "c:\\Temp\\searchIndex";
-  }
-
+  public String getIndexDir();
 
   /**
    * Gibt den zu verwendenden Analyzer-Typ zurück.
    *
    * @return en zu verwendenden Analyzer-Typ
    */
-  public String getAnalyzerType() {
-    return "german";
-  }
-
+  public String getAnalyzerType();
 
   /**
    * Gibt alle Worte zurück, die nicht indiziert werden sollen.
    *
    * @return Alle Worte, die nicht indiziert werden sollen.
    */
-  public String[] getStopWordList() {
-    return null;
-  }
-
-
+  public String[] getStopWordList();
 
   /**
    * Gibt alle Worte zurück, die bei der Indizierung nicht vom Analyzer
@@ -154,11 +118,7 @@ public class DummyConfiguration implements Configuration {
    * @return Alle Worte, die bei der Indizierung nicht vom Analyzer
    *         verändert werden sollen.
    */
-  public String[] getExclusionList() {
-    return null;
-  }
-
-
+  public String[] getExclusionList();
 
   /**
    * Gibt zurück, ob Analyse-Deteien geschrieben werden sollen.
@@ -168,10 +128,7 @@ public class DummyConfiguration implements Configuration {
    *
    * @return Ob Analyse-Deteien geschrieben werden sollen.
    */
-  public boolean getWriteAnalysisFiles() {
-    return true;
-  }
-
+  public boolean getWriteAnalysisFiles();
 
   /**
    * Gibt den maximalen Prozentsatz von gescheiterten Dokumenten zurück. (0..1)
@@ -184,10 +141,7 @@ public class DummyConfiguration implements Configuration {
    *
    * @return Den maximalen Prozentsatz von gescheiterten Dokumenten zurück.
    */
-  public double getMaxFailedDocuments() {
-    return 0.1;
-  }
-
+  public double getMaxFailedDocuments();
 
   /**
    * Gibt den Namen der Kontrolldatei für erfolgreiche Indexerstellung zurück.
@@ -200,10 +154,7 @@ public class DummyConfiguration implements Configuration {
    *
    * @return Der Name der Kontrolldatei für erfolgreiche Indexerstellung
    */
-  public String getFinishedWithoutFatalsFileName() {
-    return null;
-  }
-
+  public String getFinishedWithoutFatalsFileName();
 
   /**
    * Gibt den Namen der Kontrolldatei für fehlerhafte Indexerstellung zurück.
@@ -216,31 +167,14 @@ public class DummyConfiguration implements Configuration {
    *
    * @return Der Name der Kontrolldatei für fehlerhafte Indexerstellung
    */
-  public String getFinishedWithFatalsFileName() {
-    return null;
-  }
-
+  public String getFinishedWithFatalsFileName();
 
   /**
    * Gibt die StartUrls zurück, bei denen der Crawler-Prozeß beginnen soll.
    *
    * @return Die StartUrls.
    */
-  public StartUrl[] getStartUrls() {
-    return new StartUrl[] {
-      new StartUrl("http://www.dm-drogeriemarkt.de/CDA/Home/", true, true),
-      /*
-      new StartUrl("http://www.dm-drogeriemarkt.de/CDA/verteilerseite/0,2098,0-15-X,00.html", true, true),
-      new StartUrl("http://www.dm-drogeriemarkt.de/CDA/verteilerseite/0,1651,0-16-X,00.html", true, true),
-      new StartUrl("http://www.dm-drogeriemarkt.de/CDA/verteilerseite/0,1651,0-17-X,00.html", true, true),
-      new StartUrl("http://www.dm-drogeriemarkt.de/CDA/verteilerseite/0,1651,0-18-X,00.html", true, true),
-      new StartUrl("http://www.dm-drogeriemarkt.de/CDA/verteilerseite/0,1651,0-19-X,00.html", true, true),
-      new StartUrl("http://www.dm-drogeriemarkt.de/CDA/verteilerseite/0,1651,0-173-X,00.html", true, true)
-      */
-    };
-  }
-
-
+  public StartUrl[] getStartUrls();
 
   /**
    * Gibt die UrlPattern zurück, die der HTML-Parser nutzen soll, um URLs zu
@@ -248,15 +182,7 @@ public class DummyConfiguration implements Configuration {
    *
    * @return Die UrlPattern für den HTML-Parser.
    */
-  public UrlPattern[] getHtmlParserUrlPatterns() {
-    return new UrlPattern[] {
-      new UrlPattern("=\"([^\"]*\\.html)\"", 1, true,  true),
-      new UrlPattern("=\"([^\"]*\\.(pdf|xls|doc|rtf|ppt))\"",  1, false, true),
-      new UrlPattern("=\"([^\"]*\\.(js|css|jpg|gif|png))\"",  1, false, false)
-    };
-  }
-
-
+  public UrlPattern[] getHtmlParserUrlPatterns();
 
   /**
    * Gibt die UrlPattern zurück, die der Verzeichnis-Parser nutzt, um zu
@@ -264,13 +190,7 @@ public class DummyConfiguration implements Configuration {
    *
    * @return Die UrlPattern für den Verzeichnis-Parser.
    */
-  public UrlPattern[] getDirectoryParserUrlPatterns() {
-    return new UrlPattern[] {
-      new UrlPattern(".*\\.(html|pdf|xls|doc|rtf|ppt)", -1, false,  true)
-    };
-  }
-
-
+  public UrlPattern[] getDirectoryParserUrlPatterns();
 
   /**
    * Gibt die Schwarze Liste zurück.
@@ -280,14 +200,7 @@ public class DummyConfiguration implements Configuration {
    *
    * @return Die Schwarze Liste.
    */
-  public String[] getUrlPrefixBlackList() {
-    return new String[] {
-      "http://www.dm-drogeriemarkt.de/CDA/Suchen/",
-      "http://www.dm-drogeriemarkt.de/CDA/content/print/"
-    };
-  }
-
-
+  public String[] getUrlPrefixBlackList();
 
   /**
    * Gibt die Weiße Liste zurück.
@@ -297,17 +210,7 @@ public class DummyConfiguration implements Configuration {
    *
    * @return Die Weiße Liste
    */
-  public WhiteListEntry[] getWhiteList() {
-    return new WhiteListEntry[] {
-      // new WhiteListEntry("http://www.dm-drogeriemarkt.de/", "dm-main"),
-      new WhiteListEntry("http://www.dm-drogeriemarkt.de/CDA/Home/", "dm-home"),
-      new WhiteListEntry("http://www.dm-drogeriemarkt.de/CDA/images/", "dm-images"),
-      new WhiteListEntry("http://www.dm-drogeriemarkt.de/CDA/verteilerseite/0,1651,", "dm-test1"),
-      new WhiteListEntry("http://www.dm-drogeriemarkt.de/CDA/content/0,1647,0-171", "dm-test2"),
-    };
-  }
-
-
+  public WhiteListEntry[] getWhiteList();
 
   /**
    * Gibt die regulären Ausdrücke zurück, auf die die URL eines Dokuments passen
@@ -317,24 +220,13 @@ public class DummyConfiguration implements Configuration {
    * @return Die regulären Ausdrücke, die Dokumente bestimmen, für die der
    *         Linktext als Titel genommen werden soll.
    */
-  public String[] getUseLinkTextAsTitleRegexList() {
-    return null;
-  }
-
-
+  public String[] getUseLinkTextAsTitleRegexList();
 
   /**
    * Gibt die Liste der Einstellungen für die Präperatoren zurück.
    *
    * @return Die Liste der Einstellungen für die Präperatoren.
    */
-  public PreparatorSettings[] getPreparatorSettingsList() {
-    return new PreparatorSettings[] {
-      new PreparatorSettings("\\.(/|html|htm)$",
-          "net.sf.regain.crawler.document.HtmlPreparator", new PreparatorConfig()),
-      new PreparatorSettings("\\.xml$",
-          "net.sf.regain.crawler.document.XmlPreparator", new PreparatorConfig())
-    };
-  }
+  public PreparatorSettings[] getPreparatorSettingsList();
 
 }

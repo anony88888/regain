@@ -28,17 +28,15 @@
 package net.sf.regain.search;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.jsp.PageContext;
 
 import net.sf.regain.RegainException;
-import net.sf.regain.RegainToolkit;
-
+import net.sf.regain.search.config.IndexConfig;
+import net.sf.regain.search.config.SearchConfig;
+import net.sf.regain.search.config.XmlSearchConfig;
 
 /**
  * A toolkit for the search JSPs containing helper methods.
@@ -49,12 +47,9 @@ public class SearchToolkit {
 
   /** Der Name des PageContext-Attributs, unter dem der SearchContext abgelegt ist. */
   private static final String SEARCH_CONTEXT_ATTR_NAME = "SearchContext";
-
-  /** Die Standard-Liste der Felder in denen gesucht wird. */
-  private static final String DEFAULT_SEARCH_FIELD_LIST = "content title headlines";
   
   /** The configuration of the search mask. */
-  private static Properties mConfig;
+  private static SearchConfig mConfig;
 
 
 
@@ -79,45 +74,24 @@ public class SearchToolkit {
       // Load the config (if not yet done)
       loadConfiguration(pageContext.getServletContext());
 
-      // Namen des Index holen
+      // Get the name of the index
       String indexName = pageContext.getRequest().getParameter("index");
       if (indexName == null) {
         throw new RegainException("Request parameter 'index' not specified");
       }
-
-      // Verzeichnis für diesen Namen erfragen
-      String indexDir = mConfig.getProperty("index." + indexName + ".dir");
-      if (indexDir == null) {
-        throw new RegainException("Parameter 'index." + indexName + ".dir' is "
-            + "not set in the configuration!");
+      
+      // Get the configuration for that index
+      IndexConfig indexConfig = mConfig.getIndexConfig(indexName);
+      if (indexConfig == null) {
+        throw new RegainException("The configuration does not contain the index '"
+            + indexName + "'");
       }
-
-      // Regex holen, zu der eine URL passen muss, damit sie in einem neuen
-      // Fenster geöffnet wird.
-      String openInNewWindowRegex
-        = mConfig.getProperty("index." + indexName + ".openInNewWindowRegex");
-      if (openInNewWindowRegex == null) {
-        // Globalen Eintrag probieren
-        openInNewWindowRegex = mConfig.getProperty("openInNewWindowRegex");
-      }
-
-      // Liste der Felder holen, in denen gesucht werden soll
-      String searchFieldList
-        = mConfig.getProperty("index." + indexName + ".searchFieldList");
-      if (searchFieldList == null) {
-        // Globalen Eintrag probieren
-        searchFieldList = mConfig.getProperty("searchFieldList");
-
-        if (searchFieldList == null) {
-          searchFieldList = DEFAULT_SEARCH_FIELD_LIST;
-        }
-      }
-      String[] searchFieldArr = RegainToolkit.splitString(searchFieldList, " ");
 
       // Suchkontext erstellen und im pageContext speichern
       String query = pageContext.getRequest().getParameter("query");
-      context = new SearchContext(indexDir, openInNewWindowRegex,
-                                  searchFieldArr, query);
+      context = new SearchContext(indexConfig.getDirectory(),
+          indexConfig.getOpenInNewWindowRegex(), indexConfig.getSearchFieldList(),
+          query);
       pageContext.setAttribute(SEARCH_CONTEXT_ATTR_NAME, context);
     }
 
@@ -167,23 +141,13 @@ public class SearchToolkit {
     if (mConfig == null) {
       String configFileName = context.getInitParameter("configFile");
       File configFile = new File(configFileName);
-      Properties prop = new Properties();
-      FileInputStream stream = null;
+      
       try {
-        stream = new FileInputStream(configFile);
-        prop.load(stream);
-        
-        // Loading suceed -> Set the configuration
-        mConfig = prop;
+        mConfig = new XmlSearchConfig(configFile);
       }
-      catch (IOException exc) {
+      catch (RegainException exc) {
         throw new RegainException("Loading configuration file failed: "
             + configFile.getAbsolutePath(), exc);
-      }
-      finally {
-        if (stream != null) {
-          try { stream.close(); } catch (IOException exc) {}
-        }
       }
     }
   }
