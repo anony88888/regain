@@ -43,7 +43,7 @@ import net.sf.regain.crawler.config.Configuration;
 import net.sf.regain.crawler.document.DocumentFactory;
 import net.sf.regain.crawler.document.RawDocument;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
@@ -68,8 +68,8 @@ import org.apache.lucene.search.TermQuery;
  */
 public class IndexWriterManager {
 
-  /** Die Kategorie, die zum Loggen genutzt werden soll. */
-  private static Category mCat = Category.getInstance(IndexWriterManager.class);
+  /** The logger for this class */
+  private static Logger mLog = Logger.getLogger(IndexWriterManager.class);
 
   /**
    * Der Name des Index-Unterverzeichnisses, in das der neue Index gestellt
@@ -358,7 +358,7 @@ public class IndexWriterManager {
 
     // Open the mIndexWriter in ADDING_MODE
     if ((mode == ADDING_MODE) && (mIndexWriter == null)) {
-      mCat.info("Switching to index mode: adding mode");
+      mLog.info("Switching to index mode: adding mode");
       try {
         mIndexWriter = new IndexWriter(mTempIndexDir, mAnalyzer, false);
       } catch (IOException exc) {
@@ -368,7 +368,7 @@ public class IndexWriterManager {
 
     // Open the mIndexReader in DELETING_MODE
     if ((mode == DELETING_MODE) && (mIndexReader == null)) {
-      mCat.info("Switching to index mode: deleting mode");
+      mLog.info("Switching to index mode: deleting mode");
       try {
         mIndexReader = IndexReader.open(mTempIndexDir);
       } catch (IOException exc) {
@@ -378,7 +378,7 @@ public class IndexWriterManager {
 
     // Tell the user, when the index is finished
     if (mode == FINISHED_MODE) {
-      mCat.info("Switching to index mode: finished mode");
+      mLog.info("Switching to index mode: finished mode");
     }
   }
 
@@ -405,7 +405,7 @@ public class IndexWriterManager {
       oldIndexDir = new File(indexDir, WORKING_INDEX_SUBDIR);
     }
     if (! oldIndexDir.exists()) {
-      mCat.warn("Can't update index, because there was no old index. " +
+      mLog.warn("Can't update index, because there was no old index. " +
         "A complete new index will be created...");
       return false;
     }
@@ -416,7 +416,7 @@ public class IndexWriterManager {
     if ((analyzerTypeOfIndex == null)
       || (! analyzerType.equals(analyzerTypeOfIndex.trim())))
     {
-      mCat.warn("Can't update index, because the index was created using " +
+      mLog.warn("Can't update index, because the index was created using " +
         "another analyzer type (index type: '" + analyzerTypeOfIndex.trim() +
         "', configured type '" + analyzerType + "'). " +
         "A complete new index will be created...");
@@ -424,7 +424,7 @@ public class IndexWriterManager {
     }
 
     // Index in Arbeitsverzeichnis kopieren
-    mCat.info("Updating index from " + oldIndexDir.getAbsolutePath());
+    mLog.info("Updating index from " + oldIndexDir.getAbsolutePath());
     File[] indexFiles = oldIndexDir.listFiles();
     for (int i = 0; i < indexFiles.length; i++) {
       String fileName = indexFiles[i].getName();
@@ -461,7 +461,7 @@ public class IndexWriterManager {
         Hits hits = mIndexSearcher.search(query);
         if (hits.length() > 0) {
           if (hits.length() > 1) {
-            mCat.warn("There are duplicate entries (" + hits.length() + " in " +
+            mLog.warn("There are duplicate entries (" + hits.length() + " in " +
               "total) for " + rawDocument.getUrl() + ". They will be removed.");
             removeOldEntry = true;
           }
@@ -483,7 +483,7 @@ public class IndexWriterManager {
           // Wir können nicht feststellen, wann das Dokument zuletzt geändert
           // wurde (Das ist bei http-URLs der Fall)
           // -> Alten Eintrag löschen und Dokument neu indizieren
-          mCat.info("Don't know when the document was last modified. " +
+          mLog.info("Don't know when the document was last modified. " +
             "Creating a new index entry...");
           removeOldEntry = true;
         } else {
@@ -496,17 +496,17 @@ public class IndexWriterManager {
             if (diff > 60000L) {
               // Das Dokument ist mehr als eine Minute neuer
               // -> Der Eintrag ist nicht aktuell -> Alten Eintrag löschen
-              mCat.info("Index entry is outdated. Creating a new one... ("
+              mLog.info("Index entry is outdated. Creating a new one... ("
                 + docLastModified + " > " + indexLastModified + ")");
               removeOldEntry = true;
             } else {
               // Der Indexeintrag ist aktuell -> Wir sind fertig
-              mCat.info("Index entry is already up to date");
+              mLog.info("Index entry is already up to date");
               return;
             }
           } else {
             // Wir kennen das Änderungsdatum nicht -> Alten Eintrag löschen
-            mCat.info("Index entry has no last-modified field. Creating a new one...");
+            mLog.info("Index entry has no last-modified field. Creating a new one...");
             removeOldEntry = true;
           }
         }
@@ -535,8 +535,8 @@ public class IndexWriterManager {
     throws RegainException
   {
     // Dokument erzeugen
-    if (mCat.isDebugEnabled()) {
-      mCat.debug("Creating document");
+    if (mLog.isDebugEnabled()) {
+      mLog.debug("Creating document");
     }
     Document doc = mDocumentFactory.createDocument(rawDocument);
 
@@ -544,8 +544,8 @@ public class IndexWriterManager {
     mAddToIndexProfiler.startMeasuring();
     try {
       setIndexMode(ADDING_MODE);
-      if (mCat.isDebugEnabled()) {
-        mCat.debug("Adding document to index");
+      if (mLog.isDebugEnabled()) {
+        mLog.debug("Adding document to index");
       }
       mIndexWriter.addDocument(doc);
       mAddToIndexProfiler.stopMeasuring(rawDocument.getContent().length);
@@ -624,7 +624,7 @@ public class IndexWriterManager {
 
           if (shouldBeDeleted) {
             try {
-              mCat.info("Deleting from index: " + url + " from " + lastModified);
+              mLog.info("Deleting from index: " + url + " from " + lastModified);
               mIndexReader.delete(docIdx);
             }
             catch (IOException exc) {
@@ -660,7 +660,7 @@ public class IndexWriterManager {
     String url = doc.get("url");
     String lastModified = doc.get("last-modified");
     if ((url != null) || (lastModified != null)) {
-      mCat.info("Marking old entry for a later deletion: " + url + " from "
+      mLog.info("Marking old entry for a later deletion: " + url + " from "
         + lastModified);
       mUrlsToDeleteHash.put(url, lastModified);
     }
@@ -823,7 +823,7 @@ public class IndexWriterManager {
         termCount = writeTermsSimply(termEnum, writer);
       }
 
-      mCat.info("Wrote " + termCount + " terms into " + termFile.getAbsolutePath());
+      mLog.info("Wrote " + termCount + " terms into " + termFile.getAbsolutePath());
     }
     catch (IOException exc) {
       throw new RegainException("Writing term file failed", exc);

@@ -46,8 +46,8 @@ import org.apache.log4j.*;
  */
 public class Main {
 
-  /** Die Kategorie, die zum Loggen genutzt werden soll. */
-  private static Category mCat = Category.getInstance(Main.class);
+  /** The logger for this class */
+  private static Logger mLog = Logger.getLogger(Main.class);
 
   /** Der Dateiname der Log4J-Properties-Datei. */
   private static final String LOG4J_PROP_FILE_NAME = "log4j.properties";
@@ -99,7 +99,7 @@ public class Main {
     }
 
     PropertyConfigurator.configure(logConfigFile.getAbsolutePath());
-    mCat.info("Logging initialized");
+    mLog.info("Logging initialized");
 
     // Load crawler configuration
     File xmlFile = new File(crawlerConfigFileName);
@@ -108,7 +108,7 @@ public class Main {
       config = new XmlConfiguration(xmlFile);
     }
     catch (RegainException exc) {
-      mCat.error("Loading XML Configuration failed", exc);
+      mLog.error("Loading XML Configuration failed", exc);
       return; // Abort
     }
 
@@ -121,7 +121,7 @@ public class Main {
       crawler = new Crawler(config);
     }
     catch (RegainException exc) {
-      mCat.error("There was an error when initializing the crawler!", exc);
+      mLog.error("There was an error when initializing the crawler!", exc);
     }
 
     // Let the crawler do its job
@@ -234,9 +234,9 @@ public class Main {
     }
 
     if (msg.length() != 0) {
-      mCat.info("Using proxy:" + msg);
+      mLog.info("Using proxy:" + msg);
     } else {
-      mCat.info("Using no proxy");
+      mLog.info("Using no proxy");
     }
   }
 
@@ -253,10 +253,10 @@ public class Main {
       FileOutputStream stream = null;
       try {
         stream = new FileOutputStream(fileName);
-        mCat.info("Created control file: '" + fileName + "'");
+        mLog.info("Created control file: '" + fileName + "'");
       }
       catch (IOException exc) {
-        mCat.warn("Creating control file failed: '" + fileName + "'", exc);
+        mLog.warn("Creating control file failed: '" + fileName + "'", exc);
       }
       finally {
         if (stream != null) {
@@ -279,7 +279,7 @@ public class Main {
       File file = new File(fileName);
       if (file.exists()) {
         if (! file.delete()) {
-          mCat.warn("Deleting old control file failed: '" + fileName + "'");
+          mLog.warn("Deleting old control file failed: '" + fileName + "'");
         }
       }
     }

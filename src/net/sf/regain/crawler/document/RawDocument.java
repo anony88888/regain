@@ -35,7 +35,7 @@ import net.sf.regain.RegainException;
 import net.sf.regain.crawler.CrawlerToolkit;
 import net.sf.regain.crawler.Profiler;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 
 /**
@@ -48,8 +48,8 @@ import org.apache.log4j.Category;
  */
 public class RawDocument {
 
-  /** Die Kategorie, die zum Loggen genutzt werden soll. */
-  private static Category mCat = Category.getInstance(RawDocument.class);
+  /** The logger for this class */
+  private static Logger mLog = Logger.getLogger(RawDocument.class);
 
   /** Der Profiler der das Laden via HTTP miﬂt. */
   private static final Profiler HTTP_LOADING_PROFILER
@@ -400,8 +400,8 @@ public class RawDocument {
    */
   public void dispose() {
     if ((mContentAsFile != null) && mContentAsFileIsTemporary) {
-      if (mCat.isDebugEnabled()) {
-        mCat.debug("Deleting temporary file: " + mContentAsFile.getAbsolutePath());
+      if (mLog.isDebugEnabled()) {
+        mLog.debug("Deleting temporary file: " + mContentAsFile.getAbsolutePath());
       }
       mContentAsFile.delete();
     }

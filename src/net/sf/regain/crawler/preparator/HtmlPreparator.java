@@ -35,7 +35,7 @@ import net.sf.regain.crawler.preparator.html.HtmlContentExtractor;
 import net.sf.regain.crawler.preparator.html.HtmlEntities;
 import net.sf.regain.crawler.preparator.html.HtmlPathExtractor;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 
@@ -50,8 +50,8 @@ import org.apache.regexp.RESyntaxException;
  */
 public class HtmlPreparator extends AbstractPreparator {
 
-  /** Die Kategorie, die zum Loggen genutzt werden soll. */
-  private static Category mCat = Category.getInstance(HtmlPreparator.class);
+  /** The logger for this class */
+  private static Logger mLog = Logger.getLogger(HtmlPreparator.class);
 
   /** Die DocumentFactory. Wird genutzt, um Analyse-Dateien zu schreiben. */
   private DocumentFactory mDocumentFactory;
@@ -135,7 +135,7 @@ public class HtmlPreparator extends AbstractPreparator {
     String headlines;
     if (contentExtractor == null) {
       // There is no HtmlContentExtractor responsible for this document
-      mCat.warn("No HTML content extractor is responsible for " + rawDocument.getUrl());
+      mLog.warn("No HTML content extractor is responsible for " + rawDocument.getUrl());
 
       cuttedContent = rawDocument.getContentAsString();
       headlines = null;

@@ -33,7 +33,7 @@ import java.util.Iterator;
 
 import net.sf.regain.RegainToolkit;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 
 /**
@@ -43,8 +43,8 @@ import org.apache.log4j.Category;
  */
 public class Profiler {
 
-  /** Die Kategorie, die zum Loggen genutzt werden soll. */
-  private static Category mCat = Category.getInstance(Profiler.class);
+  /** The logger for this class */
+  private static Logger mLog = Logger.getLogger(Profiler.class);
 
   /** Eine Liste mit allen erzeugten Profilern. */
   private static ArrayList mProfilerList;
@@ -107,7 +107,7 @@ public class Profiler {
    */
   public void startMeasuring() {
     if (mMeasureStart != -1) {
-      mCat.warn("A profiler measuring for " + mName + " was started, although "
+      mLog.warn("A profiler measuring for " + mName + " was started, although "
         + "there is currently a measuring running!");
     }
     mMeasureStart = System.currentTimeMillis();
@@ -122,7 +122,7 @@ public class Profiler {
    */
   public void stopMeasuring(long bytes) {
     if (mMeasureStart == -1) {
-      mCat.warn("A profiler measuring for " + mName + " was stopped, although "
+      mLog.warn("A profiler measuring for " + mName + " was stopped, although "
         + "there was currently no measuring running!");
     } else {
       mTotalTime += System.currentTimeMillis() - mMeasureStart;
@@ -142,7 +142,7 @@ public class Profiler {
    */
   public void abortMeasuring() {
     if (mMeasureStart == -1) {
-      mCat.warn("A profiler measuring for " + mName + " was aborted, although "
+      mLog.warn("A profiler measuring for " + mName + " was aborted, although "
         + "there was currently no measuring running!");
     } else {
       mMeasureStart = -1;
@@ -159,7 +159,7 @@ public class Profiler {
    */
   public String toString() {
     if (mMeasureStart != -1) {
-      mCat.warn("The profiler result for " + mName + " was requested, although "
+      mLog.warn("The profiler result for " + mName + " was requested, although "
         + "there is currently a measuring running!");
     }
 

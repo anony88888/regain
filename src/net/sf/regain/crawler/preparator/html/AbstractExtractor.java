@@ -30,7 +30,7 @@ package net.sf.regain.crawler.preparator.html;
 import net.sf.regain.RegainException;
 import net.sf.regain.crawler.document.RawDocument;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 
@@ -45,8 +45,8 @@ import org.apache.regexp.RESyntaxException;
  */
 public class AbstractExtractor {
 
-  /** Die Kategorie, die zum Loggen genutzt werden soll. */
-  private static Category mCat = Category.getInstance(AbstractExtractor.class);
+  /** The logger for this class */
+  private static Logger mLog = Logger.getLogger(AbstractExtractor.class);
 
   /**
    * Der Präfix, den eine URL haben muss, um von diesem Extrahierer bearbeitet
@@ -167,7 +167,7 @@ public class AbstractExtractor {
       if (mFragmentStartRE.match(content)) {
         fragmentStart = mFragmentStartRE.getParenEnd(0);
       } else {
-        mCat.warn("The regular expression '" + mFragmentStartRegex + "' had no "
+        mLog.warn("The regular expression '" + mFragmentStartRegex + "' had no "
           + "match for '" + rawDocument.getUrl() + "'");
       }
     }
@@ -178,7 +178,7 @@ public class AbstractExtractor {
       if (mFragmentEndRE.match(content, fragmentStart)) {
         fragmentEnd = mFragmentEndRE.getParenStart(0);
       } else {
-        mCat.warn("The regular expression '" + mFragmentEndRegex + "' had no "
+        mLog.warn("The regular expression '" + mFragmentEndRegex + "' had no "
           + "match for '" + rawDocument.getUrl() + "'");
       }
     }

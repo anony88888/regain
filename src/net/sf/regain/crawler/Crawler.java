@@ -27,7 +27,10 @@
  */
 package net.sf.regain.crawler;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -35,12 +38,15 @@ import java.util.LinkedList;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
-import net.sf.regain.crawler.config.*;
+import net.sf.regain.crawler.config.Configuration;
+import net.sf.regain.crawler.config.StartUrl;
+import net.sf.regain.crawler.config.UrlPattern;
+import net.sf.regain.crawler.config.WhiteListEntry;
 import net.sf.regain.crawler.document.RawDocument;
 
-import org.apache.regexp.*;
-
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
+import org.apache.regexp.RE;
+import org.apache.regexp.RESyntaxException;
 
 
 /**
@@ -57,8 +63,8 @@ import org.apache.log4j.Category;
  */
 public class Crawler {
 
-  /** Die Kategorie, die zum Loggen genutzt werden soll. */
-  private static Category mCat = Category.getInstance(Crawler.class);
+  /** The logger for this class */
+  private static Logger mLog = Logger.getLogger(Crawler.class);
 
   /** Die Konfiguration mit den Einstellungen. */
   private Configuration mConfiguration;
@@ -232,14 +238,14 @@ public class Crawler {
 
       if (accepted) {
         mFoundUrlSet.add(url);
-        mCat.info("Found new URL: " + url);
+        mLog.info("Found new URL: " + url);
 
         CrawlerJob job = new CrawlerJob(url, sourceUrl, sourceLinkText,
                                       shouldBeParsed, shouldBeIndexed);
         mJobList.add(job);
       } else {
         mIgnoredUrlSet.add(url);
-        mCat.info("Ignoring URL: " + url);
+        mLog.info("Ignoring URL: " + url);
       }
     }
   }
@@ -295,12 +301,12 @@ public class Crawler {
    *        werden alle Einträge bearbeitet.
    */
   public void run(boolean updateIndex, String[] onlyEntriesArr) {
-    mCat.info("Starting crawling...");
+    mLog.info("Starting crawling...");
 
     // Initialize the IndexWriterManager if building the index is wanted
     IndexWriterManager indexManager = null;
     if (mConfiguration.getBuildIndex()) {
-      mCat.info("Preparing the index");
+      mLog.info("Preparing the index");
       try {
         indexManager = new IndexWriterManager(mConfiguration, updateIndex);
         updateIndex = indexManager.getUpdateIndex();
@@ -364,7 +370,7 @@ public class Crawler {
         if (isExceptionFromDeadLink(exc)) {
           // Don't put this exception in the error list, because it's already in
           // the dead link list. (Use mCat.error() directly)
-          mCat.error("Dead link: '" + url + "'. Found in '" + job.getSourceUrl()
+          mLog.error("Dead link: '" + url + "'. Found in '" + job.getSourceUrl()
                      + "'", exc);
           mDeadlinkList.add(new Object[] { url, job.getSourceUrl() });
         } else {
@@ -376,7 +382,7 @@ public class Crawler {
 
       // Parse the content
       if (shouldBeParsed) {
-        mCat.info("Parsing " + rawDocument.getUrl());
+        mLog.info("Parsing " + rawDocument.getUrl());
         mHtmlParsingProfiler.startMeasuring();
         try {
           parseHtmlDocument(rawDocument);
@@ -390,7 +396,7 @@ public class Crawler {
 
       // Index the content
       if (shouldBeIndexed) {
-        mCat.info("Indexing " + rawDocument.getUrl());
+        mLog.info("Indexing " + rawDocument.getUrl());
         try {
           indexManager.addToIndex(rawDocument);
         }
@@ -408,7 +414,7 @@ public class Crawler {
 
     // Nicht mehr vorhandene Dokumente aus dem Index löschen
     if (mConfiguration.getBuildIndex()) {
-      mCat.info("Removing index entries of documents that do not exist any more...");
+      mLog.info("Removing index entries of documents that do not exist any more...");
       try {
         String[] prefixesToKeepArr = createPrefixesToKeep();
         indexManager.removeObsoleteEntires(mFoundUrlSet, prefixesToKeepArr);
@@ -452,10 +458,10 @@ public class Crawler {
     if (indexManager != null) {
       boolean thereWereFatalErrors = (mFatalErrorCount > 0);
       if (thereWereFatalErrors) {
-        mCat.warn("There were " + mFatalErrorCount + " fatal errors. " +
+        mLog.warn("There were " + mFatalErrorCount + " fatal errors. " +
           "The index will be finished but put into quarantine.");
       } else {
-        mCat.info("Finishing the index and providing it to the search mask");
+        mLog.info("Finishing the index and providing it to the search mask");
       }
       try {
         indexManager.close(thereWereFatalErrors);
@@ -464,14 +470,14 @@ public class Crawler {
       }
     }
 
-    mCat.info("... Finished crawling\n");
+    mLog.info("... Finished crawling\n");
 
-    mCat.info(Profiler.getProfilerResults());
+    mLog.info(Profiler.getProfilerResults());
 
     // Systemspeziefischen Zeilenumbruch holen
     String lineSeparator = RegainToolkit.getLineSeparator();
 
-    mCat.info("Statistics:" + lineSeparator
+    mLog.info("Statistics:" + lineSeparator
       + "  Ignored URLs:       " + mIgnoredUrlSet.size() + lineSeparator
       + "  Documents in index: " + entryCount + lineSeparator
       + "  Dead links:         " + mDeadlinkList.size() + lineSeparator
@@ -549,12 +555,12 @@ public class Crawler {
         // Log all ignored entries
         for (int i = 0; i < mWhiteListEntryArr.length; i++) {
           if (! mWhiteListEntryArr[i].shouldBeUpdated()) {
-            mCat.info("Ignoring white list entry: "
+            mLog.info("Ignoring white list entry: "
               + mWhiteListEntryArr[i].getPrefix());
           }
         }
       } else {
-        mCat.warn("Unable to ignore white list entries, because a new index " +
+        mLog.warn("Unable to ignore white list entries, because a new index " +
                   "will be created");
       }
     }
@@ -839,7 +845,7 @@ public class Crawler {
     if (fatal) {
       msg = "Fatal: " + msg;
     }
-    mCat.error(msg, thr);
+    mLog.error(msg, thr);
     mErrorList.add(new Object[] { msg, thr });
 
     if (fatal) {

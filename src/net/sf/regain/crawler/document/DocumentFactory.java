@@ -41,7 +41,7 @@ import net.sf.regain.crawler.preparator.HtmlPreparator;
 import net.sf.regain.crawler.preparator.html.HtmlContentExtractor;
 import net.sf.regain.crawler.preparator.html.HtmlPathExtractor;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.regexp.RE;
@@ -58,8 +58,8 @@ import org.apache.regexp.RESyntaxException;
  */
 public class DocumentFactory {
 
-  /** Die Kategorie, die zum Loggen genutzt werden soll. */
-  private static Category mCat = Category.getInstance(DocumentFactory.class);
+  /** The logger for this class */
+  private static Logger mLog = Logger.getLogger(DocumentFactory.class);
 
   /** Die maximale L�nge der Zusammenfassung. */
   private static final int MAX_SUMMARY_LENGTH = 200;
@@ -285,8 +285,8 @@ public class DocumentFactory {
     String summary;
     String headlines;
     PathElement[] path;
-    if (mCat.isDebugEnabled()) {
-      mCat.debug("Using preparator " + rightPreparator.getClass().getName()
+    if (mLog.isDebugEnabled()) {
+      mLog.debug("Using preparator " + rightPreparator.getClass().getName()
         + " for " + url);
     }
     rightPreparatorProfiler.startMeasuring();
@@ -441,7 +441,7 @@ public class DocumentFactory {
     }
     catch (RegainException exc) {
       mWriteAnalysisProfiler.abortMeasuring();
-      mCat.error("Writing analysis file failed", exc);
+      mLog.error("Writing analysis file failed", exc);
     }
   }
 
@@ -485,7 +485,7 @@ public class DocumentFactory {
     }
     catch (IOException exc) {
       mWriteAnalysisProfiler.abortMeasuring();
-      mCat.error("Writing analysis file failed", exc);
+      mLog.error("Writing analysis file failed", exc);
     }
     finally {
       if (writer != null) {
@@ -532,12 +532,12 @@ public class DocumentFactory {
    */
   public void close() {
     for (int i = 0; i < mPreparatorArr.length; i++) {
-      mCat.info("Closing preparator " + mPreparatorArr[i].getClass().getName());
+      mLog.info("Closing preparator " + mPreparatorArr[i].getClass().getName());
       try {
         mPreparatorArr[i].close();
       }
       catch (Throwable thr) {
-        mCat.error("Closing preparator failed: "
+        mLog.error("Closing preparator failed: "
           + mPreparatorArr[i].getClass().getName(), thr);
       }
     }
