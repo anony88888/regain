@@ -144,6 +144,8 @@ X Bug: File-Service: Datei von Netzlaufwerken (//fileserver/bla/blubb) werden
 X Bug: Desktopsuche: Suchergebnisse: Umlaute werden falsch dargestellt.
 X Desktopsuche: Einstellungen: Beim Speichern als Grundgerüst
   	default-Config-Dateien nutzen.
+X Desktopsuche: Aktuelle Indexierung pausieren und manuelles Starten einer
+  	Indexierung.
 
 Filiadata:
 ----------
@@ -160,8 +162,6 @@ Filiadata:
 Prio A:
 -------
   Bug: HTML-Praeparator kommt nicht mit allen Dateien klar (Siehe Mail von Jochen Stiepel)
-  Desktopsuche: Aktuelle Indexierung pausieren.
-  Desktopsuche: Manuelles Starten einer Indexierung.
   Changelog erstellen
 
 Prio B:

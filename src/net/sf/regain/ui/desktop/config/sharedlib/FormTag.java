@@ -28,8 +28,6 @@
 package net.sf.regain.ui.desktop.config.sharedlib;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -39,6 +37,7 @@ import net.sf.regain.RegainToolkit;
 import net.sf.regain.XmlToolkit;
 import net.sf.regain.ui.desktop.DesktopConstants;
 import net.sf.regain.ui.desktop.DesktopToolkit;
+import net.sf.regain.ui.desktop.IndexUpdateManager;
 import net.sf.regain.ui.desktop.config.DesktopConfig;
 import net.sf.regain.util.sharedtag.PageRequest;
 import net.sf.regain.util.sharedtag.PageResponse;
@@ -349,13 +348,7 @@ public class FormTag extends SharedTag implements DesktopConstants {
     XmlToolkit.saveXmlDocument(CRAWLER_CONFIG_FILE, crawlerDoc);
     
     // Create the needsupdate file, so the index will be updated
-    try {
-      FileOutputStream out = new FileOutputStream(NEEDSUPDATE_FILE);
-      out.close();
-    }
-    catch (IOException exc) {
-      throw new RegainException("Creating needsupdate file failed", exc);
-    }
+    IndexUpdateManager.getInstance().startIndexUpdate();
   }
 
 }

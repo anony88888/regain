@@ -65,16 +65,16 @@ public class FormTag extends SharedTag {
     
     String msgAutoupdate = getParameter("msgAutoupdate", true);
     msgAutoupdate = RegainToolkit.replace(msgAutoupdate, "{0}", Integer.toString(time));
-    String msgEnable = getParameter("msgEnable", true);
-    String msgDisable = getParameter("msgDisable", true);
     
     String autoupdate = request.getParameter("autoupdate");
     response.print("<form name=\"autoupdate\" action=\"" + url + "\" " +
         "style=\"display:inline;\" method=\"get\">" + msgAutoupdate + " ");
     if (autoupdate == null) {
       response.print("<input type=\"hidden\" name=\"autoupdate\" value=\"" + time + "\"/>");
+      String msgEnable = getParameter("msgEnable", true);
       response.print("<input type=\"submit\" value=\"" + msgEnable + "\"/>");
     } else {
+      String msgDisable = getParameter("msgDisable", true);
       response.print("<input type=\"submit\" value=\"" + msgDisable + "\"/>");
     }
     response.print("</form>");

@@ -27,6 +27,8 @@
  */
 package net.sf.regain.ui.desktop;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
 
 import net.sf.regain.RegainException;
@@ -50,6 +52,9 @@ public class IndexUpdateManager implements DesktopConstants {
   /** The singleton. */
   private static IndexUpdateManager mSingleton;
   
+  /** The check thread. */
+  private Thread mCheckThread;
+  
   /** The crawler. Is <code>null</code> if there is currently no index update running. */
   private Crawler mCrawler;
   
@@ -71,16 +76,16 @@ public class IndexUpdateManager implements DesktopConstants {
    * Initializes the IndexUpdateManager.
    */
   public void init() {
-    Thread checkThread = new Thread() {
+    mCheckThread = new Thread() {
       public void run() {
         checkThreadRun();
       }
     };
-    checkThread.setPriority(Thread.MIN_PRIORITY);
-    checkThread.start();
+    mCheckThread.setPriority(Thread.MIN_PRIORITY);
+    mCheckThread.start();
   }
-  
-  
+
+
   /**
    * Gets the crawler that processes the current index update.
    * 
@@ -90,8 +95,57 @@ public class IndexUpdateManager implements DesktopConstants {
   public Crawler getCurrentCrawler() {
     return mCrawler;
   }
+
+
+  /**
+   * Starts an index update.
+   * 
+   * @throws RegainException If starting the index update failed.
+   */
+  public void startIndexUpdate() throws RegainException {
+    if (mCrawler != null) {
+      // The crawler is already running
+      return;
+    }
+    
+    // Create an needsupdate file
+    try {
+      FileOutputStream out = new FileOutputStream(NEEDSUPDATE_FILE);
+      out.close();
+    }
+    catch (IOException exc) {
+      throw new RegainException("Creating needsupdate file failed", exc);
+    }
+    
+    // Force a new check
+    mCheckThread.interrupt();
+    
+    // Wait until the crawler runs
+    while (mCrawler == null) {
+      try {
+        Thread.sleep(100);
+      }
+      catch (InterruptedException exc) {}
+    }
+  }
   
   
+  /**
+   * Sets whether the crawler should pause.
+   *  
+   * @param shouldPause Whether the crawler should pause.
+   */
+  public void setShouldPause(boolean shouldPause) {
+    // NOTE: We get a local copy of the crawler for the case that is should
+    //       change in the meantime
+    Crawler crawler = mCrawler;
+    if (crawler != null) {
+      crawler.setShouldPause(shouldPause);
+      TrayIconManager.getInstance().setIndexUpdateRunning(! shouldPause);
+    }
+  }
+
+
   /**
    * The run method of the thread that checks whether an index update is
    * nessesary.

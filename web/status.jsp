@@ -25,6 +25,11 @@
             msgDisable="{msg:disable}"/></p>
 
       <h4><search:msg key="currentIndex"/></h4>
+      <p><status:indexupdatecontrol url="status.jsp"
+            msgBefore="{msg:indexUpdateControl}"
+            msgStart="{msg:start}"
+            msgPause="{msg:pause}"
+            msgResume="{msg:resume}"/></p>
       <p><status:currentindex/></p>
 
       <h4><search:msg key="runningIndexUpdate"/></h4>

@@ -53,7 +53,7 @@ import org.apache.regexp.RESyntaxException;
  * werden je nach Einstellung nur geladen, in den Suchindex aufgenommen oder
  * wiederum nach URLs durchsucht.
  * <p>
- * Für jede URL wird Anhand der Schwarzen und der Weißen Liste entschieden, ob sie
+ * Fï¿½r jede URL wird Anhand der Schwarzen und der Weiï¿½en Liste entschieden, ob sie
  * ignoriert oder bearbeitet wird. Wenn <CODE>loadUnparsedUrls</CODE> auf
  * <CODE>false</CODE> gesetzt wurde, dann werden auch URLs ignoriert, die weder
  * durchsucht noch indiziert werden.
@@ -68,9 +68,9 @@ public class Crawler implements ErrorLogger {
   /** Die Konfiguration mit den Einstellungen. */
   private CrawlerConfig mConfiguration;
 
-  /** Enthält alle bereits gefundenen URLs, die nicht ignoriert wurden. */
+  /** Enthï¿½lt alle bereits gefundenen URLs, die nicht ignoriert wurden. */
   private HashSet mFoundUrlSet;
-  /** Enthält alle bereits gefundenen URLs, die ignoriert wurden. */
+  /** Enthï¿½lt alle bereits gefundenen URLs, die ignoriert wurden. */
   private HashSet mIgnoredUrlSet;
   /** Die Liste der noch zu bearbeitenden Jobs. */
   private LinkedList mJobList;
@@ -87,21 +87,21 @@ public class Crawler implements ErrorLogger {
   private int mFatalErrorCount;
 
   /**
-   * Enthält alle bisher gefundenen Dead-Links.
+   * Enthï¿½lt alle bisher gefundenen Dead-Links.
    * <p>
-   * Es werden Object[]s gespeichert, wobei das erste Element die URL enthält, die
+   * Es werden Object[]s gespeichert, wobei das erste Element die URL enthï¿½lt, die
    * nicht gefunden werden konnte und die zweite, das Dokument, in dem diese URL
    * gefunden wurde.
    */
   private LinkedList mDeadlinkList;
 
   /**
-   * Enthält die Präfixe, die eine URL <i>nicht</i> haben darf, um bearbeitet zu
+   * Enthï¿½lt die Prï¿½fixe, die eine URL <i>nicht</i> haben darf, um bearbeitet zu
    * werden.
    */
   private String[] mUrlPrefixBlackListArr;
   /**
-   * Die Weiße Liste.
+   * Die Weiï¿½e Liste.
    *
    * @see WhiteListEntry
    */
@@ -110,21 +110,24 @@ public class Crawler implements ErrorLogger {
   /** Die UrlPattern, die der HTML-Parser nutzen soll, um URLs zu identifizieren. */
   private UrlPattern[] mHtmlParserUrlPatternArr;
   /**
-   * Die Regulären Ausdrücke, die zu den jeweiligen UrlPattern für den
-   * HTML-Parser gehören.
+   * Die Regulï¿½ren Ausdrï¿½cke, die zu den jeweiligen UrlPattern fï¿½r den
+   * HTML-Parser gehï¿½ren.
    *
    * @see #mHtmlParserUrlPatternArr
    */
   private RE[] mHtmlParserPatternReArr;
 
-  /** Der Profiler der die gesamten Crawler-Jobs mißt. */
+  /** Der Profiler der die gesamten Crawler-Jobs miï¿½t. */
   private Profiler mCrawlerJobProfiler = new Profiler("Whole crawler jobs", "jobs");
-  /** Der Profiler der das Durchsuchen von HTML-Dokumenten mißt. */
+  /** Der Profiler der das Durchsuchen von HTML-Dokumenten miï¿½t. */
   private Profiler mHtmlParsingProfiler
     = new Profiler("Parsed HTML documents", "docs");
   
   /** The IndexWriterManager to use for adding documents to the index. */
   private IndexWriterManager mIndexWriterManager;
+  
+  /** Specifies whether the crawler should pause as soon as possible, */
+  private boolean mShouldPause;
 
 
   /**
@@ -132,7 +135,7 @@ public class Crawler implements ErrorLogger {
    *
    * @param config Die Konfiguration
    *
-   * @throws RegainException Wenn die regulären Ausdrücke fehlerhaft sind.
+   * @throws RegainException Wenn die regulï¿½ren Ausdrï¿½cke fehlerhaft sind.
    */
   public Crawler(CrawlerConfig config) throws RegainException {
     mConfiguration = config;
@@ -206,21 +209,41 @@ public class Crawler implements ErrorLogger {
     IndexWriterManager mng = mIndexWriterManager;
     return (mng == null) ? -1 : mng.getRemovedDocCount();
   }
+
+
+  /**
+   * Sets whether the crawler should pause.
+   *  
+   * @param shouldPause Whether the crawler should pause.
+   */
+  public void setShouldPause(boolean shouldPause) {
+    mShouldPause = shouldPause;
+  }
+
+
+  /**
+   * Gets whether the crawler is currently pausing or is pausing soon.
+   * 
+   * @return Whether the crawler is currently pausing.
+   */
+  public boolean getShouldPause() {
+    return mShouldPause;
+  }
   
 
   /**
    * Analysiert die URL und entscheidet, ob sie bearbeitet werden soll oder nicht.
    * <p>
-   * Wenn ja, dann wird ein neuer Job erzeugt und der Job-Liste hinzugefügt.
+   * Wenn ja, dann wird ein neuer Job erzeugt und der Job-Liste hinzugefï¿½gt.
    *
-   * @param url Die URL des zu prüfenden Jobs.
-   * @param sourceUrl Die URL des Dokuments in der die URL des zu prüfenden Jobs
+   * @param url Die URL des zu prï¿½fenden Jobs.
+   * @param sourceUrl Die URL des Dokuments in der die URL des zu prï¿½fenden Jobs
    *        gefunden wurde.
    * @param shouldBeParsed Gibt an, ob die URL geparst werden soll.
    * @param shouldBeIndexed Gibt an, ob die URL indiziert werden soll.
    * @param sourceLinkText Der Text des Links in dem die URL gefunden wurde. Ist
    *        <code>null</code>, falls die URL nicht in einem Link (also einem
-   *        a-Tag) gefunden wurde oder wenn aus sonstigen Gründen kein Link-Text
+   *        a-Tag) gefunden wurde oder wenn aus sonstigen Grï¿½nden kein Link-Text
    *        vorhanden ist.
    */
   private void addJob(String url, String sourceUrl, boolean shouldBeParsed,
@@ -269,13 +292,13 @@ public class Crawler implements ErrorLogger {
 
 
   /**
-   * Prüft ob die URL von der Schwarzen und Weißen Liste akzeptiert wird.
+   * Prï¿½ft ob die URL von der Schwarzen und Weiï¿½en Liste akzeptiert wird.
    * <p>
-   * Dies ist der Fall, wenn sie keinem Präfix aus der Schwarzen Liste und
-   * mindestens einem aus der Weißen Liste entspricht.
+   * Dies ist der Fall, wenn sie keinem Prï¿½fix aus der Schwarzen Liste und
+   * mindestens einem aus der Weiï¿½en Liste entspricht.
    *
-   * @param url Die zu prüfende URL.
-   * @return Ob die URL von der Schwarzen und Weißen Liste akzeptiert wird.
+   * @param url Die zu prï¿½fende URL.
+   * @return Ob die URL von der Schwarzen und Weiï¿½en Liste akzeptiert wird.
    */
   private boolean isUrlAccepted(String url) {
     // check whether this URL matches to a white list prefix
@@ -307,17 +330,18 @@ public class Crawler implements ErrorLogger {
 
 
   /**
-   * Führt den Crawler-Prozeß aus und gibt am Ende die Statistik, die
+   * Fï¿½hrt den Crawler-Prozeï¿½ aus und gibt am Ende die Statistik, die
    * Dead-Link-Liste und die Fehler-Liste aus.
    *
    * @param updateIndex Gibt an, ob ein bereits bestehender Index aktualisiert
    *        werden soll.
-   * @param onlyEntriesArr Die Namen der Einträge in der Weißen Liste, die
+   * @param onlyEntriesArr Die Namen der Eintrï¿½ge in der Weiï¿½en Liste, die
    *        bearbeitet werden sollen. Wenn <code>null</code> oder leer, dann
-   *        werden alle Einträge bearbeitet.
+   *        werden alle Eintrï¿½ge bearbeitet.
    */
   public void run(boolean updateIndex, String[] onlyEntriesArr) {
     mLog.info("Starting crawling...");
+    mShouldPause = false;
 
     // Initialize the IndexWriterManager if building the index is wanted
     mIndexWriterManager = null;
@@ -421,18 +445,26 @@ public class Crawler implements ErrorLogger {
       mCrawlerJobProfiler.stopMeasuring(rawDocument.getLength());
       
       // Check whether to create a breakpoint
-      if (System.currentTimeMillis() > lastBreakpointTime + 10 * 60 * 1000) {
+      if (mShouldPause || (System.currentTimeMillis() > lastBreakpointTime + 10 * 60 * 1000)) {
         try {
           mIndexWriterManager.createBreakpoint();
         }
         catch (RegainException exc) {
           logError("Creating breakpoint failed", exc, false);
         }
+        
+        // Pause
+        while (mShouldPause) {
+          try {
+            Thread.sleep(1000);
+          } catch (InterruptedException exc) {}
+        }
+        
         lastBreakpointTime = System.currentTimeMillis();
       }
     }
 
-    // Nicht mehr vorhandene Dokumente aus dem Index löschen
+    // Nicht mehr vorhandene Dokumente aus dem Index lï¿½schen
     if (mConfiguration.getBuildIndex()) {
       mLog.info("Removing index entries of documents that do not exist any more...");
       try {
@@ -444,7 +476,7 @@ public class Crawler implements ErrorLogger {
       }
     }
 
-    // Prüfen, ob Index leer ist
+    // Prï¿½fen, ob Index leer ist
     int entryCount = 0;
     try {
       entryCount = mIndexWriterManager.getIndexEntryCount();
@@ -457,7 +489,7 @@ public class Crawler implements ErrorLogger {
       logError("The index is empty.", null, true);
       failedPercent = 1;
     } else {
-      // Prüfen, ob die Anzahl der abgebrochenen Dokumente über der Toleranzgranze
+      // Prï¿½fen, ob die Anzahl der abgebrochenen Dokumente ï¿½ber der Toleranzgranze
       // ist.
       double failedDocCount = mDeadlinkList.size() + mErrorCount;
       double totalDocCount = failedDocCount + entryCount;
@@ -474,7 +506,7 @@ public class Crawler implements ErrorLogger {
     // Fehler und Deadlink-Liste schreiben
     writeDeadlinkAndErrorList();
 
-    // Index abschließen
+    // Index abschlieï¿½en
     if (mIndexWriterManager != null) {
       boolean thereWereFatalErrors = (mFatalErrorCount > 0);
       if (thereWereFatalErrors) {
@@ -545,13 +577,13 @@ public class Crawler implements ErrorLogger {
 
 
   /**
-   * Erzeugt ein Array von URL-Präfixen, die von der Löschung aus dem Index
+   * Erzeugt ein Array von URL-Prï¿½fixen, die von der Lï¿½schung aus dem Index
    * verschont bleiben sollen.
    * <p>
-   * Diese Liste entspricht den Einträgen der Weißen Liste, deren
+   * Diese Liste entspricht den Eintrï¿½gen der Weiï¿½en Liste, deren
    * <code>shouldBeUpdated</code>-Flag auf <code>false</code> gesetzt ist.
    *
-   * @return Die URL-Präfixen, die nicht aus dem Index gelöscht werden sollen.
+   * @return Die URL-Prï¿½fixen, die nicht aus dem Index gelï¿½scht werden sollen.
    * @see WhiteListEntry#shouldBeUpdated()
    */
   private String[] createPrefixesToKeep() {
@@ -569,12 +601,12 @@ public class Crawler implements ErrorLogger {
 
 
   /**
-   * Prüft, ob Einträge der Weißen Liste ignoriert werden sollen und ändert
-   * die Weiße Liste entsprechend.
+   * Prï¿½ft, ob Eintrï¿½ge der Weiï¿½en Liste ignoriert werden sollen und ï¿½ndert
+   * die Weiï¿½e Liste entsprechend.
    *
-   * @param onlyEntriesArr Die Namen der Einträge in der Weißen Liste, die
+   * @param onlyEntriesArr Die Namen der Eintrï¿½ge in der Weiï¿½en Liste, die
    *        bearbeitet werden sollen. Wenn <code>null</code> oder leer, dann
-   *        werden alle Einträge bearbeitet.
+   *        werden alle Eintrï¿½ge bearbeitet.
    * @param updateIndex Gibt an, ob ein bereits bestehender Index aktualisiert
    *        werden soll.
    */
@@ -703,10 +735,10 @@ public class Crawler implements ErrorLogger {
 
 
   /**
-   * Prüft, ob die Exception von einem Dead-Link herrührt.
+   * Prï¿½ft, ob die Exception von einem Dead-Link herrï¿½hrt.
    *
-   * @param thr Die zu prüfende Exception
-   * @return Ob die Exception von einem Dead-Link herrührt.
+   * @param thr Die zu prï¿½fende Exception
+   * @return Ob die Exception von einem Dead-Link herrï¿½hrt.
    */
   private boolean isExceptionFromDeadLink(Throwable thr) {
     if (thr instanceof HttpStreamException) {
@@ -725,7 +757,7 @@ public class Crawler implements ErrorLogger {
 
   /**
    * Durchsucht ein Verzeichnis nach URLs, also Dateien und Unterverzeichnissen,
-   * und erzeugt für jeden Treffer einen neuen Job.
+   * und erzeugt fï¿½r jeden Treffer einen neuen Job.
    *
    * @param dir Das zu durchsuchende Verzeichnis.
    */
@@ -752,7 +784,7 @@ public class Crawler implements ErrorLogger {
 
 
   /**
-   * Durchsucht den Inhalt eines HTML-Dokuments nach URLs und erzeugt für jeden
+   * Durchsucht den Inhalt eines HTML-Dokuments nach URLs und erzeugt fï¿½r jeden
    * Treffer einen neuen Job.
    *
    * @param rawDocument Das zu durchsuchende Dokument.
@@ -836,7 +868,7 @@ public class Crawler implements ErrorLogger {
 
 
   /**
-   * Gibt die Anzahl der Fehler zurück (das beinhaltet fatale und nicht fatale
+   * Gibt die Anzahl der Fehler zurï¿½ck (das beinhaltet fatale und nicht fatale
    * Fehler).
    *
    * @return Die Anzahl der Fehler.
@@ -848,7 +880,7 @@ public class Crawler implements ErrorLogger {
 
 
   /**
-   * Gibt Die Anzahl der fatalen Fehler zurück.
+   * Gibt Die Anzahl der fatalen Fehler zurï¿½ck.
    * <p>
    * Fatale Fehler sind Fehler, durch die eine Erstellung oder Aktualisierung
    * des Index verhindert wurde.
