@@ -119,6 +119,7 @@ public class PreparatorTest {
     for (int i = 0; i < docFileArr.length; i++) {
       if (docFileArr[i].isFile()) {
         String url = CrawlerToolkit.fileToUrl(docFileArr[i]);
+        System.out.println("Preparing document: " + url);
         try {
           RawDocument doc = new RawDocument(url, sourceUrl, null);
 
@@ -137,7 +138,6 @@ public class PreparatorTest {
 
           File outFile = new File(prepOutputDir, docFileArr[i].getName() + ".txt");
           CrawlerToolkit.writeToFile(content, outFile);
-          System.out.println("Prepared document: " + url);
         }
         catch (Throwable thr) {
           System.out.println("Preparing document failed: " + url);
@@ -146,6 +146,7 @@ public class PreparatorTest {
       }
     }
     
+    System.out.println("Closing preparator " + prep.getClass().getName() + "...");
     try {
       prep.close();
     }
