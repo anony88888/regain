@@ -147,17 +147,24 @@ public class ExecuterParser {
         buffer = new StringBuffer(jspCode.length());
       }
       
+      // Extract the values from the regex
+      // NOTE: We do this before other pages are parsed, because the regex is
+      //       shared.
+      int startPos = mIncludeRegex.getParenStart(0);
+      int endPos = mIncludeRegex.getParenEnd(0);
+      String incFilename = mIncludeRegex.getParen(1);
+      
       // Add the text before
-      buffer.append(jspCode.substring(pos, mIncludeRegex.getParenStart(0)));
+      buffer.append(jspCode.substring(pos, startPos));
       
       // Include the file
-      String incFilename = mIncludeRegex.getParen(1);
       buffer.append(prepareJspCode(baseDir, incFilename));
       
-      pos = mIncludeRegex.getParenEnd(0);
+      pos = endPos;
     }
     if (buffer != null) {
       // Add the text after the last include
+      System.out.println("pos: " + pos + ", jspCode.length(): " + jspCode.length());
       buffer.append(jspCode.substring(pos, jspCode.length()));
       jspCode = buffer.toString();
     }

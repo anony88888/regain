@@ -101,6 +101,15 @@ public class SharedTagService extends BasicService {
     }
     
     File file = new File(mBaseDir, fileName);
+    if (fileName.equals("/")) {
+      String indexFileName = "/index.jsp";
+      File indexFile = new File(mBaseDir, indexFileName);
+      if (indexFile.exists()) {
+        fileName = indexFileName;
+        file = indexFile;
+      }
+    }
+    
     if (file.exists()) {
       if (file.isDirectory()) {
         processDirectory(req, resp, file);
