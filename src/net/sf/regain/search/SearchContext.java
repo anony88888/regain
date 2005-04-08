@@ -122,7 +122,7 @@ public class SearchContext {
         BooleanQuery groupQuery = new BooleanQuery();
         for (int i = 0; i < groupArr.length; i++) {
           // Add as OR
-          groupQuery.add(new TermQuery(new Term("groups", groupArr[i])), false, false);
+          groupQuery.add(new TermQuery(new Term("groups", groupArr[i].trim())), false, false);
         }
         
         // Create a main query that contains the group query and the search query
