@@ -54,7 +54,7 @@ public class FieldlistTag extends SharedTag {
     for (int i = 0; i < fieldValues.length; i++) {
       response.print("<option>" + fieldValues[i] + "</option>");
     }
-    response.print("</select");
+    response.print("</select>");
   }
 
 }
