@@ -4,6 +4,10 @@
     reading rights for.
 * Search: The search taglib has now a tag "hit_field", that writes an index
     field value. The tag "hit_summary" was thereby removed.
+* Search: If you don't want to read the search config from an XML file or if
+    you don't want to write the location of the XML file in the web.xml, you
+    may write your own SearchConfigFactory class and create the config on your
+    own. The SearchConfigFactory class is specified in the web.xml.
 
 
 Version 1.1 Beta 3 on 2005-03-17

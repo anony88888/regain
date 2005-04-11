@@ -12,6 +12,29 @@
     <param-value>../conf/regain/SearchConfiguration.xml</param-value>
   </context-param>
 
+  <!--
+   | The configuration factory.
+   |
+   | If you don't want to read the search config from an XML file or if you don't
+   | want to write the location of the XML file in the web.xml, you may write your
+   | own SearchConfigFactory class and create the config on your own.
+   | Specify this class here.
+   |
+   | The parameter "searchConfigFactoryJar" is optional. If it is mising the class
+   | must be included in the .war file.
+   +-->
+  <!--
+  <context-param>
+    <param-name>searchConfigFactoryClass</param-name>
+    <param-value>mypackage.MySearchConfigFactory</param-value>
+  </context-param>
+  <context-param>
+    <param-name>searchConfigFactoryJar</param-name>
+    <param-value>path/to/theFactory.jar</param-value>
+  </context-param>
+  -->
+
+
   <!-- The location of the resource bundles -->
   <context-param>
     <param-name>webDir</param-name>

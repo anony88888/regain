@@ -37,9 +37,10 @@ import java.util.HashMap;
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.search.access.SearchAccessController;
+import net.sf.regain.search.config.DefaultSearchConfigFactory;
 import net.sf.regain.search.config.IndexConfig;
 import net.sf.regain.search.config.SearchConfig;
-import net.sf.regain.search.config.XmlSearchConfig;
+import net.sf.regain.search.config.SearchConfigFactory;
 import net.sf.regain.util.sharedtag.PageRequest;
 import net.sf.regain.util.sharedtag.PageResponse;
 
@@ -376,15 +377,17 @@ public class SearchToolkit {
     throws RegainException
   {
     if (mConfig == null) {
-      String configFileName = request.getInitParameter("searchConfigFile");
-      File configFile = new File(configFileName);
-      try {
-        mConfig = new XmlSearchConfig(configFile);
+      // Create the factory
+      String factoryClassname = request.getInitParameter("searchConfigFactoryClass");
+      String factoryJarfile   = request.getInitParameter("searchConfigFactoryJar");
+      if (factoryClassname == null) {
+        factoryClassname = DefaultSearchConfigFactory.class.getName();
       }
-      catch (RegainException exc) {
-        throw new RegainException("Loading configuration file failed: "
-            + configFile.getAbsolutePath(), exc);
-      }
+      SearchConfigFactory factory = (SearchConfigFactory)
+        RegainToolkit.createClassInstance(factoryClassname, SearchConfigFactory.class, factoryJarfile);
+      
+      // Create the config
+      mConfig = factory.createSearchConfig(request);
     }
   }
   

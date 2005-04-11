@@ -161,6 +161,9 @@ X Taglib-Tag, das ein bestimmtes Indexfeld ausgibt.
 
 Filiadata:
 ----------
+  Suche: SearchConfigFactory: Die SuchKonfiguration soll über eine Factory
+  	geladen werden. Welche Factory genutzt werden soll, wird in der web.xml
+  	festgelegt.
   Multiindexsuche: Mit der selben Suchmaske mehrere Indizes durchsuchen
   Handbuch aktualisieren:
     - Such-JSP: Zusaetzliche Eingabefelder fuer bestimmte Felder koennen mit

@@ -4,6 +4,10 @@
     für die er Leserechte hat.
 * Suche: Die search-Taglib hat nun ein Tag "hit_field", das ein beliebiges
     Indexfeld ausgibt. Das Tag "hit_summary" wurde in diesem Zuge entfernt.
+* Suche: Wenn Sie die Konfiguration der Suche nicht von einer XML-Datei laden
+    wollen oder wenn Sie die Lage der XML-Datei nicht in der web.xml angeben
+    möchten, können Sie die Konfiguration nun über eine eigene Factory-Klasse
+    erzeugen. Die SearchConfigFactory-Klasse wird in der web.xml festgelegt.
 
 
 Version 1.1 Beta 3 am 17.03.05
