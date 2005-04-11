@@ -168,6 +168,7 @@
   <target name="clean-runtime">
     <delete dir="temp/runtime"/>
     <delete dir="temp/preparator"/>
+    <delete dir="temp/server-msg"/>
   </target>
 
 
@@ -440,13 +441,20 @@
       <fileset dir="temp/runtime/desktop/win/conf/default"/>
     </copy>
     <copy todir="temp/runtime/desktop/win/web">
-      <fileset dir="web">
-        <exclude name="SearchLib.tld"/>
-        <exclude name="Web-inf"/>
-        <exclude name="Web-inf/*"/>
+      <fileset dir="web/common">
+        <exclude name="msg*.properties"/>
+        <exclude name="**/CVS/*"/>
+      </fileset>
+      <fileset dir="web/desktop">
+        <exclude name="msg*.properties"/>
         <exclude name="**/CVS/*"/>
       </fileset>
     </copy>
+    <antcall target="-merge-messages">
+      <param name="path-1" value="web/common"/>
+      <param name="path-2" value="web/desktop"/>
+      <param name="target" value="temp/runtime/desktop/win/web"/>
+    </antcall>      
     <echo message="${version}" file="temp/runtime/desktop/win/web/version"/>
     <copy todir="temp/runtime/desktop/linux/web">
       <fileset dir="temp/runtime/desktop/win/web"/>
@@ -464,6 +472,20 @@
         <exclude name="JacobMsOfficePreparators.jar"/>
       </fileset>
     </copy>
+  </target>
+
+
+  <!--
+   | Merges the message files (msg*.properties) of two directories.
+   +-->
+  <target name="-merge-messages" if="target">
+	  <loadfile property="msg-1" srcFile="${path-1}/msg.properties"/>
+	  <loadfile property="msg-2" srcFile="${path-2}/msg.properties"/>
+	  <echo file="${target}/msg.properties" message="${msg-1}${msg-2}"/>
+
+    <loadfile property="msg_de-1" srcFile="${path-1}/msg_de.properties"/>
+    <loadfile property="msg_de-2" srcFile="${path-2}/msg_de.properties"/>
+    <echo file="${target}/msg_de.properties" message="${msg_de-1}${msg_de-2}"/>
   </target>
 
 
@@ -554,9 +576,22 @@
 
 
   <!--
+   | Creates the server message files.
+   +-->
+  <target name="-msg-server">
+	  <mkdir dir="temp/server-msg"/>
+	  <antcall target="-merge-messages">
+	    <param name="path-1" value="web/common"/>
+	    <param name="path-2" value="web/server"/>
+	    <param name="target" value="temp/server-msg"/>
+	  </antcall>
+  </target>
+
+
+  <!--
    | Creates the server runtime directory.
    +-->
-  <target name="runtime-server" depends="prepare-once, runtime-server-fast">
+  <target name="runtime-server" depends="prepare-once, runtime-server-fast, -msg-server">
     <jar jarfile="temp/runtime/crawler/${programname.file}-crawler.jar"
          compress="false"
          index="true">
@@ -580,10 +615,10 @@
         <exclude name="net/sf/regain/crawler/preparator/**"/>
       </fileset>
     </jar>
-
+    
     <mkdir dir="temp/runtime/search/webapps"/>
     <war destfile="temp/runtime/search/webapps/${programname.file}.war"
-         webxml="web/Web-inf/web.xml">
+         webxml="web/server/web-inf/web.xml">
       <classes dir="temp/classes">
         <exclude name="net/sf/regain/crawler/**"/>
         <exclude name="net/sf/regain/ui/desktop/**"/>
@@ -595,10 +630,17 @@
         <include name="${regexp.jar}"/>
         <include name="${log4j.jar}"/>
       </lib>
-      <fileset dir="web">
-        <include name="*"/>
-        <include name="img/*"/>
-      </fileset>
+	    <fileset dir="web/common">
+	      <exclude name="msg*.properties"/>
+	      <exclude name="**/CVS/*"/>
+	    </fileset>
+	    <fileset dir="web/server">
+        <exclude name="web-inf"/>
+        <exclude name="web-inf/**"/>
+	      <exclude name="msg*.properties"/>
+	      <exclude name="**/CVS/*"/>
+	    </fileset>
+      <fileset dir="temp/server-msg"/>
       <fileset dir="temp/runtime/desktop/win/web">
         <include name="version"/>
       </fileset>
@@ -807,7 +849,7 @@
   <!--
    | Deploys the web content at the servlet engine.
    +-->
-  <target name="deploy-web">
+  <target name="deploy-web" depends="-msg-server">
     <!--
      | NOTE: We create the WEB-INF directory too, to ensure that it is written
      |       in uppercase. Otherwise tomcat will complain.
@@ -816,10 +858,17 @@
 
     <echo message="Deploying the web content at ${deploy-target.dir}/${programname.file}" />
     <copy todir="${deploy-target.dir}/${programname.file}">
-      <fileset dir="web">
-        <include name="**"/>
+      <fileset dir="web/common">
+        <exclude name="msg*.properties"/>
         <exclude name="**/CVS/*"/>
       </fileset>
+      <fileset dir="web/server">
+        <exclude name="web-inf"/>
+        <exclude name="web-inf/**"/>
+        <exclude name="msg*.properties"/>
+        <exclude name="**/CVS/*"/>
+      </fileset>
+      <fileset dir="temp/server-msg"/>
     </copy>
     <echo message="${version}" file="${deploy-target.dir}/${programname.file}/version"/>
   </target>

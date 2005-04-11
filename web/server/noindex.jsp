@@ -1,9 +1,9 @@
 <%@page contentType="text/html" errorPage="errorpage.jsp"%>
-<%@taglib uri="SearchLib.tld" prefix="search" %>
+<%@taglib uri="regain-search.tld" prefix="search" %>
 
 <html>
 <head>
-  <title>regain - <search:msg key="search"/></title>
+  <title>regain - <search:msg key="noIndex"/></title>
   <script src="regain.js" type="text/javascript"></script>
   <link href="regain.css" rel="stylesheet" type="text/css">
 </head>
@@ -15,18 +15,12 @@
 
   <table class="content">
     <tr class="headline"><td>
-      <b><search:msg key="search"/></b>
+      <b><search:msg key="noIndex"/></b>
     </td></tr>
     <tr><td>
-
-      <form name="search" action="search.jsp" method="get">
-        <p class="searchinput">
-          <b><search:msg key="searchFor"/>: </b>
-          <input name="query" size="40"/>
-          <search:input_submit text="{msg:search}"/>
-        </p>
-      </form>
-
+      <h4><search:msg key="noIndex"/></h4>
+      
+      <p><search:msg key="noIndex.help"/></p>
       <br>
     </td></tr>
   </table>

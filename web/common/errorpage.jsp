@@ -1,5 +1,5 @@
 <%@page contentType="text/html"%>
-<%@taglib uri="SearchLib.tld" prefix="search" %>
+<%@taglib uri="regain-search.tld" prefix="search" %>
 
 <html>
 <head>
