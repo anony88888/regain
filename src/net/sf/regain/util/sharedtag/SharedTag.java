@@ -27,7 +27,6 @@
  */
 package net.sf.regain.util.sharedtag;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -261,10 +260,7 @@ public abstract class SharedTag {
       
       // Init the MultiLocalizer if nessesary
       if (mMultiLocalizer == null) {
-        // Get the base dir
-        File basedir = new File(request.getInitParameter("webDir"));
-
-        mMultiLocalizer = new MultiLocalizer(basedir, "msg");
+        mMultiLocalizer = new MultiLocalizer(request.getBaseDir(), "msg");
       }
       
       // Get the localizer

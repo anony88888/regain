@@ -27,6 +27,7 @@
  */
 package net.sf.regain.util.sharedtag;
 
+import java.io.File;
 import java.util.Enumeration;
 import java.util.Locale;
 
@@ -235,5 +236,12 @@ public abstract class PageRequest {
    * @return The value of the init parameter.
    */
   public abstract String getInitParameter(String name);
+
+  /**
+   * Gets the base directory where the JSP files and resources are located.
+   * 
+   * @return The base directory where the JSP files and resources are located.
+   */
+  public abstract File getBaseDir();
   
 }

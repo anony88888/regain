@@ -27,6 +27,7 @@
  */
 package net.sf.regain.util.sharedtag.taglib;
 
+import java.io.File;
 import java.util.Enumeration;
 import java.util.Locale;
 
@@ -45,6 +46,9 @@ public class JspPageRequest extends PageRequest {
   
   /** The JSP page context to adapt. */
   private PageContext mPageContext;
+  
+  /** The base directory where the JSP files and resources are located. */
+  private static File mBaseDir;
   
 
   /**
@@ -186,5 +190,18 @@ public class JspPageRequest extends PageRequest {
   public String getInitParameter(String name) {
     return mPageContext.getServletContext().getInitParameter(name);
   }
-  
+
+
+  /**
+   * Gets the base directory where the JSP files and resources are located.
+   * 
+   * @return The base directory where the JSP files and resources are located.
+   */
+  public File getBaseDir() {
+    if (mBaseDir == null) {
+      mBaseDir = new File(mPageContext.getServletContext().getRealPath("."));
+    }
+    return mBaseDir;
+  }
+
 }

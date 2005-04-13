@@ -869,7 +869,7 @@
         <exclude name="msg*.properties"/>
         <exclude name="**/CVS/*"/>
       </fileset>
-      <fileset dir="temp/server-msg"/>
+      <fileset dir="temp/web-temps"/>
     </copy>
     <echo message="${version}" file="${deploy-target.dir}/${programname.file}/version"/>
   </target>

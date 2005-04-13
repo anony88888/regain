@@ -27,6 +27,7 @@
  */
 package net.sf.regain.util.sharedtag.simple;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -44,15 +45,18 @@ import net.sf.regain.util.sharedtag.PageRequest;
  * @author Til Schneider, www.murfman.de
  */
 public class SimplePageRequest extends PageRequest {
+
+  /** The init parameters. May be null. */
+  private static HashMap mInitParameterHash;
+  
+  /** The base directory where the JSP files and resources are located. */
+  private static File mBaseDir;
   
   /** The simpleweb Request to adapt. */
   private Request mRequest;
   
   /** The page context. May be null. */
   private HashMap mPageContext;
-
-  /** The init parameters. May be null. */
-  private static HashMap mInitParameterHash;
   
 
   /**
@@ -236,5 +240,26 @@ public class SimplePageRequest extends PageRequest {
     }
     mInitParameterHash.put(name, value);
   }
-  
+
+
+  /**
+   * Gets the base directory where the JSP files and resources are located.
+   * 
+   * @return The base directory where the JSP files and resources are located.
+   */
+  public File getBaseDir() {
+    return mBaseDir;
+  }
+
+
+  /**
+   * Sets the base directory where the JSP files and resources are located.
+   * 
+   * @param baseDir The base directory where the JSP files and resources are
+   *        located.
+   */
+  public static void setBaseDir(File baseDir) {
+    mBaseDir = baseDir;
+  }
+
 }

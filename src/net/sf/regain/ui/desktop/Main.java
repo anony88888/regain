@@ -88,7 +88,7 @@ public class Main implements DesktopConstants {
 
     // Initialize the search mask
     SimplePageRequest.setInitParameter("searchConfigFile", "conf/SearchConfiguration.xml");
-    SimplePageRequest.setInitParameter("webDir", "web");
+    SimplePageRequest.setBaseDir(new File("web"));
     ExecuterParser.registerNamespace("search", "net.sf.regain.search.sharedlib");
     ExecuterParser.registerNamespace("config", "net.sf.regain.ui.desktop.config.sharedlib");
     ExecuterParser.registerNamespace("status", "net.sf.regain.ui.desktop.status.sharedlib");

@@ -3,14 +3,14 @@ Version 1.1 Beta 4 am 13.04.05
 ------------------------------
 
 * Zugriffsrechte-Management: Es kann nun ein Rechte-Management eingebunden
-    werden, das dafür sorgt, dass ein Benutzer nur Treffer für Dokumente erhält,
-    für die er Leserechte hat.
+  werden, das dafuer sorgt, dass ein Benutzer nur Treffer für Dokumente erhaelt,
+  für die er Leserechte hat.
 * Suche: Die search-Taglib hat nun ein Tag "hit_field", das ein beliebiges
-    Indexfeld ausgibt. Das Tag "hit_summary" wurde in diesem Zuge entfernt.
+  Indexfeld ausgibt. Das Tag "hit_summary" wurde in diesem Zuge entfernt.
 * Suche: Wenn Sie die Konfiguration der Suche nicht von einer XML-Datei laden
-    wollen oder wenn Sie die Lage der XML-Datei nicht in der web.xml angeben
-    möchten, können Sie die Konfiguration nun über eine eigene Factory-Klasse
-    erzeugen. Die SearchConfigFactory-Klasse wird in der web.xml festgelegt.
+  wollen oder wenn Sie die Lage der XML-Datei nicht in der web.xml angeben
+  moechten, koennen Sie die Konfiguration nun ueber eine eigene Factory-Klasse
+  erzeugen. Die SearchConfigFactory-Klasse wird in der web.xml festgelegt.
 * Serversuche: Die beigelegten JSP-Seiten haben nicht funktioniert.
 
 
