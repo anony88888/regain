@@ -43,7 +43,10 @@
   <condition property="version" value="${version.prefix}-preview-${timestamp}">
     <istrue value="${is-preview}"/>
   </condition>
-  
+  <condition property="version" value="${version.prefix}">
+    <isfalse value="${is-preview}"/>
+  </condition>
+
   <property name="version.file" value="${version}"/>
   <property name="programname" value="Regain"/>
   <property name="programname.file" value="regain"/>
@@ -168,7 +171,7 @@
   <target name="clean-runtime">
     <delete dir="temp/runtime"/>
     <delete dir="temp/preparator"/>
-    <delete dir="temp/server-msg"/>
+    <delete dir="temp/web-temps"/>
   </target>
 
 
@@ -576,22 +579,23 @@
 
 
   <!--
-   | Creates the server message files.
+   | Creates files that are included in the regain.war.
    +-->
-  <target name="-msg-server">
-	  <mkdir dir="temp/server-msg"/>
+  <target name="-web-temps">
+	  <mkdir dir="temp/web-temps"/>
 	  <antcall target="-merge-messages">
 	    <param name="path-1" value="web/common"/>
 	    <param name="path-2" value="web/server"/>
-	    <param name="target" value="temp/server-msg"/>
+	    <param name="target" value="temp/web-temps"/>
 	  </antcall>
+    <echo message="${version}" file="temp/web-temps/version"/>
   </target>
 
 
   <!--
    | Creates the server runtime directory.
    +-->
-  <target name="runtime-server" depends="prepare-once, runtime-server-fast, -msg-server">
+  <target name="runtime-server" depends="prepare-once, runtime-server-fast, -web-temps">
     <jar jarfile="temp/runtime/crawler/${programname.file}-crawler.jar"
          compress="false"
          index="true">
@@ -640,10 +644,7 @@
 	      <exclude name="msg*.properties"/>
 	      <exclude name="**/CVS/*"/>
 	    </fileset>
-      <fileset dir="temp/server-msg"/>
-      <fileset dir="temp/runtime/desktop/win/web">
-        <include name="version"/>
-      </fileset>
+      <fileset dir="temp/web-temps"/>
     </war>
   </target>
 
@@ -849,7 +850,7 @@
   <!--
    | Deploys the web content at the servlet engine.
    +-->
-  <target name="deploy-web" depends="-msg-server">
+  <target name="deploy-web" depends="-web-temps">
     <!--
      | NOTE: We create the WEB-INF directory too, to ensure that it is written
      |       in uppercase. Otherwise tomcat will complain.
