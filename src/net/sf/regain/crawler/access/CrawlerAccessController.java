@@ -61,6 +61,9 @@ public interface CrawlerAccessController {
 
   /**
    * Gets the names of the groups that are allowed to read the given document.
+   * <p>
+   * Note: The group array must not be <code>null</code> and the group names
+   * must not contain whitespace.
    * 
    * @param document The document to get the groups for.
    * @return The groups that are allowed to read the given document.

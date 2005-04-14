@@ -51,9 +51,9 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.de.GermanAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 
@@ -740,6 +740,52 @@ public class RegainToolkit {
 
 
   /**
+   * Checks whether the given String contains whitespace.
+   * 
+   * @param str The String to check.
+   * @return Whether the given String contains whitespace.
+   */
+  public static boolean containsWhitespace(String str) {
+    for (int i = 0; i < str.length(); i++) {
+      if (Character.isWhitespace(str.charAt(i))) {
+        return true;
+      }
+    }
+    
+    return false;
+  }
+
+
+  /**
+   * Checks an array of group names.
+   * 
+   * @param accessController The access controller that returned the array of
+   *        group names.
+   * @param groupArr The array of group names to check.
+   * @throws RegainException If the array of group names is not valid.
+   */
+  public static void checkGroupArray(Object accessController, String[] groupArr)
+    throws RegainException
+  {
+    if (groupArr == null) {
+      // Check for null
+      throw new RegainException("Access controller " +
+          accessController.getClass().getName() + " returned illegal " +
+          "group array: null");
+    } else {
+      // Check for whitespace
+      for (int i = 0; i < groupArr.length; i++) {
+        if (RegainToolkit.containsWhitespace(groupArr[i])) {
+          throw new RegainException("Access controller " +
+              accessController.getClass().getName() + " returned illegal " +
+              "group name containing whitespace: '" + groupArr[i] + "'");
+        }
+      }
+    }
+  }
+
+
+  /**
    * Loads a class and creates an instance.
    * 
    * @param className The name of the class to load and create an instance of.
@@ -946,7 +992,7 @@ public class RegainToolkit {
      * @param nestedAnalyzer The nested analyzer.
      */
     public WrapperAnalyzer(Analyzer nestedAnalyzer) {
-      mGroupsAnalyzer = new SimpleAnalyzer();
+      mGroupsAnalyzer = new WhitespaceAnalyzer();
       mNestedAnalyzer = nestedAnalyzer;
     }
     

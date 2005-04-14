@@ -289,6 +289,11 @@ public class DocumentFactory {
     // Add the groups of the document
     if (mCrawlerAccessController != null) {
       String[] groupArr = mCrawlerAccessController.getDocumentGroups(rawDocument);
+      
+      // Check the Group array
+      RegainToolkit.checkGroupArray(mCrawlerAccessController, groupArr);
+      
+      // Put the groups in a space separated list
       StringBuffer groupList = new StringBuffer();
       for (int i = 0; i < groupArr.length; i++) {
         if (i != 0) {

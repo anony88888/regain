@@ -158,12 +158,18 @@ X Suchmaske: Version anzeigen
 X Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, fuer die
     er auch Leserechte hat. (Aufwand: 2 Tage)
 X Taglib-Tag, das ein bestimmtes Indexfeld ausgibt.
+X Suche: SearchConfigFactory: Die SuchKonfiguration soll über eine Factory
+  	geladen werden. Welche Factory genutzt werden soll, wird in der web.xml
+  	festgelegt.
+
+** Version 1.1 Beta 4 am 13.04.05 **
+
+X Autodetektion des Ressourcenverzeichnisses
+X Bugfix: Zugriffsrechte-Management: Gruppennamen wurden auch bei
+	nicht-Whitespace-Zeichen wie "/", "-", "\" getrennt.
 
 Filiadata:
 ----------
-  Suche: SearchConfigFactory: Die SuchKonfiguration soll über eine Factory
-  	geladen werden. Welche Factory genutzt werden soll, wird in der web.xml
-  	festgelegt.
   Multiindexsuche: Mit der selben Suchmaske mehrere Indizes durchsuchen
   Handbuch aktualisieren:
     - Such-JSP: Zusaetzliche Eingabefelder fuer bestimmte Felder koennen mit
@@ -172,6 +178,7 @@ Filiadata:
 
 Prio A:
 -------
+  Bugfix: Es wird keine Navigation gezeigt, wenn nach extension:"html" gesucht wird.
   Warum frisst Firefox die MIME-Types nicht?
   Unter Java 1.2.2 oder zur Not 1.3 lauffaehig machen.
   Expertensuche: Fehlermeldung wird gezeigt, wenn noch kein Index vorhanden ist.

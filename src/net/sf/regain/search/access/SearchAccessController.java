@@ -58,6 +58,9 @@ public interface SearchAccessController {
 
   /**
    * Gets the groups the current user has reading rights for.
+   * <p>
+   * Note: The group array must not be <code>null</code> and the group names
+   * must not contain whitespace.
    * 
    * @param request The page request to use for identifying the user.
    * @return The groups of the current user.

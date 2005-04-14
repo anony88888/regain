@@ -192,12 +192,8 @@ public class SearchToolkit {
       if (accessController != null) {
         groupArr = accessController.getUserGroups(request);
         
-        if (groupArr == null) {
-          // NOTE: The SearchAccessController should never return null, but for
-          //       security reasons we check it. Because if the groupArr is
-          //       null, the access control is disabled.
-          groupArr = new String[0];
-        }
+        // Check the Group array
+        RegainToolkit.checkGroupArray(accessController, groupArr);
       }
       
       // Create the SearchContext and store it in the page context
