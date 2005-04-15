@@ -856,8 +856,9 @@
      |       in uppercase. Otherwise tomcat will complain.
      +-->
     <mkdir dir="${deploy-target.dir}/${programname.file}/WEB-INF"/>
-
     <echo message="Deploying the web content at ${deploy-target.dir}/${programname.file}" />
+    <copy todir="${deploy-target.dir}/${programname.file}/WEB-INF"
+          file="web/server/web-inf/web.xml"/>
     <copy todir="${deploy-target.dir}/${programname.file}">
       <fileset dir="web/common">
         <exclude name="msg*.properties"/>

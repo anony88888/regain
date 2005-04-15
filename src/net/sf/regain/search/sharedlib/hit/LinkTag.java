@@ -85,7 +85,8 @@ public class LinkTag extends AbstractHitTag {
 
     // Pass file URLs to the file servlet
     String href = url;
-    if (url.startsWith("file://")) {
+    boolean useFileToHttpBridge = search.getUseFileToHttpBridge();
+    if (url.startsWith("file://") && useFileToHttpBridge) {
       // URL encode the URL
       String filename = RegainToolkit.urlToFileName(url);
       String urlEncoded = RegainToolkit.urlEncode(filename);

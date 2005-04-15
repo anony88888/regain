@@ -33,6 +33,10 @@ public class DefaultSearchConfigFactory implements SearchConfigFactory {
     throws RegainException
   {
     String configFileName = request.getInitParameter("searchConfigFile");
+    if (configFileName == null) {
+      throw new RegainException("The init parameter 'searchConfigFile' was not specified.");
+    }
+    
     File configFile = new File(configFileName);
     try {
       return new XmlSearchConfig(configFile);

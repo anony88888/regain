@@ -74,6 +74,13 @@ public class XmlSearchConfig implements SearchConfig {
       node = XmlToolkit.getCascadedChild(indexNode, defaultNode, "openInNewWindowRegex", true);
       String openInNewWindowRegex = XmlToolkit.getText(node, true);
 
+      // Read the useFileToHttpBridge
+      node = XmlToolkit.getCascadedChild(indexNode, defaultNode, "useFileToHttpBridge");
+      boolean useFileToHttpBridge = true;
+      if (node != null) {
+        useFileToHttpBridge = XmlToolkit.getTextAsBoolean(node);
+      }
+      
       // Read the search field list
       node = XmlToolkit.getCascadedChild(indexNode, defaultNode, "searchFieldList");
       String[] searchFieldList = null;
@@ -109,7 +116,7 @@ public class XmlSearchConfig implements SearchConfig {
       
       // Create the index config
       IndexConfig indexConfig = new IndexConfig(indexName, directory,
-          openInNewWindowRegex, searchFieldList, rewriteRules,
+          openInNewWindowRegex, useFileToHttpBridge, searchFieldList, rewriteRules,
           searchAccessControllerClass, searchAccessControllerJar,
           searchAccessControllerConfig);
       mIndexHash.put(indexName, indexConfig);

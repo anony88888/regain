@@ -167,9 +167,11 @@ X Suche: SearchConfigFactory: Die SuchKonfiguration soll über eine Factory
 X Autodetektion des Ressourcenverzeichnisses
 X Bugfix: Zugriffsrechte-Management: Gruppennamen wurden auch bei
 	nicht-Whitespace-Zeichen wie "/", "-", "\" getrennt.
+X Dateizugriffs-Servlet abschaltbar.
 
 Filiadata:
 ----------
+  Ärger mit MS Office beseitigen (Jacob). Siehe Mail von Michael Danner vom 15.04.05.
   Multiindexsuche: Mit der selben Suchmaske mehrere Indizes durchsuchen
   Handbuch aktualisieren:
     - Such-JSP: Zusaetzliche Eingabefelder fuer bestimmte Felder koennen mit

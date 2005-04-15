@@ -72,7 +72,6 @@ public class SearchContext {
   private RE mOpenInNewWindowRegex;
 
 
-
   /**
    * Creates a new instance of SearchContext.
    *
@@ -261,6 +260,21 @@ public class SearchContext {
   }
   
   
+  /**
+   * Gets whether the file-to-http-bridge should be used for file-URLs.
+   * <p>
+   * Mozilla browsers have a security mechanism that blocks loading file-URLs
+   * from pages loaded via http. To be able to load files from the search
+   * results, regain offers the file-to-http-bridge that provides all files that
+   * are listed in the index via http.
+   * 
+   * @return Whether the file-to-http-bridge should be used.
+   */
+  public boolean getUseFileToHttpBridge() {
+    return mIndexConfig.getUseFileToHttpBridge();
+  }
+
+
   /**
    * Rewrites the given URL according to the rewrite rules specified in the
    * index config.

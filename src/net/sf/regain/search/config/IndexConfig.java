@@ -37,6 +37,9 @@ public class IndexConfig {
    */
   private String mOpenInNewWindowRegex;
   
+  /** Whether the file-to-http-bridge should be used. */
+  private boolean mUseFileToHttpBridge;
+  
   /**
    * The index fields to search by default.
    * <p>
@@ -74,6 +77,8 @@ public class IndexConfig {
    * @param directory The directory where the index is located.
    * @param openInNewWindowRegex The regular expression that identifies URLs
    *        that should be opened in a new window.
+   * @param useFileToHttpBridge Whether the file-to-http-bridge should be used.
+   *        See {@link #getUseFileToHttpBridge()} for details.
    * @param searchFieldList The index fields to search by default.
    * @param rewriteRules The URL rewrite rules. Contains pairs of URL prefixes:
    *        The first prefix will be replaced by the second.
@@ -86,7 +91,7 @@ public class IndexConfig {
    * @throws RegainException If loading the SearchAccessController failed.
    */
   public IndexConfig(String name, String directory, String openInNewWindowRegex,
-    String[] searchFieldList, String[][] rewriteRules,
+    boolean useFileToHttpBridge, String[] searchFieldList, String[][] rewriteRules,
     String searchAccessControllerClass, String searchAccessControllerJar,
     Properties searchAccessControllerConfig)
     throws RegainException
@@ -94,6 +99,7 @@ public class IndexConfig {
     mName = name;
     mDirectory = directory;
     mOpenInNewWindowRegex = openInNewWindowRegex;
+    mUseFileToHttpBridge = useFileToHttpBridge;
     mSearchFieldList = searchFieldList;
     mRewriteRules = rewriteRules;
     
@@ -141,8 +147,23 @@ public class IndexConfig {
   public String getOpenInNewWindowRegex() {
     return mOpenInNewWindowRegex;
   }
-  
-  
+
+
+  /**
+   * Gets whether the file-to-http-bridge should be used for file-URLs.
+   * <p>
+   * Mozilla browsers have a security mechanism that blocks loading file-URLs
+   * from pages loaded via http. To be able to load files from the search
+   * results, regain offers the file-to-http-bridge that provides all files that
+   * are listed in the index via http.
+   * 
+   * @return Whether the file-to-http-bridge should be used.
+   */
+  public boolean getUseFileToHttpBridge() {
+    return mUseFileToHttpBridge;
+  }
+
+
   /**
    * Gets the index fields to search by default.
    * <p>
