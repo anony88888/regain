@@ -305,7 +305,7 @@ public class DocumentFactory {
       // Add the field
       // NOTE: The field "groups" is tokenized, but not stemmed.
       //       See: RegainToolkit.WrapperAnalyzer
-      doc.add(Field.Keyword("groups", groupList.toString()));
+      doc.add(Field.Text("groups", groupList.toString()));
     }
 
     // Add the URL of the document
