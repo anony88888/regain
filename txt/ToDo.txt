@@ -143,9 +143,9 @@ X Bug: File-Service: Datei von Netzlaufwerken (//fileserver/bla/blubb) werden
     nicht geladen (Forbidden)
 X Bug: Desktopsuche: Suchergebnisse: Umlaute werden falsch dargestellt.
 X Desktopsuche: Einstellungen: Beim Speichern als GrundgerÃ¼st
-  	default-Config-Dateien nutzen.
+    default-Config-Dateien nutzen.
 X Desktopsuche: Aktuelle Indexierung pausieren und manuelles Starten einer
-  	Indexierung.
+    Indexierung.
 X Bug: HTML-Praeparator kommt nicht mit allen Dateien klar (Siehe Mail von Jochen Stiepel)
 X Changelog erstellen
 X Desktopsuche: index.php zeigen
@@ -159,20 +159,22 @@ X Zugriffsrechte beachten: Ein Benutzer kann nur die Dokumente sehen, fuer die
     er auch Leserechte hat. (Aufwand: 2 Tage)
 X Taglib-Tag, das ein bestimmtes Indexfeld ausgibt.
 X Suche: SearchConfigFactory: Die SuchKonfiguration soll über eine Factory
-  	geladen werden. Welche Factory genutzt werden soll, wird in der web.xml
-  	festgelegt.
+    geladen werden. Welche Factory genutzt werden soll, wird in der web.xml
+    festgelegt.
 
 ** Version 1.1 Beta 4 am 13.04.05 **
 
 X Autodetektion des Ressourcenverzeichnisses
 X Bugfix: Zugriffsrechte-Management: Gruppennamen wurden auch bei
-	nicht-Whitespace-Zeichen wie "/", "-", "\" getrennt.
+  nicht-Whitespace-Zeichen wie "/", "-", "\" getrennt.
 X Dateizugriffs-Servlet abschaltbar.
+X Blacklist und Whitelist: Reguläre Ausdrücke zulassen.
+
 
 Filiadata:
 ----------
   Ärger mit MS Office beseitigen (Jacob). Siehe Mail von Michael Danner vom 15.04.05.
-  Multiindexsuche: Mit der selben Suchmaske mehrere Indizes durchsuchen
+  Multiindexsuche: Mit der selben Suchmaske mehrere Indizes durchsuchen.
   Handbuch aktualisieren:
     - Such-JSP: Zusaetzliche Eingabefelder fuer bestimmte Felder koennen mit
       "field.feldName" hinzugefuegt werden.
@@ -180,6 +182,7 @@ Filiadata:
 
 Prio A:
 -------
+  Handbuch: Installation: Was muss man konfigurieren, damit es läuft.
   Bugfix: Es wird keine Navigation gezeigt, wenn nach extension:"html" gesucht wird.
   Warum frisst Firefox die MIME-Types nicht?
   Unter Java 1.2.2 oder zur Not 1.3 lauffaehig machen.
@@ -197,9 +200,9 @@ Prio B:
   Crawler: Arbeitspeicher sparen: Dateien vom Dateisystem nicht ins
     mFoundUrlSet oder mIgnoredUrlSet aufnehmen. Beim Dateisystem ist durch die
     klare Baumstruktur sowieso klar, welche Dokumente schon bearbeitet wurden.
-  	(Dazu muss Start-List muss untereinander praefixfrei sein!)
+    (Dazu muss Start-List muss untereinander praefixfrei sein!)
   Crawler: Arbeitspeicher sparen: Erst Dateien an mJobList anhaengen, dann
-  	Unterverzeichnisse. So wird die mJobList klein gehalten.
+    Unterverzeichnisse. So wird die mJobList klein gehalten.
   Desktopsuche: Status-Seite: Ende von Logdatei zeigen
   Sessions for simpleweb. See SimplePageRequest
 

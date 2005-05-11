@@ -40,6 +40,7 @@ import java.util.HashSet;
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.config.CrawlerConfig;
+import net.sf.regain.crawler.config.UrlMatcher;
 import net.sf.regain.crawler.document.DocumentFactory;
 import net.sf.regain.crawler.document.RawDocument;
 
@@ -688,12 +689,13 @@ public class IndexWriterManager {
    * match an entry of the urlToKeepSet nor of the prefixesToKeepArr.
    *
    * @param urlToKeepSet The URLs that shouldn't be deleted.
-   * @param prefixesToKeepArr URL prefixes that should be spared. 
+   * @param preserveUrlMatcherArr UrlMatchers that idetify URLs that should be
+   *        preserved. 
    * @throws RegainException If an index entry could either not be read or
    *         deleted.
    */
   public void removeObsoleteEntries(HashSet urlToKeepSet,
-    String[] prefixesToKeepArr)
+      UrlMatcher[] preserveUrlMatcherArr)
     throws RegainException
   {
     if (! mUpdateIndex) {
@@ -704,7 +706,7 @@ public class IndexWriterManager {
     }
     
     if ((mUrlsToDeleteHash == null) && (urlToKeepSet == null)
-        && (prefixesToKeepArr == null))
+        && (preserveUrlMatcherArr == null))
     {
       // There is nothing to delete -> Fast return
       return;
@@ -737,7 +739,7 @@ public class IndexWriterManager {
             shouldBeDeleted = true;
           }
           // Check whether all other documents should NOT be deleted
-          else if ((urlToKeepSet == null) && (prefixesToKeepArr == null)) {
+          else if ((urlToKeepSet == null) && (preserveUrlMatcherArr == null)) {
             shouldBeDeleted = false;
           }
           // Pr�fen, ob dieser Eintrag zu verschonen ist
@@ -747,8 +749,8 @@ public class IndexWriterManager {
           // Pr�fen, ob die URL zu einem zu-verschonen-Pr�fix passt
           else {
             shouldBeDeleted = true;
-            for (int i = 0; i < prefixesToKeepArr.length; i++) {
-              if (url.startsWith(prefixesToKeepArr[i])) {
+            for (int i = 0; i < preserveUrlMatcherArr.length; i++) {
+              if (preserveUrlMatcherArr[i].matches(url)) {
                 shouldBeDeleted = false;
                 break;
               }

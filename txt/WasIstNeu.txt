@@ -1,3 +1,6 @@
+* In der Weißen und der Schwarzen Liste können jetzt auch reguläre Ausdrücke
+  angegeben werden.
+
 
 Version 1.1 Beta 4 am 13.04.05
 ------------------------------

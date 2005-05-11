@@ -40,6 +40,7 @@ import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.config.CrawlerConfig;
 import net.sf.regain.crawler.config.StartUrl;
+import net.sf.regain.crawler.config.UrlMatcher;
 import net.sf.regain.crawler.config.UrlPattern;
 import net.sf.regain.crawler.config.WhiteListEntry;
 import net.sf.regain.crawler.document.RawDocument;
@@ -96,14 +97,17 @@ public class Crawler implements ErrorLogger {
   private LinkedList mDeadlinkList;
 
   /**
-   * Enth�lt die Pr�fixe, die eine URL <i>nicht</i> haben darf, um bearbeitet zu
-   * werden.
+   * The black list.
+   * <p>
+   * The black list is an array of UrlMatchers, a URLs <i>must not</i> match to,
+   * in order to be processed.
    */
-  private String[] mUrlPrefixBlackListArr;
+  private UrlMatcher[] mBlackListArr;
   /**
-   * Die Wei�e Liste.
-   *
-   * @see WhiteListEntry
+   * The white list.
+   * <p>
+   * The black list is an array of WhiteListEntry, a URLs <i>must</i> match to,
+   * in order to be processed.
    */
   private WhiteListEntry[] mWhiteListEntryArr;
 
@@ -153,7 +157,7 @@ public class Crawler implements ErrorLogger {
 
     RawDocument.setHttpTimeoutSecs(config.getHttpTimeoutSecs());
 
-    mUrlPrefixBlackListArr = config.getUrlPrefixBlackList();
+    mBlackListArr = config.getBlackList();
     mWhiteListEntryArr = config.getWhiteList();
 
     mHtmlParserUrlPatternArr = config.getHtmlParserUrlPatterns();
@@ -309,8 +313,8 @@ public class Crawler implements ErrorLogger {
     boolean matchesToWhiteList = false;
     for (int i = 0; i < mWhiteListEntryArr.length; i++) {
       if (mWhiteListEntryArr[i].shouldBeUpdated()) {
-        String whiteListPrefix = mWhiteListEntryArr[i].getPrefix();
-        if (url.startsWith(whiteListPrefix)) {
+        UrlMatcher matcher = mWhiteListEntryArr[i].getUrlMatcher();
+        if (matcher.matches(url)) {
           matchesToWhiteList = true;
           break;
         }
@@ -321,8 +325,8 @@ public class Crawler implements ErrorLogger {
     }
 
     // check whether this URL matches to a black list prefix
-    for (int i = 0; i < mUrlPrefixBlackListArr.length; i++) {
-      if (url.startsWith(mUrlPrefixBlackListArr[i])) {
+    for (int i = 0; i < mBlackListArr.length; i++) {
+      if (mBlackListArr[i].matches(url)) {
         return false;
       }
     }
@@ -472,8 +476,8 @@ public class Crawler implements ErrorLogger {
     if (mConfiguration.getBuildIndex()) {
       mLog.info("Removing index entries of documents that do not exist any more...");
       try {
-        String[] prefixesToKeepArr = createPrefixesToKeep();
-        mIndexWriterManager.removeObsoleteEntries(mFoundUrlSet, prefixesToKeepArr);
+        UrlMatcher[] preserveUrlMatcherArr = createPreserveUrlMatcherArr();
+        mIndexWriterManager.removeObsoleteEntries(mFoundUrlSet, preserveUrlMatcherArr);
       }
       catch (Throwable thr) {
         logError("Removing non-existing documents from index failed", thr, true);
@@ -581,24 +585,25 @@ public class Crawler implements ErrorLogger {
 
 
   /**
-   * Erzeugt ein Array von URL-Pr�fixen, die von der L�schung aus dem Index
-   * verschont bleiben sollen.
+   * Creates an array of UrlMatchers that identify URLs that should not be
+   * deleted from the search index.
    * <p>
-   * Diese Liste entspricht den Eintr�gen der Wei�en Liste, deren
-   * <code>shouldBeUpdated</code>-Flag auf <code>false</code> gesetzt ist.
+   * This list is according to the white list entries whichs
+   * <code>shouldBeUpdated</code> flag is <code>false</code>.
    *
-   * @return Die URL-Pr�fixen, die nicht aus dem Index gel�scht werden sollen.
+   * @return An array of UrlMatchers that identify URLs that should not be
+   *         deleted from the search index.
    * @see WhiteListEntry#shouldBeUpdated()
    */
-  private String[] createPrefixesToKeep() {
+  private UrlMatcher[] createPreserveUrlMatcherArr() {
     ArrayList list = new ArrayList();
     for (int i = 0; i < mWhiteListEntryArr.length; i++) {
       if (! mWhiteListEntryArr[i].shouldBeUpdated()) {
-        list.add(mWhiteListEntryArr[i].getPrefix());
+        list.add(mWhiteListEntryArr[i].getUrlMatcher());
       }
     }
 
-    String[] asArr = new String[list.size()];
+    UrlMatcher[] asArr = new UrlMatcher[list.size()];
     list.toArray(asArr);
     return asArr;
   }
@@ -649,8 +654,7 @@ public class Crawler implements ErrorLogger {
         // Log all ignored entries
         for (int i = 0; i < mWhiteListEntryArr.length; i++) {
           if (! mWhiteListEntryArr[i].shouldBeUpdated()) {
-            mLog.info("Ignoring white list entry: "
-              + mWhiteListEntryArr[i].getPrefix());
+            mLog.info("Ignoring white list entry: " + mWhiteListEntryArr[i].getUrlMatcher());
           }
         }
       } else {

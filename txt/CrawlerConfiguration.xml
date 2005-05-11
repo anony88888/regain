@@ -308,6 +308,7 @@
 <blacklist>
   <!--
   <prefix>http://www.mydomain.de/some/dynamic/content/</prefix>
+  <regex>/backup/[^/]*$</regex>
   -->
 </blacklist>
 
