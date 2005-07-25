@@ -173,8 +173,28 @@ X Blacklist und Whitelist: Reguläre Ausdrücke zulassen.
 
 Filiadata:
 ----------
-  Ärger mit MS Office beseitigen (Jacob). Siehe Mail von Michael Danner vom 15.04.05.
+Bis 15.8.: (1,5 PT)
+  Crawler: Arbeitspeicher sparen: Dateien vom Dateisystem nicht ins
+    mFoundUrlSet oder mIgnoredUrlSet aufnehmen. Beim Dateisystem ist durch die
+    klare Baumstruktur sowieso klar, welche Dokumente schon bearbeitet wurden.
+    (Dazu muss Start-List muss untereinander praefixfrei sein!)
+  Crawler: Arbeitspeicher sparen: Erst Dateien an mJobList anhaengen, dann
+    Unterverzeichnisse. So wird die mJobList klein gehalten.
+  Crawler: Auch fehlerhafte Dokumente aufnehmen. Diese dann bei einem zweiten
+    Durchlauf nicht erneut versuchen. Per Aufrufparameter jedoch trotzdem neu
+    versuchen.
+
+Bis 22.8. (0,5 PT)
   Multiindexsuche: Mit der selben Suchmaske mehrere Indizes durchsuchen.
+
+Bis 12.9. (1 PT)
+  Neuer MS Word-Praeparator: http://textmining.org
+
+Kein Termin:
+  Was passiert bei OutOfMemoryError im Crawler?
+  Auxiliary-Field: toLowerCase-Attribut.
+
+  Ärger mit MS Office beseitigen (Jacob). Siehe Mail von Michael Danner vom 15.04.05.
   Handbuch aktualisieren:
     - Such-JSP: Zusaetzliche Eingabefelder fuer bestimmte Felder koennen mit
       "field.feldName" hinzugefuegt werden.
@@ -197,18 +217,15 @@ Prio A:
 
 Prio B:
 -------
-  Crawler: Arbeitspeicher sparen: Dateien vom Dateisystem nicht ins
-    mFoundUrlSet oder mIgnoredUrlSet aufnehmen. Beim Dateisystem ist durch die
-    klare Baumstruktur sowieso klar, welche Dokumente schon bearbeitet wurden.
-    (Dazu muss Start-List muss untereinander praefixfrei sein!)
-  Crawler: Arbeitspeicher sparen: Erst Dateien an mJobList anhaengen, dann
-    Unterverzeichnisse. So wird die mJobList klein gehalten.
   Desktopsuche: Status-Seite: Ende von Logdatei zeigen
   Sessions for simpleweb. See SimplePageRequest
 
 Prio C:
 -------
-  Neuer MS Word-Praeparator: http://textmining.org
+  Crawler: ZIP-Dateien durchsuchen
+  Crawler: Mailboxen durchsuchen
+  Neuer MS Word-Praeparator: OpenOffice
+  Neuer Powerpoint-Praeparator: POI
   Neuer PDF-Praeparator: PJX (http://www.etymon.com/epub.html)
   Desktopsuche: Nach Speichern der Konfiguration nur dann neu indexieren, wenn
     sich etwas geaendert hat, das den Index veraendert.
