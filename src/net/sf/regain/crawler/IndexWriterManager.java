@@ -170,6 +170,11 @@ public class IndexWriterManager {
    */
   private boolean mUpdateIndex;
 
+  /**
+   * Specifies whether a document that couldn't be prepared the last time should be retried.
+   */
+  private boolean mRetryFailedDocs;
+  
   /** Die DocumentFactory, die die Inhalte f�r die Indizierung aufbereitet. */
   private DocumentFactory mDocumentFactory;
 
@@ -237,13 +242,17 @@ public class IndexWriterManager {
    * @param config Die zu verwendende Konfiguration.
    * @param updateIndex Gibt an, ob ein bereits bestehender Index aktualisiert
    *        werden soll.
+   * @param retryFailedDocs Specifies whether a document that couldn't be
+   *        prepared the last time should be retried.
    *
    * @throws RegainException Wenn der neue Index nicht vorbereitet werden konnte.
    */
-  public IndexWriterManager(CrawlerConfig config, boolean updateIndex)
+  public IndexWriterManager(CrawlerConfig config, boolean updateIndex,
+    boolean retryFailedDocs)
     throws RegainException
   {
     mUpdateIndex = updateIndex;
+    mRetryFailedDocs = retryFailedDocs;
     
     mInitialDocCount = 0;
 
@@ -568,11 +577,11 @@ public class IndexWriterManager {
   public void addToIndex(RawDocument rawDocument, ErrorLogger errorLogger)
     throws RegainException
   {
-    // Pr�fen, ob es einen aktuellen Indexeintrag gibt
+    // Check whether there already is an up-to-date entry in the index
     if (mUpdateIndex) {
       boolean removeOldEntry = false;
 
-      // Alten Eintrag suchen
+      // Search the entry for this URL
       Term urlTerm = new Term("url", rawDocument.getUrl());
       Query query = new TermQuery(urlTerm);
       Document doc;
@@ -596,37 +605,59 @@ public class IndexWriterManager {
           + rawDocument.getUrl(), exc);
       }
 
-      // Wenn ein Dokument gefunden wurde, dann pr�fen, ob Indexeintrag aktuell ist
+      // If we found an entry, check whether it is up-to-date
       if (doc != null) {
+        // Get the last modification date from the document
         Date docLastModified = rawDocument.getLastModified();
+        
         if (docLastModified == null) {
-          // Wir k�nnen nicht feststellen, wann das Dokument zuletzt ge�ndert
-          // wurde (Das ist bei http-URLs der Fall)
-          // -> Alten Eintrag l�schen und Dokument neu indizieren
+          // We are not able to get the last modification date from the
+          // document (this happens with all http-URLs)
+          // -> Delete the old entry and create a new one
           mLog.info("Don't know when the document was last modified. " +
             "Creating a new index entry...");
           removeOldEntry = true;
         } else {
-          // �nderungsdatum mit dem Datum des Indexeintrages vergleichen
+          // Compare the modification date with the one from the index entry
           String asString = doc.get("last-modified");
           if (asString != null) {
             Date indexLastModified = RegainToolkit.stringToLastModified(asString);
 
             long diff = docLastModified.getTime() - indexLastModified.getTime();
             if (diff > 60000L) {
-              // Das Dokument ist mehr als eine Minute neuer
-              // -> Der Eintrag ist nicht aktuell -> Alten Eintrag l�schen
+              // The document is at least one minute newer
+              // -> The index entry is not up-to-date -> Delete the old entry
               mLog.info("Index entry is outdated. Creating a new one (" +
                   docLastModified + " > " + indexLastModified + "): " +
                   rawDocument.getUrl());
               removeOldEntry = true;
             } else {
-              // Der Indexeintrag ist aktuell -> Wir sind fertig
-              mLog.info("Index entry is already up to date: " + rawDocument.getUrl());
-              return;
+              // The index entry is up-to-date
+
+              // Check whether the preparation failed the last time
+              boolean failedLastTime = doc.get("preparation-error") != null;
+              if (failedLastTime) {
+                if (mRetryFailedDocs) {
+                  // The entry failed the last time, the user want's a retry
+                  // -> We do a retry
+                  mLog.info("Retrying preparation of: " + rawDocument.getUrl());
+                  removeOldEntry = true;
+                } else {
+                  // The entry failed the last time, the user want's no retry
+                  // -> We are done
+                  mLog.info("Ignoring " + rawDocument.getUrl() + ", because " +
+                      "preparation already failed the last time and no retry is wanted.");
+                  return;
+                }
+              } else {
+                // The entry is up-to-date and contains text -> We are done
+                mLog.info("Index entry is already up to date: " + rawDocument.getUrl());
+                return;
+              }
             }
           } else {
-            // Wir kennen das �nderungsdatum nicht -> Alten Eintrag l�schen
+            // We don't know the last modification date from the index entry
+            // -> Delete the entry
             mLog.info("Index entry has no last-modified field. " +
                 "Creating a new one: " + rawDocument.getUrl());
             removeOldEntry = true;
@@ -634,15 +665,15 @@ public class IndexWriterManager {
         }
       }
 
-      // Evtl. alten Eintrag l�schen
+      // Check whether we have to delete the old entry
       if (removeOldEntry) {
-        // Eintrag nicht sofort l�schen, sondern nur zum L�schen vormerken.
-        // Siehe markForDeletion(Document)
+        // We don't delete the entry immediately, but we remember it.
+        // See javadoc of markForDeletion(Document)
         markForDeletion(doc);
       }
     }
 
-    // Neuen Eintrag erzeugen
+    // Create a new entry
     createNewIndexEntry(rawDocument, errorLogger);
   }
 

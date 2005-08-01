@@ -202,6 +202,20 @@ public class DocumentFactory {
     if (! preparatorFound) {
       mLog.info("No preparator feels responsible for " + rawDocument.getUrl());
     }
+    
+    if (preparatorFound && (doc == null)) {
+      // There were preparators that felt responsible for the document, but they
+      // weren't able to process it
+      // -> Create a substitute document to avoid that the same document is
+      // tried to be processed the next time
+      try {
+        doc = createSubstituteDocument(rawDocument);
+      }
+      catch (RegainException exc) {
+        errorLogger.logError("Creating substitude document for "
+            + rawDocument.getUrl() + " failed", exc, false);
+      }
+    }
 
     // return the document
     return doc;
@@ -262,7 +276,61 @@ public class DocumentFactory {
         + " did not extract the content of " + url);
     }
 
-    // Preparing suceed -> Create a new, empty document
+    // Preparing suceed -> Create the document
+    Document doc = createDocument(rawDocument, cleanedContent, title,
+                                  summary, headlines, path, additionalFieldMap);
+
+    // return the document
+    return doc;
+  }
+
+
+  /**
+   * Creates a substitute lucene {@link Document} for a {@link RawDocument}.
+   * <p>
+   * Substitute documents have no "content" field, but a "preparation-error"
+   * field. They are added to the index if preparation failed. This way at least
+   * the URL may be searched and following spider runs are much faster as a
+   * previously failed document is not retried.
+   * 
+   * @param rawDocument The document to create the substitute document for.
+   * @return The substitide document.
+   * @throws RegainException If the user groups that are allowed to read this
+   *         document couldn't be determined. 
+   */
+  private Document createSubstituteDocument(RawDocument rawDocument)
+    throws RegainException
+  {
+    return createDocument(rawDocument, null, null, null, null, null, null);
+  }
+
+  
+  /**
+   * Create a lucene {@link Document}.
+   * 
+   * @param rawDocument The raw document to create the lucene {@link Document}
+   *        for.
+   * @param cleanedContent The content of the document. (May be null, if the
+   *        content couldn't be extracted. In this case a substitude document is
+   *        created)
+   * @param title The title. May be null.
+   * @param summary The summary. May be null.
+   * @param headlines The headlines. May be null.
+   * @param path The path to the document. May be null.
+   * @param additionalFieldMap The additional fields provided by the preparator.
+   * @return The lucene {@link Document}.
+   * 
+   * @throws RegainException If the user groups that are allowed to read this
+   *         document couldn't be determined. 
+   */
+  private Document createDocument(RawDocument rawDocument, String cleanedContent,
+    String title, String summary, String headlines, PathElement[] path,
+    Map additionalFieldMap)
+    throws RegainException
+  {
+    String url = rawDocument.getUrl();
+
+    // Create a new, empty document
     Document doc = new Document();
     
     // Create the auxiliary fields
@@ -338,11 +406,17 @@ public class DocumentFactory {
       }
     }
 
-    // Write the clean content to an analysis file
-    writeAnalysisFile(url, "clean", cleanedContent);
+    if (hasContent(cleanedContent)) {
+      // Write the clean content to an analysis file
+      writeAnalysisFile(url, "clean", cleanedContent);
 
-    // Add the cleaned content of the document
-    doc.add(Field.UnStored("content", cleanedContent));
+      // Add the cleaned content of the document
+      doc.add(Field.UnStored("content", cleanedContent));
+    } else {
+      // We have no content! This is a substitude document
+      // -> Add a "preparation-error"-field
+      doc.add(Field.UnIndexed("preparation-error", "true"));
+    }
 
     // Check whether to use the link text as title
     for (int i = 0; i < mUseLinkTextAsTitleReArr.length; i++) {
@@ -361,7 +435,7 @@ public class DocumentFactory {
     }
 
     // Add the document's summary
-    if (! hasContent(summary)) {
+    if (! hasContent(summary) && hasContent(cleanedContent)) {
       summary = createSummaryFromContent(cleanedContent);
     }
     if (hasContent(summary)) {
@@ -381,11 +455,8 @@ public class DocumentFactory {
       // Write the path to an analysis file
       writeAnalysisFile(url, "path", asString);
     }
-
-    // return the document
     return doc;
   }
-
 
 
   /**

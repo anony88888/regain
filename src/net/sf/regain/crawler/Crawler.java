@@ -284,16 +284,19 @@ public class Crawler implements ErrorLogger {
 
 
   /**
-   * F�hrt den Crawler-Proze� aus und gibt am Ende die Statistik, die
-   * Dead-Link-Liste und die Fehler-Liste aus.
+   * Executes the crawler process and prints out a statistik, the dead-link-list
+   * and the error-list at the end.
    *
-   * @param updateIndex Gibt an, ob ein bereits bestehender Index aktualisiert
-   *        werden soll.
-   * @param onlyEntriesArr Die Namen der Eintr�ge in der Wei�en Liste, die
-   *        bearbeitet werden sollen. Wenn <code>null</code> oder leer, dann
-   *        werden alle Eintr�ge bearbeitet.
+   * @param updateIndex Specifies whether an already existing index should be
+   *        updated.
+   * @param retryFailedDocs Specifies whether a document that couldn't be
+   *        prepared the last time should be retried.
+   * @param onlyEntriesArr The names of the white list entries, that should be
+   *        updated. If <code>null</code> or empty, all entries will be updated.
    */
-  public void run(boolean updateIndex, String[] onlyEntriesArr) {
+  public void run(boolean updateIndex, boolean retryFailedDocs,
+    String[] onlyEntriesArr)
+  {
     mLog.info("Starting crawling...");
     mShouldPause = false;
 
@@ -302,7 +305,7 @@ public class Crawler implements ErrorLogger {
     if (mConfiguration.getBuildIndex()) {
       mLog.info("Preparing the index");
       try {
-        mIndexWriterManager = new IndexWriterManager(mConfiguration, updateIndex);
+        mIndexWriterManager = new IndexWriterManager(mConfiguration, updateIndex, retryFailedDocs);
         updateIndex = mIndexWriterManager.getUpdateIndex();
       }
       catch (RegainException exc) {
