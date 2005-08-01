@@ -262,7 +262,8 @@ public class IndexWriterManager {
       // NOTE: The index directory does not exist.
       //       We could just create it, but it's more savely to throw an
       //       exception. We don't wan't to destroy anything.
-      throw new RegainException("The index directory " + indexDir + " does not exist");
+      throw new RegainException("The index directory " + indexDir.getAbsolutePath()
+          + " does not exist");
     }
 
     mNewIndexDir        = new File(indexDir, NEW_INDEX_SUBDIR);
