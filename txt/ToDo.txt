@@ -173,13 +173,14 @@ X Crawler: Arbeitspeicher sparen: Dateien vom Dateisystem nicht ins
     mFoundUrlSet oder mIgnoredUrlSet aufnehmen. Beim Dateisystem ist durch die
     klare Baumstruktur sowieso klar, welche Dokumente schon bearbeitet wurden.
     (Dazu muss Start-List muss untereinander praefixfrei sein!)
+X Crawler: Arbeitspeicher sparen: Dateien am Anfang der mJobList einfügen,
+    Verzeichnisse am Ende. So wird die mJobList klein gehalten, weil erst
+    alle Dateien abgearbeitet werden, bevor neue Jobs hinzugefügt werden.
 
 
 Filiadata:
 ----------
 Bis 15.8.: (1,5 PT)
-  Crawler: Arbeitspeicher sparen: Erst Dateien an mJobList anhaengen, dann
-    Unterverzeichnisse. So wird die mJobList klein gehalten.
   Crawler: Auch fehlerhafte Dokumente aufnehmen. Diese dann bei einem zweiten
     Durchlauf nicht erneut versuchen. Per Aufrufparameter jedoch trotzdem neu
     versuchen.

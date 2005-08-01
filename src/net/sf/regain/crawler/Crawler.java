@@ -263,7 +263,16 @@ public class Crawler implements ErrorLogger {
 
         CrawlerJob job = new CrawlerJob(url, sourceUrl, sourceLinkText,
                                       shouldBeParsed, shouldBeIndexed);
-        mJobList.add(job);
+        
+        // NOTE: This is a little trick: We put documents that aren't parsed at
+        //       the beginning of the job list and documents that are parsed at
+        //       the end. This keeps the job list small as first all documents
+        //       are processed, before new documents are added.
+        if (shouldBeParsed) {
+          mJobList.addLast(job);
+        } else {
+          mJobList.addFirst(job);
+        }
       } else {
         mUrlChecker.setIgnored(url);
         if (mLog.isDebugEnabled()) {
