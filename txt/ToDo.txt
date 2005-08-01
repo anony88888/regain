@@ -169,25 +169,25 @@ X Bugfix: Zugriffsrechte-Management: Gruppennamen wurden auch bei
   nicht-Whitespace-Zeichen wie "/", "-", "\" getrennt.
 X Dateizugriffs-Servlet abschaltbar.
 X Blacklist und Whitelist: Reguläre Ausdrücke zulassen.
+X Crawler: Arbeitspeicher sparen: Dateien vom Dateisystem nicht ins
+    mFoundUrlSet oder mIgnoredUrlSet aufnehmen. Beim Dateisystem ist durch die
+    klare Baumstruktur sowieso klar, welche Dokumente schon bearbeitet wurden.
+    (Dazu muss Start-List muss untereinander praefixfrei sein!)
 
 
 Filiadata:
 ----------
 Bis 15.8.: (1,5 PT)
-  Crawler: Arbeitspeicher sparen: Dateien vom Dateisystem nicht ins
-    mFoundUrlSet oder mIgnoredUrlSet aufnehmen. Beim Dateisystem ist durch die
-    klare Baumstruktur sowieso klar, welche Dokumente schon bearbeitet wurden.
-    (Dazu muss Start-List muss untereinander praefixfrei sein!)
   Crawler: Arbeitspeicher sparen: Erst Dateien an mJobList anhaengen, dann
     Unterverzeichnisse. So wird die mJobList klein gehalten.
   Crawler: Auch fehlerhafte Dokumente aufnehmen. Diese dann bei einem zweiten
     Durchlauf nicht erneut versuchen. Per Aufrufparameter jedoch trotzdem neu
     versuchen.
 
-Bis 22.8. (0,5 PT)
+Bis 15.8. (0,5 PT)
   Multiindexsuche: Mit der selben Suchmaske mehrere Indizes durchsuchen.
 
-Bis 12.9. (1 PT)
+Bis 15.8. (1 PT)
   Neuer MS Word-Praeparator: http://textmining.org
 
 Kein Termin:

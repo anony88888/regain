@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
@@ -688,16 +687,16 @@ public class IndexWriterManager {
    * IndexWriterManager (see {@link #mUrlsToDeleteHash}) or if the don't neither
    * match an entry of the urlToKeepSet nor of the prefixesToKeepArr.
    *
-   * @param urlToKeepSet The URLs that shouldn't be deleted.
-   * @param preserveUrlMatcherArr UrlMatchers that idetify URLs that should be
-   *        preserved. 
+   * @param urlChecker The UrlChecker to use for deciding whether an index entry
+   *        should be kept in the index or not.
    * @throws RegainException If an index entry could either not be read or
    *         deleted.
    */
-  public void removeObsoleteEntries(HashSet urlToKeepSet,
-      UrlMatcher[] preserveUrlMatcherArr)
+  public void removeObsoleteEntries(UrlChecker urlChecker)
     throws RegainException
   {
+    UrlMatcher[] preserveUrlMatcherArr = urlChecker.createPreserveUrlMatcherArr();
+
     if (! mUpdateIndex) {
       // Wir haben einen komplett neuen Index erstellt
       // -> Es kann keine Eintr�ge zu nicht vorhandenen Dokumenten geben
@@ -705,9 +704,7 @@ public class IndexWriterManager {
       return;
     }
     
-    if ((mUrlsToDeleteHash == null) && (urlToKeepSet == null)
-        && (preserveUrlMatcherArr == null))
-    {
+    if ((mUrlsToDeleteHash == null) && (urlChecker == null)) {
       // There is nothing to delete -> Fast return
       return;
     }
@@ -739,11 +736,11 @@ public class IndexWriterManager {
             shouldBeDeleted = true;
           }
           // Check whether all other documents should NOT be deleted
-          else if ((urlToKeepSet == null) && (preserveUrlMatcherArr == null)) {
+          else if ((urlChecker == null)) {
             shouldBeDeleted = false;
           }
           // Pr�fen, ob dieser Eintrag zu verschonen ist
-          else if (urlToKeepSet.contains(url)) {
+          else if (urlChecker.shouldBeKeptInIndex(url)) {
             shouldBeDeleted = false;
           }
           // Pr�fen, ob die URL zu einem zu-verschonen-Pr�fix passt
@@ -786,7 +783,7 @@ public class IndexWriterManager {
    *         deleted.
    */
   private void removeObsoleteEntries() throws RegainException {
-    removeObsoleteEntries(null, null);
+    removeObsoleteEntries(null);
   }
   
 
