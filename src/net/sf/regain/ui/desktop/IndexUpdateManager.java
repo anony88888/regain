@@ -196,7 +196,7 @@ public class IndexUpdateManager implements DesktopConstants {
         try {
           mLog.info("Starting index update on " + new Date());
           mCrawler = new Crawler(config);
-          mCrawler.run(true, null);
+          mCrawler.run(true, false, null);
         }
         catch (RegainException exc) {
           mLog.error("Updating the index failed", exc);
