@@ -107,7 +107,7 @@ public class BrowserSelectorFrame implements DesktopConstants {
   /**
    * Handles a changed value. Called when yes or no was pressed.
    */
-  private void handleOptionPaneChanged() {
+  void handleOptionPaneChanged() {
     int option = ((Integer) mOptionPane.getValue()).intValue();
     
     if (option == 0) {
