@@ -138,9 +138,9 @@ public class SearchToolkit {
       }
       
       // Append the additional fields to the query
-      Enumeration enum = request.getParameterNames();
-      while (enum.hasMoreElements()) {
-        String paramName = (String) enum.nextElement();
+      Enumeration enm = request.getParameterNames();
+      while (enm.hasMoreElements()) {
+        String paramName = (String) enm.nextElement();
         if (paramName.startsWith(FIELD_PREFIX)) {
           // This is an additional field -> Append it to the query
           String fieldName = paramName.substring(FIELD_PREFIX.length());
