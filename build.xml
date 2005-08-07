@@ -575,12 +575,10 @@
       </manifest>
       <fileset refid="desktop-common-jars"/>
       <fileset refid="desktop-common-classes"/>
-      <!--
       <fileset dir="temp/included-lib-classes/linux">
         <include name="org/jdesktop/jdic/init/**"/>
         <include name="org/jdesktop/jdic/tray/**"/>
       </fileset>
-      -->
     </jar>
   </target>
 
