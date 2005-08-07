@@ -180,13 +180,13 @@ X Crawler: Auch fehlerhafte Dokumente aufnehmen. Diese dann bei einem zweiten
     Durchlauf nicht erneut versuchen. Per Aufrufparameter jedoch trotzdem neu
     versuchen.
 X Multiindexsuche: Mit der selben Suchmaske mehrere Indizes durchsuchen.
+- Neuer MS Word-Praeparator: http://textmining.org
+    Habe ich gelassen, nachdem ich bemerkt habe, dass textmining.org für
+    Word-Versionen > 6.0 einfach POI nutzt.
 
 
 Filiadata:
 ----------
-
-Bis 15.8. (1 PT)
-  Neuer MS Word-Praeparator: http://textmining.org
 
 Kein Termin:
   Was passiert bei OutOfMemoryError im Crawler?
