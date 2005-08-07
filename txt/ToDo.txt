@@ -186,12 +186,13 @@ X Multiindexsuche: Mit der selben Suchmaske mehrere Indizes durchsuchen.
 X HtmlPreparator-Regex korrigieren: Auch Endungen .jsp, .php, .php3, .php4, .asp
     zulassen.
 X Italienische Lokalisierung Teil I. Siehe Mail von Franco Lombardo vom 30.05.05.
+X Bugfix: CrawlerToolkit.toAbsoluteUrl(...) löst . und .. nicht auf.
+    Siehe Mail von j1234 vom 30.05.05.
 
 
 Filiadata:
 ----------
 
-Kein Termin:
   Was passiert bei OutOfMemoryError im Crawler?
   Auxiliary-Field: toLowerCase-Attribut.
 
@@ -204,8 +205,6 @@ Kein Termin:
 Prio A:
 -------
   Fehlende Teile der italienischen Lokalisierung
-  Bugfix: CrawlerToolkit.toAbsoluteUrl(...) löst . und .. nicht auf.
-    Siehe Mail von j1234 vom 30.05.05.
   Bugfix: System-Tray-Klasse fehlt in Linux zip
     Siehe Forum: http://forum.murfman.de/en/viewtopic.php?t=12
   I18N-Files mit getResource() holen.
