@@ -183,6 +183,8 @@ X Multiindexsuche: Mit der selben Suchmaske mehrere Indizes durchsuchen.
 - Neuer MS Word-Praeparator: http://textmining.org
     Habe ich gelassen, nachdem ich bemerkt habe, dass textmining.org für
     Word-Versionen > 6.0 einfach POI nutzt.
+X HtmlPreparator-Regex korrigieren: Auch Endungen .jsp, .php, .php3, .php4, .asp
+    zulassen.
 
 
 Filiadata:
@@ -200,6 +202,12 @@ Kein Termin:
 
 Prio A:
 -------
+  Italienische Lokalisierung. Siehe Mail von Franco Lombardo vom 30.05.05.
+  Bugfix: CrawlerToolkit.toAbsoluteUrl(...) löst . und .. nicht auf.
+    Siehe Mail von j1234 vom 30.05.05.
+  Bugfix: System-Tray-Klasse fehlt in Linux zip
+    Siehe Forum: http://forum.murfman.de/en/viewtopic.php?t=12
+  I18N-Files mit getResource() holen.
   Handbuch: Installation: Was muss man konfigurieren, damit es läuft.
   Bugfix: Es wird keine Navigation gezeigt, wenn nach extension:"html" gesucht wird.
   Warum frisst Firefox die MIME-Types nicht?
@@ -208,18 +216,20 @@ Prio A:
     Statt dessen: noindex.jsp zeigen.
   Desktopsuche: Installer komplett auch auf Englisch
   Suchmaske: Breakpoints nutzen.
-  Desktopsuche: Mime-Types konfigurierbar
+  Desktopsuche: Mime-Types konfigurierbar (apache-Format)
   Suchmaske: Icons passend zu den Dateiendungen
-  Desktopsuche: Zugriff von aussen fuer einstellbare Benutzer/Passwort-Paare
-    erlauben.
 
 Prio B:
 -------
+  Desktopsuche: Zugriff von aussen fuer einstellbare Benutzer/Passwort-Paare
+    erlauben.
+  Optional erlauben, url-patterns für Präparatoren anzugeben.
   Desktopsuche: Status-Seite: Ende von Logdatei zeigen
   Sessions for simpleweb. See SimplePageRequest
 
 Prio C:
 -------
+  Hit highlighting
   Crawler: ZIP-Dateien durchsuchen
   Crawler: Mailboxen durchsuchen
   Neuer MS Word-Praeparator: OpenOffice

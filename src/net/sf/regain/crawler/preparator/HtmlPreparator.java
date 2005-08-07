@@ -72,7 +72,7 @@ public class HtmlPreparator extends AbstractPreparator {
    * Creates a new instance of HtmlPreparator.
    */
   public HtmlPreparator() {
-    super(new RE("(^http://[^/]*$)|(^http://.*/[^\\.]*$)|(\\.(/|html|htm)$)", RE.MATCH_CASEINDEPENDENT));
+    super(new RE("(^http://[^/]*/?$)|(^http://.*/[^\\.]*$)|(\\.(/|html|htm|jsp|php\\d?|asp)$)", RE.MATCH_CASEINDEPENDENT));
   }
 
 
