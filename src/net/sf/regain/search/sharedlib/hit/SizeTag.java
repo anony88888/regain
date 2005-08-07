@@ -47,10 +47,11 @@ public class SizeTag extends AbstractHitTag {
    * @param request The page request.
    * @param response The page response.
    * @param hit The current search hit.
+   * @param hitIndex The index of the hit.
    * @throws RegainException If there was an exception.
    */
   protected void printEndTag(PageRequest request, PageResponse response,
-    Document hit)
+    Document hit, int hitIndex)
     throws RegainException
   {
     String sizeAsString = hit.get("size");

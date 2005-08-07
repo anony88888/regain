@@ -179,13 +179,11 @@ X Crawler: Arbeitspeicher sparen: Dateien am Anfang der mJobList einfügen,
 X Crawler: Auch fehlerhafte Dokumente aufnehmen. Diese dann bei einem zweiten
     Durchlauf nicht erneut versuchen. Per Aufrufparameter jedoch trotzdem neu
     versuchen.
+X Multiindexsuche: Mit der selben Suchmaske mehrere Indizes durchsuchen.
 
 
 Filiadata:
 ----------
-
-Bis 15.8. (0,5 PT)
-  Multiindexsuche: Mit der selben Suchmaske mehrere Indizes durchsuchen.
 
 Bis 15.8. (1 PT)
   Neuer MS Word-Praeparator: http://textmining.org

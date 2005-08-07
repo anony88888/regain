@@ -60,17 +60,19 @@ public class CheckTag extends SharedTag {
   public void printEndTag(PageRequest request, PageResponse response)
     throws RegainException
   {
-    // Check whether there is a index
-    IndexConfig indexConfig = SearchToolkit.getIndexConfig(request);
-    File indexdir = new File(indexConfig.getDirectory());
-    File newFile = new File(indexdir, "new");
-    File indexFile = new File(indexdir, "index");
-    
-    if (indexdir.exists() && ! indexFile.exists() && ! newFile.exists()) {
-      // There is no index -> Forward to the noIndexUrl
-      String noIndexUrl = getParameter("noIndexUrl", true);
-      response.sendRedirect(noIndexUrl);
-      return;
+    // Check whether the indexes exist
+    IndexConfig[] indexConfigArr = SearchToolkit.getIndexConfigArr(request);
+    for (int i = 0; i < indexConfigArr.length; i++) {
+      File indexdir = new File(indexConfigArr[i].getDirectory());
+      File newFile = new File(indexdir, "new");
+      File indexFile = new File(indexdir, "index");
+      
+      if (indexdir.exists() && ! indexFile.exists() && ! newFile.exists()) {
+        // There is no index -> Forward to the noIndexUrl
+        String noIndexUrl = getParameter("noIndexUrl", true);
+        response.sendRedirect(noIndexUrl);
+        return;
+      }
     }
     
     // Check whether there is a query

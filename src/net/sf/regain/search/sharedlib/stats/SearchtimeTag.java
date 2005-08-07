@@ -28,8 +28,8 @@
 package net.sf.regain.search.sharedlib.stats;
 
 import net.sf.regain.RegainException;
-import net.sf.regain.search.SearchContext;
 import net.sf.regain.search.SearchToolkit;
+import net.sf.regain.search.results.SearchResults;
 import net.sf.regain.util.sharedtag.PageRequest;
 import net.sf.regain.util.sharedtag.PageResponse;
 import net.sf.regain.util.sharedtag.SharedTag;
@@ -51,9 +51,9 @@ public class SearchtimeTag extends SharedTag {
   public void printEndTag(PageRequest request, PageResponse response)
     throws RegainException
   {
-    SearchContext search = SearchToolkit.getSearchContext(request);
+    SearchResults results = SearchToolkit.getSearchResults(request);
 
-    int time = search.getSearchTime();
+    int time = results.getSearchTime();
     double secs = time / 1000.0;
 
     response.print(Double.toString(secs));

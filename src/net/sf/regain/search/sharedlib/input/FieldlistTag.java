@@ -44,8 +44,14 @@ public class FieldlistTag extends SharedTag {
     String fieldName = getParameter("field", true);
     String allMsg = getParameter("allMsg", true);
 
-    IndexConfig indexConfig = SearchToolkit.getIndexConfig(request);
-    IndexSearcherManager manager = IndexSearcherManager.getInstance(indexConfig.getDirectory());
+    // Get the IndexConfig
+    IndexConfig[] configArr = SearchToolkit.getIndexConfigArr(request);
+    if (configArr.length > 1) {
+      throw new RegainException("The fieldlist tag can only be used for one index!");
+    }
+    IndexConfig config = configArr[0];
+    
+    IndexSearcherManager manager = IndexSearcherManager.getInstance(config.getDirectory());
     
     String[] fieldValues = manager.getFieldValues(fieldName);
     

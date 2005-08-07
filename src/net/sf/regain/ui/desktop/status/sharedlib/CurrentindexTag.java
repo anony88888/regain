@@ -64,8 +64,14 @@ public class CurrentindexTag extends SharedTag implements DesktopConstants {
     throws RegainException
   {
     Localizer localizer = mMultiLocalizer.getLocalizer(request.getLocale());
-
-    IndexConfig config = SearchToolkit.getIndexConfig(request);
+    
+    // Get the IndexConfig
+    IndexConfig[] configArr = SearchToolkit.getIndexConfigArr(request);
+    if (configArr.length > 1) {
+      throw new RegainException("The currentindex tag can only be used for one index!");
+    }
+    IndexConfig config = configArr[0];
+    
     File currentIndexDir = new File(config.getDirectory(), "new");
     if (! currentIndexDir.exists()) {
       currentIndexDir = new File(config.getDirectory(), "index");

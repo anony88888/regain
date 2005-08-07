@@ -63,7 +63,9 @@ public abstract class AbstractHitTag extends SharedTag
           + " must be inside a list tag!");
     }
 
-    printEndTag(request, response, hit);
+    Integer hitIndex = (Integer) request.getContextAttribute(ATTR_CURRENT_HIT_INDEX);
+
+    printEndTag(request, response, hit, hitIndex.intValue());
   }
 
 
@@ -75,10 +77,11 @@ public abstract class AbstractHitTag extends SharedTag
    * @param request The page request.
    * @param response The page response.
    * @param hit The current search hit.
+   * @param hitIndex The index of the hit.
    * @throws RegainException If there was an exception.
    */
   protected abstract void printEndTag(PageRequest request, PageResponse response,
-    Document hit)
+    Document hit, int hitIndex)
     throws RegainException;
 
 }

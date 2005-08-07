@@ -56,9 +56,12 @@ public class HiddenparamTag extends SharedTag {
     throws RegainException
   {
     String name = getParameter("name", true);
-    String value = request.getParameter(name);
-    if (value != null) {
-      response.print("<input name=\"" + name + "\" type=\"hidden\" value=\"" + value + "\"/>");
+    String[] valueArr = request.getParameters(name);
+    if (valueArr != null) {
+      for (int i = 0; i < valueArr.length; i++) {
+        response.print("<input name=\"" + name + "\" type=\"hidden\" value=\""
+            + valueArr[i] + "\"/>");
+      }
     }
   }
   

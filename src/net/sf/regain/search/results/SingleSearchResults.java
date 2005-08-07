@@ -25,11 +25,12 @@
  *   $Author$
  * $Revision$
  */
-package net.sf.regain.search;
+package net.sf.regain.search.results;
 
 import java.io.IOException;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.search.IndexSearcherManager;
 import net.sf.regain.search.config.IndexConfig;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -45,13 +46,11 @@ import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 
 /**
- * Contains the search context for one query. Using this context you have access of
- * all hits the search had.
+ * Holds the results of a search on a single index.
  *
- * @see SearchToolkit#getSearchContext(net.sf.regain.util.sharedtag.PageRequest)
  * @author Til Schneider, www.murfman.de
  */
-public class SearchContext {
+public class SingleSearchResults implements SearchResults {
 
   /** The configuration for the index. */
   private IndexConfig mIndexConfig;
@@ -83,7 +82,8 @@ public class SearchContext {
    *
    * @throws RegainException If searching failed.
    */
-  public SearchContext(IndexConfig indexConfig, String queryText, String[] groupArr)
+  public SingleSearchResults(IndexConfig indexConfig, String queryText,
+    String[] groupArr)
     throws RegainException
   {
     long startTime = System.currentTimeMillis();
@@ -159,22 +159,22 @@ public class SearchContext {
   
   
   /**
-   * Gets the name of the index.
-   * 
-   * @return The name of the index.
-   */
-  public String getIndexName() {
-    return mIndexConfig.getName();
-  }
-
-
-  /**
    * Gets the query text of the search.
    *
    * @return The query text.
    */
   public String getQueryText() {
     return mQueryText;
+  }
+  
+  
+  /**
+   * Gets the search hits.
+   * 
+   * @return The search hits.
+   */
+  Hits getHits() {
+    return mHits;
   }
 
 
@@ -242,12 +242,17 @@ public class SearchContext {
 
 
   /**
-   * Gibt zurück, ob die URL in einem neuen Fenster geöffnet werden soll.
+   * Gets whether a hit should be opened in a new window.
    *
-   * @param url Die zu prüfende URL
-   * @return Ob die URL in einem neuen Fenster geöffnet werden soll.
+   * @param index The index of the hit.
+   * @return Whether the hit should be opened in a new window.
+   * @throws RegainException If getting the URL failed.
    */
-  public synchronized boolean getOpenUrlInNewWindow(String url) {
+  public synchronized boolean getOpenHitInNewWindow(int index)
+    throws RegainException
+  {
+    String url = getHitUrl(index);
+    
     if (mOpenInNewWindowRegex == null) {
       return false;
     } else {
@@ -261,28 +266,31 @@ public class SearchContext {
   
   
   /**
-   * Gets whether the file-to-http-bridge should be used for file-URLs.
+   * Gets whether the file-to-http-bridge should be used for a certain hit.
    * <p>
    * Mozilla browsers have a security mechanism that blocks loading file-URLs
    * from pages loaded via http. To be able to load files from the search
    * results, regain offers the file-to-http-bridge that provides all files that
    * are listed in the index via http.
-   * 
+   *
+   * @param index The index of the hit. 
    * @return Whether the file-to-http-bridge should be used.
    */
-  public boolean getUseFileToHttpBridge() {
+  public boolean getUseFileToHttpBridgeForHit(int index) {
     return mIndexConfig.getUseFileToHttpBridge();
   }
 
 
   /**
-   * Rewrites the given URL according to the rewrite rules specified in the
-   * index config.
+   * Gets the url from a hit and rewrites it according to the rewrite rules
+   * specified in the index config.
    * 
-   * @param url The URL to rewrite (comes from the index).
-   * @return The rewritten URL (shown to the user).
+   * @param index The index of the hit to get the URL for.
+   * @return The url of the wanted hit.
+   * @throws RegainException If getting the hit document failed.
    */
-  public String rewriteUrl(String url) {
+  public String getHitUrl(int index) throws RegainException {
+    String url = getHitDocument(index).get("url");    
     if (url == null) {
       return null;
     }

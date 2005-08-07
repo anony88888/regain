@@ -68,8 +68,14 @@ public class IndexupdateTag extends SharedTag {
     if (crawler == null) {
       response.print(localizer.msg("noIndexUpdate", "Currently is no index update running."));
     } else {
+      // Get the IndexConfig
+      IndexConfig[] configArr = SearchToolkit.getIndexConfigArr(request);
+      if (configArr.length > 1) {
+        throw new RegainException("The indexupdate tag can only be used for one index!");
+      }
+      IndexConfig config = configArr[0];
+
       // Get the index size
-      IndexConfig config = SearchToolkit.getIndexConfig(request);
       File indexUpdateDir = new File(config.getDirectory(), "temp");
       long size = RegainToolkit.getDirectorySize(indexUpdateDir);
       String sizeAsString = RegainToolkit.bytesToString(size, request.getLocale());
