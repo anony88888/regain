@@ -185,6 +185,7 @@ X Multiindexsuche: Mit der selben Suchmaske mehrere Indizes durchsuchen.
     Word-Versionen > 6.0 einfach POI nutzt.
 X HtmlPreparator-Regex korrigieren: Auch Endungen .jsp, .php, .php3, .php4, .asp
     zulassen.
+X Italienische Lokalisierung Teil I. Siehe Mail von Franco Lombardo vom 30.05.05.
 
 
 Filiadata:
@@ -202,7 +203,7 @@ Kein Termin:
 
 Prio A:
 -------
-  Italienische Lokalisierung. Siehe Mail von Franco Lombardo vom 30.05.05.
+  Fehlende Teile der italienischen Lokalisierung
   Bugfix: CrawlerToolkit.toAbsoluteUrl(...) löst . und .. nicht auf.
     Siehe Mail von j1234 vom 30.05.05.
   Bugfix: System-Tray-Klasse fehlt in Linux zip
