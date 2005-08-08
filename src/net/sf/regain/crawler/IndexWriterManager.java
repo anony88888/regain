@@ -720,15 +720,14 @@ public class IndexWriterManager {
    * match an entry of the urlToKeepSet nor of the prefixesToKeepArr.
    *
    * @param urlChecker The UrlChecker to use for deciding whether an index entry
-   *        should be kept in the index or not.
+   *        should be kept in the index or not. If null only the documents in
+   *        the {@link #mUrlsToDeleteHash} will be deleted.
    * @throws RegainException If an index entry could either not be read or
    *         deleted.
    */
   public void removeObsoleteEntries(UrlChecker urlChecker)
     throws RegainException
   {
-    UrlMatcher[] preserveUrlMatcherArr = urlChecker.createPreserveUrlMatcherArr();
-
     if (! mUpdateIndex) {
       // Wir haben einen komplett neuen Index erstellt
       // -> Es kann keine Eintr�ge zu nicht vorhandenen Dokumenten geben
@@ -739,6 +738,12 @@ public class IndexWriterManager {
     if ((mUrlsToDeleteHash == null) && (urlChecker == null)) {
       // There is nothing to delete -> Fast return
       return;
+    }
+
+    // Get the UrlMatchers that identify URLs that should not be deleted
+    UrlMatcher[] preserveUrlMatcherArr = null;
+    if (urlChecker != null) {
+      preserveUrlMatcherArr = urlChecker.createPreserveUrlMatcherArr();
     }
 
     // Go through the index

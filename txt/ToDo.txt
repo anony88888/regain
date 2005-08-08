@@ -188,8 +188,12 @@ X HtmlPreparator-Regex korrigieren: Auch Endungen .jsp, .php, .php3, .php4, .asp
 X Italienische Lokalisierung Teil I. Siehe Mail von Franco Lombardo vom 30.05.05.
 X Bugfix: CrawlerToolkit.toAbsoluteUrl(...) löst . und .. nicht auf.
     Siehe Mail von j1234 vom 30.05.05.
+X JUnit-Tests ermöglichen
 X Bugfix: System-Tray-Klasse fehlt in Linux zip
     Siehe Forum: http://forum.murfman.de/en/viewtopic.php?t=12
+X Bugfix: NullPointer in removeObsoleteEntries(...). Z.B. wenn ein Breakpoint
+    erstellt wird. (Entstanden bei "Dateien vom Dateisystem nicht ins
+    mFoundUrlSet oder mIgnoredUrlSet aufnehmen")
 
 
 Filiadata:
@@ -222,6 +226,7 @@ Prio B:
   Handbuch: Installation: Was muss man konfigurieren, damit es läuft.
   Desktopsuche: Zugriff von aussen fuer einstellbare Benutzer/Passwort-Paare
     erlauben.
+  Desktopsuche: Einstellungen: Verzeichnis-Selektor
   Desktopsuche: Status-Seite: Ende von Logdatei zeigen
   Sessions for simpleweb. See SimplePageRequest
   Unter Java 1.2.2 oder zur Not 1.3 lauffaehig machen.
