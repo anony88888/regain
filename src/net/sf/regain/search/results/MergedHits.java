@@ -213,6 +213,16 @@ public class MergedHits {
   
   
   /**
+   * Gets the hits to merge.
+   * 
+   * @return The hits to merge.
+   */
+  Hits[] getHitsArr() {
+    return mHitsArr;
+  }
+  
+  
+  /**
    * Contains the data of one hit.
    */
   private class Hit {
@@ -275,7 +285,7 @@ public class MergedHits {
      */
     public Document getDocument() throws IOException {
       if (mDocument == null) {
-        mDocument = mHitsArr[mHitsIndex].doc(mHitsPosition);
+        mDocument = getHitsArr()[mHitsIndex].doc(mHitsPosition);
       }
       
       return mDocument;
