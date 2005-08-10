@@ -27,6 +27,7 @@
  */
 package net.sf.regain.util.sharedtag;
 
+import java.io.File;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Locale;
@@ -243,6 +244,15 @@ public abstract class PageRequest {
    * @return The base URL where the JSP files and resources are located.
    * @throws RegainException If getting the base URL failed.
    */
-  public abstract URL getBaseUrl() throws RegainException;
-  
+  public abstract URL getResourceBaseUrl() throws RegainException;
+
+
+  /**
+   * Gets the working directory of the web server.
+   * 
+   * @return The working directory of the web server.
+   * @throws RegainException If getting the working directory failed.
+   */
+  public abstract File getWorkingDir() throws RegainException;
+
 }

@@ -98,7 +98,8 @@ public class Main implements DesktopConstants {
       System.exit(1); // Abort
       return;
     }
-    SimplePageRequest.setBaseUrl(baseurl);
+    SimplePageRequest.setResourceBaseUrl(baseurl);
+    SimplePageRequest.setWorkingDir(new File("web"));
     SimplePageRequest.setInitParameter("searchConfigFile", "conf/SearchConfiguration.xml");
     ExecuterParser.registerNamespace("search", "net.sf.regain.search.sharedlib");
     ExecuterParser.registerNamespace("config", "net.sf.regain.ui.desktop.config.sharedlib");

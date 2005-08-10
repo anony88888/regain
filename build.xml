@@ -136,6 +136,7 @@
     <echo message="  jsmoothgen           Creates a windows executable using Jsmooth."/>
     <echo message="  installer            Creates a Windows installer for the project."/>
     <echo message="  public               Creates all the stuff that can be downloaded."/>
+    <echo message="  public-no-installer  Creates all the stuff that can be downloaded except for the installer."/>
     <echo message="  deploy-web           Deploys the web content at the servlet engine."/>
     <echo message="  deploy-classes       Deploys the web content at the servlet engine."/>
     <echo message="  deploy-config        Deploys the config at the servlet engine."/>
@@ -797,14 +798,20 @@
     </java>
   </target>
 
-
+  
   <!--
    | Creates all the stuff that can be downloaded.
+   +-->
+  <target name="public" depends="public-no-installer, installer"/>
+  
+
+  <!--
+   | Creates all the stuff that can be downloaded except for the installer.
    |
    | This target depends on clean-runtime to be sure that the runtime
    | directory contains no stuff we don't want to be destributed.
    +-->
-  <target name="public" depends="clean-all, runtime, doc">
+  <target name="public-no-installer" depends="clean-all, runtime, doc">
     <mkdir dir="temp/public"/>
 
     <zip destfile="temp/public/${programname.file}_v${version}_server.zip">
@@ -868,10 +875,10 @@
   <!--
    | Deploys the war file at the servlet engine.
    +-->
-  <target name="deploy-war" depends="runtime, clean-web">
+  <target name="deploy-war" depends="runtime-server, clean-web">
     <echo message="Deploying the war file at ${deploy-target.dir}...." />
     <copy todir="${deploy-target.dir}">
-      <fileset dir="temp/runtime" includes="${programname.file}.war"/>
+      <fileset dir="temp/runtime/search/webapps" includes="${programname.file}.war"/>
     </copy>
   </target>
 

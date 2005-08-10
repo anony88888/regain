@@ -45,7 +45,7 @@ Version 1.1 Beta 3 am 17.03.05
 Version 1.1 Beta 2 am 12.03.05
 ------------------------------
 
-* Crawler: Der Crawler erstellt nun regelmae√üig sog. Breakpoints. Dabei wird
+* Crawler: Der Crawler erstellt nun regelmaeﬂig sog. Breakpoints. Dabei wird
   der aktuellen Stand der Suchindex in ein gesondertes Verzeichnis kopiert.
   Falls die Indexierung abgebrochen wurde (Z.B. weil der Rechner
   heruntergefahren wurde), wird beim naechsten mal auf dem letzten Breakpoint

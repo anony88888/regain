@@ -27,6 +27,7 @@
  */
 package net.sf.regain.util.sharedtag.simple;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
@@ -49,7 +50,10 @@ public class SimplePageRequest extends PageRequest {
   private static HashMap mInitParameterHash;
   
   /** The base URL where the JSP files and resources are located. */
-  private static URL mBaseUrl;
+  private static URL mResourceBaseUrl;
+  
+  /** The working directory of the web server.*/
+  private static File mWorkingDir;
   
   /** The simpleweb Request to adapt. */
   private Request mRequest;
@@ -246,8 +250,8 @@ public class SimplePageRequest extends PageRequest {
    * 
    * @return The base URL where the JSP files and resources are located.
    */
-  public URL getBaseUrl() {
-    return mBaseUrl;
+  public URL getResourceBaseUrl() {
+    return mResourceBaseUrl;
   }
 
 
@@ -256,8 +260,28 @@ public class SimplePageRequest extends PageRequest {
    * 
    * @param baseurl The base URL where the JSP files and resources are located.
    */
-  public static void setBaseUrl(URL baseurl) {
-    mBaseUrl = baseurl;
+  public static void setResourceBaseUrl(URL baseurl) {
+    mResourceBaseUrl = baseurl;
+  }
+
+
+  /**
+   * Gets the working directory of the web server.
+   * 
+   * @return The working directory of the web server.
+   */
+  public File getWorkingDir() {
+    return mWorkingDir;
+  }
+
+
+  /**
+   * Sets the working directory of the web server.
+   * 
+   * @param workingDir The working directory of the web server.
+   */
+  public static void setWorkingDir(File workingDir) {
+    mWorkingDir = workingDir;
   }
 
 }

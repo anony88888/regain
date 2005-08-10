@@ -29,8 +29,8 @@ X Aktualisierung auf die neusten Versionen der genutzten Projekte, sofern
       PdfPreparator:
         Stabilitaet: Unveraendert: Keine Probleme bekannt
         Geschwindigkeit: Faktor 4 langsamer: Fuer 674,44 kB: 13,69 sec -> 1:06 min
-                                                   2. Test: 13,43 sec -> 1:07 min
-        Qualitaet: Besser: Es wird mehr erkannt. Probleme mit Umlauten aus Latex (Mï¿½oglichkeit)
+                                                    2. Test: 13,43 sec -> 1:07 min
+        Qualitaet: Besser: Es wird mehr erkannt. Probleme mit Umlauten aus Latex
       PoiMsExcelPreparator:
         Stabilitaet: Unveraendert: Keine Probleme bekannt
         Geschwindigkeit: Unveraendert: Fuer 27,50 kB: 1,27 sec -> 1,91 sec
@@ -142,7 +142,7 @@ X Desktopsuche: Task-Icon fuer Linux
 X Bug: File-Service: Datei von Netzlaufwerken (//fileserver/bla/blubb) werden
     nicht geladen (Forbidden)
 X Bug: Desktopsuche: Suchergebnisse: Umlaute werden falsch dargestellt.
-X Desktopsuche: Einstellungen: Beim Speichern als GrundgerÃ¼st
+X Desktopsuche: Einstellungen: Beim Speichern als Grundgeruest
     default-Config-Dateien nutzen.
 X Desktopsuche: Aktuelle Indexierung pausieren und manuelles Starten einer
     Indexierung.
@@ -198,6 +198,8 @@ X I18N-Files mit getResource() holen, so dass Tomcat auch als Service laufen kan
     Das ganze sollte von Verzeichnis auf URL umgestellt werden, da nicht jede
     Servlet-Engine ihre war-Dateien auspackt. Mit URL könnten auch Ressourcen
     direkt aus der war-Datei geladen werden.
+X Ausgangsverzeichnis zur Suche der Konfigurationsdatei bestimmen, so dass
+    Tomcat auch als Service laufen kann.
 
 
 Filiadata:
@@ -213,8 +215,9 @@ Filiadata:
 
 Prio A:
 -------
+  Crawler: Logging: Anstatt "Adding to index" lieber "Preparation done"
   Optional erlauben, url-patterns für Präparatoren anzugeben.
-  	Siehe Forum: http://forum.murfman.de/en/viewtopic.php?t=9
+    Siehe Forum: http://forum.murfman.de/en/viewtopic.php?t=9
   Fehlende Teile der italienischen Lokalisierung
     Problem: Franco Mail-Adresse geht nicht :-(
   Bugfix: Präparieren von Dokumenten mit Leerzeichen im Dateinamen wird bei jedem
@@ -227,6 +230,7 @@ Prio A:
 
 Prio B:
 -------
+  Desktop-Suche: Die letzten x Zeilen des Logs
   Handbuch: Installation: Was muss man konfigurieren, damit es läuft.
   Desktopsuche: Zugriff von aussen fuer einstellbare Benutzer/Passwort-Paare
     erlauben.

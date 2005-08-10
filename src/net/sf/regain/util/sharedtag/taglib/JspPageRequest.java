@@ -27,6 +27,8 @@
  */
 package net.sf.regain.util.sharedtag.taglib;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Enumeration;
@@ -50,6 +52,9 @@ public class JspPageRequest extends PageRequest {
   
   /** The base URL where the JSP files and resources are located. */
   private static URL mBaseUrl;
+  
+  /** The working directory of the web server. */
+  private static File mWorkingDir;
   
 
   /**
@@ -199,16 +204,47 @@ public class JspPageRequest extends PageRequest {
    * @return The base URL where the JSP files and resources are located.
    * @throws RegainException If getting the base URL failed.
    */
-  public URL getBaseUrl() throws RegainException {
+  public URL getResourceBaseUrl() throws RegainException {
     if (mBaseUrl == null) {
       try {
-        mBaseUrl = mPageContext.getServletContext().getResource(".");
+        mBaseUrl = mPageContext.getServletContext().getResource("/");
+        System.out.println("mBaseUrl: " + mBaseUrl);
       }
       catch (MalformedURLException exc) {
         throw new RegainException("Getting base URL failed", exc);
       }
     }
     return mBaseUrl;
+  }
+
+
+  /**
+   * Gets the working directory of the web server.
+   * 
+   * @return The working directory of the web server.
+   * @throws RegainException If getting the working directory failed.
+   */
+  public File getWorkingDir() throws RegainException {
+    if (mWorkingDir == null) {
+      // Check whether we get a realpath
+      String realpath = mPageContext.getServletContext().getRealPath(".");
+      if (realpath != null) {
+        // Use the parent directory of the realpath
+        // E.g. "c:\tomcat\webapps\regain\." -> "c:\tomcat\webapps"
+        // NOTE: getCanonicalFile is needed to get rid of "\." is a save way
+        try {
+          mWorkingDir = new File(realpath).getCanonicalFile().getParentFile();
+        }
+        catch (IOException exc) {
+          throw new RegainException("Getting the working directory of " +
+                "the web server failed", exc);
+        }
+      } else {
+        // We got no real path -> Return the current directory
+        mWorkingDir = new File(".");
+      }
+    }
+    return mWorkingDir;
   }
 
 }
