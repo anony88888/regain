@@ -194,6 +194,10 @@ X Bugfix: System-Tray-Klasse fehlt in Linux zip
 X Bugfix: NullPointer in removeObsoleteEntries(...). Z.B. wenn ein Breakpoint
     erstellt wird. (Entstanden bei "Dateien vom Dateisystem nicht ins
     mFoundUrlSet oder mIgnoredUrlSet aufnehmen")
+X I18N-Files mit getResource() holen, so dass Tomcat auch als Service laufen kann.
+    Das ganze sollte von Verzeichnis auf URL umgestellt werden, da nicht jede
+    Servlet-Engine ihre war-Dateien auspackt. Mit URL könnten auch Ressourcen
+    direkt aus der war-Datei geladen werden.
 
 
 Filiadata:
@@ -212,7 +216,7 @@ Prio A:
   Optional erlauben, url-patterns für Präparatoren anzugeben.
   	Siehe Forum: http://forum.murfman.de/en/viewtopic.php?t=9
   Fehlende Teile der italienischen Lokalisierung
-  I18N-Files mit getResource() holen, so dass Tomcat auch als Service laufen kann.
+    Problem: Franco Mail-Adresse geht nicht :-(
   Bugfix: Präparieren von Dokumenten mit Leerzeichen im Dateinamen wird bei jedem
     Lauf erneut probiert (Erkennung des vorhandenen Eintrags funktioniert nicht)
   Expertensuche: Fehlermeldung wird gezeigt, wenn noch kein Index vorhanden ist.

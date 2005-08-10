@@ -27,17 +27,16 @@
  */
 package net.sf.regain.util.sharedtag.simple;
 
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Locale;
 
-import simple.http.Request;
-import simple.util.net.Parameters;
-
 import net.sf.regain.RegainException;
 import net.sf.regain.util.sharedtag.PageRequest;
+import simple.http.Request;
+import simple.util.net.Parameters;
 
 /**
  * Adapter from a simpleweb Request to a SharedTag PageRequest.
@@ -49,8 +48,8 @@ public class SimplePageRequest extends PageRequest {
   /** The init parameters. May be null. */
   private static HashMap mInitParameterHash;
   
-  /** The base directory where the JSP files and resources are located. */
-  private static File mBaseDir;
+  /** The base URL where the JSP files and resources are located. */
+  private static URL mBaseUrl;
   
   /** The simpleweb Request to adapt. */
   private Request mRequest;
@@ -243,23 +242,22 @@ public class SimplePageRequest extends PageRequest {
 
 
   /**
-   * Gets the base directory where the JSP files and resources are located.
+   * Gets the base URL where the JSP files and resources are located.
    * 
-   * @return The base directory where the JSP files and resources are located.
+   * @return The base URL where the JSP files and resources are located.
    */
-  public File getBaseDir() {
-    return mBaseDir;
+  public URL getBaseUrl() {
+    return mBaseUrl;
   }
 
 
   /**
-   * Sets the base directory where the JSP files and resources are located.
+   * Sets the base URL where the JSP files and resources are located.
    * 
-   * @param baseDir The base directory where the JSP files and resources are
-   *        located.
+   * @param baseurl The base URL where the JSP files and resources are located.
    */
-  public static void setBaseDir(File baseDir) {
-    mBaseDir = baseDir;
+  public static void setBaseUrl(URL baseurl) {
+    mBaseUrl = baseurl;
   }
 
 }

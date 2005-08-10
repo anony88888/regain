@@ -28,6 +28,8 @@
 package net.sf.regain.ui.desktop;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
@@ -87,8 +89,17 @@ public class Main implements DesktopConstants {
     mLog.info("Logging initialized");
 
     // Initialize the search mask
+    URL baseurl;
+    try {
+      baseurl = new File("web").toURL();
+    }
+    catch (MalformedURLException exc) {
+      exc.printStackTrace();
+      System.exit(1); // Abort
+      return;
+    }
+    SimplePageRequest.setBaseUrl(baseurl);
     SimplePageRequest.setInitParameter("searchConfigFile", "conf/SearchConfiguration.xml");
-    SimplePageRequest.setBaseDir(new File("web"));
     ExecuterParser.registerNamespace("search", "net.sf.regain.search.sharedlib");
     ExecuterParser.registerNamespace("config", "net.sf.regain.ui.desktop.config.sharedlib");
     ExecuterParser.registerNamespace("status", "net.sf.regain.ui.desktop.status.sharedlib");

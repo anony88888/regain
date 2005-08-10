@@ -260,7 +260,7 @@ public abstract class SharedTag {
       
       // Init the MultiLocalizer if nessesary
       if (mMultiLocalizer == null) {
-        mMultiLocalizer = new MultiLocalizer(request.getBaseDir(), "msg");
+        mMultiLocalizer = new MultiLocalizer(request.getBaseUrl(), "msg");
       }
       
       // Get the localizer

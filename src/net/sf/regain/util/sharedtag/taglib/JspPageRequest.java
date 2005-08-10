@@ -27,7 +27,8 @@
  */
 package net.sf.regain.util.sharedtag.taglib;
 
-import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.Locale;
 
@@ -47,8 +48,8 @@ public class JspPageRequest extends PageRequest {
   /** The JSP page context to adapt. */
   private PageContext mPageContext;
   
-  /** The base directory where the JSP files and resources are located. */
-  private static File mBaseDir;
+  /** The base URL where the JSP files and resources are located. */
+  private static URL mBaseUrl;
   
 
   /**
@@ -193,15 +194,21 @@ public class JspPageRequest extends PageRequest {
 
 
   /**
-   * Gets the base directory where the JSP files and resources are located.
+   * Gets the base URL where the JSP files and resources are located.
    * 
-   * @return The base directory where the JSP files and resources are located.
+   * @return The base URL where the JSP files and resources are located.
+   * @throws RegainException If getting the base URL failed.
    */
-  public File getBaseDir() {
-    if (mBaseDir == null) {
-      mBaseDir = new File(mPageContext.getServletContext().getRealPath("."));
+  public URL getBaseUrl() throws RegainException {
+    if (mBaseUrl == null) {
+      try {
+        mBaseUrl = mPageContext.getServletContext().getResource(".");
+      }
+      catch (MalformedURLException exc) {
+        throw new RegainException("Getting base URL failed", exc);
+      }
     }
-    return mBaseDir;
+    return mBaseUrl;
   }
 
 }
