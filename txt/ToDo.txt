@@ -214,6 +214,7 @@ X Optional erlauben, url-patterns für Präparatoren anzugeben.
     Siehe Forum: http://forum.murfman.de/en/viewtopic.php?t=9
 X Expertensuche: Fehlermeldung wird gezeigt, wenn noch kein Index vorhanden ist.
     Statt dessen: noindex.jsp zeigen.
+X Desktopsuche: Installer komplett auch auf Englisch
 
 
 Filiadata:
@@ -231,12 +232,12 @@ Prio A:
 -------
   Fehlende Teile der italienischen Lokalisierung
     Problem: Franco Mail-Adresse geht nicht :-(
-  Bugfix: Präparieren von Dokumenten mit Leerzeichen im Dateinamen wird bei jedem
-    Lauf erneut probiert (Erkennung des vorhandenen Eintrags funktioniert nicht)
-  Desktopsuche: Installer komplett auch auf Englisch
 
 Prio B:
 -------
+  Bugfix: Präparieren von Dokumenten mit Leerzeichen im Dateinamen wird bei jedem
+    Lauf erneut probiert (Erkennung des vorhandenen Eintrags funktioniert nicht)
+    Konnte ich nicht reproduzieren...
   Desktop-Suche: Die letzten x Zeilen des Logs
   Handbuch: Installation: Was muss man konfigurieren, damit es läuft.
   Desktopsuche: Zugriff von aussen fuer einstellbare Benutzer/Passwort-Paare
