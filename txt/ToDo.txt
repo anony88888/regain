@@ -200,6 +200,7 @@ X I18N-Files mit getResource() holen, so dass Tomcat auch als Service laufen kan
     direkt aus der war-Datei geladen werden.
 X Ausgangsverzeichnis zur Suche der Konfigurationsdatei bestimmen, so dass
     Tomcat auch als Service laufen kann.
+X Desktopsuche: Aktuelles Dokument in Status-Seite zeigen
 
 
 Filiadata:

@@ -593,6 +593,50 @@ public class RegainToolkit {
 
 
   /**
+   * Gets a human readable String for a time.
+   *
+   * @param time The time in milliseconds.
+   * @return The time as String.
+   */
+  public static String toTimeString(long time) {
+    if (time == -1) {
+      // This is no time
+      return "?";
+    }
+    
+    long millis = time % 1000;
+    time /= 1000;
+    long secs = time % 60;
+    time /= 60;
+    long mins = time % 60;
+    time /= 60;
+    long hours = time;
+
+    if (hours != 0) {
+      return hours + ":"
+        + ((mins > 9) ? "" : "0") + mins + ":"
+        + ((secs > 9) ? "" : "0") + secs + " h";
+    }
+    else if (mins != 0) {
+      return mins + ":"
+        + ((secs > 9) ? "" : "0") + secs + " min";
+    }
+    else if (secs != 0) {
+      NumberFormat format = NumberFormat.getInstance();
+      format.setMinimumFractionDigits(2);
+      format.setMaximumFractionDigits(2);
+
+      String asString = format.format(secs + millis / 1000.0);
+
+      return asString + " sec";
+    }
+    else {
+      return millis + " millis";
+    }
+  }
+
+
+  /**
    * Konvertiert ein Date-Objekt in einen String mit dem Format
    * "YYYY-MM-DD HH:MM". Das ist nötig, um ein eindeutiges und vom Menschen
    * lesbares Format zu haben.

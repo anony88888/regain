@@ -79,6 +79,7 @@ public class IndexupdateTag extends SharedTag {
       File indexUpdateDir = new File(config.getDirectory(), "temp");
       long size = RegainToolkit.getDirectorySize(indexUpdateDir);
       String sizeAsString = RegainToolkit.bytesToString(size, request.getLocale());
+      String currentJobUrl = crawler.getCurrentJobUrl();
       
       Object[] args = new Object[] {
         new Integer(crawler.getFinishedJobCount()),
@@ -86,8 +87,13 @@ public class IndexupdateTag extends SharedTag {
         new Integer(crawler.getInitialDocCount()),
         new Integer(crawler.getAddedDocCount()),
         new Integer(crawler.getRemovedDocCount()),
+        (currentJobUrl == null) ? "?" : currentJobUrl,
+        RegainToolkit.toTimeString(crawler.getCurrentJobTime())
       };
-      response.print(localizer.msg("indexInfo", "Processed documents: {0}<br/>Size: {1}<br/>Initial document count: {2}<br/>Added document count: {3}<br/>Removed document count: {4}", args));
+      response.print(localizer.msg("indexInfo", "Processed documents: {0}<br/>" +
+            "Size: {1}<br/>Initial document count: {2}<br/>" +
+            "Added document count: {3}<br/>Removed document count: {4}<br/>" +
+            "Current job: {5} (since {6})", args));
     }
   }
   

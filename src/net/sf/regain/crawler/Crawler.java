@@ -83,6 +83,9 @@ public class Crawler implements ErrorLogger {
    */
   private int mFatalErrorCount;
 
+  /** The current crawler job. May be null. */
+  private CrawlerJob mCurrentJob;
+
   /**
    * Contains all found dead links.
    * <p>
@@ -192,6 +195,35 @@ public class Crawler implements ErrorLogger {
   public int getRemovedDocCount() {
     IndexWriterManager mng = mIndexWriterManager;
     return (mng == null) ? -1 : mng.getRemovedDocCount();
+  }
+
+
+  /**
+   * Gets the URL of the current job. Returns null, if the crawler has currently
+   * no job.
+   * 
+   * @return The URL of the current job.
+   */
+  public String getCurrentJobUrl() {
+    // NOTE: We put the current job in a local variable to avoid it is set to
+    //       null while this method is executed.
+    CrawlerJob job = mCurrentJob;
+    if (job == null) {
+      return null;
+    } else {
+      return job.getUrl();
+    }
+  }
+
+
+  /**
+   * Get the time the crawler is already working on the current job.
+   * 
+   * @return The current working time in milli seconds. Returns -1 if the
+   *         crawler has currently no job.
+   */
+  public long getCurrentJobTime() {
+    return mCrawlerJobProfiler.getCurrentMeasuringTime();
   }
 
 
@@ -331,11 +363,11 @@ public class Crawler implements ErrorLogger {
     while (! mJobList.isEmpty()) {
       mCrawlerJobProfiler.startMeasuring();
 
-      CrawlerJob job = (CrawlerJob) mJobList.removeFirst();
-      String url = job.getUrl();
+      mCurrentJob = (CrawlerJob) mJobList.removeFirst();
+      String url = mCurrentJob.getUrl();
 
-      boolean shouldBeParsed = job.shouldBeParsed();
-      boolean shouldBeIndexed = job.shouldBeIndexed();
+      boolean shouldBeParsed = mCurrentJob.shouldBeParsed();
+      boolean shouldBeIndexed = mCurrentJob.shouldBeIndexed();
 
       // Check whether this is a directory
       if (url.startsWith("file://")) {
@@ -360,12 +392,12 @@ public class Crawler implements ErrorLogger {
       // Create a raw document
       RawDocument rawDocument;
       try {
-        rawDocument = new RawDocument(url, job.getSourceUrl(),
-                                      job.getSourceLinkText());
+        rawDocument = new RawDocument(url, mCurrentJob.getSourceUrl(),
+                                      mCurrentJob.getSourceLinkText());
       }
       catch (RegainException exc) {
         // Check whether the exception was caused by a dead link
-        handleDocumentLoadingException(exc, job);
+        handleDocumentLoadingException(exc, mCurrentJob);
 
         // This document does not exist -> We can't parse or index anything
         // -> continue
@@ -404,6 +436,7 @@ public class Crawler implements ErrorLogger {
 
       // Zeitmessung stoppen
       mCrawlerJobProfiler.stopMeasuring(rawDocument.getLength());
+      mCurrentJob = null;
       
       // Check whether to create a breakpoint
       if (mShouldPause || (System.currentTimeMillis() > lastBreakpointTime + 10 * 60 * 1000)) {
@@ -423,7 +456,7 @@ public class Crawler implements ErrorLogger {
         
         lastBreakpointTime = System.currentTimeMillis();
       }
-    }
+    } // while (! mJobList.isEmpty())
 
     // Nicht mehr vorhandene Dokumente aus dem Index l�schen
     if (mConfiguration.getBuildIndex()) {
