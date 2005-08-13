@@ -331,6 +331,7 @@ public class CrawlerToolkit {
         if (slashBeforeIdx != -1) {
           // Cut the "/somedir/.." out
           url = url.substring(0, slashBeforeIdx) + url.substring(slashAfterIdx);
+          updirIdx = slashBeforeIdx;
         } else {
           throw new IllegalArgumentException("Illegal URL: " + url
               + ". (parent URL: " + parentUrl + ") Contains a .. with no / before");

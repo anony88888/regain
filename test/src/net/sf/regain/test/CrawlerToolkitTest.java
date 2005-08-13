@@ -62,6 +62,8 @@ public class CrawlerToolkitTest extends TestCase {
         CrawlerToolkit.toAbsoluteUrl("f/g/..", "file://abc/d/e/"));
     assertEquals("file://abc/d/e/..otto/karl../test.doc",
         CrawlerToolkit.toAbsoluteUrl("..otto/karl../test.doc", "file://abc/d/e/"));
+    assertEquals("http://xyz/shg/abc/def/test.html",
+        CrawlerToolkit.toAbsoluteUrl("abc/ash/khjasd/../../asjdhg/ghj/fght/../.././../def/test.html", "http://xyz/shg/main.html"));
 
     // Test .
     assertEquals("file://abc/d/e/f/g",
