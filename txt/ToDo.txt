@@ -200,7 +200,10 @@ X I18N-Files mit getResource() holen, so dass Tomcat auch als Service laufen kan
     direkt aus der war-Datei geladen werden.
 X Ausgangsverzeichnis zur Suche der Konfigurationsdatei bestimmen, so dass
     Tomcat auch als Service laufen kann.
-X Desktopsuche: Aktuelles Dokument in Status-Seite zeigen
+X Desktopsuche: Aktuelles Dokument in Status-Seite zeigen.
+X Bugfix: HTTP-Download hat volle Timeout-Zeit gewartet, wenn RuntimeException
+    geworfen wurde.
+X Bessere Fehlermeldung, wenn Redirect keinen Location-Header hat.
 
 
 Filiadata:

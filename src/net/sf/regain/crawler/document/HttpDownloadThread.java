@@ -27,7 +27,6 @@
  */
 package net.sf.regain.crawler.document;
 
-import net.sf.regain.RegainException;
 import net.sf.regain.crawler.CrawlerToolkit;
 
 /**
@@ -78,8 +77,8 @@ public class HttpDownloadThread extends Thread {
     try {
       mDocContent = CrawlerToolkit.loadHttpDocument(mDocUrl);
     }
-    catch (RegainException exc) {
-      mError = exc;
+    catch (Throwable thr) {
+      mError = thr;
     }
 
     synchronized (this) {

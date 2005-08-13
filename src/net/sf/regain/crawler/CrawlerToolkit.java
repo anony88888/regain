@@ -86,20 +86,24 @@ public class CrawlerToolkit {
         // that was input to the new, redirected URL
         if (redirect) {
           String loc = conn.getHeaderField("Location");
-          if (loc.startsWith("http", 0)) {
-            url = new URL(loc);
+          if (loc == null) {
+            throw new IOException("Redirect did not provide a 'Location' header");
           } else {
-            url = new URL(url, loc);
+            if (loc.startsWith("http", 0)) {
+              url = new URL(loc);
+            } else {
+              url = new URL(url, loc);
+            }
+            return getHttpStream(url);
           }
-          return getHttpStream(url);
         }
       }
 
       return conn.getInputStream();
     }
-    catch (IOException exc) {
+    catch (Throwable thr) {
       throw HttpStreamException.createInstance("Getting HTTP connection to "
-        + url.toString() + " failed", exc, conn);
+        + url.toString() + " failed", thr, conn);
     }
   }
 
