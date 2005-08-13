@@ -204,6 +204,12 @@ X Desktopsuche: Aktuelles Dokument in Status-Seite zeigen.
 X Bugfix: HTTP-Download hat volle Timeout-Zeit gewartet, wenn RuntimeException
     geworfen wurde.
 X Bessere Fehlermeldung, wenn Redirect keinen Location-Header hat.
+X Crawler: Logging: Anstatt "Adding to index" lieber "Preparation done"
+X Bei mißglücktem Dokument: Nicht "Adding to index" loggen, sondern
+    "Created substitude document"
+X Breakpoints: Erst neuen breakpoint erstellen, dann den alten löschen.
+    Damit verhindern, dass es gar keinen breakpoint gibt, wenn regain beendet
+    wird.
 
 
 Filiadata:
@@ -219,7 +225,6 @@ Filiadata:
 
 Prio A:
 -------
-  Crawler: Logging: Anstatt "Adding to index" lieber "Preparation done"
   Optional erlauben, url-patterns für Präparatoren anzugeben.
     Siehe Forum: http://forum.murfman.de/en/viewtopic.php?t=9
   Fehlende Teile der italienischen Lokalisierung
@@ -229,8 +234,6 @@ Prio A:
   Expertensuche: Fehlermeldung wird gezeigt, wenn noch kein Index vorhanden ist.
     Statt dessen: noindex.jsp zeigen.
   Desktopsuche: Installer komplett auch auf Englisch
-  Bei mißglücktem Dokument: Nicht "Adding to index" loggen, sondern
-    "Adding to index, tagged as error" oder sowas
 
 Prio B:
 -------

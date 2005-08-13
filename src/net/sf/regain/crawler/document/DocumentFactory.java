@@ -189,6 +189,7 @@ public class DocumentFactory {
         
         try {
           doc = createDocument(mPreparatorArr[i], mPreparatorProfilerArr[i], rawDocument);
+          mLog.info("Preparation done: " + rawDocument.getUrl());
           break;
         }
         catch (RegainException exc) {
@@ -210,6 +211,7 @@ public class DocumentFactory {
       // tried to be processed the next time
       try {
         doc = createSubstituteDocument(rawDocument);
+        mLog.info("Created substitude document: " + rawDocument.getUrl());
       }
       catch (RegainException exc) {
         errorLogger.logError("Creating substitude document for "

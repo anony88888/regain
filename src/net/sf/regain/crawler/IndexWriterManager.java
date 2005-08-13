@@ -691,13 +691,12 @@ public class IndexWriterManager {
   {
     // Dokument erzeugen
     if (mLog.isDebugEnabled()) {
-      mLog.debug("Creating document");
+      mLog.debug("Creating document: " + rawDocument.getUrl());
     }
     Document doc = mDocumentFactory.createDocument(rawDocument, errorLogger);
 
     // Dokument in den Index aufnehmen
     if (doc != null) {
-      mLog.info("Adding to index: " + rawDocument.getUrl());
       mAddToIndexProfiler.startMeasuring();
       try {
         setIndexMode(ADDING_MODE);
@@ -940,19 +939,23 @@ public class IndexWriterManager {
       
       // Prepare the breakpoint
       prepareBreakpoint();
-      
+
+      // Create a temp directory
+      // NOTE: We copy to a temp directory and rename it when we are finished.
+      File tempDir = new File(mBreakpointIndexDir.getAbsolutePath() + "_tmp");
+      RegainToolkit.deleteDirectory(tempDir);
+      tempDir.mkdir();
+
+      // Copy the current working index to the breakpoint directory
+      RegainToolkit.copyDirectory(mTempIndexDir, tempDir, false);
+
       // Delete the old breakpoint if it exists
       deleteOldIndex(mBreakpointIndexDir);
       
-      // Copy the current working index to the breakpoint directory
-      // NOTE: We copy to a temp directory and rename it when we are finished.
-      File copyDir = new File(mBreakpointIndexDir.getAbsolutePath() + "_tmp");
-      RegainToolkit.deleteDirectory(copyDir);
-      copyDir.mkdir();
-      RegainToolkit.copyDirectory(mTempIndexDir, copyDir, false);
-      if (! copyDir.renameTo(mBreakpointIndexDir)) {
+      // Rename the temp directory and let it become the new breakpoint
+      if (! tempDir.renameTo(mBreakpointIndexDir)) {
         throw new RegainException("Renaming temporary copy directory failed: " +
-            copyDir.getAbsolutePath());
+            tempDir.getAbsolutePath());
       }
 
       // Stop measuring
