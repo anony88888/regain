@@ -1,5 +1,26 @@
+Version 1.1 Beta 5 am 13.08.05
+------------------------------
+
+* Multiindex-Suche: Es können nun mehrere Suchindizes über eine Suchmaske
+  durchsucht werden. Die Suchanfragen werden dabei auf jeden Index losgelassen
+  und anschließend vereint.
 * In der Weißen und der Schwarzen Liste können jetzt auch reguläre Ausdrücke
   angegeben werden.
+* Suchmaske: Der Ort der Ressourcen und der Konfiguration wird jetzt besser
+  erkannt, so dass regain auch dann korrekt funktioniert, wenn Tomcat als
+  Service läuft.
+* Suchmaske: Die File-zu-Http-Brücke ist nun abschaltbar.
+* Crawler: Der Crawler braucht nun beim Durchsuchen von Verzeichnissen weniger
+  Arbeitsspeicher
+* Crawler: Der Crawler nimmt nun auch fehlgeschlagene Dokumente in den Index
+  auf, so dass diese bei einem erneuten Durchlauf nicht noch einmal probiert
+  werden. Wird der Crawler jedoch mit der Option "-retryFailedDocs" aufgerufen,
+  werden alle fehlgeschlagenen erneut probiert.
+* Der Html-Präparator übernimmt nun auch die Endungen .jsp, .php, .php3, .php4
+  und .asp.
+* In der CrawlerConfiguration.xml kann nun bei einem Präparator angegeben
+  werden, welche Dokumente er präparieren soll.
+* Mehrere Bugfixes
 
 
 Version 1.1 Beta 4 am 13.04.05

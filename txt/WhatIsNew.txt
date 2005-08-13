@@ -1,4 +1,24 @@
+Version 1.1 Beta 5 am 13.08.05
+------------------------------
+
+* Multi index search: It is now possible to search several search indexes over
+  one search mask. The search query is executed on every index and is merged
+  afterwards.
 * The white and the black list now allow regular expressions, too.
+* Search mask: The location of ressources and the configuration is better
+  detected now. Therefor regain works properly now, even if Tomcat is running
+  as service.
+* Search mask: The file-to-http-bridge is may be switched off now.
+* Crawler: The crawler needs less memory now when crawling directories.
+* Crawler: The crawler now adds failed documents as well to the index. Therefore
+  they are not retried the next time the crawler is running. But if the crawler
+  is executed with the option "-retryFailedDocs", all failed documents are
+  retried.
+* The HTML preparator now preparates the extensions .jsp, .php, .php3, .php4
+  and .asp as well.
+* It's now possible to specify in the CrawlerConfiguration.xml which documents
+  should be preparated with a certain preparator.
+* Several bugfixes
 
 
 Version 1.1 Beta 4 on 2005-04-13

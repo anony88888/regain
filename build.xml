@@ -710,6 +710,7 @@
     
     <java classname="net.sf.regain.test.PreparatorTest"
           dir="temp/runtime/crawler"
+          failonerror="true"
           fork="true">
       <arg value="../../../test/docs"/>
       <arg value="../../test/docs"/>
@@ -860,6 +861,7 @@
         <exclude name="**/*.bak"/>
         <exclude name="**/*~"/>
         <exclude name="temp/**"/>
+        <exclude name="test/docs/**"/>
         <exclude name="jacobgen/generated-src/**"/>
         <exclude name="jacobgen/*.olb"/>
         <exclude name="src/**/.*"/>

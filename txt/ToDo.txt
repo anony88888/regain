@@ -215,6 +215,16 @@ X Optional erlauben, url-patterns für Präparatoren anzugeben.
 X Expertensuche: Fehlermeldung wird gezeigt, wenn noch kein Index vorhanden ist.
     Statt dessen: noindex.jsp zeigen.
 X Desktopsuche: Installer komplett auch auf Englisch
+X Libs aktualisiert:
+    log4j: 1.2.9 (352 kB) -> 1.2.11 (352 kB)
+    lucene: 1.4.2 (323 kB) -> 1.4.3 (323 kB)
+    PDFBox: 0.6.7a (2.230 kB) -> 0.7.1 (3.213 kB)
+      Gleiche Erkennungsrate, etwas schneller
+    POI: 2.5.1 (990 kB) -> 3.0 alpha 1 (1.504 kB)
+      Word: Gleiche Erkennungsrate, langsamer
+      Excel: Gleiche Erkennungsrate, langsamer
+
+** Version 1.1 Beta 5 am 13.08.05 **
 
 
 Filiadata:
@@ -232,23 +242,23 @@ Prio A:
 -------
   Fehlende Teile der italienischen Lokalisierung
     Problem: Franco Mail-Adresse geht nicht :-(
+  Desktopsuche: Die letzten x Zeilen des Logs
+  Desktopsuche: Einstellungen: Verzeichnis-Selektor
+  Handbuch: Installation: Was muss man konfigurieren, damit es läuft.
+  Suchmaske: Breakpoints nutzen.
+  Desktopsuche: Mime-Types konfigurierbar (apache-Format)
+  Suchmaske: Icons passend zu den Dateiendungen
+  Neuer Powerpoint-Praeparator: POI
 
 Prio B:
 -------
   Bugfix: Präparieren von Dokumenten mit Leerzeichen im Dateinamen wird bei jedem
     Lauf erneut probiert (Erkennung des vorhandenen Eintrags funktioniert nicht)
     Konnte ich nicht reproduzieren...
-  Desktop-Suche: Die letzten x Zeilen des Logs
-  Handbuch: Installation: Was muss man konfigurieren, damit es läuft.
   Desktopsuche: Zugriff von aussen fuer einstellbare Benutzer/Passwort-Paare
     erlauben.
-  Desktopsuche: Einstellungen: Verzeichnis-Selektor
-  Desktopsuche: Status-Seite: Ende von Logdatei zeigen
   Sessions for simpleweb. See SimplePageRequest
   Unter Java 1.2.2 oder zur Not 1.3 lauffaehig machen.
-  Suchmaske: Breakpoints nutzen.
-  Desktopsuche: Mime-Types konfigurierbar (apache-Format)
-  Suchmaske: Icons passend zu den Dateiendungen
 
 Prio C:
 -------
@@ -256,7 +266,6 @@ Prio C:
   Crawler: ZIP-Dateien durchsuchen
   Crawler: Mailboxen durchsuchen
   Neuer MS Word-Praeparator: OpenOffice
-  Neuer Powerpoint-Praeparator: POI
   Neuer PDF-Praeparator: PJX (http://www.etymon.com/epub.html)
   Desktopsuche: Nach Speichern der Konfiguration nur dann neu indexieren, wenn
     sich etwas geaendert hat, das den Index veraendert.
