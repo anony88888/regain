@@ -212,6 +212,8 @@ X Breakpoints: Erst neuen breakpoint erstellen, dann den alten löschen.
     wird.
 X Optional erlauben, url-patterns für Präparatoren anzugeben.
     Siehe Forum: http://forum.murfman.de/en/viewtopic.php?t=9
+X Expertensuche: Fehlermeldung wird gezeigt, wenn noch kein Index vorhanden ist.
+    Statt dessen: noindex.jsp zeigen.
 
 
 Filiadata:
@@ -231,8 +233,6 @@ Prio A:
     Problem: Franco Mail-Adresse geht nicht :-(
   Bugfix: Präparieren von Dokumenten mit Leerzeichen im Dateinamen wird bei jedem
     Lauf erneut probiert (Erkennung des vorhandenen Eintrags funktioniert nicht)
-  Expertensuche: Fehlermeldung wird gezeigt, wenn noch kein Index vorhanden ist.
-    Statt dessen: noindex.jsp zeigen.
   Desktopsuche: Installer komplett auch auf Englisch
 
 Prio B:
