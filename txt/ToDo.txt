@@ -210,6 +210,8 @@ X Bei mißglücktem Dokument: Nicht "Adding to index" loggen, sondern
 X Breakpoints: Erst neuen breakpoint erstellen, dann den alten löschen.
     Damit verhindern, dass es gar keinen breakpoint gibt, wenn regain beendet
     wird.
+X Optional erlauben, url-patterns für Präparatoren anzugeben.
+    Siehe Forum: http://forum.murfman.de/en/viewtopic.php?t=9
 
 
 Filiadata:
@@ -225,8 +227,6 @@ Filiadata:
 
 Prio A:
 -------
-  Optional erlauben, url-patterns für Präparatoren anzugeben.
-    Siehe Forum: http://forum.murfman.de/en/viewtopic.php?t=9
   Fehlende Teile der italienischen Lokalisierung
     Problem: Franco Mail-Adresse geht nicht :-(
   Bugfix: Präparieren von Dokumenten mit Leerzeichen im Dateinamen wird bei jedem

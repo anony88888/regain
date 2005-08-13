@@ -402,13 +402,19 @@ public class XmlCrawlerConfig implements CrawlerConfig {
       node = XmlToolkit.getChild(nodeArr[i], "class", true);
       String className = XmlToolkit.getText(node, true);
 
+      node = XmlToolkit.getChild(nodeArr[i], "urlPattern", false);
+      String urlRegex = null;
+      if (node != null) {
+        urlRegex = XmlToolkit.getText(node, true);
+      }
+
       node = XmlToolkit.getChild(nodeArr[i], "config");
       PreparatorConfig prepConfig = null;
       if (node != null) {
         prepConfig = readPreparatorConfig(node, xmlFile);
       }
       
-      mPreparatorSettingsArr[i] = new PreparatorSettings(enabled, className, prepConfig);
+      mPreparatorSettingsArr[i] = new PreparatorSettings(enabled, className, urlRegex, prepConfig);
     }
   }
 

@@ -29,6 +29,8 @@ package net.sf.regain.crawler.document;
 
 import java.util.Map;
 
+import org.apache.regexp.RE;
+
 import net.sf.regain.RegainException;
 import net.sf.regain.crawler.config.PreparatorConfig;
 
@@ -74,10 +76,20 @@ public interface Preparator {
   public void init(PreparatorConfig config) throws RegainException;
 
   /**
+   * Sets the regular expression a URL must match to, to be prepared by this
+   * preparator.
+   * 
+   * @param urlRegex The new URL regex.
+   * @see #accepts(RawDocument)
+   */
+  public void setUrlRegex(RE urlRegex);
+
+  /**
    * Gets whether the preparator is able to process the given document.
    *
    * @param rawDocument The document to check.
    * @return Whether the preparator is able to process the given document.
+   * @see #setUrlRegex(RE)
    */
   public boolean accepts(RawDocument rawDocument);
 

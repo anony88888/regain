@@ -44,6 +44,8 @@ import net.sf.regain.crawler.config.PreparatorConfig;
 import net.sf.regain.crawler.config.PreparatorSettings;
 
 import org.apache.log4j.Logger;
+import org.apache.regexp.RE;
+import org.apache.regexp.RESyntaxException;
 
 /**
  * Loads and initializes the preparators.
@@ -115,6 +117,20 @@ public class PreparatorFactory {
         } else {
           // Initialize the preparator
           prep.init(preparatorSettingsArr[i].getPreparatorConfig());
+          
+          // Set the url regex
+          String urlRegexAsString = preparatorSettingsArr[i].getUrlRegex();
+          if (urlRegexAsString != null) {
+            RE urlRegex;
+            try {
+              urlRegex = new RE(urlRegexAsString);
+            }
+            catch (RESyntaxException exc) {
+              throw new RegainException("urlRegex of preparator " + prepClassName
+                  + " has wrong syntax", exc);
+            }
+            prep.setUrlRegex(urlRegex);
+          }
           
           // Add it to the array
           preparatorArr[prepIdx] = prep;

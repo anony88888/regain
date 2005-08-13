@@ -139,6 +139,14 @@
 <preparatorList>
   <preparator>
     <class>.HtmlPreparator</class>
+    <!--
+     | The regular expression a URL must match to, to be prepared by this
+     | preparator. If specified the regular expression used internally by the
+     | preparator is overridden.
+     +-->
+    <!--
+    <urlPattern>(^http://[^/]*/?$)|(^http://.*/[^\\.]*$)|(\\.(/|html|htm|jsp|php\\d?|asp)$)</urlPattern>
+    -->
     <config>
       <!--
        | The regular expressions that find the start and end locations of the content

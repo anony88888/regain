@@ -308,8 +308,8 @@ public class DummyCrawlerConfig implements CrawlerConfig {
    */
   public PreparatorSettings[] getPreparatorSettingsList() {
     return new PreparatorSettings[] {
-      new PreparatorSettings(true, "net.sf.regain.crawler.document.HtmlPreparator", new PreparatorConfig()),
-      new PreparatorSettings(true, "net.sf.regain.crawler.document.XmlPreparator", new PreparatorConfig())
+      new PreparatorSettings(true, "net.sf.regain.crawler.document.HtmlPreparator", null, new PreparatorConfig()),
+      new PreparatorSettings(true, "net.sf.regain.crawler.document.XmlPreparator", null, new PreparatorConfig())
     };
   }
 

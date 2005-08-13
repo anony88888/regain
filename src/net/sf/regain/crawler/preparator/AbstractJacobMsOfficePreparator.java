@@ -106,8 +106,6 @@ public abstract class AbstractJacobMsOfficePreparator extends AbstractPreparator
    * @throws RegainException If the configuration has an error.
    */
   public void init(PreparatorConfig config) throws RegainException {
-    super.readConfig(config);
-    
     Map main = config.getSectionWithName("main");
     if (main != null) {
       String properties = (String) main.get("properties");

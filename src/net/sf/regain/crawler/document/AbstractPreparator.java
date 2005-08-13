@@ -142,18 +142,16 @@ public abstract class AbstractPreparator implements Preparator {
   public void init(PreparatorConfig config) throws RegainException {
   }
 
-  
+
   /**
-   * Reads the configuration for this preparator.
-   * <p>
-   * Does nothing by default. May be overridden by subclasses to actual read the
-   * config.
+   * Sets the regular expression a URL must match to, to be prepared by this
+   * preparator.
    * 
-   * @param config The configuration
-   * @throws RegainException If the configuration has an error.
+   * @param urlRegex The new URL regex.
+   * @see #accepts(RawDocument)
    */
-  protected final void readConfig(PreparatorConfig config) throws RegainException {
-    // TODO: Remove this method
+  public void setUrlRegex(RE urlRegex) {
+    mUrlRegex = urlRegex;
   }
 
 
@@ -163,7 +161,7 @@ public abstract class AbstractPreparator implements Preparator {
    *
    * @param rawDocument The document to check.
    * @return Whether the preparator is able to process the given document.
-   * @see #init(PreparatorConfig)
+   * @see #setUrlRegex(RE)
    */
   public boolean accepts(RawDocument rawDocument) {
     return mUrlRegex.match(rawDocument.getUrl());
