@@ -60,9 +60,9 @@
   <property name="jacobgen-packed.dir" value="jacobgen/packed"/>
   <property name="package-lists.dir" value="txt/package-lists"/>
   
-  <property name="lucene.jar" value="lucene-1.4.2.jar"/>
+  <property name="lucene.jar" value="lucene-1.4.3.jar"/>
   <property name="regexp.jar" value="jakarta-regexp-1.3.jar"/>
-  <property name="log4j.jar" value="log4j-1.2.9.jar"/>
+  <property name="log4j.jar" value="log4j-1.2.11.jar"/>
   
   <!-- Autodetect the platform -->
   <condition property="platform" value="linux">

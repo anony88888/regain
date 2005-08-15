@@ -226,6 +226,11 @@ X Libs aktualisiert:
 
 ** Version 1.1 Beta 5 am 13.08.05 **
 
+X Bugfix: Im .war file hat das log4j.jar und das lucene.jar gefehlt.
+X Attribut "noQueryUrl" des Check-Tag optional machen.
+
+** Version 1.1 Beta 5a am 15.08.05 **
+
 
 Filiadata:
 ----------
@@ -240,8 +245,12 @@ Filiadata:
 
 Prio A:
 -------
+  Bugfix: NullPointer, wenn regex-Gruppe nicht existiert.
+    Siehe Forum: http://forum.murfman.de/en/viewtopic.php?t=22
+
+  Möglichkeit, Reguläre Ausdrücke auszuprobieren.
   Fehlende Teile der italienischen Lokalisierung
-    Problem: Franco Mail-Adresse geht nicht :-(
+    Problem: Francos Mail-Adresse geht nicht :-(
   Desktopsuche: Die letzten x Zeilen des Logs
   Desktopsuche: Einstellungen: Verzeichnis-Selektor
   Handbuch: Installation: Was muss man konfigurieren, damit es läuft.
@@ -249,6 +258,8 @@ Prio A:
   Desktopsuche: Mime-Types konfigurierbar (apache-Format)
   Suchmaske: Icons passend zu den Dateiendungen
   Neuer Powerpoint-Praeparator: POI
+  HTTP-Download: Redirects nicht einfach verfolgen, sondern neuen Job mit
+    Redirect-URL hinzufügen, so dass im Index die Redirect-URL steht.
 
 Prio B:
 -------

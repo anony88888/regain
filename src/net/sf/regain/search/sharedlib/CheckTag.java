@@ -79,9 +79,11 @@ public class CheckTag extends SharedTag {
     String query = SearchToolkit.getSearchQuery(request);
     if ((query == null) || (query.length() == 0)) {
       // There was no query specified -> Forward to the noQueryUrl
-      String noQueryUrl = getParameter("noQueryUrl", true);
-      response.sendRedirect(noQueryUrl);
-      return;
+      String noQueryUrl = getParameter("noQueryUrl", false);
+      if (noQueryUrl != null) {
+        response.sendRedirect(noQueryUrl);
+        return;
+      }
     }
   }
 
