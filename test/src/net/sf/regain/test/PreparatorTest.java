@@ -81,6 +81,7 @@ public class PreparatorTest {
     testPreparator(docDir, outputDir, "doc", new PoiMsWordPreparator());
     testPreparator(docDir, outputDir, "pdf", new PdfBoxPreparator());
     testPreparator(docDir, outputDir, "ppt", new JacobMsPowerPointPreparator());
+    testPreparator(docDir, outputDir, "ppt", new PoiMsPowerPointPreparator());
     testPreparator(docDir, outputDir, "rtf", new SimpleRtfPreparator());
     testPreparator(docDir, outputDir, "rtf", new SwingRtfPreparator());
     testPreparator(docDir, outputDir, "txt", new PlainTextPreparator());

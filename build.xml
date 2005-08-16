@@ -332,7 +332,7 @@
     <jar jarfile="temp/preparator/PoiMsOfficePreparators.jar"
          compress="false" index="true">
       <manifest>
-        <attribute name="Preparator-Classes" value=".PoiMsExcelPreparator;.PoiMsWordPreparator"/>
+        <attribute name="Preparator-Classes" value=".PoiMsExcelPreparator;.PoiMsWordPreparator;.PoiMsPowerPointPreparator"/>
       </manifest>
       <fileset dir="temp/included-lib-classes/common">
         <include name="font_metrics.properties"/>
