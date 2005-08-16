@@ -67,7 +67,7 @@ public class PoiMsPowerPointPreparator extends AbstractPreparator {
       stream = rawDocument.getContentAsStream();
       PowerPointExtractor ppe = new PowerPointExtractor(stream);
 
-      setCleanedContent(ppe.getText());
+      setCleanedContent(ppe.getText(true, true));
     }
     catch (IOException exc) {
       throw new RegainException("Reading MS PowerPoint document failed: "
