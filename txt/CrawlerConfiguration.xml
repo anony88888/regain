@@ -145,7 +145,7 @@
      | preparator is overridden.
      +-->
     <!--
-    <urlPattern>(^http://[^/]*/?$)|(^http://.*/[^\\.]*$)|(\\.(/|html|htm|jsp|php\\d?|asp)$)</urlPattern>
+    <urlPattern>(^http://[^/]*/?$)|(^http://.*/[^\.]*$)|(^http://.*/$)|(\.(html|htm|jsp|php\d?|asp)$)</urlPattern>
     -->
     <config>
       <!--

@@ -265,6 +265,9 @@ Prio A:
 
 Prio B:
 -------
+  Change whitelist / blacklist to one list of directives. This list should also
+    decide whether a document is parsed. That is the attributes "parse" and
+    "index" should be removed from htmlParserPatternList
   Bugfix: Präparieren von Dokumenten mit Leerzeichen im Dateinamen wird bei jedem
     Lauf erneut probiert (Erkennung des vorhandenen Eintrags funktioniert nicht)
     Konnte ich nicht reproduzieren...
