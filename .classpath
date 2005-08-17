@@ -8,7 +8,7 @@
 	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry sourcepath="C:/tschneider/Ressourcen/Xerces-J/2.6.2/Xerces-J-src.2.6.2.zip" kind="lib" path="lib/xml-apis.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/jakarta-regexp-1.3.jar"/>
+	<classpathentry sourcepath="C:/tschneider/Projekte/regain/lib-src/jakarta-regexp-1.3-src.zip" kind="lib" path="lib/jakarta-regexp-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/servlet.jar"/>
 	<classpathentry sourcepath="/home/til/Projekte/regain/lib-src/simple-src.zip" kind="lib" path="lib/simple-2.5.3.jar"/>
 	<classpathentry kind="lib" path="lib/win/jdic.jar"/>
