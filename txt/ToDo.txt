@@ -232,6 +232,8 @@ X Attribut "noQueryUrl" des Check-Tag optional machen.
 ** Version 1.1 Beta 5a am 15.08.05 **
 
 X Added PoiMsPowerPointPreparator (Thanks to Gerhard Olsson)
+X Multiindexsuche: SearchConfiguration.xml: Möglichkeit bieten, mehrere Indizes
+    als default zu deklarieren. (Dann per default Multiindex-Suche durchführen)
 
 
 Filiadata:

@@ -24,11 +24,11 @@ public interface SearchConfig {
   public IndexConfig getIndexConfig(String indexName);
   
   /**
-   * Gets the name of the default index.
+   * Gets the names of the default indexes.
    * 
-   * @return The name of the default index or <code>null</code> if no default
+   * @return The names of the default indexes or an empty array if no default
    *         index was specified.
    */
-  public String getDefaultIndexName();
+  public String[] getDefaultIndexNameArr();
   
 }

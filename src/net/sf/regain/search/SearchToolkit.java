@@ -101,13 +101,13 @@ public class SearchToolkit {
       // Get the names of the indexes
       String[] indexNameArr = request.getParameters("index");
       if (indexNameArr == null) {
-        String defaultIndexName = mConfig.getDefaultIndexName();
-        if (defaultIndexName == null) {
+        // There was no index specified -> Check whether we have default indexes
+        // defined
+        indexNameArr = mConfig.getDefaultIndexNameArr();
+        if (indexNameArr == null) {
           throw new RegainException("Request parameter 'index' not specified and " +
               "no default index configured");
         }
-        
-        indexNameArr = new String[] { defaultIndexName };
       }
       
       // Get the configurations for these indexes
