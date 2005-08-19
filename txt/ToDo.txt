@@ -234,6 +234,7 @@ X Attribut "noQueryUrl" des Check-Tag optional machen.
 X Added PoiMsPowerPointPreparator (Thanks to Gerhard Olsson)
 X Multiindexsuche: SearchConfiguration.xml: Möglichkeit bieten, mehrere Indizes
     als default zu deklarieren. (Dann per default Multiindex-Suche durchführen)
+X The fieldlistTag supports multiple indexes now.
 
 
 Filiadata:
