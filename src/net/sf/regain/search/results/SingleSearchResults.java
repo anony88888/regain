@@ -312,4 +312,15 @@ public class SingleSearchResults implements SearchResults {
     return url;
   }
 
+  /**
+   * Gets the name of the index a hit comes from.
+   * 
+   * @param index The index of the hit to get the index name for.
+   * @return The name of the index a hit comes from.
+   * @throws RegainException If getting the index name failed.
+   */
+  public String getHitIndexName(int index) throws RegainException {
+    return mIndexConfig.getName();
+  }
+
 }

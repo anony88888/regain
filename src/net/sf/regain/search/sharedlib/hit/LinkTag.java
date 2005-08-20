@@ -101,14 +101,13 @@ public class LinkTag extends AbstractHitTag {
 
       // ...but encode double slashes
       href = RegainToolkit.replace(href, "//", "/\\");
-      
-      String[] indexNameArr = request.getParameters("index");
-      if (indexNameArr != null) {
-        for (int i = 0; i < indexNameArr.length; i++) {
-          String encodedIndexName = RegainToolkit.urlEncode(indexNameArr[i]);
-          href += "?index=" + encodedIndexName;
-        }
-      }
+
+      // Add the index name
+      // NOTE: This is needed to ensure that only documents can be loaded that
+      //       are in the index.s
+      String indexName = results.getHitIndexName(hitIndex);
+      String encodedIndexName = RegainToolkit.urlEncode(indexName);
+      href += "?index=" + encodedIndexName;
     }
     
     // Generate the link

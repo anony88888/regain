@@ -158,6 +158,25 @@ public class MultipleSearchResults implements SearchResults {
 
 
   /**
+   * Gets the name of the index a hit comes from.
+   * 
+   * @param index The index of the hit to get the index name for.
+   * @return The name of the index a hit comes from.
+   * @throws RegainException If getting the index name failed.
+   */
+  public String getHitIndexName(int index) throws RegainException {
+    // Get the SingleSearchResults the hit came from
+    SingleSearchResults results = getResultsForHit(index);
+
+    // Get the index of the hit in the SingleSearchResults
+    int hitsPosition = mMergedHits.getHitsPosition(index);
+    
+    // Gets the index name;
+    return results.getHitIndexName(hitsPosition);
+  }
+
+
+  /**
    * Gets whether a hit should be opened in a new window.
    *
    * @param index The index of the hit.

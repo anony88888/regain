@@ -80,6 +80,15 @@ public interface SearchResults {
   public String getHitUrl(int index) throws RegainException;
 
   /**
+   * Gets the name of the index a hit comes from.
+   * 
+   * @param index The index of the hit to get the index name for.
+   * @return The name of the index a hit comes from.
+   * @throws RegainException If getting the index name failed.
+   */
+  public String getHitIndexName(int index) throws RegainException;
+
+  /**
    * Gets whether a hit should be opened in a new window.
    *
    * @param index The index of the hit.

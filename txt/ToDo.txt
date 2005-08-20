@@ -235,6 +235,8 @@ X Added PoiMsPowerPointPreparator (Thanks to Gerhard Olsson)
 X Multiindexsuche: SearchConfiguration.xml: Möglichkeit bieten, mehrere Indizes
     als default zu deklarieren. (Dann per default Multiindex-Suche durchführen)
 X The fieldlistTag supports multiple indexes now.
+X Bugfix: file-to-http-bridge did create illegal URLs when multiple indexes
+    were searched.
 
 
 Filiadata:
