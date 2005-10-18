@@ -143,20 +143,13 @@ public class NavigationTag extends SharedTag implements SearchConstants {
   {
     String targetPage = getParameter("targetPage",  DEFAULT_TARGET_PAGE);
 
-    // F�r Java 1.2.2
-    String encodedQuery = RegainToolkit.urlEncode(query);
-
-    // Ab Java 1.3
-    /*
-    String encoding = pageContext.getResponse().getCharacterEncoding();
-    String encodedQuery = URLEncoder.encode(query, encoding);
-    String encodedIndexName = URLEncoder.encode(indexName, encoding);
-    */
+    String encoding = response.getEncoding();
+    String encodedQuery = RegainToolkit.urlEncode(query, encoding);
 
     response.print("<a href=\"" + targetPage + "?query=" + encodedQuery);
     if (indexNameArr != null) {
       for (int i = 0; i < indexNameArr.length; i++) {
-        String encodedIndexName = RegainToolkit.urlEncode(indexNameArr[i]);
+        String encodedIndexName = RegainToolkit.urlEncode(indexNameArr[i], encoding);
         response.print("&index=" + encodedIndexName);
       }
     }

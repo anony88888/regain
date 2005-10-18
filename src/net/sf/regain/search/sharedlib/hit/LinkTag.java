@@ -80,17 +80,18 @@ public class LinkTag extends AbstractHitTag {
       if (lastSlash == -1) {
         title = url;
       } else {
-        title = RegainToolkit.urlDecode(url.substring(lastSlash + 1));
+        title = RegainToolkit.urlDecode(url.substring(lastSlash + 1), RegainToolkit.INDEX_ENCODING);
       }
     }
 
     // Pass file URLs to the file servlet
     String href = url;
+    String encoding = response.getEncoding();
     boolean useFileToHttpBridge = results.getUseFileToHttpBridgeForHit(hitIndex);
     if (url.startsWith("file://") && useFileToHttpBridge) {
       // URL encode the URL
       String filename = RegainToolkit.urlToFileName(url);
-      String urlEncoded = RegainToolkit.urlEncode(filename);
+      String urlEncoded = RegainToolkit.urlEncode(filename, encoding);
       urlEncoded = RegainToolkit.replace(urlEncoded, "+", "%20");
       
       // Restore the slashes...
@@ -106,7 +107,7 @@ public class LinkTag extends AbstractHitTag {
       // NOTE: This is needed to ensure that only documents can be loaded that
       //       are in the index.s
       String indexName = results.getHitIndexName(hitIndex);
-      String encodedIndexName = RegainToolkit.urlEncode(indexName);
+      String encodedIndexName = RegainToolkit.urlEncode(indexName, encoding);
       href += "?index=" + encodedIndexName;
     }
     

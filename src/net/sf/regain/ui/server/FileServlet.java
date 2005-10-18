@@ -61,7 +61,7 @@ public class FileServlet extends HttpServlet {
       PageResponse response = new JspPageResponse(pageContext);
       
       // Extract the file name
-      String fileUrl = SearchToolkit.extractFileUrl(req.getRequestURI());
+      String fileUrl = SearchToolkit.extractFileUrl(req.getRequestURI(), req.getCharacterEncoding());
       
       // Check the file
       try {

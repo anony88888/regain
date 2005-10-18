@@ -6,3 +6,4 @@ included-lib-classes
 runtime
 public
 temp
+build.properties

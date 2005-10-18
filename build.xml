@@ -273,16 +273,13 @@
    | Compiles the source code.
    +-->
   <target name="make">
-    <echo message="Compiling the source code ..." />
+    <echo message="Compiling the source code using ${java-1_3.dir} ..." />
     <mkdir dir="temp/classes"/>
     <javac destdir="temp/classes"
            debug="${debug}"
            deprecation="true"
-           target="1.2">
-           <!--
-           executable="${java-1_2_2.dir}/bin/javac"
+           executable="${java-1_3.dir}/bin/javac"
            fork="true">
-           -->
       <src>
         <path refid="sourcepath"/>
       </src>
@@ -620,9 +617,11 @@
         <include name="org/xml/sax/**"/>
       </fileset>
       <fileset dir="temp/classes">
-        <include name="net/sf/regain/*.class"/>
-        <include name="net/sf/regain/crawler/**"/>
         <exclude name="net/sf/regain/crawler/preparator/**"/>
+        <exclude name="net/sf/regain/search/**"/>
+        <exclude name="net/sf/regain/ui/**"/>
+        <exclude name="net/sf/regain/util/sharedtag/**"/>
+        <exclude name="net/sf/regain/util/ui/**"/>
       </fileset>
     </jar>
     

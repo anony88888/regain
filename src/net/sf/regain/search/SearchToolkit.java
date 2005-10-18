@@ -243,16 +243,17 @@ public class SearchToolkit {
    * Extracts the file URL from a request path.
    * 
    * @param requestPath The request path to extract the file URL from.
+   * @param encoding The encoding to use for the URL-docoding of the requestPath.
    * @return The extracted file URL.
    * @throws RegainException If extracting the file URL failed.
    * 
    * @see net.sf.regain.search.sharedlib.hit.LinkTag
    */
-  public static String extractFileUrl(String requestPath)
+  public static String extractFileUrl(String requestPath, String encoding)
     throws RegainException
   {
     int filePos = requestPath.indexOf("file/");
-    String filename = RegainToolkit.urlDecode(requestPath.substring(filePos + 5));
+    String filename = RegainToolkit.urlDecode(requestPath.substring(filePos + 5), encoding);
     
     // Restore the double slashes
     filename = RegainToolkit.replace(filename, "\\", "/");

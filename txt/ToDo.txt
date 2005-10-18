@@ -249,6 +249,8 @@ Filiadata:
     - Such-JSP: Zusaetzliche Eingabefelder fuer bestimmte Felder koennen mit
       "field.feldName" hinzugefuegt werden.
     - Init-Parameter von configFile nach searchConfigFile umbenannt.
+  Fieldlist-Daten (distinct values) vom Crawler ermitteln lassen
+    (Die erstmalige Ermittlung dauert lange bei groﬂen Idizes (1 GB)).
 
 Prio A:
 -------
