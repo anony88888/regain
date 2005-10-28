@@ -237,10 +237,16 @@ X Multiindexsuche: SearchConfiguration.xml: Möglichkeit bieten, mehrere Indizes
 X The fieldlistTag supports multiple indexes now.
 X Bugfix: file-to-http-bridge did create illegal URLs when multiple indexes
     were searched.
+X IfilterPreparator: Einen Präparator schreiben, der das IFilter-Interface
+    unter Windows nutzt.
 
 
 Filiadata:
 ----------
+
+  Prüfen: Gehen Sonderzeichen in Auxilliary Fields?
+  Groß-/Kleinschreibung in Auxilliary Fields  
+
   Was passiert bei OutOfMemoryError im Crawler?
   Auxiliary-Field: toLowerCase-Attribut.
 
