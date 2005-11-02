@@ -68,12 +68,7 @@ public class NavigationTag extends SharedTag implements SearchConstants {
   public void printEndTag(PageRequest request, PageResponse response)
     throws RegainException
   {
-    String query = request.getParameter("query");
-    if (query == null) {
-      // Nothing to do
-      return;
-    }
-    
+    String query = SearchToolkit.getSearchQuery(request);
     SearchResults results = SearchToolkit.getSearchResults(request);
 
     int fromResult = request.getParameterAsInt(PARAM_FROM_RESULT, 0);
