@@ -271,7 +271,11 @@
       </section>
     </config>    
   </preparator>
-  
+
+  <preparator enabled="false">
+      <class>.IfilterPreparator</class>
+  </preparator>
+
   <preparator>
     <class>.SimpleRtfPreparator</class>
   </preparator>
@@ -348,7 +352,9 @@
  |
  | The folling tag will create a field "project" with the value "otto23"
  | from the URL "file://c:/projects/otto23/docs/Spez.doc":
- |   <auxiliaryField name="project" regexGroup="1">^file://c:/projects/([^/]*)</auxiliaryField>
+ |   <auxiliaryField name="project" regexGroup="1">
+ |     <regex>^file://c:/projects/([^/]*)</regex>
+ |   </auxiliaryField>
  |
  | URLs that doen't match will get no "project" field.
  |
@@ -356,7 +362,9 @@
  | only hits from this project directory.
  +-->
 <auxiliaryFieldList>
-  <auxiliaryField name="extension" regexGroup="1">\.([^\.]*)$</auxiliaryField>
+  <auxiliaryField name="extension" regexGroup="1" toLowercase="true">
+    <regex>\.([^\.]*)$</regex>
+  </auxiliaryField>
 </auxiliaryFieldList>
 
 </configuration>

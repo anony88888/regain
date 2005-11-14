@@ -239,13 +239,19 @@ X Bugfix: file-to-http-bridge did create illegal URLs when multiple indexes
     were searched.
 X IfilterPreparator: Einen Präparator schreiben, der das IFilter-Interface
     unter Windows nutzt.
+X Groß-/Kleinschreibung in Auxilliary Fields
 
 
 Filiadata:
 ----------
 
+  änderungen seit 18.10.
+  21.11.
+
+  Zeit zwischen Breakpoints konfigurierbar
+
+  Namen der verfügbaren Indizes von JSPs aus erreichbar machen
   Prüfen: Gehen Sonderzeichen in Auxilliary Fields?
-  Groß-/Kleinschreibung in Auxilliary Fields  
 
   Was passiert bei OutOfMemoryError im Crawler?
   Auxiliary-Field: toLowerCase-Attribut.
@@ -278,6 +284,7 @@ Prio A:
 
 Prio B:
 -------
+  Bug: HtmlPreparator: Inhalt von style-Tags wird nicht entfernt.
   Change whitelist / blacklist to one list of directives. This list should also
     decide whether a document is parsed. That is the attributes "parse" and
     "index" should be removed from htmlParserPatternList

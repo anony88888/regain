@@ -34,6 +34,8 @@ import java.util.Properties;
 import net.sf.regain.RegainException;
 import net.sf.regain.XmlToolkit;
 
+import org.apache.regexp.RE;
+import org.apache.regexp.RESyntaxException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -434,12 +436,57 @@ public class XmlCrawlerConfig implements CrawlerConfig {
       mAuxiliaryFieldArr = new AuxiliaryField[nodeArr.length];
       for (int i = 0; i < nodeArr.length; i++) {
         String fieldName = XmlToolkit.getAttribute(nodeArr[i], "name", true);
-        String urlRegex = XmlToolkit.getText(nodeArr[i], true);
-        int urlRegexGroup = XmlToolkit.getAttributeAsInt(nodeArr[i], "regexGroup");
-        
-        mAuxiliaryFieldArr[i] = new AuxiliaryField(fieldName, urlRegex, urlRegexGroup);
+        RE urlRegex = readRegexChild(nodeArr[i]);
+        String value = XmlToolkit.getAttribute(nodeArr[i], "value");
+        boolean toLowerCase = XmlToolkit.getAttributeAsBoolean(nodeArr[i],
+                "toLowerCase", true);
+        int urlRegexGroup = XmlToolkit.getAttributeAsInt(nodeArr[i], "regexGroup", -1);
+        if ((value == null) && (urlRegexGroup == -1)) {
+          throw new RegainException("The node 'auxiliaryField' must have " +
+                "either the attribute 'value' or the attribute 'regexGroup'");
+        }
+
+        mAuxiliaryFieldArr[i] = new AuxiliaryField(fieldName, value,
+            toLowerCase, urlRegex, urlRegexGroup);
       }
     }
+  }
+
+
+  /**
+   * Reads the regex child node from a node. Can also read the old style, where
+   * the regex is directly in the node text.
+   * 
+   * @param node The node to read the regex node from
+   * @return The compiled regular expression
+   * @throws RegainException If there is no regular expression or if the regex
+   *         could not be compiled.
+   */
+  private RE readRegexChild(Node node) throws RegainException {
+      // Check whether the node has a regex child node
+      Node regexNode = XmlToolkit.getChild(node, "regex");
+      if (regexNode != null) {
+          boolean caseSensitive = XmlToolkit.getAttributeAsBoolean(regexNode,
+              "caseSensitive", false);
+          String regex = XmlToolkit.getText(regexNode, true);
+
+          int flags = caseSensitive ? RE.MATCH_NORMAL : RE.MATCH_CASEINDEPENDENT;
+          try {
+              return new RE(regex, flags);
+          } catch (RESyntaxException exc) {
+              throw new RegainException("Regex of node '" + node.getNodeName()
+                  + "' has a wrong syntax: '" + regex + "'", exc);
+          }
+      } else {
+          // This is the old style -> Use the text as regex
+          String regex = XmlToolkit.getText(node, true);
+          try {
+              return new RE(regex, RE.MATCH_CASEINDEPENDENT);
+          } catch (RESyntaxException exc) {
+              throw new RegainException("Regex of node '" + node.getNodeName()
+                  + "' has a wrong syntax: '" + regex + "'", exc);
+          }
+      }
   }
   
   
