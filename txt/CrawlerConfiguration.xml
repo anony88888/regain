@@ -22,24 +22,34 @@
 </proxy>
 
 
-<!-- Specifies, whether to load URLs that are neither parsed nor indexed -->
-<loadUnparsedUrls>false</loadUnparsedUrls>
+<!-- The list of URLs where the spidering will start. -->
+<startlist>
+  <!-- Directory parsing -->
+  <!--
+  <start parse="true" index="false">file://c:/Eigene Dateien</start>
+  -->
+
+  <!-- HTML parsing -->
+  <!--
+  <start parse="true" index="true">http://www.mydomain.de/some/path/</start>
+  -->
+</startlist>
 
 
-<!--
- | Der Timeout für HTTP-Downloads. Dieser Wert bestimmt die maximale Zeit
- | in Sekunden, die ein HTTP-Download insgesamt dauern darf.
- +-->
-<httpTimeout>180</httpTimeout>
+<!-- The whitelist containing prefixes an URL must have to be processed -->
+<whitelist>
+  <prefix name="file">file://</prefix>
+  <prefix>http://www.mydomain.de</prefix>
+</whitelist>
 
 
-<!--
- | The list of patterns a document's URL must match to, when the link text
- | should be used as title instead of the document's real title.
- +-->
-<useLinkTextAsTitleList>
-  <urlPattern>^http://.*\.(pdf|xls|doc|rtf)$</urlPattern>
-</useLinkTextAsTitleList>
+<!-- The blacklist containing prefixes an URL must NOT have to be processed -->
+<blacklist>
+  <!--
+  <prefix>http://www.mydomain.de/some/dynamic/content/</prefix>
+  <regex>/backup/[^/]*$</regex>
+  -->
+</blacklist>
 
 
 <!-- The preferences for the search index -->
@@ -61,6 +71,15 @@
    | de.filiadata.lucene.LuceneToolkit.
    +-->
   <analyzerType>german</analyzerType>
+
+  <!--
+   | Specifies the interval between two breakpoint in minutes. If set to 0, no
+   | breakpoints will be created.
+   |
+   | A breakpoint is a snapshot the crawler creates periodically while working.
+   | If the crawler should crash it goes on from the last breakpoint.
+   +-->
+  <breakpointInterval>10</breakpointInterval>
 
   <!--
    | Specifies, whether the analysis files should be written.
@@ -107,24 +126,6 @@
   <exclusionList></exclusionList>
 
 </searchIndex>
-
-
-<!--
- | Specifies which control files should be crated. These files may be used to
- | check with a sceduling script whether the index was successfully built.
- |
- | <finishedWithoutFatalsFile>: The name of the control file that should be
- | created if the index creation finished without fatal errors.
- |
- | <finishedWithFatalsFile>: The name of the control file that should be
- | created if the index creation failed with a fatal error.
- +-->
-<!--
-<controlFiles>
-  <finishedWithoutFatalsFile>c:\Temp\control\NoFatals</finishedWithoutFatalsFile>
-  <finishedWithFatalsFile>c:\Temp\control\WithFatals</finishedWithFatalsFile>
-</controlFiles>
--->
 
 
 <!--
@@ -286,64 +287,6 @@
 
 
 <!--
- | The CrawlerAccessController to use.
- | 
- | This is a part of the access control system that ensures that only those
- | documents are shown in the search results that the user is allowed to
- | read.
- |
- | If you specify a CrawlerAccessController, don't forget to specify the
- | SearchAccessController counterpart in the SearchConfiguration.xml!
- +-->
-<!--
-<crawlerAccessController>
-  <class jar="myAccess.jar">mypackage.MyCrawlerAccessController</class>
-  <config>
-    <param name="bla">blubb</param>
-  </config>
-</crawlerAccessController>
--->
-
-
-<!-- The regular expressions that indetify URLs in HTML. -->
-<htmlParserPatternList>
-  <pattern parse="true" index="true" regexGroup="1">="([^"]*\.(htm|html|jsp|php\\d?|asp))"</pattern>
-  <pattern parse="false" index="false" regexGroup="1">="([^"]*\.(js|css|jpg|gif|png))"</pattern>
-  <pattern parse="false" index="true" regexGroup="1">="([^"]*\.[^\."]{3})"</pattern>
-</htmlParserPatternList>
-
-
-<!-- The list of URLs where the spidering will start. -->
-<startlist>
-  <!-- Directory parsing -->
-  <!--
-  <start parse="true" index="false">file://c:/Eigene Dateien</start>
-  -->
-
-  <!-- HTML parsing -->
-  <!--
-  <start parse="true" index="true">http://www.mydomain.de/some/path/</start>
-  -->
-</startlist>
-
-
-<!-- The blacklist containing prefixes an URL must NOT have to be processed -->
-<blacklist>
-  <!--
-  <prefix>http://www.mydomain.de/some/dynamic/content/</prefix>
-  <regex>/backup/[^/]*$</regex>
-  -->
-</blacklist>
-
-
-<!-- The whitelist containing prefixes an URL must have to be processed -->
-<whitelist>
-  <prefix name="file">file://</prefix>
-  <prefix>http://www.mydomain.de</prefix>
-</whitelist>
-
-
-<!--
  | The index may be extended with auxiliary fields. These are fields that have
  | been generated from the URL of an document.
  |
@@ -366,5 +309,71 @@
     <regex>\.([^\.]*)$</regex>
   </auxiliaryField>
 </auxiliaryFieldList>
+
+
+<!-- Specifies, whether to load URLs that are neither parsed nor indexed -->
+<loadUnparsedUrls>false</loadUnparsedUrls>
+
+
+<!--
+ | Der Timeout für HTTP-Downloads. Dieser Wert bestimmt die maximale Zeit
+ | in Sekunden, die ein HTTP-Download insgesamt dauern darf.
+ +-->
+<httpTimeout>180</httpTimeout>
+
+
+<!--
+ | The list of patterns a document's URL must match to, when the link text
+ | should be used as title instead of the document's real title.
+ +-->
+<useLinkTextAsTitleList>
+  <urlPattern>^http://.*\.(pdf|xls|doc|rtf)$</urlPattern>
+</useLinkTextAsTitleList>
+
+
+<!--
+ | Specifies which control files should be crated. These files may be used to
+ | check with a sceduling script whether the index was successfully built.
+ |
+ | <finishedWithoutFatalsFile>: The name of the control file that should be
+ | created if the index creation finished without fatal errors.
+ |
+ | <finishedWithFatalsFile>: The name of the control file that should be
+ | created if the index creation failed with a fatal error.
+ +-->
+<!--
+<controlFiles>
+  <finishedWithoutFatalsFile>c:\Temp\control\NoFatals</finishedWithoutFatalsFile>
+  <finishedWithFatalsFile>c:\Temp\control\WithFatals</finishedWithFatalsFile>
+</controlFiles>
+-->
+
+
+<!--
+ | The CrawlerAccessController to use.
+ | 
+ | This is a part of the access control system that ensures that only those
+ | documents are shown in the search results that the user is allowed to
+ | read.
+ |
+ | If you specify a CrawlerAccessController, don't forget to specify the
+ | SearchAccessController counterpart in the SearchConfiguration.xml!
+ +-->
+<!--
+<crawlerAccessController>
+  <class jar="myAccess.jar">mypackage.MyCrawlerAccessController</class>
+  <config>
+    <param name="bla">blubb</param>
+  </config>
+</crawlerAccessController>
+-->
+
+
+<!-- The regular expressions that indetify URLs in HTML. -->
+<htmlParserPatternList>
+  <pattern parse="true" index="true" regexGroup="1">="([^"]*\.(htm|html|jsp|php\d?|asp))"</pattern>
+  <pattern parse="false" index="false" regexGroup="1">="([^"]*\.(js|css|jpg|gif|png))"</pattern>
+  <pattern parse="false" index="true" regexGroup="1">="([^"]*\.[^\."]{3})"</pattern>
+</htmlParserPatternList>
 
 </configuration>

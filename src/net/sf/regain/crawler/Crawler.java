@@ -439,7 +439,10 @@ public class Crawler implements ErrorLogger {
       mCurrentJob = null;
       
       // Check whether to create a breakpoint
-      if (mShouldPause || (System.currentTimeMillis() > lastBreakpointTime + 10 * 60 * 1000)) {
+      int breakpointInterval = mConfiguration.getBreakpointInterval();
+      boolean breakpointIntervalIsOver = (breakpointInterval > 0)
+        && (System.currentTimeMillis() > lastBreakpointTime + breakpointInterval * 60 * 1000);
+      if (mShouldPause || breakpointIntervalIsOver) {
         try {
           mIndexWriterManager.createBreakpoint();
         }

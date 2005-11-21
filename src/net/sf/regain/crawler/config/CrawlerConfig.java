@@ -133,6 +133,14 @@ public interface CrawlerConfig {
   public boolean getWriteAnalysisFiles();
 
   /**
+   * Returns the interval between two breakpoint in minutes. If set to 0, no
+   * breakpoints will be created.
+   *
+   * @return the interval between two breakpoint in minutes.
+   */
+  public int getBreakpointInterval();
+
+  /**
    * Gibt den maximalen Prozentsatz von gescheiterten Dokumenten zurück. (0..1)
    * <p>
    * Ist das Verhälnis von gescheiterten Dokumenten zur Gesamtzahl von

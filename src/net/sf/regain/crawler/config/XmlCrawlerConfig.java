@@ -83,6 +83,8 @@ public class XmlCrawlerConfig implements CrawlerConfig {
 
   /** Gibt an, ob Analyse-Deteien geschrieben werden sollen. */
   private boolean mWriteAnalysisFiles;
+  /** The interval between two breakpoint in minutes. */
+  private int mBreakpointInterval;
   /**
    * Der maximale Prozentsatz von gescheiterten Dokumenten (0..100), der f�r
    * die Freigabe eines Index toleriert wird.
@@ -234,6 +236,10 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     mExclusionList = XmlToolkit.getTextAsWordList(node, false);
     node = XmlToolkit.getChild(indexNode, "writeAnalysisFiles", true);
     mWriteAnalysisFiles = XmlToolkit.getTextAsBoolean(node);
+
+    node = XmlToolkit.getChild(indexNode, "breakpointInterval");
+    mBreakpointInterval = (node == null) ? 10 : XmlToolkit.getTextAsInt(node);
+
     node = XmlToolkit.getChild(indexNode, "maxFailedDocuments", true);
     mMaxFailedDocuments = XmlToolkit.getTextAsDouble(node) / 100.0;
   }
@@ -695,6 +701,17 @@ public class XmlCrawlerConfig implements CrawlerConfig {
    */
   public boolean getWriteAnalysisFiles() {
     return mWriteAnalysisFiles;
+  }
+
+
+  /**
+   * Returns the interval between two breakpoint in minutes. If set to 0, no
+   * breakpoints will be created.
+   *
+   * @return the interval between two breakpoint in minutes.
+   */
+  public int getBreakpointInterval() {
+    return mBreakpointInterval;
   }
 
 

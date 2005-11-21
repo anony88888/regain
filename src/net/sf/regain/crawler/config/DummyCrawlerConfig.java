@@ -176,6 +176,17 @@ public class DummyCrawlerConfig implements CrawlerConfig {
 
 
   /**
+   * Returns the interval between two breakpoint in minutes. If set to 0, no
+   * breakpoints will be created.
+   *
+   * @return the interval between two breakpoint in minutes.
+   */
+  public int getBreakpointInterval() {
+    return 10;
+  }
+
+
+  /**
    * Gibt den maximalen Prozentsatz von gescheiterten Dokumenten zurück. (0..1)
    * <p>
    * Ist das Verhälnis von gescheiterten Dokumenten zur Gesamtzahl von

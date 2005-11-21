@@ -84,6 +84,9 @@
     <fileset dir="lib/${platform}">
       <include name="*.jar"/>
     </fileset>
+    <fileset dir="lib/win">
+      <include name="jacob*.jar"/>
+    </fileset>
   </path>
 
   <path id="jacobgen-classpath">

@@ -240,6 +240,7 @@ X Bugfix: file-to-http-bridge did create illegal URLs when multiple indexes
 X IfilterPreparator: Einen Präparator schreiben, der das IFilter-Interface
     unter Windows nutzt.
 X Groß-/Kleinschreibung in Auxilliary Fields
+X Zeit zwischen Breakpoints konfigurierbar
 
 
 Filiadata:
@@ -247,8 +248,6 @@ Filiadata:
 
   änderungen seit 18.10.
   21.11.
-
-  Zeit zwischen Breakpoints konfigurierbar
 
   Namen der verfügbaren Indizes von JSPs aus erreichbar machen
   Prüfen: Gehen Sonderzeichen in Auxilliary Fields?
