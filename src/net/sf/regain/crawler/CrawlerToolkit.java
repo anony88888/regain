@@ -453,12 +453,11 @@ public class CrawlerToolkit {
 
 
   /**
-   * Initialisiert die Proxy-Einstellungen.
+   * Initializes the HTTP client
    *
-   * @param config Die Konfiguration, aus der die Einstellungen gelesen werden
-   *        sollen.
+   * @param config The configuration to read the settings from.
    */
-  public static void initProxy(CrawlerConfig config) {
+  public static void initHttpClient(CrawlerConfig config) {
     String httpProxyHost = config.getProxyHost();
     String httpProxyPort = config.getProxyPort();
     String httpProxyUser = config.getProxyUser();
@@ -486,6 +485,12 @@ public class CrawlerToolkit {
       mLog.info("Using proxy:" + msg);
     } else {
       mLog.info("Using no proxy");
+    }
+
+    String userAgent = config.getUserAgent();
+    if (userAgent != null) {
+      System.setProperty("http.agent", userAgent);
+      mLog.info("Using HTTP user agent:" + userAgent);
     }
   }
 

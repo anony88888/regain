@@ -188,9 +188,6 @@ public class IndexUpdateManager implements DesktopConstants {
       } else {
         // Update the index
 
-        // Proxy settings
-        CrawlerToolkit.initProxy(config);
-        
         // Create and run the crawler
         TrayIconManager.getInstance().setIndexUpdateRunning(true);
         try {

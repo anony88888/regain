@@ -84,6 +84,12 @@ public class DummyCrawlerConfig implements CrawlerConfig {
   }
 
 
+  // overridden
+  public String getUserAgent() {
+    return null;
+  }
+
+
   /**
    * Gibt den Timeout für HTTP-Downloads zurück. Dieser Wert bestimmt die
    * maximale Zeit in Sekunden, die ein HTTP-Download insgesamt dauern darf.

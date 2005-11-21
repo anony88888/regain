@@ -56,6 +56,8 @@ public class XmlCrawlerConfig implements CrawlerConfig {
   private String mProxyUser;
   /** Das Passwort f�r die Anmeldung beim Proxy-Server. */
   private String mProxyPassword;
+  /** The user agent the crawler should in order to identify at the HTTP server(s). */
+  private String mUserAgent;
   /**
    * Gibt an, ob URLs geladen werden sollen, die weder durchsucht noch indiziert
    * werden.
@@ -143,6 +145,7 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     readProxyConfig(config);
     readLoadUnparsedUrls(config);
     readHttpTimeoutSecs(config);
+    readUserAgent(config);
     readIndexConfig(config);
     readControlFileConfig(config);
     readStartUrls(config);
@@ -180,6 +183,20 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     mHttpTimeoutSecs = XmlToolkit.getTextAsInt(node);
   }
 
+
+  /**
+   * Reads the user agent from the config.
+   *
+   * @param config The configuration to read from.
+   * @throws RegainException If the configuration has an error.
+   */
+  private void readUserAgent(Element config) throws RegainException {
+    Node node = XmlToolkit.getChild(config, "userAgent", false);
+    if (node != null) {
+      mUserAgent = XmlToolkit.getText(node);
+    }
+  }
+  
 
   /**
    * Liest die Proxy-Einstellungen aus der Konfiguration.
@@ -610,6 +627,12 @@ public class XmlCrawlerConfig implements CrawlerConfig {
    */
   public String getProxyPassword() {
     return mProxyPassword;
+  }
+
+
+  // overridden
+  public String getUserAgent() {
+    return mUserAgent;
   }
 
 

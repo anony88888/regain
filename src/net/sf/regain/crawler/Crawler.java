@@ -332,6 +332,9 @@ public class Crawler implements ErrorLogger {
     mLog.info("Starting crawling...");
     mShouldPause = false;
 
+    // Init the HTTP client
+    CrawlerToolkit.initHttpClient(mConfiguration);
+
     // Initialize the IndexWriterManager if building the index is wanted
     mIndexWriterManager = null;
     if (mConfiguration.getBuildIndex()) {

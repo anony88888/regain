@@ -22,6 +22,12 @@
 </proxy>
 
 
+<!--
+ | The user agent the crawler should in order to identify at the HTTP server(s).
+ +-->
+<userAgent>Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)</userAgent>
+
+
 <!-- The list of URLs where the spidering will start. -->
 <startlist>
   <!-- Directory parsing -->

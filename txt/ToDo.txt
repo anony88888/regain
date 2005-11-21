@@ -241,6 +241,9 @@ X IfilterPreparator: Einen Präparator schreiben, der das IFilter-Interface
     unter Windows nutzt.
 X Groß-/Kleinschreibung in Auxilliary Fields
 X Zeit zwischen Breakpoints konfigurierbar
+X HTTP User agent konfigurierbar
+- Namen der verfügbaren Indizes von JSPs aus erreichbar machen
+    Geht schon: SearchToolkit.getIndexConfigArr(...)
 
 
 Filiadata:
@@ -249,7 +252,6 @@ Filiadata:
   änderungen seit 18.10.
   21.11.
 
-  Namen der verfügbaren Indizes von JSPs aus erreichbar machen
   Prüfen: Gehen Sonderzeichen in Auxilliary Fields?
 
   Was passiert bei OutOfMemoryError im Crawler?

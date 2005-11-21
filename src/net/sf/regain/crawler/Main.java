@@ -116,9 +116,6 @@ public class Main {
       return; // Abort
     }
 
-    // Proxy settings
-    CrawlerToolkit.initProxy(config);
-
     // Create crawler
     Crawler crawler = null;
     try {

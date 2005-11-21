@@ -77,6 +77,14 @@ public interface CrawlerConfig {
   public int getHttpTimeoutSecs();
 
   /**
+   * Returns the user agent the crawler should in order to identify at the HTTP
+   * server(s). If null, the default (Java) user agent should be used.
+   * 
+   * @return the user agent to use.
+   */
+  public String getUserAgent();
+
+  /**
    * Gibt zurück, ob URLs geladen werden sollen, die weder durchsucht noch
    * indiziert werden.
    *
