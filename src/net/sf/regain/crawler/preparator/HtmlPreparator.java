@@ -40,6 +40,7 @@ import net.sf.regain.crawler.preparator.html.HtmlPathExtractor;
 
 import org.apache.log4j.Logger;
 import org.apache.regexp.RE;
+import org.apache.regexp.RESyntaxException;
 
 
 /**
@@ -70,9 +71,28 @@ public class HtmlPreparator extends AbstractPreparator {
 
   /**
    * Creates a new instance of HtmlPreparator.
+   *
+   * @throws RegainException If creating the preparator failed.
    */
-  public HtmlPreparator() {
-    super(new RE("(^http://[^/]*/?$)|(^http://.*/[^\\.]*$)|(^http://.*/$)|(\\.(html|htm|jsp|php\\d?|asp)$)", RE.MATCH_CASEINDEPENDENT));
+  public HtmlPreparator() throws RegainException {
+    super(createAcceptRegex());
+  }
+
+
+  /**
+   * Creates a regex that matches a URL that contains HTML.
+   * 
+   * @return The regex.
+   * @throws RegainException If the regex couldn't be created.
+   */
+  private static RE createAcceptRegex() throws RegainException {
+    String regex = "(^http://[^/]*/?$)|(^http://.*/[^\\.]*$)|(^http://.*/$)|(\\.(html|htm|jsp|php\\d?|asp)$)";
+    try {
+      return new RE(regex, RE.MATCH_CASEINDEPENDENT);
+    } catch (RESyntaxException exc) {
+      throw new RegainException("Creating accept regex for preparator failed: "
+          + regex, exc);
+    }
   }
 
 

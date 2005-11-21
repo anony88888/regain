@@ -50,8 +50,10 @@ public class SimpleRtfPreparator extends AbstractPreparator {
 
   /**
    * Creates a new instance of SimpleRtfPreparator.
+   *
+   * @throws RegainException If creating the preparator failed.
    */
-  public SimpleRtfPreparator() {
+  public SimpleRtfPreparator() throws RegainException {
     super("rtf");
   }
 

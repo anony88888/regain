@@ -70,8 +70,10 @@ public class PoiMsExcelPreparator extends AbstractPreparator {
 
   /**
    * Creates a new instance of PoiMsExcelPreparator.
+   *
+   * @throws RegainException If creating the preparator failed.
    */
-  public PoiMsExcelPreparator() {
+  public PoiMsExcelPreparator() throws RegainException {
     super(new String[] { "xls", "xlt" });
   }
 

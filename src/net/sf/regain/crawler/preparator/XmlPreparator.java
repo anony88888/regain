@@ -43,8 +43,10 @@ public class XmlPreparator extends AbstractPreparator {
 
   /**
    * Creates a new instance of XmlPreparator.
+   *
+   * @throws RegainException If creating the preparator failed.
    */
-  public XmlPreparator() {
+  public XmlPreparator() throws RegainException {
     super("xml");
   }
 

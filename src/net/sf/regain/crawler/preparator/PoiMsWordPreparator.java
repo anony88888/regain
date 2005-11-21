@@ -51,8 +51,10 @@ public class PoiMsWordPreparator extends AbstractPreparator {
 
   /**
    * Creates a new instance of PoiMsWordPreparator.
+   *
+   * @throws RegainException If creating the preparator failed.
    */
-  public PoiMsWordPreparator() {
+  public PoiMsWordPreparator() throws RegainException {
     super(new String[] { "doc", "dot" });
   }
 

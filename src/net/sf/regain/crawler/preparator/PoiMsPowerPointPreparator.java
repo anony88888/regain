@@ -48,8 +48,10 @@ public class PoiMsPowerPointPreparator extends AbstractPreparator {
 
   /**
    * Creates a new instance of PoiMsPowerPointPreparator.
+   *
+   * @throws RegainException If creating the preparator failed.
    */
-  public PoiMsPowerPointPreparator() {
+  public PoiMsPowerPointPreparator() throws RegainException {
     super(new String[] { "ppt", "pot" });
   }
 

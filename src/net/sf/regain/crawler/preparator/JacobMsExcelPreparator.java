@@ -60,8 +60,10 @@ public class JacobMsExcelPreparator extends AbstractJacobMsOfficePreparator {
 
   /**
    * Creates a new instance of JacobMsExcelPreparator.
+   *
+   * @throws RegainException If creating the preparator failed.
    */
-  public JacobMsExcelPreparator() {
+  public JacobMsExcelPreparator() throws RegainException {
     super(new String[] { "xls", "xlt" });
   }
 

@@ -60,8 +60,11 @@ public abstract class AbstractJacobMsOfficePreparator extends AbstractPreparator
    * 
    * @param extentionArr The file extensions a URL must have one to be accepted
    *        by this preparator.
+   * @throws RegainException If creating the preparator failed.
    */
-  public AbstractJacobMsOfficePreparator(String[] extentionArr) {
+  public AbstractJacobMsOfficePreparator(String[] extentionArr)
+    throws RegainException
+  {
     super(extentionArr);
     
     // NOTE: See: http://mypage.bluewin.ch/reprobst/WordFAQ/DokEigen.htm#DokEigen04

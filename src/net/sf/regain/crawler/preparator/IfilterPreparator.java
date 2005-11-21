@@ -41,6 +41,7 @@ import net.sf.regain.crawler.preparator.ifilter.IfilterWrapper;
 
 import org.apache.log4j.Logger;
 import org.apache.regexp.RE;
+import org.apache.regexp.RESyntaxException;
 
 /**
  * A preparator that uses Microsoft's IFilter interface for preparing various
@@ -64,6 +65,10 @@ public class IfilterPreparator extends AbstractPreparator {
    * e.g. "clsid:f07f3920-7b8c-11cf-9be8-00aa004b9986")
    */
   private HashMap mGuidToIFilterHash;
+
+  /** The regex that matches a registry value. */
+  private static RE mValueRegex;
+
 
 
   /**
@@ -301,8 +306,11 @@ public class IfilterPreparator extends AbstractPreparator {
    * 
    * @param regKey The Windows registry key to get the default value for.
    * @return The default value or null if the value couldn't be retreived.
+   * @throws RegainException if initializing the value regex failed.
    */
-  private static String getRegistryKeyValue(String regKey) {
+  private static String getRegistryKeyValue(String regKey)
+    throws RegainException
+  {
     return getRegistryKeyValue(regKey, null);
   }
 
@@ -313,8 +321,11 @@ public class IfilterPreparator extends AbstractPreparator {
    * @param regKey The Windows registry key to get the value for.
    * @param valueName The name of the value to get.
    * @return The default value or null if the value couldn't be retreived.
+   * @throws RegainException if initializing the value regex failed.
    */
-  private static String getRegistryKeyValue(String regKey, String valueName) {
+  private static String getRegistryKeyValue(String regKey, String valueName)
+    throws RegainException
+  {
     if (valueName == null) {
       valueName = "<NO NAME>";
     }
@@ -342,17 +353,26 @@ public class IfilterPreparator extends AbstractPreparator {
       return null;
     }
 
-    RE valueRegex = new RE("^\\s+(.*)\\s+REG_SZ\\s+(.*)$");
-    for (int i = valueStartIdx; i < output.length; i++) {
-      if (valueRegex.match(output[i])) {
-        String name = valueRegex.getParen(1);
-        if (name.equals(valueName)) {
-          // We found the default value -> return it
-          return valueRegex.getParen(2);
+    if (mValueRegex == null) {
+      try {
+        mValueRegex = new RE("^\\s+(.*)\\s+REG_SZ\\s+(.*)$");
+      } catch (RESyntaxException exc) {
+        throw new RegainException("Creating registry value regex failed", exc);
+      }
+    }
+
+    synchronized (mValueRegex) {
+      for (int i = valueStartIdx; i < output.length; i++) {
+        if (mValueRegex.match(output[i])) {
+          String name = mValueRegex.getParen(1);
+          if (name.equals(valueName)) {
+            // We found the default value -> return it
+            return mValueRegex.getParen(2);
+          }
+        } else {
+          // This is the end of the value output
+          break;
         }
-      } else {
-        // This is the end of the value output
-        break;
       }
     }
 

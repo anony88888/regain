@@ -88,8 +88,10 @@ public class JacobMsWordPreparator extends AbstractJacobMsOfficePreparator {
 
   /**
    * Creates a new instance of JacobMsPowerPointPreparator.
+   *
+   * @throws RegainException If creating the preparator failed.
    */
-  public JacobMsWordPreparator() {
+  public JacobMsWordPreparator() throws RegainException {
     super(new String[] { "doc", "dot" });
   }
 

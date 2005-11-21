@@ -57,8 +57,10 @@ public class JacobMsPowerPointPreparator extends AbstractJacobMsOfficePreparator
 
   /**
    * Creates a new instance of JacobMsPowerPointPreparator.
+   *
+   * @throws RegainException If creating the preparator failed.
    */
-  public JacobMsPowerPointPreparator() {
+  public JacobMsPowerPointPreparator() throws RegainException {
     super(new String[] { "ppt", "pot" });
   }
 

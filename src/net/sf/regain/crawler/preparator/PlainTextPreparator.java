@@ -42,8 +42,10 @@ public class PlainTextPreparator extends AbstractPreparator {
 
   /**
    * Creates a new instance of PlainTextPreparator.
+   *
+   * @throws RegainException If creating the preparator failed.
    */
-  public PlainTextPreparator() {
+  public PlainTextPreparator() throws RegainException {
     super("txt");
   }
 

@@ -55,8 +55,10 @@ public class PdfBoxPreparator extends AbstractPreparator {
 
   /**
    * Creates a new instance of PdfBoxPreparator.
+   *
+   * @throws RegainException If creating the preparator failed.
    */
-  public PdfBoxPreparator() {
+  public PdfBoxPreparator() throws RegainException {
     super("pdf");
   }
 

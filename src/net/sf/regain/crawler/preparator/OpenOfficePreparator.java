@@ -48,8 +48,10 @@ public class OpenOfficePreparator extends AbstractPreparator {
 
   /**
    * Creates a new instance of OpenOfficePreparator.
+   *
+   * @throws RegainException If creating the preparator failed.
    */
-  public OpenOfficePreparator() {
+  public OpenOfficePreparator() throws RegainException {
     super(new String[] { "sds", "sdc", "sdw", "sgl", "sda", "sdd", "sdf", "sxw",
            "stw", "sxg", "sxc", "stc", "sxi", "sti", "sxd", "std", "sxm", "odt",
            "ott", "oth", "odm", "odg", "otg", "odp", "otp", "ods", "ots", "odc",
