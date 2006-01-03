@@ -245,6 +245,11 @@ X HTTP User agent konfigurierbar
 - Namen der verfügbaren Indizes von JSPs aus erreichbar machen
     Geht schon: SearchToolkit.getIndexConfigArr(...)
 
+** Version 1.1 Beta 6 am 05.12.05 **
+
+X Bugfix: NullPointer, wenn regex-Gruppe nicht existiert.
+    Siehe Forum: http://forum.murfman.de/en/viewtopic.php?t=22
+
 
 Filiadata:
 ----------
@@ -267,8 +272,11 @@ Filiadata:
 
 Prio A:
 -------
-  Bugfix: NullPointer, wenn regex-Gruppe nicht existiert.
-    Siehe Forum: http://forum.murfman.de/en/viewtopic.php?t=22
+  Bugfix: getCharacterEncoding returns null
+    See: http://forum.murfman.de/en/viewtopic.php?p=186
+
+  Auxiliary fields: Add options "tokenize", "store" and "index".
+  Rename the field "url" and introduce a new "url" field that tokenizes the URL.
 
   Möglichkeit, Reguläre Ausdrücke auszuprobieren.
   Fehlende Teile der italienischen Lokalisierung

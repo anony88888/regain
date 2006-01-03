@@ -787,14 +787,16 @@ public class Crawler implements ErrorLogger {
         String parentUrl = rawDocument.getUrl();
         String url = re.getParen(urlGroup);
 
-        // Convert the URL to an absolute URL
-        url = CrawlerToolkit.toAbsoluteUrl(url, parentUrl);
+		if (url != null) {
+          // Convert the URL to an absolute URL
+          url = CrawlerToolkit.toAbsoluteUrl(url, parentUrl);
 
-        // Try to get a link text
-        String linkText = getLinkText(contentAsString, offset);
+          // Try to get a link text
+          String linkText = getLinkText(contentAsString, offset);
 
-        // Add the job
-        addJob(url, parentUrl, shouldBeParsed, shouldBeIndexed, linkText);
+          // Add the job
+          addJob(url, parentUrl, shouldBeParsed, shouldBeIndexed, linkText);
+	    }
       }
     }
   }
