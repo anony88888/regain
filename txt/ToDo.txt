@@ -249,6 +249,8 @@ X HTTP User agent konfigurierbar
 
 X Bugfix: NullPointer, wenn regex-Gruppe nicht existiert.
     Siehe Forum: http://forum.murfman.de/en/viewtopic.php?t=22
+X Bugfix: getCharacterEncoding returned null in some cases
+    See: http://forum.murfman.de/en/viewtopic.php?p=186
 
 
 Filiadata:
@@ -272,9 +274,6 @@ Filiadata:
 
 Prio A:
 -------
-  Bugfix: getCharacterEncoding returns null
-    See: http://forum.murfman.de/en/viewtopic.php?p=186
-
   Auxiliary fields: Add options "tokenize", "store" and "index".
   Rename the field "url" and introduce a new "url" field that tokenizes the URL.
 

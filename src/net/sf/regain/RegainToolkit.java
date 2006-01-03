@@ -82,7 +82,10 @@ public class RegainToolkit {
 
   /** The number of bytes in a GB (giga byte). */
   private static final int SIZE_GB = 1024 * 1024 * 1024;
-  
+
+  /** The cached system's default encoding. */
+  private static String mSystemDefaultEncoding;
+
   /** Der gecachte, systemspeziefische Zeilenumbruch. */
   private static String mLineSeparator;
 
@@ -785,6 +788,20 @@ public class RegainToolkit {
     return mLineSeparator;
   }
 
+  
+  /**
+   * Returns the system's default encoding.
+   *
+   * @return the system's default encoding.
+   */
+  public static String getSystemDefaultEncoding() {
+    if (mSystemDefaultEncoding == null) {
+      mSystemDefaultEncoding = new InputStreamReader(System.in).getEncoding();
+    }
+
+    return mSystemDefaultEncoding;
+  }
+  
 
   /**
    * Checks whether the given String contains whitespace.
