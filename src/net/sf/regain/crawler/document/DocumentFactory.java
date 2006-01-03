@@ -352,14 +352,17 @@ public class DocumentFactory {
             // We have no value set -> Extract the value from the regex
             value = regex.getParen(auxiliaryFieldArr[i].getUrlRegexGroup());
           }
-          if (auxiliaryFieldArr[i].getToLowerCase()) {
-            value = value.toLowerCase();
-          }
 
-          if (mLog.isDebugEnabled()) {
-            mLog.debug("Adding auxiliary field: " + fieldName + "=" + value);
+          if (value != null) {
+            if (auxiliaryFieldArr[i].getToLowerCase()) {
+              value = value.toLowerCase();
+            }
+
+            if (mLog.isDebugEnabled()) {
+              mLog.debug("Adding auxiliary field: " + fieldName + "=" + value);
+            }
+            doc.add(Field.Keyword(fieldName, value));
           }
-          doc.add(Field.Keyword(fieldName, value));
         }
       }
     }
