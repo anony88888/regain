@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.RegainToolkit;
 import net.sf.regain.search.IndexSearcherManager;
 import net.sf.regain.search.SearchToolkit;
 import net.sf.regain.search.config.IndexConfig;
@@ -78,7 +79,17 @@ public class FieldlistTag extends SharedTag {
     response.print("<select name=\"field." + fieldName + "\" size=\"1\">");
     response.print("<option value=\"\">" + allMsg + "</option>");
     for (int i = 0; i < fieldValues.length; i++) {
-      response.print("<option>" + fieldValues[i] + "</option>");
+      // Undo the encoding of spaces done by Crawler.addJob
+      String value = fieldValues[i];
+      String unescapedValue = RegainToolkit.replace(value, "%20", " ");
+
+      if (unescapedValue.length() == value.length()) {
+        // Nothing was replaced -> We don't have to set an extra value
+        response.print("<option>" + value + "</option>");
+      } else {
+        // There was something replaced -> Set an extra value
+        response.print("<option value=\"" + value + "\">" + unescapedValue + "</option>");
+      }
     }
     response.print("</select>");
   }

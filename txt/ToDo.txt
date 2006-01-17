@@ -254,6 +254,8 @@ X Bugfix: getCharacterEncoding returned null in some cases
 X Bugfix: Analyzer: Don't use stemming for auxilliary fields that aren't tokenized.
 X Auxiliary fields: Add options "tokenize", "store" and "index".
 X Introduce a new "location" field that contains the tokenized URL.
+X Pfade in Suche mit aufnehmen.
+X Fieldlist tag: Don't show "%20" created by Crawler.addJob
 
 
 Filiadata:
@@ -275,16 +277,14 @@ Prio A:
 
   Prüfen, ob es mehrere Parameter gleichen Names in Präparator-Config gibt
     See http://forum.murfman.de/de/viewtopic.php?p=351
-  Include better Jacob preparators or Reinhard Balling. See mail from 17.11.05.
+  Include better Jacob preparators of Reinhard Balling. See mail from 17.11.05.
   TLD-Dokumentation generieren.
-  Pfade in Suche mit aufnehmen.
   Möglichkeit, Reguläre Ausdrücke auszuprobieren.
   Fehlende Teile der italienischen Lokalisierung
     Problem: Francos Mail-Adresse geht nicht :-(
   Desktopsuche: Die letzten x Zeilen des Logs
   Desktopsuche: Einstellungen: Verzeichnis-Selektor
   Handbuch: Installation: Was muss man konfigurieren, damit es läuft.
-  Suchmaske: Breakpoints nutzen.
   Desktopsuche: Mime-Types konfigurierbar (apache-Format)
   Suchmaske: Icons passend zu den Dateiendungen
   HTTP-Download: Redirects nicht einfach verfolgen, sondern neuen Job mit
@@ -294,6 +294,7 @@ Prio A:
 
 Prio B:
 -------
+  Suchmaske: Breakpoints nutzen.
   Better Advanced search. See http://forum.murfman.de/de/posting.php?p=347
   Bug: HtmlPreparator: Inhalt von style-Tags wird nicht entfernt.
   Change whitelist / blacklist to one list of directives. This list should also
