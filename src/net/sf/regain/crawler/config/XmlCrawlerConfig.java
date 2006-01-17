@@ -469,8 +469,12 @@ public class XmlCrawlerConfig implements CrawlerConfig {
                 "either the attribute 'value' or the attribute 'regexGroup'");
         }
 
+        boolean store    = XmlToolkit.getAttributeAsBoolean(nodeArr[i], "store", true);
+        boolean index    = XmlToolkit.getAttributeAsBoolean(nodeArr[i], "index", true);
+        boolean tokenize = XmlToolkit.getAttributeAsBoolean(nodeArr[i], "tokenize", false);
+
         mAuxiliaryFieldArr[i] = new AuxiliaryField(fieldName, value,
-            toLowerCase, urlRegex, urlRegexGroup);
+            toLowerCase, urlRegex, urlRegexGroup, store, index, tokenize);
       }
     }
   }

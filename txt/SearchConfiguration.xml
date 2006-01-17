@@ -41,7 +41,7 @@
        | "field:"-operator. Read the lucene query syntax for details:
        | http://jakarta.apache.org/lucene/docs/queryparsersyntax.html
        +-->
-      <searchFieldList>content title headlines</searchFieldList>
+      <searchFieldList>content title headlines location</searchFieldList>
 
       <!--
        | The SearchAccessController to use.

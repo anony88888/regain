@@ -251,15 +251,13 @@ X Bugfix: NullPointer, wenn regex-Gruppe nicht existiert.
     Siehe Forum: http://forum.murfman.de/en/viewtopic.php?t=22
 X Bugfix: getCharacterEncoding returned null in some cases
     See: http://forum.murfman.de/en/viewtopic.php?p=186
+X Bugfix: Analyzer: Don't use stemming for auxilliary fields that aren't tokenized.
+X Auxiliary fields: Add options "tokenize", "store" and "index".
+X Introduce a new "location" field that contains the tokenized URL.
 
 
 Filiadata:
 ----------
-
-  änderungen seit 18.10.
-  21.11.
-
-  Prüfen: Gehen Sonderzeichen in Auxilliary Fields?
 
   Was passiert bei OutOfMemoryError im Crawler?
   Auxiliary-Field: toLowerCase-Attribut.
@@ -270,13 +268,16 @@ Filiadata:
       "field.feldName" hinzugefuegt werden.
     - Init-Parameter von configFile nach searchConfigFile umbenannt.
   Fieldlist-Daten (distinct values) vom Crawler ermitteln lassen
-    (Die erstmalige Ermittlung dauert lange bei großen Idizes (1 GB)).
+    (Die erstmalige Ermittlung dauert lange bei großen Indizes (1 GB)).
 
 Prio A:
 -------
-  Auxiliary fields: Add options "tokenize", "store" and "index".
-  Rename the field "url" and introduce a new "url" field that tokenizes the URL.
 
+  Prüfen, ob es mehrere Parameter gleichen Names in Präparator-Config gibt
+    See http://forum.murfman.de/de/viewtopic.php?p=351
+  Include better Jacob preparators or Reinhard Balling. See mail from 17.11.05.
+  TLD-Dokumentation generieren.
+  Pfade in Suche mit aufnehmen.
   Möglichkeit, Reguläre Ausdrücke auszuprobieren.
   Fehlende Teile der italienischen Lokalisierung
     Problem: Francos Mail-Adresse geht nicht :-(
@@ -286,12 +287,14 @@ Prio A:
   Suchmaske: Breakpoints nutzen.
   Desktopsuche: Mime-Types konfigurierbar (apache-Format)
   Suchmaske: Icons passend zu den Dateiendungen
-  Neuer Powerpoint-Praeparator: POI
   HTTP-Download: Redirects nicht einfach verfolgen, sondern neuen Job mit
     Redirect-URL hinzufügen, so dass im Index die Redirect-URL steht.
+  HtmlPreparator: Ignore text from script-Tags or tags with namespaces.
+    See http://forum.murfman.de/de/viewtopic.php?p=363
 
 Prio B:
 -------
+  Better Advanced search. See http://forum.murfman.de/de/posting.php?p=347
   Bug: HtmlPreparator: Inhalt von style-Tags wird nicht entfernt.
   Change whitelist / blacklist to one list of directives. This list should also
     decide whether a document is parsed. That is the attributes "parse" and
@@ -307,10 +310,23 @@ Prio B:
 Prio C:
 -------
   Hit highlighting
+  Crawler: Abstraktion und nested Crawlers.
   Crawler: ZIP-Dateien durchsuchen
   Crawler: Mailboxen durchsuchen
+  Crawler: Anderen HTMLParser nutzen: http://htmlparser.sourceforge.net
   Neuer MS Word-Praeparator: OpenOffice
   Neuer PDF-Praeparator: PJX (http://www.etymon.com/epub.html)
   Desktopsuche: Nach Speichern der Konfiguration nur dann neu indexieren, wenn
     sich etwas geaendert hat, das den Index veraendert.
   Desktopsuche: JSP-Executer cachen.
+  Symlink detection: Don't index the content of symlinks if the file/directory
+    they point to are indexed.
+    See http://forum.murfman.de/en/viewtopic.php?p=192
+
+Release-Checkliste:
+-------------------
+* WasIstNeu.txt und WhatIsNew.txt aktualisieren
+* JavaDoc und TLDdoc online stellen.
+
+
+

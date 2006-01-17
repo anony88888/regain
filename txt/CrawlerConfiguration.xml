@@ -314,6 +314,9 @@
   <auxiliaryField name="extension" regexGroup="1" toLowercase="true">
     <regex>\.([^\.]*)$</regex>
   </auxiliaryField>
+  <auxiliaryField name="location" regexGroup="1" store="false" tokenize="true">
+    <regex>^(.*)$</regex>
+  </auxiliaryField>
 </auxiliaryFieldList>
 
 

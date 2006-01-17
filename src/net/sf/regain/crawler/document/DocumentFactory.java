@@ -361,7 +361,10 @@ public class DocumentFactory {
             if (mLog.isDebugEnabled()) {
               mLog.debug("Adding auxiliary field: " + fieldName + "=" + value);
             }
-            doc.add(Field.Keyword(fieldName, value));
+            boolean store = auxiliaryFieldArr[i].isStored();
+            boolean index = auxiliaryFieldArr[i].isIndexed();
+            boolean token = auxiliaryFieldArr[i].isTokenized();
+            doc.add(new Field(fieldName, value, store, index, token));
           }
         }
       }

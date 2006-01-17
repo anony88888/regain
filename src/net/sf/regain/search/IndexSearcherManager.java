@@ -312,9 +312,17 @@ public class IndexSearcherManager {
       File exclusionListFile = new File(mWorkingIndexDir, "exclusionList.txt");
       String[] exclusionList = readWordListFromFile(exclusionListFile);
 
+      File untokenizedFieldNamesFile = new File(mWorkingIndexDir, "untokenizedFieldNames.txt");
+      String[] untokenizedFieldNames;
+      if (untokenizedFieldNamesFile.exists()) {
+          untokenizedFieldNames = readWordListFromFile(untokenizedFieldNamesFile); 
+      } else {
+          untokenizedFieldNames = new String[0];
+      }
+
       // NOTE: Make shure to use the same analyzer in the crawler
       mAnalyzer = RegainToolkit.createAnalyzer(analyzerType, stopWordList,
-                                               exclusionList);
+                                               exclusionList, untokenizedFieldNames);
     }
 
     return mAnalyzer;
