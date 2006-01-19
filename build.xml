@@ -251,11 +251,11 @@
   <target name="doc">
     <echo message="Generating JavaDoc documentation ..." />
     <delete dir="temp/doc"/>
-    <mkdir dir="temp/doc"/>
+    <mkdir dir="temp/doc/javadoc"/>
     <javadoc packagenames="*"
              sourcepathref="docpath"
              classpathref="classpath"
-             destdir="temp/doc"
+             destdir="temp/doc/javadoc"
              doctitle="${doc.title}"
              windowtitle="${doc.title}"
              header="${doc.header}"
@@ -269,6 +269,13 @@
             href="${java-api-location}"
             packagelistLoc="txt/dummy-jdk-api-doc"/>
     </javadoc>
+
+    <mkdir dir="temp/doc/tlddoc"/>
+    <java fork="true" jar="lib/ant/tlddoc.jar"
+          failonerror="true">
+        <arg line="-d temp/doc/tlddoc"/>
+        <arg value="web/server/regain-search.tld"/>
+    </java>
   </target>
 
 

@@ -36,7 +36,7 @@ import net.sf.regain.util.sharedtag.PageResponse;
 import org.apache.lucene.document.Document;
 
 /**
- * Generates the path to the current hit's document.
+ * Generates the navigation path to the current hit's document.
  * <p>
  * Tag Parameters:
  * <ul>

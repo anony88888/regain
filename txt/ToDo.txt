@@ -256,6 +256,7 @@ X Auxiliary fields: Add options "tokenize", "store" and "index".
 X Introduce a new "location" field that contains the tokenized URL.
 X Pfade in Suche mit aufnehmen.
 X Fieldlist tag: Don't show "%20" created by Crawler.addJob
+X TLD-Dokumentation generieren.
 
 
 Filiadata:
@@ -275,25 +276,28 @@ Filiadata:
 Prio A:
 -------
 
+  Search mask: Allow multiple query parameters (Just concatinate them)
   Prüfen, ob es mehrere Parameter gleichen Names in Präparator-Config gibt
     See http://forum.murfman.de/de/viewtopic.php?p=351
   Include better Jacob preparators of Reinhard Balling. See mail from 17.11.05.
-  TLD-Dokumentation generieren.
-  Möglichkeit, Reguläre Ausdrücke auszuprobieren.
+  Include ExternalPrepartor of Paul Ortyl. See mail from 10.12.05.
   Fehlende Teile der italienischen Lokalisierung
-    Problem: Francos Mail-Adresse geht nicht :-(
-  Desktopsuche: Die letzten x Zeilen des Logs
-  Desktopsuche: Einstellungen: Verzeichnis-Selektor
-  Handbuch: Installation: Was muss man konfigurieren, damit es läuft.
-  Desktopsuche: Mime-Types konfigurierbar (apache-Format)
-  Suchmaske: Icons passend zu den Dateiendungen
   HTTP-Download: Redirects nicht einfach verfolgen, sondern neuen Job mit
     Redirect-URL hinzufügen, so dass im Index die Redirect-URL steht.
-  HtmlPreparator: Ignore text from script-Tags or tags with namespaces.
-    See http://forum.murfman.de/de/viewtopic.php?p=363
+
+  Desktopsuche: Die letzten x Zeilen des Logs
+
+  Handbuch: Installation: Was muss man konfigurieren, damit es läuft.
+  Desktopsuche: Mime-Types konfigurierbar (apache-Format)
 
 Prio B:
 -------
+  Möglichkeit, Reguläre Ausdrücke auszuprobieren.
+  Desktopsuche: Einstellungen: Verzeichnis-Selektor
+  Suchmaske: Icons passend zu den Dateiendungen
+  HtmlPreparator: Ignore text from script-Tags or tags with namespaces.
+    See http://forum.murfman.de/de/viewtopic.php?p=363
+    (Waiting for contribution of gerhard, see http://forum.murfman.de/en/viewtopic.php?t=53)
   Suchmaske: Breakpoints nutzen.
   Better Advanced search. See http://forum.murfman.de/de/posting.php?p=347
   Bug: HtmlPreparator: Inhalt von style-Tags wird nicht entfernt.
@@ -327,6 +331,8 @@ Prio C:
 Release-Checkliste:
 -------------------
 * WasIstNeu.txt und WhatIsNew.txt aktualisieren
+* Lokalisierungen an Übersetzer geben
+    * it -> Franco
 * JavaDoc und TLDdoc online stellen.
 
 

@@ -36,7 +36,7 @@ import net.sf.regain.util.sharedtag.PageRequest;
 import net.sf.regain.util.sharedtag.PageResponse;
 
 /**
- * Generates the stacktrace.
+ * Generates the stacktrace of the error.
  *
  * @author Til Schneider, www.murfman.de
  */

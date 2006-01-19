@@ -36,7 +36,7 @@ import net.sf.regain.util.sharedtag.PageResponse;
 import org.apache.lucene.document.Document;
 
 /**
- * Generates the summary of the current hit's document.
+ * Generates the URL of the current hit's document.
  * <p>
  * The URL is generated as plain text not as a link. If you want a link use the
  * link tag.

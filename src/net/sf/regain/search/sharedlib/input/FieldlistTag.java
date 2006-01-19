@@ -26,7 +26,7 @@ import net.sf.regain.util.sharedtag.SharedTag;
  * <p>
  * Tag Parameters:
  * <ul>
- * <li><code>field</code>: The name of the field to created the list for.</li>
+ * <li><code>field</code>: The name of the index field to created the list for.</li>
  * <li><code>allMsg</code>: The message to show for the item that ignores this
  *     field.</li>
  * </ul>
