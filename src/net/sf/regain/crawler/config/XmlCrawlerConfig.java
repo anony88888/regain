@@ -436,7 +436,7 @@ public class XmlCrawlerConfig implements CrawlerConfig {
       node = XmlToolkit.getChild(nodeArr[i], "config");
       PreparatorConfig prepConfig = null;
       if (node != null) {
-        prepConfig = readPreparatorConfig(node, xmlFile);
+        prepConfig = readPreparatorConfig(node, xmlFile, className);
       }
       
       mPreparatorSettingsArr[i] = new PreparatorSettings(enabled, className, urlRegex, prepConfig);
@@ -522,10 +522,12 @@ public class XmlCrawlerConfig implements CrawlerConfig {
    * 
    * @param prepConfig The node to read the preparator config from.
    * @param xmlFile The file the configuration was read from.
+   * @param className The class name of the preparator.
    * @return The configuration of a preparator.
    * @throws RegainException If the configuration has errors.
    */
-  private PreparatorConfig readPreparatorConfig(Node prepConfig, File xmlFile)
+  private PreparatorConfig readPreparatorConfig(Node prepConfig, File xmlFile,
+    String className)
     throws RegainException
   {
     // Check whether the config is in a extra file
@@ -548,6 +550,13 @@ public class XmlCrawlerConfig implements CrawlerConfig {
       for (int paramIdx = 0; paramIdx < paramArr.length; paramIdx++) {
         String paramName = XmlToolkit.getAttribute(paramArr[paramIdx], "name", true);
         String paramValue = XmlToolkit.getText(paramArr[paramIdx], true);
+
+        if (paramMap.containsKey(paramName)) {
+          throw new RegainException("Preparator configuration of '" + className
+              + "' has multiple '" + paramName + "' parameters in section '"
+              + sectionName + "'");
+        }
+
         paramMap.put(paramName, paramValue);
       }
       

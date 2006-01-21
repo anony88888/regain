@@ -260,6 +260,8 @@ X TLD-Dokumentation generieren.
 X Search mask: Allow multiple query parameters (Just concatinate them)
 X Include improved Jacob preparators of Reinhard Balling. See mail from 17.11.05.
 X Include and improve ExternalPrepartor of Paul Ortyl. See mail from 10.12.05.
+X Prüfen, ob es mehrere Parameter gleichen Names in Präparator-Config gibt
+    See http://forum.murfman.de/de/viewtopic.php?p=351
 
 
 Filiadata:
@@ -279,13 +281,15 @@ Filiadata:
 Prio A:
 -------
 
-  Prüfen, ob es mehrere Parameter gleichen Names in Präparator-Config gibt
-    See http://forum.murfman.de/de/viewtopic.php?p=351
   Fehlende Teile der italienischen Lokalisierung
   HTTP-Download: Redirects nicht einfach verfolgen, sondern neuen Job mit
     Redirect-URL hinzufügen, so dass im Index die Redirect-URL steht.
 
   Desktopsuche: Die letzten x Zeilen des Logs
+  Desktop search: Status page: Add combobox "Create completely new index" for
+    index update button.
+  Desktop search: Status page: Add combobox "Stop reloading when index update is finished"
+    for page reload button.
 
   Handbuch: Installation: Was muss man konfigurieren, damit es läuft.
   Desktopsuche: Mime-Types konfigurierbar (apache-Format)
