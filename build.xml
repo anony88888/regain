@@ -524,13 +524,17 @@
    | Merges the message files (msg*.properties) of two directories.
    +-->
   <target name="-merge-messages" if="target">
-	  <loadfile property="msg-1" srcFile="${path-1}/msg.properties"/>
-	  <loadfile property="msg-2" srcFile="${path-2}/msg.properties"/>
-	  <echo file="${target}/msg.properties" message="${msg-1}${msg-2}"/>
+    <loadfile property="msg-1" srcFile="${path-1}/msg.properties"/>
+    <loadfile property="msg-2" srcFile="${path-2}/msg.properties"/>
+    <echo file="${target}/msg.properties" message="${msg-1}${msg-2}"/>
 
     <loadfile property="msg_de-1" srcFile="${path-1}/msg_de.properties"/>
     <loadfile property="msg_de-2" srcFile="${path-2}/msg_de.properties"/>
     <echo file="${target}/msg_de.properties" message="${msg_de-1}${msg_de-2}"/>
+
+    <loadfile property="msg_it-1" srcFile="${path-1}/msg_it.properties"/>
+    <loadfile property="msg_it-2" srcFile="${path-2}/msg_it.properties"/>
+    <echo file="${target}/msg_it.properties" message="${msg_it-1}${msg_it-2}"/>
   </target>
 
 

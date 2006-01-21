@@ -262,18 +262,16 @@ X Include improved Jacob preparators of Reinhard Balling. See mail from 17.11.05
 X Include and improve ExternalPrepartor of Paul Ortyl. See mail from 10.12.05.
 X Prüfen, ob es mehrere Parameter gleichen Names in Präparator-Config gibt
     See http://forum.murfman.de/de/viewtopic.php?p=351
+X Fehlende Teile der italienischen Lokalisierung. (Danke an Franco Lombardo)
 
 
 Filiadata:
 ----------
 
   Was passiert bei OutOfMemoryError im Crawler?
-  Auxiliary-Field: toLowerCase-Attribut.
 
   Ärger mit MS Office beseitigen (Jacob). Siehe Mail von Michael Danner vom 15.04.05.
   Handbuch aktualisieren:
-    - Such-JSP: Zusaetzliche Eingabefelder fuer bestimmte Felder koennen mit
-      "field.feldName" hinzugefuegt werden.
     - Init-Parameter von configFile nach searchConfigFile umbenannt.
   Fieldlist-Daten (distinct values) vom Crawler ermitteln lassen
     (Die erstmalige Ermittlung dauert lange bei großen Indizes (1 GB)).
@@ -281,7 +279,6 @@ Filiadata:
 Prio A:
 -------
 
-  Fehlende Teile der italienischen Lokalisierung
   HTTP-Download: Redirects nicht einfach verfolgen, sondern neuen Job mit
     Redirect-URL hinzufügen, so dass im Index die Redirect-URL steht.
 
