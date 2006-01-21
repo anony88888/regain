@@ -257,6 +257,7 @@ X Introduce a new "location" field that contains the tokenized URL.
 X Pfade in Suche mit aufnehmen.
 X Fieldlist tag: Don't show "%20" created by Crawler.addJob
 X TLD-Dokumentation generieren.
+X Search mask: Allow multiple query parameters (Just concatinate them)
 
 
 Filiadata:
@@ -276,7 +277,6 @@ Filiadata:
 Prio A:
 -------
 
-  Search mask: Allow multiple query parameters (Just concatinate them)
   Prüfen, ob es mehrere Parameter gleichen Names in Präparator-Config gibt
     See http://forum.murfman.de/de/viewtopic.php?p=351
   Include better Jacob preparators of Reinhard Balling. See mail from 17.11.05.

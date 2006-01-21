@@ -141,9 +141,12 @@ public class SearchToolkit {
     if (queryString == null) {
       // Get the query parameter
       StringBuffer query = new StringBuffer();
-      String queryParam = request.getParameter("query");
-      if (queryParam != null) {
-        query.append(queryParam);
+      String[] queryParamArr = request.getParametersNotNull("query");
+      for (int i = 0; i < queryParamArr.length; i++) {
+        if (i != 0) {
+          query.append(" ");
+        }
+        query.append(queryParamArr[i]);
       }
       
       // Append the additional fields to the query
