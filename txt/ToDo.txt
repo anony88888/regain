@@ -263,6 +263,7 @@ X Include and improve ExternalPrepartor of Paul Ortyl. See mail from 10.12.05.
 X Prüfen, ob es mehrere Parameter gleichen Names in Präparator-Config gibt
     See http://forum.murfman.de/de/viewtopic.php?p=351
 X Fehlende Teile der italienischen Lokalisierung. (Danke an Franco Lombardo)
+X Delivering a simpler default CrawlerConfiguration.xml.
 
 
 Filiadata:

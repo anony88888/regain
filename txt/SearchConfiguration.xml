@@ -6,8 +6,13 @@
 ]>
 
 <!--
- | Configuration for the regain search taglib
- | (for searching on a previously created search index)
+ | Configuration for the regain search mask.
+ |
+ | Normally you only have to specify the directory where the search index is
+ | located. You do this in the <dir> tag of the <index name="main"> (line 74).
+ |
+ | You can find a detailed description of all configuration tags here:
+ | http://regain.murfman.de/wiki/en/index.php/SearchConfiguration.xml
  +-->
 <configuration>
 

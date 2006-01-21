@@ -167,8 +167,8 @@ public class XmlCrawlerConfig implements CrawlerConfig {
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
   private void readLoadUnparsedUrls(Element config) throws RegainException {
-    Node node = XmlToolkit.getChild(config, "loadUnparsedUrls", true);
-    mLoadUnparsedUrls = XmlToolkit.getTextAsBoolean(node);
+    Node node = XmlToolkit.getChild(config, "loadUnparsedUrls");
+    mLoadUnparsedUrls = (node == null) ? false : XmlToolkit.getTextAsBoolean(node);
   }
 
 
@@ -179,8 +179,8 @@ public class XmlCrawlerConfig implements CrawlerConfig {
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
   private void readHttpTimeoutSecs(Element config) throws RegainException {
-    Node node = XmlToolkit.getChild(config, "httpTimeout", true);
-    mHttpTimeoutSecs = XmlToolkit.getTextAsInt(node);
+    Node node = XmlToolkit.getChild(config, "httpTimeout");
+    mHttpTimeoutSecs = (node == null) ? 180 : XmlToolkit.getTextAsInt(node);
   }
 
 
@@ -243,22 +243,22 @@ public class XmlCrawlerConfig implements CrawlerConfig {
 
     node = XmlToolkit.getChild(indexNode, "dir", true);
     mIndexDir = XmlToolkit.getText(node, true);
-    node = XmlToolkit.getChild(indexNode, "buildIndex", true);
-    mBuildIndex = XmlToolkit.getTextAsBoolean(node);
+    node = XmlToolkit.getChild(indexNode, "buildIndex");
+    mBuildIndex = (node == null) ? true : XmlToolkit.getTextAsBoolean(node);
     node = XmlToolkit.getChild(indexNode, "analyzerType", true);
     mAnalyzerType = XmlToolkit.getText(node, true);
     node = XmlToolkit.getChild(indexNode, "stopwordList", true);
     mStopWordList = XmlToolkit.getTextAsWordList(node, true);
     node = XmlToolkit.getChild(indexNode, "exclusionList", true);
     mExclusionList = XmlToolkit.getTextAsWordList(node, false);
-    node = XmlToolkit.getChild(indexNode, "writeAnalysisFiles", true);
-    mWriteAnalysisFiles = XmlToolkit.getTextAsBoolean(node);
+    node = XmlToolkit.getChild(indexNode, "writeAnalysisFiles");
+    mWriteAnalysisFiles = (node == null) ? false : XmlToolkit.getTextAsBoolean(node);
 
     node = XmlToolkit.getChild(indexNode, "breakpointInterval");
     mBreakpointInterval = (node == null) ? 10 : XmlToolkit.getTextAsInt(node);
 
-    node = XmlToolkit.getChild(indexNode, "maxFailedDocuments", true);
-    mMaxFailedDocuments = XmlToolkit.getTextAsDouble(node) / 100.0;
+    node = XmlToolkit.getChild(indexNode, "maxFailedDocuments");
+    mMaxFailedDocuments = (node == null) ? 1.0 : (XmlToolkit.getTextAsDouble(node) / 100.0);
   }
 
 
@@ -398,11 +398,15 @@ public class XmlCrawlerConfig implements CrawlerConfig {
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
   private void readUseLinkTextAsTitleRegexList(Node config) throws RegainException {
-    Node node = XmlToolkit.getChild(config, "useLinkTextAsTitleList", true);
-    Node[] nodeArr = XmlToolkit.getChildArr(node, "urlPattern");
-    mUseLinkTextAsTitleRegexList = new String[nodeArr.length];
-    for (int i = 0; i < nodeArr.length; i++) {
-      mUseLinkTextAsTitleRegexList[i] = XmlToolkit.getText(nodeArr[i], true);
+    Node node = XmlToolkit.getChild(config, "useLinkTextAsTitleList");
+    if (node == null) {
+      mUseLinkTextAsTitleRegexList = new String[0];
+    } else {
+      Node[] nodeArr = XmlToolkit.getChildArr(node, "urlPattern");
+      mUseLinkTextAsTitleRegexList = new String[nodeArr.length];
+      for (int i = 0; i < nodeArr.length; i++) {
+        mUseLinkTextAsTitleRegexList[i] = XmlToolkit.getText(nodeArr[i], true);
+      }
     }
   }
 

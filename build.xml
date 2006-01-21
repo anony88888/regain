@@ -476,9 +476,7 @@
       <fileset dir="lib/linux" includes="libtray.so"/>
     </copy>
     <copy todir="temp/runtime/desktop/win/conf/default">
-      <fileset dir="txt" includes="DesktopConfiguration.xml"/>
-      <fileset dir="txt" includes="CrawlerConfiguration.xml"/>
-      <fileset dir="txt" includes="SearchConfiguration.xml"/>
+      <fileset dir="txt" includes="*Configuration*.xml"/>
       <fileset dir="txt" includes="log4j.properties"/>
     </copy>
     <copy todir="temp/runtime/desktop/linux/conf/default">
@@ -547,7 +545,7 @@
     <copy todir="temp/runtime/crawler">
       <fileset dir="lib/win" includes="jacob.dll"/>
       <fileset dir="lib/win" includes="ifilter_wrapper.dll"/>
-      <fileset dir="txt" includes="CrawlerConfiguration.xml"/>
+      <fileset dir="txt" includes="CrawlerConfiguration*.xml"/>
       <fileset dir="txt" includes="log4j.properties"/>
     </copy>
 
