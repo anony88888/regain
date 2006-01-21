@@ -130,7 +130,7 @@ public class JacobMsPowerPointPreparator extends AbstractJacobMsOfficePreparator
       Presentation pres = mPowerPointApplication.getPresentations().open(fileName);
 
       // Durch alle Folien gehen und Text extrahieren
-      StringBuffer contentBuf = new StringBuffer();
+      StringBuffer contentBuf = new StringBuffer(DEFAULT_BUFFER_SIZE);
       Slides slides = pres.getSlides();
       int slideCount = slides.getCount();
       for (int slideIdx = 1; slideIdx <= slideCount; slideIdx++) {

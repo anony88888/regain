@@ -140,7 +140,7 @@ public class JacobMsExcelPreparator extends AbstractJacobMsOfficePreparator {
       int sheetCount = sheets.getCount();
 
       //System.out.println("Sheetcount = "+sheetCount); 
-      StringBuffer contentBuf = new StringBuffer();
+      StringBuffer contentBuf = new StringBuffer(DEFAULT_BUFFER_SIZE);
       for (int sheetIdx = 1; sheetIdx <= sheetCount; sheetIdx++) {
         Variant sheetVariant = (Variant) sheets.getItem(new Variant(sheetIdx));
         Worksheet sheet = new Worksheet(sheetVariant.toDispatch());

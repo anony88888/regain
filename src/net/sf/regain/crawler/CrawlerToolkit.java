@@ -554,7 +554,7 @@ public class CrawlerToolkit {
    * @return Der von Tags gesäberte Text
    */
   public static String cleanFromHtmlTags(String text) {
-    StringBuffer clean = new StringBuffer();
+    StringBuffer clean = new StringBuffer(text.length());
 
     int offset = 0;
     int tagStart;

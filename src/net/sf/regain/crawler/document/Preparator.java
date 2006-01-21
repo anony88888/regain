@@ -66,6 +66,9 @@ import net.sf.regain.crawler.config.PreparatorConfig;
  */
 public interface Preparator {
 
+  /** The default StringBuffer size that should be used for the content buffer. */
+  public static final int DEFAULT_BUFFER_SIZE = 16384; // 16 k
+
   /**
    * Initializes the preparator.
    *

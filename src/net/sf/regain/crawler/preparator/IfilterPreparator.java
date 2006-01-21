@@ -158,7 +158,7 @@ public class IfilterPreparator extends AbstractPreparator {
     IfilterWrapper ifilter = getIfilterWrapperForExtension(extension);
 
     String fileName = rawDocument.getContentAsFile().getAbsolutePath();
-    StringBuffer buffer = new StringBuffer();
+    StringBuffer buffer = new StringBuffer(DEFAULT_BUFFER_SIZE);
 
     ifilter.getText(fileName, buffer);
 

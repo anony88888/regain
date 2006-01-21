@@ -93,7 +93,7 @@ public class PoiMsExcelPreparator extends AbstractPreparator {
       mWorkbook = new HSSFWorkbook(poiFs);
       mDataFormat = mWorkbook.createDataFormat();
 
-      StringBuffer cleanBuffer = new StringBuffer();
+      StringBuffer cleanBuffer = new StringBuffer(DEFAULT_BUFFER_SIZE);
       for (int sheetIdx = 0; sheetIdx < mWorkbook.getNumberOfSheets(); sheetIdx++) {
         HSSFSheet sheet = mWorkbook.getSheetAt(sheetIdx);
 

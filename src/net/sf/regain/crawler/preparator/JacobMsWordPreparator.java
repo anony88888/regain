@@ -154,7 +154,7 @@ public class JacobMsWordPreparator extends AbstractJacobMsOfficePreparator {
                                new Variant(true));    // readOnly
 
       // iterate through the sections
-      StringBuffer content = new StringBuffer();
+      StringBuffer content = new StringBuffer(DEFAULT_BUFFER_SIZE);
       Sections sections = doc.getSections();
       for (int i = 1; i <= sections.getCount(); i++) {
         Section sec = sections.item(i);
