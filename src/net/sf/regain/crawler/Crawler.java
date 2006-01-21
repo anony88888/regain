@@ -479,6 +479,10 @@ public class Crawler implements ErrorLogger {
     int entryCount = 0;
     try {
       entryCount = mIndexWriterManager.getIndexEntryCount();
+      // NOTE: We've got to substract the errors, because for each failed
+      //       document a substitude document is added to the index
+      //       (which should not be counted).
+      entryCount -= mErrorCount;
     }
     catch (Throwable thr) {
       logError("Counting index entries failed", thr, true);

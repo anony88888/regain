@@ -289,6 +289,34 @@
   <preparator>
     <class>.SwingRtfPreparator</class>
   </preparator>
+
+  <preparator enabled="false">
+    <class>.ExternalPreparator</class>
+    <config>
+      <!--
+       | You may specify multiple commands by specifying multiple command
+       | sections.
+       |
+       | urlPattern:
+       |   The pattern that matches URLs that should be prepared with this
+       |   command.
+       |
+       | commandLine:
+       |   The command line to use for executing the external command.
+       |   Before the command is executed ${filename} will be replaced by the
+       |   file name.
+       |
+       | checkExitCode:
+       |   Specifies whether the exit code should be checked. Optional. Default
+       |   is true.
+       +-->
+      <section name="command">
+        <param name="urlPattern">\.ps$</param>
+        <param name="commandLine">ps2ascii ${filename}</param>
+        <param name="checkExitCode">false</param>
+      </section>
+    </config>
+  </preparator>
 </preparatorList>
 
 
