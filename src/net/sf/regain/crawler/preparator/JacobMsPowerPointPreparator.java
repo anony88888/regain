@@ -45,6 +45,7 @@ import de.filiadata.lucene.spider.generated.msoffice2000.powerpoint.*;
  * es wird der Titel extrahiert.
  *
  * @author Til Schneider, www.murfman.de
+ * @author Reinhard Balling
  */
 public class JacobMsPowerPointPreparator extends AbstractJacobMsOfficePreparator {
 
@@ -53,6 +54,8 @@ public class JacobMsPowerPointPreparator extends AbstractJacobMsOfficePreparator
    * bearbeitet wurde.
    */
   private Application mPowerPointApplication;
+
+  private static int MSOGROUP = 6;
 
 
   /**
@@ -132,16 +135,35 @@ public class JacobMsPowerPointPreparator extends AbstractJacobMsOfficePreparator
       int slideCount = slides.getCount();
       for (int slideIdx = 1; slideIdx <= slideCount; slideIdx++) {
         Slide slide = slides.item(new Variant(slideIdx));
+        Shapes shapes;
+        int shapeCount;
 
-        // Durch alle Objekte gehen und Text extrahieren
-        Shapes shapes = slide.getShapes();
-        int shapeCount = shapes.getCount();
+        // Loop through all shapes on the page and check whether they are groups. If yes,
+        // ungroup them. Since an ungrouped shape could itself be a group, we have to keep
+        // repeating this process until no more groups were found
+        boolean didUnGroup;
+        do {
+          shapes = slide.getShapes();
+          shapeCount = shapes.getCount();
+          didUnGroup = false;
+          for (int shapeIdx = 1; shapeIdx <= shapeCount; shapeIdx++) {
+            Shape shape = shapes.item(new Variant(shapeIdx));
+            // Check if shape is a Group (type == msoGroup)
+            if (shape.getType() == MSOGROUP) {
+              didUnGroup = true;
+              shape.ungroup();     
+            }
+          }
+        } while (didUnGroup);
+
+        shapes = slide.getShapes();
+        shapeCount = shapes.getCount();
+        //System.out.println(slideIdx+"/"+shapeCount); 
+
         for (int shapeIdx = 1; shapeIdx <= shapeCount; shapeIdx++) {
           Shape shape = shapes.item(new Variant(shapeIdx));
-
           extractTextFrom(shape, contentBuf);
         }
-
         contentBuf.append('\n');
       }
 
@@ -176,24 +198,35 @@ public class JacobMsPowerPointPreparator extends AbstractJacobMsOfficePreparator
       if (text != null) {
         text = text.trim();
         if (text.length() != 0) {
+          text = removeHyphenation(text);    
           contentBuf.append(text);
           contentBuf.append('\n');
         }
       }
     }
+  }
 
-    // Kind-Shapes bearbeiten (bei Gruppierung)
-    // TODO: Besseren Weg finden, eine Gruppe zu identifizieren
-    String name = shape.getName();
-    if (name.startsWith("Group")) {
-      GroupShapes group = shape.getGroupItems();
-      int childCount = group.getCount();
-      for (int childIdx = 1; childIdx <= childCount; childIdx++) {
-        Shape child = group.item(new Variant(childIdx));
 
-        extractTextFrom(child, contentBuf);
+  /**
+   * RB: Eliminates hyphenation either -\n\r  or -\013
+   */
+  private String removeHyphenation(String text) {
+    // TODO: Use the StringBuffer here
+    int last = 0;
+    while (text.indexOf('-', last) >= 0) {
+      int i = text.indexOf('-', last);
+      last = i + 1;
+      if (last < text.length()
+          && (text.charAt(last) == '\r' || text.charAt(last) == '\013'))
+      {
+        if (last + 1 < text.length() && text.charAt(last + 1) == '\n') {
+          text = text.substring(0, i) + text.substring(i + 3);
+        } else {
+          text = text.substring(0, i) + text.substring(i + 2);
+        }
       }
     }
+    return text;
   }
 
 

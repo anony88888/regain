@@ -365,7 +365,7 @@
       <manifest>
         <attribute name="Preparator-Classes" value=".JacobMsExcelPreparator;.JacobMsWordPreparator;.JacobMsPowerPointPreparator"/>
       </manifest>
-      <fileset dir="temp/included-lib-classes/common">
+      <fileset dir="temp/included-lib-classes/win">
         <include name="com/jacob/**"/>
         <include name="de/filiadata/lucene/spider/generated/msoffice2000/**"/>
       </fileset>
@@ -748,8 +748,13 @@
       <arg value="../../../test/docs"/>
       <arg value="../../test/docs"/>
       <classpath>
-        <fileset dir="lib">
+        <fileset dir="temp/preparator">
           <include name="*.jar"/>
+        </fileset>
+        <fileset dir="lib">
+          <include name="${lucene.jar}"/>
+          <include name="${regexp.jar}"/>
+          <include name="${log4j.jar}"/>
         </fileset>
         <pathelement path="temp/classes"/>
       </classpath>      

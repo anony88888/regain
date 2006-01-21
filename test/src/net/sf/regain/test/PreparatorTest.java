@@ -106,17 +106,22 @@ public class PreparatorTest {
       testPreparator(docDir, outputDir, "ppt", ifilterPreparator);
       testPreparator(docDir, outputDir, "rtf", ifilterPreparator);
       testPreparator(docDir, outputDir, "xls", ifilterPreparator);
-
-      testPreparator(docDir, outputDir, "html", new HtmlPreparator());
       testPreparator(docDir, outputDir, "doc", new JacobMsWordPreparator());
+      testPreparator(docDir, outputDir, "ppt", new JacobMsPowerPointPreparator());
+      testPreparator(docDir, outputDir, "xls", new JacobMsExcelPreparator());
+    }
+    catch (RegainException exc) {
+      mLog.error("Creating Windows-only preparator failed", exc);
+    }
+
+    try {
+      testPreparator(docDir, outputDir, "html", new HtmlPreparator());
       testPreparator(docDir, outputDir, "doc", new PoiMsWordPreparator());
       testPreparator(docDir, outputDir, "pdf", new PdfBoxPreparator());
-      testPreparator(docDir, outputDir, "ppt", new JacobMsPowerPointPreparator());
       testPreparator(docDir, outputDir, "ppt", new PoiMsPowerPointPreparator());
       testPreparator(docDir, outputDir, "rtf", new SimpleRtfPreparator());
       testPreparator(docDir, outputDir, "rtf", new SwingRtfPreparator());
       testPreparator(docDir, outputDir, "txt", new PlainTextPreparator());
-      testPreparator(docDir, outputDir, "xls", new JacobMsExcelPreparator());
       testPreparator(docDir, outputDir, "xls", new PoiMsExcelPreparator());
       testPreparator(docDir, outputDir, "xml", new XmlPreparator());
     }

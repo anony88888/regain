@@ -258,6 +258,7 @@ X Pfade in Suche mit aufnehmen.
 X Fieldlist tag: Don't show "%20" created by Crawler.addJob
 X TLD-Dokumentation generieren.
 X Search mask: Allow multiple query parameters (Just concatinate them)
+X Include improved Jacob preparators of Reinhard Balling. See mail from 17.11.05.
 
 
 Filiadata:
@@ -279,7 +280,6 @@ Prio A:
 
   Prüfen, ob es mehrere Parameter gleichen Names in Präparator-Config gibt
     See http://forum.murfman.de/de/viewtopic.php?p=351
-  Include better Jacob preparators of Reinhard Balling. See mail from 17.11.05.
   Include ExternalPrepartor of Paul Ortyl. See mail from 10.12.05.
   Fehlende Teile der italienischen Lokalisierung
   HTTP-Download: Redirects nicht einfach verfolgen, sondern neuen Job mit
