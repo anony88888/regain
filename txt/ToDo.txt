@@ -264,6 +264,7 @@ X Prüfen, ob es mehrere Parameter gleichen Names in Präparator-Config gibt
     See http://forum.murfman.de/de/viewtopic.php?p=351
 X Fehlende Teile der italienischen Lokalisierung. (Danke an Franco Lombardo)
 X Delivering a simpler default CrawlerConfiguration.xml.
+X Desktopsuche: Die letzten x Log-Nachrichten
 
 
 Filiadata:
@@ -283,7 +284,6 @@ Prio A:
   HTTP-Download: Redirects nicht einfach verfolgen, sondern neuen Job mit
     Redirect-URL hinzufügen, so dass im Index die Redirect-URL steht.
 
-  Desktopsuche: Die letzten x Zeilen des Logs
   Desktop search: Status page: Add combobox "Create completely new index" for
     index update button.
   Desktop search: Status page: Add combobox "Stop reloading when index update is finished"
@@ -291,6 +291,7 @@ Prio A:
 
   Handbuch: Installation: Was muss man konfigurieren, damit es läuft.
   Desktopsuche: Mime-Types konfigurierbar (apache-Format)
+  Übersetzungen holen: lastLogMessages
 
 Prio B:
 -------
