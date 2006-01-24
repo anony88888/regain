@@ -483,6 +483,9 @@ public class Crawler implements ErrorLogger {
       //       document a substitude document is added to the index
       //       (which should not be counted).
       entryCount -= mErrorCount;
+      if (entryCount < 0) {
+        entryCount = 0;
+      }
     }
     catch (Throwable thr) {
       logError("Counting index entries failed", thr, true);
