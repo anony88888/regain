@@ -376,7 +376,12 @@ public class Crawler implements ErrorLogger {
       if (url.startsWith("file://")) {
         try {
           File file = RegainToolkit.urlToFile(url);
-          if (file.isDirectory()) {
+          // Check whether the file is readable.
+          if (! file.canRead()) {
+            mCrawlerJobProfiler.abortMeasuring();
+            logError("File is not readable: '" + url + "'", null, false);
+            continue;
+          } else if (file.isDirectory()) {
             // This IS a directory -> Add all child files as Jobs
             if (shouldBeParsed) {
               parseDirectory(file);
@@ -397,6 +402,15 @@ public class Crawler implements ErrorLogger {
       try {
         rawDocument = new RawDocument(url, mCurrentJob.getSourceUrl(),
                                       mCurrentJob.getSourceLinkText());
+      }
+      catch (RedirectException exc) {
+        String redirectUrl = exc.getRedirectUrl();
+        mLog.info("Redirect '" + url +  "' -> '" + redirectUrl + "'");
+        mUrlChecker.setIgnored(url);
+        addJob(redirectUrl, mCurrentJob.getSourceUrl(), shouldBeParsed,
+               shouldBeIndexed, mCurrentJob.getSourceLinkText());
+        mCrawlerJobProfiler.stopMeasuring(0);
+        continue;
       }
       catch (RegainException exc) {
         // Check whether the exception was caused by a dead link
@@ -760,7 +774,7 @@ public class Crawler implements ErrorLogger {
       // Get the URL for the current child file
       String url = RegainToolkit.fileToUrl(childArr[childIdx]);
 
-      // Check wether this is a directory
+      // Check whether this is a directory
       if (childArr[childIdx].isDirectory()) {
         // It's a directory -> Add a parse job
         addJob(url, sourceUrl, true, false, null);
@@ -794,7 +808,7 @@ public class Crawler implements ErrorLogger {
         String parentUrl = rawDocument.getUrl();
         String url = re.getParen(urlGroup);
 
-		if (url != null) {
+        if (url != null) {
           // Convert the URL to an absolute URL
           url = CrawlerToolkit.toAbsoluteUrl(url, parentUrl);
 
@@ -803,7 +817,7 @@ public class Crawler implements ErrorLogger {
 
           // Add the job
           addJob(url, parentUrl, shouldBeParsed, shouldBeIndexed, linkText);
-	    }
+        }
       }
     }
   }

@@ -265,6 +265,7 @@ X Prüfen, ob es mehrere Parameter gleichen Names in Präparator-Config gibt
 X Fehlende Teile der italienischen Lokalisierung. (Danke an Franco Lombardo)
 X Delivering a simpler default CrawlerConfiguration.xml.
 X Desktopsuche: Die letzten x Log-Nachrichten
+X Added redirect handling of Gerhard Olsson
 
 
 Filiadata:
@@ -284,9 +285,9 @@ Prio A:
   HTTP-Download: Redirects nicht einfach verfolgen, sondern neuen Job mit
     Redirect-URL hinzufügen, so dass im Index die Redirect-URL steht.
 
-  Desktop search: Status page: Add combobox "Create completely new index" for
+  Desktop search: Status page: Add checkbox "Create completely new index" for
     index update button.
-  Desktop search: Status page: Add combobox "Stop reloading when index update is finished"
+  Desktop search: Status page: Add checkbox "Stop reloading when index update is finished"
     for page reload button.
 
   Handbuch: Installation: Was muss man konfigurieren, damit es läuft.
