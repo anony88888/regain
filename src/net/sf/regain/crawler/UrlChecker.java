@@ -269,7 +269,7 @@ public class UrlChecker {
       // All tests passed -> Keep the file
       return true;
     } else {
-      return mIgnoredUrlSet.contains(url);
+      return mAcceptedUrlSet.contains(url);
     }
   }
 
