@@ -797,7 +797,7 @@
    | Runs the project.
    +-->
   <target name="run-crawler" depends="runtime">
-    <java jar="temp/runtime/crawler/${programname.file}.jar"
+    <java jar="temp/runtime/crawler/${programname.file}-crawler.jar"
           dir="temp/runtime/crawler"
           fork="true">
           <!--
