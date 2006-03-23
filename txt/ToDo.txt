@@ -236,6 +236,8 @@ X Updated libs: jdic, regexp and PdfBox
 
 ** Version 1.1 am 26.02.06 **
 
+X Bugfix: NullPointer in URLDecoder.decode caused by FileServlet
+
 
 Filiadata:
 ----------
@@ -251,6 +253,8 @@ Filiadata:
 Prio A:
 -------
 
+  NullPointerException in HtmlPreparator
+    See http://forum.murfman.de/en/viewtopic.php?p=411#411
   Give preparators the possibility to add index fields on their own.
     See mail of Daniel Varela Santoalla from 09.02.06.
   Bugfix: IfilterPreparator geht unter WinXP Home nicht.
@@ -306,10 +310,14 @@ Prio C:
 
 Release-Checkliste:
 -------------------
+* Revision taggen
 * WasIstNeu.txt und WhatIsNew.txt aktualisieren
 * Lokalisierungen an Übersetzer geben
     * it -> Franco
 * JavaDoc und TLDdoc online stellen.
-
-
+* Homepage aktualisieren:
+  * docs.php
+  * news.php
+  * download.php 
+* Newsletter verschicken
 

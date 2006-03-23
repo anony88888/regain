@@ -59,10 +59,14 @@ public class FileServlet extends HttpServlet {
       // Create a shared wrapper
       PageRequest request = new JspPageRequest(pageContext);
       PageResponse response = new JspPageResponse(pageContext);
-      
+
       // Extract the file name
-      String fileUrl = SearchToolkit.extractFileUrl(req.getRequestURI(), req.getCharacterEncoding());
-      
+      String encoding = req.getCharacterEncoding();
+      if (encoding == null) {
+          encoding = RegainToolkit.getSystemDefaultEncoding();
+      }
+      String fileUrl = SearchToolkit.extractFileUrl(req.getRequestURI(), encoding);
+
       // Check the file
       try {
         if (SearchToolkit.allowFileAccess(request, fileUrl)) {
