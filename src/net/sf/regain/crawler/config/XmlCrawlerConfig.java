@@ -438,11 +438,13 @@ public class XmlCrawlerConfig implements CrawlerConfig {
       }
 
       node = XmlToolkit.getChild(nodeArr[i], "config");
-      PreparatorConfig prepConfig = null;
+      PreparatorConfig prepConfig;
       if (node != null) {
         prepConfig = readPreparatorConfig(node, xmlFile, className);
+      } else {
+        prepConfig = new PreparatorConfig();
       }
-      
+
       mPreparatorSettingsArr[i] = new PreparatorSettings(enabled, className, urlRegex, prepConfig);
     }
   }
