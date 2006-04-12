@@ -38,6 +38,7 @@ import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.CrawlerToolkit;
 import net.sf.regain.crawler.Profiler;
+import net.sf.regain.crawler.RedirectException;
 
 import org.apache.log4j.Logger;
 
@@ -181,10 +182,14 @@ public class RawDocument {
       // Wir haben keinen Inhalt
       HTTP_LOADING_PROFILER.abortMeasuring();
 
-      // Pr�fen, ob der Download fehl schlug
+      // Check whether download failed
       if (loaderThread.getError() != null) {
-        throw new RegainException("Loading Document by HTTP failed: " + url,
-                                  loaderThread.getError());
+        if (loaderThread.getError() instanceof RedirectException) {
+          throw (RedirectException) loaderThread.getError();
+        } else {
+          throw new RegainException("Loading Document by HTTP failed: " + url,
+                                    loaderThread.getError());
+        }
       }
 
       // Wir haben weder einen Inhalt noch einen Fehler

@@ -243,6 +243,7 @@ X Bugfix: MemoryAppender didn't work when PageResponse wasn't in the classpath.
 
 X Bugfix: PreparatorConfig was null, when preparator configration had no
     config tag.
+X Bugfix: HTTP-Redirects didn't work (Fix was not tested yet!).
 
 
 Filiadata:
