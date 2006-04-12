@@ -31,13 +31,14 @@ import java.io.OutputStream;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
+import net.sf.regain.util.io.Printer;
 
 /**
  * A page response.
  *
  * @author Til Schneider, www.murfman.de
  */
-public abstract class PageResponse {
+public abstract class PageResponse implements Printer {
   
   /**
    * Gets the character encoding of the response.

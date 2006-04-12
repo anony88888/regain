@@ -237,6 +237,7 @@ X Updated libs: jdic, regexp and PdfBox
 ** Version 1.1 am 26.02.06 **
 
 X Bugfix: NullPointer in URLDecoder.decode caused by FileServlet
+X Bugfix: MemoryAppender didn't work when PageResponse wasn't in the classpath.
 
 
 Filiadata:
@@ -294,6 +295,8 @@ Prio B:
 
 Prio C:
 -------
+  PlainTextPreparator: Add option to set the max. amount of text to extract.
+    (avoid OutOfMemory)
   Hit highlighting
   Crawler: Abstraktion und nested Crawlers.
   Crawler: ZIP-Dateien durchsuchen
