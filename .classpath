@@ -10,7 +10,7 @@
 	<classpathentry kind="lib" path="lib/win/jdic.jar"/>
 	<classpathentry kind="lib" path="lib/ant/junit.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.11.jar"/>
-	<classpathentry kind="lib" path="lib/lucene-1.4.3.jar"/>
+	<classpathentry sourcepath="lib-src/lucene-1.4.3-src.zip" kind="lib" path="lib/lucene-1.4.3.jar"/>
 	<classpathentry kind="lib" path="lib/poi-3.0-alpha1-20050704.jar"/>
 	<classpathentry kind="lib" path="lib/poi-scratchpad-3.0-alpha1-20050704.jar"/>
 	<classpathentry kind="lib" path="lib/win/jacob.jar"/>
