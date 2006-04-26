@@ -397,7 +397,7 @@ public class DocumentFactory {
 
     // Add the document's size
     int size = rawDocument.getLength();
-    doc.add(Field.UnIndexed("size", Integer.toString(size)));
+    doc.add(Field.Keyword("size", Integer.toString(size)));
 
     // Add last modified
     Date lastModified = rawDocument.getLastModified();
@@ -407,7 +407,7 @@ public class DocumentFactory {
       lastModified = new Date();
     }
     String lastModifiedAsString = RegainToolkit.lastModifiedToString(lastModified);
-    doc.add(Field.UnIndexed("last-modified", lastModifiedAsString));
+    doc.add(Field.Keyword("last-modified", lastModifiedAsString));
 
     // Write the raw content to an analysis file
     writeContentAnalysisFile(rawDocument);

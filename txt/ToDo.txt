@@ -244,6 +244,7 @@ X Bugfix: MemoryAppender didn't work when PageResponse wasn't in the classpath.
 X Bugfix: PreparatorConfig was null, when preparator configration had no
     config tag.
 X Bugfix: HTTP-Redirects didn't work (Fix was not tested yet!).
+X Index-Felder "size" und "last-modified" suchbar machen.
 
 
 Filiadata:
@@ -279,6 +280,8 @@ Prio A:
 
 Prio B:
 -------
+
+  Desktopsuche: Kommandozeilen-Parameter, um ohne Tray-Icon zu starten.
   Möglichkeit, Reguläre Ausdrücke auszuprobieren.
   Desktopsuche: Einstellungen: Verzeichnis-Selektor
   Suchmaske: Icons passend zu den Dateiendungen
