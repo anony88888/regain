@@ -245,6 +245,7 @@ X Bugfix: PreparatorConfig was null, when preparator configration had no
     config tag.
 X Bugfix: HTTP-Redirects didn't work (Fix was not tested yet!).
 X Index-Felder "size" und "last-modified" suchbar machen.
+X New Preparator: EmptyPreparator (Thanks to Gerhard Olsson)
 
 
 Filiadata:

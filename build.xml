@@ -439,6 +439,10 @@
     </antcall>      
 
     <antcall target="-simple-preparator">
+      <param name="classname" value="EmptyPreparator"/>
+    </antcall>      
+
+    <antcall target="-simple-preparator">
       <param name="classname" value="ExternalPreparator"/>
     </antcall>      
   </target>
