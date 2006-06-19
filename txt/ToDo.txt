@@ -246,6 +246,7 @@ X Bugfix: PreparatorConfig was null, when preparator configration had no
 X Bugfix: HTTP-Redirects didn't work (Fix was not tested yet!).
 X Index-Felder "size" und "last-modified" suchbar machen.
 X New Preparator: EmptyPreparator (Thanks to Gerhard Olsson)
+X Bugfix: IfilterPreparator did not work on Windows Server 2003.
 
 
 Filiadata:

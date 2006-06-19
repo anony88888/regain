@@ -329,10 +329,6 @@ public class IfilterPreparator extends AbstractPreparator {
   private static String getRegistryKeyValue(String regKey, String valueName)
     throws RegainException
   {
-    if (valueName == null) {
-      valueName = "<NO NAME>";
-    }
-    
     String[] cmdArr = { "reg", "query", regKey };
     String[] output;
     try {
@@ -367,8 +363,13 @@ public class IfilterPreparator extends AbstractPreparator {
     synchronized (mValueRegex) {
       for (int i = valueStartIdx; i < output.length; i++) {
         if (mValueRegex.match(output[i])) {
-          String name = mValueRegex.getParen(1);
-          if (name.equals(valueName)) {
+          String name = mValueRegex.getParen(1).trim();
+          // NOTE: The name of the default value is "<NO NAME>" on Windows NT, 2000 and XP
+          //       and "(Stardard)" or "(Default)" or some other localized stuff
+          //       on Windows Server 2003.       
+          if (valueName != null ? name.equals(valueName)
+                                : (name.equals("<NO NAME>") || name.startsWith("(")))
+          {
             // We found the default value -> return it
             return mValueRegex.getParen(2);
           }
