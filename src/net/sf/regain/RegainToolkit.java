@@ -59,7 +59,7 @@ import org.apache.lucene.analysis.de.GermanAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 
 /**
- * Enthält Hilfsmethoden, die sowohl vom Crawler als auch von der Suchmaske
+ * Enth?lt Hilfsmethoden, die sowohl vom Crawler als auch von der Suchmaske
  * genutzt werden.
  *
  * @author Til Schneider, www.murfman.de
@@ -93,11 +93,11 @@ public class RegainToolkit {
 
 
   /**
-   * Löscht ein Verzeichnis mit allen Unterverzeichnissen und -dateien.
+   * L?scht ein Verzeichnis mit allen Unterverzeichnissen und -dateien.
    *
-   * @param dir Das zu löschende Verzeichnis.
+   * @param dir Das zu l?schende Verzeichnis.
    *
-   * @throws RegainException Wenn das Löschen fehl schlug.
+   * @throws RegainException Wenn das L?schen fehl schlug.
    */
   public static void deleteDirectory(File dir) throws RegainException {
     if (! dir.exists()) {
@@ -153,7 +153,7 @@ public class RegainToolkit {
    * Schreibt alle Daten, die der InputStream liefert in den OutputStream.
    * <p>
    * Weder der InputStream noch der OutputStream werden dabei geschlossen. Dies
-   * muss die aufrufende Methode übernehmen!
+   * muss die aufrufende Methode ?bernehmen!
    *
    * @param in Der InputStream, der die Daten liefert.
    * @param out Der OutputStream auf den die Daten geschrieben werden sollen.
@@ -428,7 +428,7 @@ public class RegainToolkit {
    * Erzeugt einen Analyzer, der die Aufrufe an einen eingebetteten Analyzer
    * analysiert.
    * <p>
-   * Dies ist beim Debugging hilfreich, wenn man prüfen will, was ein Analyzer
+   * Dies ist beim Debugging hilfreich, wenn man pr?fen will, was ein Analyzer
    * bei bestimmten Anfragen ausgibt.
    *
    * @param nestedAnalyzer The nested Analyzer that should
@@ -480,7 +480,7 @@ public class RegainToolkit {
    *
    * @param source Der zu durchsuchende String.
    * @param pattern Das zu ersetzende Muster.
-   * @param replacement Der Ersatz für alle Vorkommnisse des Musters.
+   * @param replacement Der Ersatz f?r alle Vorkommnisse des Musters.
    *
    * @return Ein String in dem alle Vorkommnisse von <CODE>pattern</CODE> durch
    *         <CODE>replacement</CODE> ersetzt wurden.
@@ -510,7 +510,7 @@ public class RegainToolkit {
 
 
   /**
-   * Gibt einen Wert in Prozent mit zwei Nachkommastellen zurück.
+   * Gibt einen Wert in Prozent mit zwei Nachkommastellen zur?ck.
    *
    * @param value Der Wert. (Zwischen 0 und 1)
    * @return Der Wert in Prozent.
@@ -524,8 +524,8 @@ public class RegainToolkit {
 
   
   /**
-   * Gibt einen für den Menschen gut lesbaren String für eine Anzahl Bytes
-   * zurück.
+   * Gibt einen f?r den Menschen gut lesbaren String f?r eine Anzahl Bytes
+   * zur?ck.
    *
    * @param bytes Die Anzahl Bytes
    * @return Ein String, der sie Anzahl Bytes wiedergibt
@@ -536,8 +536,8 @@ public class RegainToolkit {
 
 
   /**
-   * Gibt einen für den Menschen gut lesbaren String für eine Anzahl Bytes
-   * zurück.
+   * Gibt einen f?r den Menschen gut lesbaren String f?r eine Anzahl Bytes
+   * zur?ck.
    *
    * @param bytes Die Anzahl Bytes
    * @param locale The locale to use for formatting the numbers.
@@ -549,8 +549,8 @@ public class RegainToolkit {
 
 
   /**
-   * Gibt einen für den Menschen gut lesbaren String für eine Anzahl Bytes
-   * zurück.
+   * Gibt einen f?r den Menschen gut lesbaren String f?r eine Anzahl Bytes
+   * zur?ck.
    *
    * @param bytes Die Anzahl Bytes
    * @param fractionDigits Die Anzahl der Nachkommastellen
@@ -562,8 +562,8 @@ public class RegainToolkit {
   
 
   /**
-   * Gibt einen für den Menschen gut lesbaren String für eine Anzahl Bytes
-   * zurück.
+   * Gibt einen f?r den Menschen gut lesbaren String f?r eine Anzahl Bytes
+   * zur?ck.
    *
    * @param bytes Die Anzahl Bytes
    * @param fractionDigits Die Anzahl der Nachkommastellen
@@ -646,11 +646,11 @@ public class RegainToolkit {
 
   /**
    * Konvertiert ein Date-Objekt in einen String mit dem Format
-   * "YYYY-MM-DD HH:MM". Das ist nötig, um ein eindeutiges und vom Menschen
+   * "YYYY-MM-DD HH:MM". Das ist n?tig, um ein eindeutiges und vom Menschen
    * lesbares Format zu haben.
    * <p>
    * Dieses Format ist mit Absicht nicht lokalisiert, um die Eindeutigkeit zu
-   * gewährleisten. Die Lokalisierung muss die Suchmaske übernehmen.
+   * gew?hrleisten. Die Lokalisierung muss die Suchmaske ?bernehmen.
    *
    * @param lastModified Das zu konvertiernende Date-Objekt
    * @return Ein String mit dem Format "YYYY-MM-DD HH:MM"
@@ -778,7 +778,7 @@ public class RegainToolkit {
 
 
   /**
-   * Gibt den systemspeziefischen Zeilenumbruch zurück.
+   * Gibt den systemspeziefischen Zeilenumbruch zur?ck.
    *
    * @return Der Zeilenumbruch.
    */
@@ -1001,6 +1001,30 @@ public class RegainToolkit {
     return fileNameToUrl(file.getAbsolutePath());
   }
 
+  /**
+   * Gets the canonical URL of a file (no symbolic links, normalised names etc).
+   * Symbolic link detection may fail in certain situations, like for NFS file systems
+   *
+   * @param file The file to get the canonical URL for
+   * @return The URL of the file.
+   */
+  public static String fileToCanonicalUrl(File file) {
+    String canUrl = null;
+    try{
+      //This may throw SecurityException
+      canUrl=file.getCanonicalPath();
+    }catch (Exception e){
+      return null;
+    }  
+    //Canonical url returns "current dir:parh"
+    int pos = canUrl.indexOf(':')+1;
+    if (pos > 0 && pos < canUrl.length()){
+      canUrl = canUrl.substring(pos);
+    }
+
+    return fileNameToUrl(canUrl);
+  }
+
 
   /**
    * URL-encodes a String. 
@@ -1127,7 +1151,7 @@ public class RegainToolkit {
 
 
     /**
-     * Schließt den eingebetteten Reader.
+     * Schlie?t den eingebetteten Reader.
      *
      * @throws IOException Wenn der eingebettete Reader nicht geschlossen werden
      *         konnte.
@@ -1144,8 +1168,8 @@ public class RegainToolkit {
      *        sollen
      * @param off Der Offset im Puffer, ab dem geschreiben werden soll.
      * @param len Die max. Anzahl von Zeichen, die geschrieben werden soll.
-     * @return Die Anzahl von Zeichen, die tatsächlich geschrieben wurde, bzw.
-     *         <code>-1</code>, wenn keine Daten mehr verfügbar sind.
+     * @return Die Anzahl von Zeichen, die tats?chlich geschrieben wurde, bzw.
+     *         <code>-1</code>, wenn keine Daten mehr verf?gbar sind.
      * @throws IOException Wenn nicht vom eingebetteten Reader gelesen werden
      *         konnte.
      */
