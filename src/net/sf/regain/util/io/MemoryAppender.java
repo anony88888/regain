@@ -91,7 +91,7 @@ public class MemoryAppender extends AppenderSkeleton {
         printer.print(formattedEvt);
       }
     }
-  };
+  }
 
 
   // overridden
