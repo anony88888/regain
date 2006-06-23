@@ -27,8 +27,6 @@
  */
 package net.sf.regain.crawler.config;
 
-import org.apache.regexp.RE;
-
 /**
  * The settings of a preparator
  *
