@@ -142,7 +142,7 @@ public class BrowserSelectorFrame implements DesktopConstants {
     mFrame.setLocation(wPos);
     
     // Show the frame
-    mFrame.show();
+    mFrame.setVisible(true);
   }
 
 
