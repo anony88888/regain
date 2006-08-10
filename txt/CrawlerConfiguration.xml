@@ -137,6 +137,10 @@
   <!--
    | Enable this preparator if you want to use the text extractor of
    | Microsoft Windows. This preparator is able to read tons of file formats.
+   |
+   | NOTE: Under Windows 2000 you have to make shure that reg.exe is installed
+   |       (It's part of the "Support Tools").
+   |       For details see: http://support.microsoft.com/kb/301423
    +-->
   <preparator enabled="false">
       <class>.IfilterPreparator</class>
