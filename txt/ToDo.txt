@@ -247,22 +247,23 @@ X Bugfix: HTTP-Redirects didn't work (Fix was not tested yet!).
 X Index-Felder "size" und "last-modified" suchbar machen.
 X New Preparator: EmptyPreparator (Thanks to Gerhard Olsson)
 X Bugfix: IfilterPreparator did not work on Windows Server 2003.
+X Bugfix: Filenames containing "%20" were not encoded properly
+    See Mail of Michael from 31.07.06 17:10
 
 
 Filiadata:
 ----------
 
-  Was passiert bei OutOfMemoryError im Crawler?
-
-  Ärger mit MS Office beseitigen (Jacob). Siehe Mail von Michael Danner vom 15.04.05.
-  Handbuch aktualisieren:
-    - Init-Parameter von configFile nach searchConfigFile umbenannt.
+  Bug: IFilterPreparator crashes when trying to index Excel files having
+    more than 32 kB of data in one cell.
   Fieldlist-Daten (distinct values) vom Crawler ermitteln lassen
     (Die erstmalige Ermittlung dauert lange bei großen Indizes (1 GB)).
 
 Prio A:
 -------
 
+  Add CatchAllPreparator (or the URL parsing functionality) of aslo
+    See http://forum.murfman.de/en/viewtopic.php?t=209
   NullPointerException in HtmlPreparator
     See http://forum.murfman.de/en/viewtopic.php?p=411#411
   Give preparators the possibility to add index fields on their own.
@@ -283,6 +284,8 @@ Prio A:
 Prio B:
 -------
 
+  Desktop search: Index path not hardcoded, but taken from CrawlerConfiguration.xml
+    See forum: http://forum.murfman.de/de/viewtopic.php?t=204
   Desktopsuche: Kommandozeilen-Parameter, um ohne Tray-Icon zu starten.
   Möglichkeit, Reguläre Ausdrücke auszuprobieren.
   Desktopsuche: Einstellungen: Verzeichnis-Selektor
@@ -306,6 +309,8 @@ Prio B:
 
 Prio C:
 -------
+
+  Allow regular expressions in rewrite rules (with group-based replacing)
   PlainTextPreparator: Add option to set the max. amount of text to extract.
     (avoid OutOfMemory)
   Hit highlighting

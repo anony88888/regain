@@ -952,12 +952,12 @@ public class RegainToolkit {
       throw new RegainException("URL must have the file:// protocol to get a "
         + "File for it");
     }
-  
+
     // Cut the file://
     String fileName = url.substring(7);
-  
-    // Replace %20 by spaces
-    return replace(fileName, "%20", " ");
+
+    // Replace URL-encoded special characters
+    return urlDecode(fileName, INDEX_ENCODING);
   }
 
 
@@ -975,31 +975,38 @@ public class RegainToolkit {
 
 
   /**
-   * Gets the URL of a file name.
+   * Returns the URL of a file name.
    *
    * @param fileName The file name to get the URL for
    * @return The URL of the file.
+   * @throws RegainException If URL-encoding failed. 
    */
-  public static String fileNameToUrl(String fileName) {
-    // Replace spaces by %20
-    fileName = replace(fileName, " ", "%20");
-  
+  public static String fileNameToUrl(String fileName)
+    throws RegainException
+  {
+    // Replace special characters
+    fileName = urlEncode(fileName, INDEX_ENCODING);
+
     // Replace file separators by /
-    fileName = replace(fileName, File.separator, "/");
-  
+    fileName = replace(fileName, urlEncode(File.separator, INDEX_ENCODING), "/");
+
     return "file://" + fileName;
   }
 
 
   /**
-   * Gets the URL of a file.
+   * Returns the URL of a file.
    *
    * @param file The file to get the URL for
    * @return The URL of the file.
+   * @throws RegainException If URL-encoding failed. 
    */
-  public static String fileToUrl(File file) {
+  public static String fileToUrl(File file)
+    throws RegainException
+  {
     return fileNameToUrl(file.getAbsolutePath());
   }
+
 
   /**
    * Gets the canonical URL of a file (no symbolic links, normalised names etc).
@@ -1007,8 +1014,11 @@ public class RegainToolkit {
    *
    * @param file The file to get the canonical URL for
    * @return The URL of the file.
+   * @throws RegainException If URL-encoding failed. 
    */
-  public static String fileToCanonicalUrl(File file) {
+  public static String fileToCanonicalUrl(File file)
+    throws RegainException
+  {
     String canUrl = null;
     try{
       //This may throw SecurityException

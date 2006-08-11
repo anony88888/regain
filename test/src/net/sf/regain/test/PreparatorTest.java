@@ -144,9 +144,11 @@ public class PreparatorTest {
    * @param outputDir The target directory where to write the extracted texts.
    * @param fileType The file type the current preperator takes.
    * @param prep The preparatos to test
+   * @throws RegainException If URL-encoding failed
    */
   private static void testPreparator(File docDir, File outputDir,
     String fileType, AbstractPreparator prep)
+    throws RegainException
   {
     String prepName = prep.getClass().getName();
     if (prepName.startsWith(REGAIN_PREP_PREFIX)) {

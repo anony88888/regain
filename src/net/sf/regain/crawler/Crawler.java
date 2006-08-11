@@ -763,8 +763,9 @@ public class Crawler implements ErrorLogger {
    * und erzeugt f�r jeden Treffer einen neuen Job.
    *
    * @param dir Das zu durchsuchende Verzeichnis.
+   * @throws RegainException If encoding the found URLs failed. 
    */
-  private void parseDirectory(File dir) {
+  private void parseDirectory(File dir) throws RegainException {
     // Get the URL for the directory
     String sourceUrl = RegainToolkit.fileToUrl(dir);
 
