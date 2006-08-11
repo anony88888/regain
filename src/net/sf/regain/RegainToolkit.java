@@ -988,7 +988,9 @@ public class RegainToolkit {
     fileName = urlEncode(fileName, INDEX_ENCODING);
 
     // Replace file separators by /
-    fileName = replace(fileName, urlEncode(File.separator, INDEX_ENCODING), "/");
+    // NOTE: "/" is "%2F", "\" is "%5C"
+    fileName = replace(fileName, "%2F", "/");
+    fileName = replace(fileName, "%5C", "/"); // Yes: "\" should become "/"
 
     return "file://" + fileName;
   }
