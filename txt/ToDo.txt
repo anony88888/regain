@@ -249,6 +249,9 @@ X New Preparator: EmptyPreparator (Thanks to Gerhard Olsson)
 X Bugfix: IfilterPreparator did not work on Windows Server 2003.
 X Bugfix: Filenames containing "%20" were not encoded properly
     See Mail of Michael from 31.07.06 17:10
+X Bugfix: File-to-http-bridge didn't work after filename encoding fix.
+    Now it should be really cleaned up. Meaning: Other encoding problems with
+    the file-to-http-bridge should be fixed now, too.
 
 
 Filiadata:

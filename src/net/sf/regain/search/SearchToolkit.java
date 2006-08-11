@@ -255,14 +255,16 @@ public class SearchToolkit {
   public static String extractFileUrl(String requestPath, String encoding)
     throws RegainException
   {
+    // NOTE: This is the counterpart to net.sf.regain.search.sharedlib.hit.LinkTag 
+
     int filePos = requestPath.indexOf("file/");
-    String filename = RegainToolkit.urlDecode(requestPath.substring(filePos + 5), encoding);
-    
+    String filename = requestPath.substring(filePos + 5);
+
     // Restore the double slashes
     filename = RegainToolkit.replace(filename, "\\", "/");
-    
+
     // Assemble the file URL
-    return RegainToolkit.fileNameToUrl(filename);
+    return RegainToolkit.fileNameToUrl(filename); 
   }
 
 

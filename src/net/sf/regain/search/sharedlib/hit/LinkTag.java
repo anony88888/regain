@@ -89,19 +89,33 @@ public class LinkTag extends AbstractHitTag {
     String encoding = response.getEncoding();
     boolean useFileToHttpBridge = results.getUseFileToHttpBridgeForHit(hitIndex);
     if (url.startsWith("file://") && useFileToHttpBridge) {
-      // URL encode the URL
-      String filename = RegainToolkit.urlToFileName(url);
-      String urlEncoded = RegainToolkit.urlEncode(filename, encoding);
-      urlEncoded = RegainToolkit.replace(urlEncoded, "+", "%20");
-      
-      // Restore the slashes...
-      urlEncoded = RegainToolkit.replace(urlEncoded, "%2F", "/");
+      // Create a URL that targets the file-to-http-bridge
+      // NOTE: This is the counterpart to SearchToolkit.extractFileUrl
 
-      // Create a URL
-      href = "file/" + urlEncoded;
+      // Get the file name
+      String fileName = RegainToolkit.urlToFileName(url);
 
-      // ...but encode double slashes
-      href = RegainToolkit.replace(href, "//", "/\\");
+      // Workaround: Double slashes have to be prevented, because tomcat
+      // merges two slashes to one (even if one of them is URL-encoded)
+      // -> We change one of the slashes to a backslash
+      //    (because we know that there is no other backslash)
+
+      // Change any slash at the beginning
+      // (because we will add the prefix "file/" later)
+      if (fileName.startsWith("/")) {
+        fileName = "\\" + fileName.substring(1); 
+      }
+
+      // Change the other double slashes
+      fileName = RegainToolkit.replace(fileName, "//", "/\\");
+
+      // Create a URL (encoded with the page encoding)
+      href = "file/" + RegainToolkit.urlEncode(fileName, encoding);
+
+      // Now decode the forward slashes
+      // NOTE: This step is only for beautifing the URL, the above workaround is
+      //       also nessesary without this step
+      href = RegainToolkit.replace(href, "%2F", "/");
 
       // Add the index name
       // NOTE: This is needed to ensure that only documents can be loaded that
