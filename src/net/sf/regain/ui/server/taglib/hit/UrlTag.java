@@ -45,4 +45,14 @@ public class UrlTag extends SharedTagWrapperTag {
     super(new net.sf.regain.search.sharedlib.hit.UrlTag());
   }
 
+
+  /**
+   * Sets whether the URL should be shown human readable.
+   * 
+   * @param beautified Whether the URL should be shown human readable.
+   */
+  public void setBeautified(String beautified) {
+    getNestedTag().setParameter("beautified", beautified);
+  }
+
 }

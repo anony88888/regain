@@ -28,6 +28,7 @@
 package net.sf.regain.search.sharedlib.hit;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.RegainToolkit;
 import net.sf.regain.search.SearchToolkit;
 import net.sf.regain.search.results.SearchResults;
 import net.sf.regain.util.sharedtag.PageRequest;
@@ -65,7 +66,12 @@ public class UrlTag extends AbstractHitTag {
 
     String url = results.getHitUrl(hitIndex);
 
-    response.print(url);
+    boolean beautified = getParameterAsBoolean("beautified", false);
+    if (beautified && url.startsWith("file://")) {
+      response.print(RegainToolkit.urlToFileName(url));
+    } else {
+      response.print(url);
+    }
   }
 
 }

@@ -364,6 +364,14 @@
     <name>hit_url</name>
     <tagclass>net.sf.regain.ui.server.taglib.hit.UrlTag</tagclass>
     <bodycontent>empty</bodycontent>
+
+    <attribute>
+      <description>
+        Whether the URL should be shown human readable.
+      </description>
+      <name>url</name>
+      <required>false</required>
+    </attribute>
   </tag>
 
   <tag>
