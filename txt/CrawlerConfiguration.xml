@@ -33,6 +33,9 @@
  | The list of URLs where the spidering will start.
  |
  | Enter the start page of your web site resp. a file system folder here.
+ |
+ | NOTE: The examples are in a comment. Thus, if you add your path in one of
+ |       them, then don't forget to uncomment them.
  +-->
 <startlist>
   <!-- Directory parsing -->
