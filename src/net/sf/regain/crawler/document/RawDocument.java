@@ -349,7 +349,7 @@ public class RawDocument {
    */
   public void writeToFile(File file) throws RegainException {
     try {
-      CrawlerToolkit.writeToFile(getContent(), file);
+      RegainToolkit.writeToFile(getContent(), file);
 
       if (mContentAsFile == null) {
         // Falls das Dokument in Dateiform ben�tigt wird, dann diese Datei

@@ -34,7 +34,6 @@ import java.util.Date;
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.Crawler;
-import net.sf.regain.crawler.CrawlerToolkit;
 import net.sf.regain.crawler.config.CrawlerConfig;
 import net.sf.regain.crawler.config.XmlCrawlerConfig;
 
@@ -239,18 +238,18 @@ public class IndexUpdateManager implements DesktopConstants {
     }
   }
 
-  
+
   /**
    * Saves the current time as the last index update.
    */
   private void saveIndexLastUpdate() {
     try {
       String lastUpdate = RegainToolkit.lastModifiedToString(new Date());
-      CrawlerToolkit.writeToFile(lastUpdate, LASTUPDATE_FILE);
+      RegainToolkit.writeToFile(lastUpdate, LASTUPDATE_FILE);
     }
     catch (RegainException exc) {
       mLog.error("Writing last update file failed", exc);
     }
   }
-  
+
 }

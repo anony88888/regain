@@ -303,6 +303,12 @@ public class DummyCrawlerConfig implements CrawlerConfig {
     };
   }
 
+  
+  // overridden
+  public String[] getValuePrefetchFields() {
+    return null;
+  }
+
 
   /**
    * Gibt die regulären Ausdrücke zurück, auf die die URL eines Dokuments passen

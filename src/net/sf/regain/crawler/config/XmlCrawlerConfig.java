@@ -109,6 +109,9 @@ public class XmlCrawlerConfig implements CrawlerConfig {
   /** The white list. */
   private WhiteListEntry[] mWhiteListEntryArr;
 
+  /** The names of the fields to prefetch the destinct values for. */
+  private String[] mValuePrefetchFields;
+
   /**
    * Die regul�ren Ausdr�cke, auf die die URL eines Dokuments passen muss,
    * damit anstatt des wirklichen Dokumententitels der Text des Links, der auf
@@ -259,6 +262,9 @@ public class XmlCrawlerConfig implements CrawlerConfig {
 
     node = XmlToolkit.getChild(indexNode, "maxFailedDocuments");
     mMaxFailedDocuments = (node == null) ? 1.0 : (XmlToolkit.getTextAsDouble(node) / 100.0);
+
+    node = XmlToolkit.getChild(indexNode, "valuePrefetchFields", false);
+    mValuePrefetchFields = (node == null) ? null : XmlToolkit.getTextAsWordList(node, false);
   }
 
 
@@ -852,6 +858,11 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     return mWhiteListEntryArr;
   }
 
+
+  // overridden
+  public String[] getValuePrefetchFields() {
+    return mValuePrefetchFields;
+  }
 
 
   /**

@@ -223,6 +223,16 @@ public interface CrawlerConfig {
   public WhiteListEntry[] getWhiteList();
 
   /**
+   * The names of the fields to prefetch the destinct values for.
+   * <p>
+   * Used for speeding up the search:input_fieldlist tag.
+   *
+   * @return the names of the fields to prefetch the destinct values for.
+   *         May be null or empty.
+   */
+  public String[] getValuePrefetchFields();
+
+  /**
    * Gibt die regulären Ausdrücke zurück, auf die die URL eines Dokuments passen
    * muss, damit anstatt des wirklichen Dokumententitels der Text des Links, der
    * auf das Dokument gezeigt hat, als Dokumententitel genutzt wird.

@@ -123,15 +123,15 @@ public class IndexWriterManager {
   private static final long RENAME_TIMEOUT = 60000; // 1 min
 
   /**
-   * The adding mode.
+   * The writing mode.
    * @see #setIndexMode(int)
    */
-  private static final int ADDING_MODE = 1;
+  private static final int WRITING_MODE = 1;
   /**
-   * The deleting mode.
+   * The reading mode.
    * @see #setIndexMode(int)
    */
-  private static final int DELETING_MODE = 2;
+  private static final int READING_MODE = 2;
   /**
    * The searching mode.
    * @see #setIndexMode(int)
@@ -142,6 +142,9 @@ public class IndexWriterManager {
    * @see #setIndexMode(int)
    */
   private static final int ALL_CLOSED_MODE = 4;
+
+  /** The crawler configuration. */
+  private CrawlerConfig mConfig;
 
   /** Der Analyzer, der vom IndexWriter genutzt werden soll. */
   private Analyzer mAnalyzer;
@@ -252,6 +255,7 @@ public class IndexWriterManager {
     boolean retryFailedDocs)
     throws RegainException
   {
+    mConfig = config;
     mUpdateIndex = updateIndex;
     mRetryFailedDocs = retryFailedDocs;
     
@@ -315,7 +319,7 @@ public class IndexWriterManager {
 
     if (updateIndex) {
       // Force an unlock of the index (we just created a copy so this is save)
-      setIndexMode(DELETING_MODE);
+      setIndexMode(READING_MODE);
       try {
         IndexReader.unlock(mIndexReader.directory());
         mInitialDocCount = mIndexReader.numDocs();
@@ -326,11 +330,11 @@ public class IndexWriterManager {
 
     // Write the stopWordList and the exclusionList in a file so it can be found
     // by the search mask
-    CrawlerToolkit.writeToFile(analyzerType, new File(mTempIndexDir, "analyzerType.txt"));
-    CrawlerToolkit.writeListToFile(stopWordList, new File(mTempIndexDir, "stopWordList.txt"));
-    CrawlerToolkit.writeListToFile(exclusionList, new File(mTempIndexDir, "exclusionList.txt"));
+    RegainToolkit.writeToFile(analyzerType, new File(mTempIndexDir, "analyzerType.txt"));
+    RegainToolkit.writeListToFile(stopWordList, new File(mTempIndexDir, "stopWordList.txt"));
+    RegainToolkit.writeListToFile(exclusionList, new File(mTempIndexDir, "exclusionList.txt"));
     if (untokenizedFieldNames.length != 0) {
-        CrawlerToolkit.writeListToFile(untokenizedFieldNames, new File(mTempIndexDir, "untokenizedFieldNames.txt"));
+      RegainToolkit.writeListToFile(untokenizedFieldNames, new File(mTempIndexDir, "untokenizedFieldNames.txt"));
     }
 
     // Prepare the analysis directory if wanted
@@ -450,13 +454,13 @@ public class IndexWriterManager {
    * <p>
    * The are the following modes:
    * <ul>
-   *   <li>Adding mode: The mIndexWriter is opened, the mIndexSearcher may be
+   *   <li>Writing mode: The mIndexWriter is opened, the mIndexSearcher may be
    *     opened, the mIndexReader is closed. In this mode documents may be added
    *     to the index.</li>
-   *   <li>Deleting mode: The mIndexReader is opened, the mIndexSearcher may be
+   *   <li>Reading mode: The mIndexReader is opened, the mIndexSearcher may be
    *     opened, the mIndexWriter is closed. In this mode documents may be
-   *     removed from the index.</li>
-   *   <li>Searching mode: The mIndexReader is opened, the mIndexWriter or
+   *     read or removed from the index.</li>
+   *   <li>Searching mode: The mIndexSearcher is opened, the mIndexWriter or
    *     mIndexReader may be opened. In this mode documents may be searched.
    *   <li>All closed mode: All access to the index ist closed:
    *     mIndexWriter, mIndexReader and mIndexSearcher. In this mode the index
@@ -467,13 +471,13 @@ public class IndexWriterManager {
    * very fast in this case.
    *
    * @param mode The mode the index should have. Must be one of
-   *        {@link #ADDING_MODE}, {@link #DELETING_MODE} or
-   *        {@link #ALL_CLOSED_MODE}.
+   *        {@link #WRITING_MODE}, {@link #READING_MODE}, {@link #SEARCHING_MODE}
+   *        or {@link #ALL_CLOSED_MODE}.
    * @throws RegainException If closing or opening failed.
    */
   private void setIndexMode(int mode) throws RegainException {
-    // Close the mIndexReader in ADDING_MODE and ALL_CLOSED_MODE
-    if ((mode == ADDING_MODE) || (mode == ALL_CLOSED_MODE)) {
+    // Close the mIndexReader in WRITING_MODE and ALL_CLOSED_MODE
+    if ((mode == WRITING_MODE) || (mode == ALL_CLOSED_MODE)) {
       if (mIndexReader != null) {
         try {
           mIndexReader.close();
@@ -484,8 +488,8 @@ public class IndexWriterManager {
       }
     }
 
-    // Close the mIndexWriter in DELETING_MODE and ALL_CLOSED_MODE
-    if ((mode == DELETING_MODE) || (mode == ALL_CLOSED_MODE)) {
+    // Close the mIndexWriter in READING_MODE and ALL_CLOSED_MODE
+    if ((mode == READING_MODE) || (mode == ALL_CLOSED_MODE)) {
       if (mIndexWriter != null) {
         try {
           mIndexWriter.close();
@@ -506,8 +510,8 @@ public class IndexWriterManager {
       }
     }
 
-    // Open the mIndexWriter in ADDING_MODE
-    if ((mode == ADDING_MODE) && (mIndexWriter == null)) {
+    // Open the mIndexWriter in WRITING_MODE
+    if ((mode == WRITING_MODE) && (mIndexWriter == null)) {
       mLog.info("Switching to index mode: adding mode");
       try {
         mIndexWriter = new IndexWriter(mTempIndexDir, mAnalyzer, false);
@@ -516,8 +520,8 @@ public class IndexWriterManager {
       }
     }
 
-    // Open the mIndexReader in DELETING_MODE
-    if ((mode == DELETING_MODE) && (mIndexReader == null)) {
+    // Open the mIndexReader in READING_MODE
+    if ((mode == READING_MODE) && (mIndexReader == null)) {
       mLog.info("Switching to index mode: deleting mode");
       try {
         mIndexReader = IndexReader.open(mTempIndexDir);
@@ -727,7 +731,7 @@ public class IndexWriterManager {
     if (doc != null) {
       mAddToIndexProfiler.startMeasuring();
       try {
-        setIndexMode(ADDING_MODE);
+        setIndexMode(WRITING_MODE);
         mIndexWriter.addDocument(doc);
         mAddToIndexProfiler.stopMeasuring(rawDocument.getLength());
       }
@@ -774,7 +778,7 @@ public class IndexWriterManager {
     }
 
     // Go through the index
-    setIndexMode(DELETING_MODE);
+    setIndexMode(READING_MODE);
     int docCount = mIndexReader.numDocs();
     for (int docIdx = 0; docIdx < docCount; docIdx++) {
       if (! mIndexReader.isDeleted(docIdx)) {
@@ -915,7 +919,7 @@ public class IndexWriterManager {
     if (mIndexReader != null) {
       return mIndexReader.numDocs();
     } else {
-      setIndexMode(ADDING_MODE);
+      setIndexMode(WRITING_MODE);
       return mIndexWriter.docCount();
     }
   }
@@ -1006,16 +1010,30 @@ public class IndexWriterManager {
   public void close(boolean putIntoQuarantine) throws RegainException {
     // Index optimieren
     try {
-      setIndexMode(ADDING_MODE);
+      setIndexMode(WRITING_MODE);
       mIndexWriter.optimize();
     }
     catch (IOException exc) {
       throw new RegainException("Finishing IndexWriter failed", exc);
     }
 
+    // Prefetch destinct field values
+    String[] prefetchFields = mConfig.getValuePrefetchFields();
+    if (prefetchFields != null && prefetchFields.length != 0) {
+      String msg = "Prefetching destinct field values for: ";
+      for (int i = 0; i < prefetchFields.length; i++) {
+        msg += (i != 0 ? ", " : "") + prefetchFields[i];
+      }
+      mLog.info(msg);
+
+      setIndexMode(READING_MODE);
+      RegainToolkit.readFieldValues(mIndexReader, prefetchFields, mTempIndexDir);
+    }
+
     // Prepare the final 'breakpoint'
+    // NOTE: This will set the ALL_CLOSED_MODE
     prepareBreakpoint();
-    
+
     // Ressourcen der DocumentFactory freigeben
     mDocumentFactory.close();
 
