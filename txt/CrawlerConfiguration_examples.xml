@@ -137,6 +137,17 @@
    +-->
   <exclusionList></exclusionList>
 
+  <!--
+   | The names of the fields of which to prefetch the destinct values.
+   | Separate the field names by a blank.
+   |
+   | Put in the names of the fields you use a search:input_fieldlist tag for.
+   | The values shown in the list will then be extracted by the crawler and not
+   | by the search mask, which prevents a slow first loading of a page for huge
+   | indexes.
+   +-->
+  <valuePrefetchFields>extension</valuePrefetchFields>
+
 </searchIndex>
 
 
