@@ -123,8 +123,10 @@ public class LinkTag extends AbstractHitTag {
       String indexName = results.getHitIndexName(hitIndex);
       String encodedIndexName = RegainToolkit.urlEncode(indexName, encoding);
       href += "?index=" + encodedIndexName;
+    } else {
+      href = RegainToolkit.urlDecode(url, RegainToolkit.INDEX_ENCODING); 
     }
-    
+
     // Generate the link
     response.print("<a href=\"" + href + "\"");
     if (openInNewWindow) {

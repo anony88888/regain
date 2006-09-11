@@ -70,7 +70,7 @@ public class UrlTag extends AbstractHitTag {
     if (beautified && url.startsWith("file://")) {
       response.print(RegainToolkit.urlToFileName(url));
     } else {
-      response.print(url);
+      response.print(RegainToolkit.urlDecode(url, RegainToolkit.INDEX_ENCODING));
     }
   }
 
