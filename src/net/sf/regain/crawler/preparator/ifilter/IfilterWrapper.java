@@ -27,6 +27,8 @@
  */
 package net.sf.regain.crawler.preparator.ifilter;
 
+import org.apache.log4j.Logger;
+
 /**
  * A Java wrapper around one Ifilter. 
  * 
@@ -34,6 +36,9 @@ package net.sf.regain.crawler.preparator.ifilter;
  * @author Til Schneider, www.murfman.de
  */
 public class IfilterWrapper {
+
+  /** The logger for this class. */
+  private static Logger mLog = Logger.getLogger(IfilterWrapper.class);
 
   static {
     System.loadLibrary("ifilter_wrapper");
@@ -106,7 +111,7 @@ public class IfilterWrapper {
    * @param buffer The StringBuffer where to store the text.
    */
   public void getText(String fileName, StringBuffer buffer) {
-    getText(fileName, buffer, false);
+    getText(fileName, buffer, false, mLog.isDebugEnabled(), false);
   }
 
 
@@ -117,8 +122,15 @@ public class IfilterWrapper {
    * @param buffer The StringBuffer where to store the text.
    * @param showTextEndings specifies whether to include tags that show where a
    *        text block is finished for debug reasons (the text is retrieved in blocks).
+   * @param showDebugMessages Whether debug messages should be printed out.
+   * @param onlyThrowExceptionWhenNoTextWasFound Whether to throw an exception
+   *        when an error occured, but some text already was extracted.
+   *        (If no text was extracted the exception is always thrown when there
+   *        is an error)
    */
-  private native void getText(String fileName, StringBuffer buffer, boolean showTextEndings);
+  private native void getText(String fileName, StringBuffer buffer,
+    boolean showTextEndings, boolean showDebugMessages,
+    boolean onlyThrowExceptionWhenNoTextWasFound);
 
 
   /**

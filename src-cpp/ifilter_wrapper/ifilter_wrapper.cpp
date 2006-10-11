@@ -131,7 +131,7 @@ JNIEXPORT void JNICALL Java_net_sf_regain_crawler_preparator_ifilter_IfilterWrap
 
 JNIEXPORT void JNICALL Java_net_sf_regain_crawler_preparator_ifilter_IfilterWrapper_getText
   (JNIEnv *env, jobject obj, jstring _fileName, jobject stringBuffer,
-   jboolean showTextEndings)
+   jboolean showTextEndings, jboolean showDebugMessages, jboolean onlyThrowExceptionWhenNoTextWasFound)
 {
   jclass clazz = env->GetObjectClass(obj);
   jfieldID jf = env->GetFieldID(clazz, COM_FIELD_NAME, "J");
@@ -164,7 +164,7 @@ JNIEXPORT void JNICALL Java_net_sf_regain_crawler_preparator_ifilter_IfilterWrap
   }
 
   const jchar *fileName = env->GetStringChars(_fileName, NULL);
-  pPersistFile->Load(fileName, 0);
+  pPersistFile->Load((LPOLESTR)fileName, 0);
   env->ReleaseStringChars(_fileName, fileName);
 
   ULONG pwdFlags;
@@ -180,44 +180,80 @@ JNIEXPORT void JNICALL Java_net_sf_regain_crawler_preparator_ifilter_IfilterWrap
   jmethodID appendID = env->GetMethodID(sbufClass, "append",
     "(Ljava/lang/String;)Ljava/lang/StringBuffer;");
 
-  const ULONG bufferSize = 1024;
+  const ULONG bufferSize = 10240;
   WCHAR buffer[bufferSize];
   ULONG len;
+  ULONG totalLen = 0;
 
-  while ((scode = pFilter->GetChunk(&st)) != FILTER_E_END_OF_CHUNKS) {
-    if (st.flags == CHUNK_TEXT) {
+  if (showDebugMessages) {
+    printf("Ifilter.GetChunk constants: S_OK=0x%x, FILTER_E_END_OF_CHUNKS=0x%x, FILTER_E_EMBEDDING_UNAVAILABLE=0x%x, FILTER_E_LINK_UNAVAILABLE=0x%x, FILTER_E_PASSWORD=0x%x, FILTER_E_ACCESS=0x%x\n",
+      S_OK, FILTER_E_END_OF_CHUNKS, FILTER_E_EMBEDDING_UNAVAILABLE, FILTER_E_LINK_UNAVAILABLE, FILTER_E_PASSWORD, FILTER_E_ACCESS);
+    printf("Ifilter.GetText constants: S_OK=0x%x, FILTER_E_NO_TEXT=0x%x, FILTER_E_NO_MORE_TEXT=0x%x, FILTER_S_LAST_TEXT=0x%x, CHUNK_TEXT=0x%x\n",
+      S_OK, FILTER_E_NO_TEXT, FILTER_E_NO_MORE_TEXT, FILTER_S_LAST_TEXT, CHUNK_TEXT);
+  }
 
-      while (true) {
-        len = bufferSize;
-        // NOTE: len will set by GetText to the correct length
-        scode = pFilter->GetText(&len, buffer);
+  while (true) {
+    scode = pFilter->GetChunk(&st);
 
-        if (scode == FILTER_E_NO_MORE_TEXT) {
-          // We are done
-          break;
-        }
+    if (showDebugMessages) {
+      printf("Got chunk start: scode=0x%x, st.flags=0x%x\n", scode, st.flags);
+    }
 
-        //printf("C: size: %d\n", len);
+    if (scode == S_OK) {
+      if (st.flags == CHUNK_TEXT) {
+        while (true) {
+          len = bufferSize;
+          // NOTE: len will set by GetText to the correct length
+          scode = pFilter->GetText(&len, buffer);
 
-        // Create a Java String
-        jstring str = env->NewString((jchar*)buffer, len);
+          if (showDebugMessages) {
+            printf("Got text: scode=0x%x, size=%d\n", scode, len);
+          }
 
-        // Append it to the StringBuffer
-        env->CallObjectMethod(stringBuffer, appendID, str);
+          if (scode == FILTER_E_NO_MORE_TEXT) {
+            // We are done
+            break;
+          }
 
-        if (showTextEndings) {
-          str = env->NewStringUTF("\n<end of text>\n");
+          // Create a Java String
+          jstring str = env->NewString((jchar*)buffer, len);
+
+          // Append it to the StringBuffer
           env->CallObjectMethod(stringBuffer, appendID, str);
-        }
-      }
 
-      // End of chunk
-      if (showTextEndings) {
-        jstring str = env->NewStringUTF("\n<end of chunk>\n");
+          if (showTextEndings) {
+            str = env->NewStringUTF("\n<end of text>\n");
+            env->CallObjectMethod(stringBuffer, appendID, str);
+          }
+
+          totalLen += len;
+        }
+
+        // End of chunk
+        if (showTextEndings) {
+            jstring str = env->NewStringUTF("\n<end of chunk>\n");
+            env->CallObjectMethod(stringBuffer, appendID, str);
+        }
+        jstring str = env->NewStringUTF("\n");
         env->CallObjectMethod(stringBuffer, appendID, str);
       }
-      jstring str = env->NewStringUTF("\n");
-      env->CallObjectMethod(stringBuffer, appendID, str);
+    } else if (scode == FILTER_E_EMBEDDING_UNAVAILABLE || scode == FILTER_E_LINK_UNAVAILABLE) {
+      // This chunk can't be read -> Go on with the next one (do nothing)
+    } else if (scode == FILTER_E_END_OF_CHUNKS) {
+      // End of chunks -> Stop here
+      break;
+    } else {
+      // There was an error
+      if (!onlyThrowExceptionWhenNoTextWasFound || totalLen == 0) {
+        if (scode == FILTER_E_PASSWORD) {
+          ThrowException(env, "Extracting text failed: Password or other security-related access failure", hr);
+        } else if (scode == FILTER_E_ACCESS) {
+          ThrowException(env, "Extracting text failed: General access failure", hr);
+        } else {
+          ThrowException(env, "Extracting text failed: GetChunk returned unknown status code", hr);
+        }
+      }
+      break;
     }
   }
 

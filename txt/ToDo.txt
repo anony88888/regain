@@ -256,13 +256,13 @@ X Prefetch distinct field values by the crawler
     (The first fetch takes much time for huge indexes (1 GB)).
     Once the values for a field was fetched, it is stored in a cache file in the
     index directory, making subsequent retrievals much faster.
+X Bug: IFilterPreparator hangs when trying to index Excel files having
+    more than 32 kB of data in one cell.
 
 
 Filiadata:
 ----------
 
-  Bug: IFilterPreparator crashes when trying to index Excel files having
-    more than 32 kB of data in one cell.
 
 Prio A:
 -------

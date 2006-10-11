@@ -33,14 +33,26 @@ import java.util.ArrayList;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
-import net.sf.regain.crawler.CrawlerToolkit;
 import net.sf.regain.crawler.Profiler;
 import net.sf.regain.crawler.config.PreparatorConfig;
 import net.sf.regain.crawler.document.AbstractPreparator;
 import net.sf.regain.crawler.document.RawDocument;
-import net.sf.regain.crawler.preparator.*;
+import net.sf.regain.crawler.preparator.HtmlPreparator;
+import net.sf.regain.crawler.preparator.IfilterPreparator;
+import net.sf.regain.crawler.preparator.JacobMsExcelPreparator;
+import net.sf.regain.crawler.preparator.JacobMsPowerPointPreparator;
+import net.sf.regain.crawler.preparator.JacobMsWordPreparator;
+import net.sf.regain.crawler.preparator.PdfBoxPreparator;
+import net.sf.regain.crawler.preparator.PlainTextPreparator;
+import net.sf.regain.crawler.preparator.PoiMsExcelPreparator;
+import net.sf.regain.crawler.preparator.PoiMsPowerPointPreparator;
+import net.sf.regain.crawler.preparator.PoiMsWordPreparator;
+import net.sf.regain.crawler.preparator.SimpleRtfPreparator;
+import net.sf.regain.crawler.preparator.SwingRtfPreparator;
+import net.sf.regain.crawler.preparator.XmlPreparator;
 
-import org.apache.log4j.*;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 /**
  * Tests all the preparators
@@ -204,7 +216,7 @@ public class PreparatorTest {
           }
 
           File outFile = new File(prepOutputDir, docFileArr[i].getName() + ".txt");
-          CrawlerToolkit.writeToFile(content, outFile);
+          RegainToolkit.writeToFile(content, outFile);
         }
         catch (Throwable thr) {
           mLog.error("Preparing document failed: " + url, thr);
