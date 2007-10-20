@@ -144,6 +144,12 @@ public class DummyCrawlerConfig implements CrawlerConfig {
   }
 
 
+  // overridden
+  public int getMaxFieldLength() {
+    return -1;
+  }
+
+
   /**
    * Gibt alle Worte zurück, die nicht indiziert werden sollen.
    *

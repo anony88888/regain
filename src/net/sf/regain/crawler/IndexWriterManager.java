@@ -309,7 +309,7 @@ public class IndexWriterManager {
     if (createNewIndex) {
       // Create a new index
       try {
-        mIndexWriter = new IndexWriter(mTempIndexDir, mAnalyzer, true);
+        mIndexWriter = createIndexWriter(true); 
       } catch (IOException exc) {
         throw new RegainException("Creating new index failed", exc);
       }
@@ -512,7 +512,7 @@ public class IndexWriterManager {
     if ((mode == WRITING_MODE) && (mIndexWriter == null)) {
       mLog.info("Switching to index mode: adding mode");
       try {
-        mIndexWriter = new IndexWriter(mTempIndexDir, mAnalyzer, false);
+        mIndexWriter = createIndexWriter(false);
       } catch (IOException exc) {
         throw new RegainException("Creating IndexWriter failed", exc);
       }
@@ -542,6 +542,20 @@ public class IndexWriterManager {
     if (mode == ALL_CLOSED_MODE) {
       mLog.info("Switching to index mode: all closed mode");
     }
+  }
+
+
+  private IndexWriter createIndexWriter(boolean createNewIndex)
+    throws IOException
+  { 
+    IndexWriter indexWriter = new IndexWriter(mTempIndexDir, mAnalyzer, createNewIndex);
+
+    int maxFieldLength = mConfig.getMaxFieldLength();
+    if (maxFieldLength > 0) {
+      indexWriter.setMaxFieldLength(maxFieldLength);
+    }
+
+    return indexWriter;
   }
 
 

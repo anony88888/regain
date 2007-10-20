@@ -72,6 +72,10 @@ public class XmlCrawlerConfig implements CrawlerConfig {
   private int mHttpTimeoutSecs;
   /** Das Verzeichnis, in dem der Suchindex stehen soll. */
   private String mIndexDir;
+
+  /** The maximum number of terms per document. */
+  private int mMaxFieldLength;
+
   /** Der zu verwendende Analyzer-Typ. */
   private String mAnalyzerType;
 
@@ -250,6 +254,8 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     mBuildIndex = (node == null) ? true : XmlToolkit.getTextAsBoolean(node);
     node = XmlToolkit.getChild(indexNode, "analyzerType", true);
     mAnalyzerType = XmlToolkit.getText(node, true);
+    node = XmlToolkit.getChild(indexNode, "maxFieldLength", false);
+    mMaxFieldLength = (node == null) ? -1 : XmlToolkit.getTextAsInt(node);
     node = XmlToolkit.getChild(indexNode, "stopwordList", true);
     mStopWordList = XmlToolkit.getTextAsWordList(node, true);
     node = XmlToolkit.getChild(indexNode, "exclusionList", true);
@@ -712,6 +718,12 @@ public class XmlCrawlerConfig implements CrawlerConfig {
    */
   public String getAnalyzerType() {
     return mAnalyzerType;
+  }
+
+
+  // overridden
+  public int getMaxFieldLength() {
+    return mMaxFieldLength;
   }
 
 

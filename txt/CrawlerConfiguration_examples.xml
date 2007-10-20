@@ -85,6 +85,14 @@
   <analyzerType>german</analyzerType>
 
   <!--
+   | Sets the maximum number of terms that will be indexed for a single field in
+   | a document.
+   |
+   | If missing or set to -1, then lucene's default will be used (10000).
+   +-->
+  <maxFieldLength>10000</maxFieldLength>
+
+  <!--
    | Specifies the interval between two breakpoints in minutes. If set to 0, no
    | breakpoints will be created.
    |

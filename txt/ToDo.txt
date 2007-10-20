@@ -265,6 +265,7 @@ X Bugfix: Files having a space in their filename were not when using the
 X Non-existing index directory doesn't cause an error now, instead it will be
     created
 X Showing type icons in search results
+X Made the maximum number of terms per document configurable
 
 
 Prio A:
