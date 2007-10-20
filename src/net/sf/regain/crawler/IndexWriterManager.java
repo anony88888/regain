@@ -264,11 +264,9 @@ public class IndexWriterManager {
     File indexDir = new File(config.getIndexDir());
 
     if (! indexDir.exists()) {
-      // NOTE: The index directory does not exist.
-      //       We could just create it, but it's more savely to throw an
-      //       exception. We don't wan't to destroy anything.
-      throw new RegainException("The index directory " + indexDir.getAbsolutePath()
-          + " does not exist");
+      // The index directory does not exist -> Create it
+      mLog.info("Creating index directory " + indexDir.getAbsolutePath());
+      indexDir.mkdirs();
     }
 
     mNewIndexDir        = new File(indexDir, NEW_INDEX_SUBDIR);
