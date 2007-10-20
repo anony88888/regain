@@ -239,7 +239,7 @@ X Updated libs: jdic, regexp and PdfBox
 X Bugfix: NullPointer in URLDecoder.decode caused by FileServlet
 X Bugfix: MemoryAppender didn't work when PageResponse wasn't in the classpath.
 
-** Version 1.1.1 am 27.03.06 **
+** Version 1.1.1 am 27.03.06 rev 207 **
 
 X Bugfix: PreparatorConfig was null, when preparator configration had no
     config tag.
@@ -248,7 +248,7 @@ X Index-Felder "size" und "last-modified" suchbar machen.
 X New Preparator: EmptyPreparator (Thanks to Gerhard Olsson)
 X Bugfix: IfilterPreparator did not work on Windows Server 2003.
 X Bugfix: Filenames containing "%20" were not encoded properly
-    See Mail of Michael from 31.07.06 17:10
+    See Mail of Michael from 31.07.06 17:10 (rev 226, 227)
 X Bugfix: File-to-http-bridge didn't work after filename encoding fix.
     Now it should be really cleaned up. Meaning: Other encoding problems with
     the file-to-http-bridge should be fixed now, too.
@@ -258,15 +258,20 @@ X Prefetch distinct field values by the crawler
     index directory, making subsequent retrievals much faster.
 X Bug: IFilterPreparator hangs when trying to index Excel files having
     more than 32 kB of data in one cell.
-
-
-Filiadata:
-----------
+X Bugfix: Files having a "%25" in their filename were not found in IE when not
+    using the file-to-http-bridge
+X Bugfix: Files having a space in their filename were not when using the
+    file-to-http-bridge
 
 
 Prio A:
 -------
 
+  Bug: start URL check doesn't work properly. start URL "file://bla" is removed when "file://blaber" exists.
+    See: http://forum.murfman.de/de/viewtopic.php?p=992#992
+  Better indexing of URLs:
+    * URL decoded: No "%20"
+    * Camel case solved: "HelloOtto" -> "HelloOtto Hello Otto"
   Add CatchAllPreparator (or the URL parsing functionality) of aslo
     See http://forum.murfman.de/en/viewtopic.php?t=209
   NullPointerException in HtmlPreparator
@@ -342,6 +347,6 @@ Release-Checkliste:
 * Homepage aktualisieren:
   * docs.php
   * news.php
-  * download.php 
+  * download.php
 * Newsletter verschicken
 
