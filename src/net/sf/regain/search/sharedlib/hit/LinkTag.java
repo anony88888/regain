@@ -17,13 +17,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * Contact: Til Schneider, info@murfman.de
- *
- * CVS information:
- *  $RCSfile$
- *   $Source$
- *     $Date$
- *   $Author$
- * $Revision$
  */
 package net.sf.regain.search.sharedlib.hit;
 
@@ -124,7 +117,11 @@ public class LinkTag extends AbstractHitTag {
       String encodedIndexName = RegainToolkit.urlEncode(indexName, encoding);
       href += "?index=" + encodedIndexName;
     } else {
-      href = RegainToolkit.urlDecode(url, RegainToolkit.INDEX_ENCODING); 
+      href = RegainToolkit.urlDecode(url, RegainToolkit.INDEX_ENCODING);
+
+      // For IE we have to encode "%" to "%25" again.
+      // Otherwise it will search files having a real "%20" in their name as " ". 
+      href = RegainToolkit.replace(href, "%", "%25");
     }
 
     // Generate the link
