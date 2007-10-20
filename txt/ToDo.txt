@@ -262,6 +262,8 @@ X Bugfix: Files having a "%25" in their filename were not found in IE when not
     using the file-to-http-bridge
 X Bugfix: Files having a space in their filename were not when using the
     file-to-http-bridge
+X Non-existing index directory doesn't cause an error now, instead it will be
+    created
 
 
 Prio A:

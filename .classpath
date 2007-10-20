@@ -6,16 +6,17 @@
 	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/servlet.jar"/>
-	<classpathentry sourcepath="lib-src/simple-src.zip" kind="lib" path="lib/simple-2.5.3.jar"/>
-	<classpathentry kind="lib" path="lib/win/jdic.jar"/>
+	<classpathentry kind="lib" path="lib/simple-2.5.3.jar" sourcepath="lib-src/simple-src.zip"/>
 	<classpathentry kind="lib" path="lib/ant/junit.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.11.jar"/>
-	<classpathentry sourcepath="lib-src/lucene-1.4.3-src.zip" kind="lib" path="lib/lucene-1.4.3.jar"/>
-	<classpathentry kind="lib" path="lib/poi-3.0-alpha1-20050704.jar"/>
-	<classpathentry kind="lib" path="lib/poi-scratchpad-3.0-alpha1-20050704.jar"/>
 	<classpathentry kind="lib" path="lib/win/jacob.jar"/>
 	<classpathentry kind="lib" path="lib/win/jacobgen-msoffice2000.jar"/>
-	<classpathentry kind="lib" path="lib/PDFBox-0.7.2.jar"/>
-	<classpathentry kind="lib" path="lib/jakarta-regexp-1.4.jar"/>
-	<classpathentry kind="output" path="temp/eclipse-classes"/>
+	<classpathentry kind="lib" path="lib/jakarta-regexp-1.5.jar"/>
+	<classpathentry kind="lib" path="lib/jdic.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-analyzers-2.2.0.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-core-2.2.0.jar" sourcepath="lib-src/lucene-2.2.0-java-src.zip"/>
+	<classpathentry kind="lib" path="lib/PDFBox-0.7.3.jar"/>
+	<classpathentry kind="lib" path="lib/poi-3.0.1-FINAL-20070705.jar"/>
+	<classpathentry kind="lib" path="lib/poi-scratchpad-3.0.1-FINAL-20070705.jar"/>
+	<classpathentry kind="output" path="build/eclipse-classes"/>
 </classpath>

@@ -823,7 +823,7 @@ public class IndexWriterManager {
           if (shouldBeDeleted) {
             try {
               mLog.info("Deleting from index: " + url + " from " + lastModified);
-              mIndexReader.delete(docIdx);
+              mIndexReader.deleteDocument(docIdx);
             }
             catch (IOException exc) {
               throw new RegainException("Deleting document #" + docIdx
