@@ -52,10 +52,34 @@ public class OpenOfficePreparator extends AbstractPreparator {
    * @throws RegainException If creating the preparator failed.
    */
   public OpenOfficePreparator() throws RegainException {
-    super(new String[] { "sds", "sdc", "sdw", "sgl", "sda", "sdd", "sdf", "sxw",
-           "stw", "sxg", "sxc", "stc", "sxi", "sti", "sxd", "std", "sxm", "odt",
-           "ott", "oth", "odm", "odg", "otg", "odp", "otp", "ods", "ots", "odc",
-           "odf", "odb", "odi" });
+    super(new String[] {
+        // Writer
+        "odt", "oth", "ott", "sdw", "stw", "sxw",
+
+        // Calc
+        "ods", "ots", "sdc", "stc", "sxc",
+
+        // Draw
+        "otg", "sda", "std",
+
+        // Impress
+        "odg", "odp", "otp", "sdd", "sti", "sxd", "sxi",
+
+        // Base
+        "odb",
+
+        // Math
+        "odf", "sxm",
+
+        // Chart
+        "odc", "sds",
+
+        // Image
+        "odi",
+
+        // Master
+        "odm", "sgl", "sxg",
+      });
   }
 
 

@@ -264,6 +264,7 @@ X Bugfix: Files having a space in their filename were not when using the
     file-to-http-bridge
 X Non-existing index directory doesn't cause an error now, instead it will be
     created
+X Showing type icons in search results
 
 
 Prio A:

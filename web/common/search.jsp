@@ -34,7 +34,7 @@
 
     <search:list msgNoResults="<tr><td colspan='2'>{msg:noResultsFound}<br/><br/></td></tr>">
       <tr><td colspan="2">
-        <search:hit_link/>
+        <search:hit_typeicon imgpath="img/ext"/> <search:hit_link/>
         <span class="hitDetails">
         (<search:msg key="relevance"/>: <search:hit_score/>)<br/>
         <search:hit_field field="summary"/><br/>
