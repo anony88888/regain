@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE configuration [
+  <!ENTITY amp "&#x26;">
+  <!ENTITY lt "&#x3C;">
+  <!ENTITY minus "&#45;">
+]>
+
+<!--
+ | Configuration for the regain crawler (for creating a search index)
+ |
+ | You can find a detailed description of all configuration tags here:
+ | http://regain.murfman.de/wiki/en/index.php/CrawlerConfiguration.xml
+ |
+ | You can find more configration examples in the CrawlerConfiguration_examples.xml.
+ +-->
+<configuration>
+
+<!--
+ | Enter your HTTP proxy settings here (Look at the preferences of your browser)
+ +-->
+<proxy>
+  <!--
+  <host>proxy</host>
+  <port>3128</port>
+  <user>HansWurst</user>
+  <password>gkxy23</password>
+  -->
+</proxy>
+
+
+<!--
+ | The list of URLs where the spidering will start.
+ |
+ | Enter the start page of your web site resp. a file system folder here.
+ |
+ | NOTE: The examples are in a comment. Thus, if you add your path in one of
+ |       them, then don't forget to uncomment them.
+ +-->
+<startlist>
+  <!-- Directory parsing -->
+  <!--
+  <start parse="true" index="false">file://c:/Eigene Dateien</start>
+  -->
+
+  <!-- HTML parsing -->
+  <!--
+  <start parse="true" index="true">http://www.mydomain.de/some/path/</start>
+  -->
+</startlist>
+
+
+<!--
+ | The whitelist containing prefixes an URL must have to be processed
+ |
+ | Enter the domain of your web site here.
+ +-->
+<whitelist>
+  <prefix name="file">file://</prefix>
+  <prefix>http://www.mydomain.de</prefix>
+</whitelist>
+
+
+<!--
+ | The blacklist containing prefixes an URL must NOT have to be processed
+ |
+ | Enter sub directories you don't want to be indexed here.
+ +-->
+<blacklist>
+  <!--
+  <prefix>http://www.mydomain.de/some/dynamic/content/</prefix>
+  <regex>/backup/[^/]*$</regex>
+  -->
+</blacklist>
+
+
+<!--
+ | ==================================================================================
+ | That's all you have to configure! The rest of this file is advanced configuration.
+ | ==================================================================================
+ +-->
+
+
+<!--
+ | The preferences for the search index.
+ +-->
+<searchIndex>
+  <!-- The directory where the index should be located -->
+  <dir>searchindex</dir>
+
+  <!--
+   | Specifies the analyzer type to use.
+   |
+   | The following types are supported:
+   |  * english: For the english language
+   |  * german: For the german language
+   +-->
+  <analyzerType>german</analyzerType>
+
+  <!--
+   | Contains all words that should not be indexed.
+   | Separate the words by a blank.
+   +-->
+  <stopwordList>
+    einer eine eines einem einen der die das dass daß du er sie es was wer wie
+    wir und oder ohne mit am im in aus auf ist sein war wird ihr ihre ihres als
+    für von mit dich dir mich mir mein sein kein durch wegen wird
+  </stopwordList>
+  <!-- italian:
+  <stopwordList>
+    di a da in con su per tra fra io tu egli ella essa noi voi essi loro che cui
+    se e né anche inoltre neanche o ovvero oppure ma però eppure anzi invece
+    bensì tuttavia quindi dunque perciò pertanto cioè infatti ossia non come
+    mentre perché quando mio mia miei mie tuo tua tuoi tue suo sua suoi sue
+    nostro nostre nostri nostre vostro vostre vostri vostre il lo la i gli le un
+    uno una degli delle alcuno alcuna alcune qualcuno qualcuna nessuno nessuna
+    molto molte molti molte poco parecchio assai
+  </stopwordList>
+  -->
+
+  <!--
+   | Contains all words that should not be changed by an analyser when indexed.
+   | Separate the words by a blank.
+   +-->
+  <exclusionList></exclusionList>
+
+  <!--
+   | The names of the fields of which to prefetch the destinct values.
+   | Separate the field names by a blank.
+   |
+   | Put in the names of the fields you use a search:input_fieldlist tag for.
+   | The values shown in the list will then be extracted by the crawler and not
+   | by the search mask, which prevents a slow first loading of a page for huge
+   | indexes.
+   +-->
+  <valuePrefetchFields>extension</valuePrefetchFields>
+
+</searchIndex>
+
+
+<!--
+ | The preparators in the order they should be applied. Preparators that aren't listed
+ | here will be applied after the listed ones.
+ |
+ | You can use this list...
+ |   ... to define the priority (= order) of the preparators
+ |   ... to disable preparators
+ |   ... to configure preparators
+ +-->
+<preparatorList>
+  <!--
+   | Enable this preparator if you want to use the text extractor of
+   | Microsoft Windows. This preparator is able to read tons of file formats.
+   |
+   | NOTE: Under Windows 2000 you have to make shure that reg.exe is installed
+   |       (It's part of the "Support Tools").
+   |       For details see: http://support.microsoft.com/kb/301423
+   +-->
+  <preparator enabled="false">
+      <class>.IfilterPreparator</class>
+  </preparator>
+
+  <!--
+   | Enable this preparator if you want to use MS Excel for indexing your Excel
+   | documents.
+   +-->
+  <preparator enabled="false">
+    <class>.JacobMsExcelPreparator</class>
+  </preparator>
+  
+  <!--
+   | Enable this preparator if you want to use MS Word for indexing your Word
+   | documents.
+   +-->
+  <preparator enabled="false">
+    <class>.JacobMsWordPreparator</class>
+  </preparator>
+  
+  <!--
+   | Enable this preparator if you want to use MS Powerpoint for indexing your
+   | Powerpoint documents.
+   +-->
+  <preparator enabled="false">
+    <class>.JacobMsPowerPointPreparator</class>
+  </preparator>
+
+  <!--
+   | This tells regain that it should first try the SimpleRtfPreparator for RTF
+   | files. Only if this one fails the SwingRtfPreparator is used
+   | (which is much slower).
+   +-->
+  <preparator>
+    <class>.SimpleRtfPreparator</class>
+  </preparator>
+  <preparator>
+    <class>.SwingRtfPreparator</class>
+  </preparator>
+
+  <!--
+   | This preparator may be used if you have an external program that can
+   | extract text. It's disabled by default.
+   +-->
+  <preparator enabled="false">
+    <class>.ExternalPreparator</class>
+    <config>
+      <section name="command">
+        <param name="urlPattern">\.ps$</param>
+        <param name="commandLine">ps2ascii ${filename}</param>
+        <param name="checkExitCode">false</param>
+      </section>
+    </config>
+  </preparator>
+</preparatorList>
+
+
+<!--
+ | The index may be extended with auxiliary fields. These are fields that have
+ | been generated from the URL of an document.
+ |
+ | Example: If you have a directory with a sub directory for every project,
+ | then you may create a field with the project's name.
+ |
+ | The folling tag will create a field "project" with the value "otto23"
+ | from the URL "file://c:/projects/otto23/docs/Spez.doc":
+ |   <auxiliaryField name="project" regexGroup="1">
+ |     <regex>^file://c:/projects/([^/]*)</regex>
+ |   </auxiliaryField>
+ |
+ | URLs that doen't match will get no "project" field.
+ |
+ | Having done this you may search for "Offer project:otto23" and you will get
+ | only hits from this project directory.
+ +-->
+<auxiliaryFieldList>
+  <!-- Don't change these two fields. But you may add your own. -->
+  <auxiliaryField name="extension" regexGroup="1" toLowercase="true">
+    <regex>\.([^\.]*)$</regex>
+  </auxiliaryField>
+  <auxiliaryField name="location" regexGroup="1" store="false" tokenize="true">
+    <regex>^(.*)$</regex>
+  </auxiliaryField>
+</auxiliaryFieldList>
+
+
+<!-- The regular expressions that indetify URLs in HTML. -->
+<htmlParserPatternList>
+  <pattern parse="true" index="true" regexGroup="1">="([^"]*\.(htm|html|jsp|php\d?|asp))"</pattern>
+  <pattern parse="false" index="false" regexGroup="1">="([^"]*\.(js|css|jpg|gif|png))"</pattern>
+  <pattern parse="false" index="true" regexGroup="1">="([^"]*\.[^\."]{3})"</pattern>
+</htmlParserPatternList>
+
+</configuration>
