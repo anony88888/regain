@@ -245,7 +245,7 @@ X Bugfix: PreparatorConfig was null, when preparator configration had no
     config tag.
 X Bugfix: HTTP-Redirects didn't work (Fix was not tested yet!).
 X Index-Felder "size" und "last-modified" suchbar machen.
-X New Preparator: EmptyPreparator (Thanks to Gerhard Olsson)
+X New Preparator: EmptyPreparator (Contributed by Gerhard Olsson)
 X Bugfix: IfilterPreparator did not work on Windows Server 2003.
 X Bugfix: Filenames containing "%20" were not encoded properly
     See Mail of Michael from 31.07.06 17:10 (rev 226, 227)
@@ -266,6 +266,8 @@ X Non-existing index directory doesn't cause an error now, instead it will be
     created
 X Showing type icons in search results
 X Made the maximum number of terms per document configurable
+
+** Version 1.2 am 20.10.07 rev 247 **
 
 
 Prio A:
@@ -343,10 +345,10 @@ Prio C:
 
 Release-Checkliste:
 -------------------
-* Revision taggen
-* WasIstNeu.txt und WhatIsNew.txt aktualisieren
 * Lokalisierungen an Übersetzer geben
     * it -> Franco
+* WasIstNeu.txt und WhatIsNew.txt aktualisieren
+* Revision taggen
 * JavaDoc und TLDdoc online stellen.
 * Homepage aktualisieren:
   * docs.php

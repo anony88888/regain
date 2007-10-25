@@ -1,5 +1,5 @@
 # The current Version
-version.prefix=1.1beta6
+version.prefix=1.3
 
 # Is the version a preview version (an inofficial realease)
 is-preview=true
