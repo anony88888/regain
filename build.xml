@@ -589,6 +589,9 @@
 
       <!-- desktop specific stuff -->
       <include name="simple/**"/>
+      <include name="org/jdesktop/jdic/init/**"/>
+      <include name="org/jdesktop/jdic/tray/**"/>
+      <include name="org/jdesktop/jdic/browser/internal/WebBrowserUtil.*"/>
     </fileset>
     <fileset id="desktop-common-classes" dir="build/classes">
       <exclude name="net/sf/regain/crawler/preparator/**"/>
