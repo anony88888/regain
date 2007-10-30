@@ -348,6 +348,8 @@ Release-Checkliste:
 * Lokalisierungen an Übersetzer geben
     * it -> Franco
 * WasIstNeu.txt und WhatIsNew.txt aktualisieren
+* Copyright-Jahr in footer.jsp anpassen
+* Version bauen
 * Revision taggen
 * JavaDoc und TLDdoc online stellen.
 * Homepage aktualisieren:
