@@ -709,36 +709,108 @@ public class RegainToolkit {
 
 
   /**
-   * Ersetzt in einem String alle Vorkommnisse von <CODE>pattern</CODE> durch
-   * <CODE>replacement</CODE>.
+   * Replaces in a string all occurences of <code>pattern</code> with
+   * <code>replacement</code>.
    * <p>
-   * Hinweis: <CODE>pattern</CODE> darf auch Teil von <CODE>replacement</CODE>
-   * sein!
+   * Note: <code>pattern</code> may be a substring of <code>replacement</code>.
    *
-   * @param source Der zu durchsuchende String.
-   * @param pattern Das zu ersetzende Muster.
-   * @param replacement Der Ersatz für alle Vorkommnisse des Musters.
+   * @param source The string to search in
+   * @param pattern The pattern to be replaced
+   * @param replacement The replacement for each occurence of the pattern.
    *
-   * @return Ein String in dem alle Vorkommnisse von <CODE>pattern</CODE> durch
-   *         <CODE>replacement</CODE> ersetzt wurden.
+   * @return A string where all occurences of <code>pattern</code> are replaced
+   *         by <code>replacement</code>.
    */
   public static String replace(String source, String pattern, String replacement) {
     // Check whether the pattern occurs in the source at all
-    int firstPatternPos = source.indexOf(pattern);
-    if (firstPatternPos == -1) {
+    int pos = source.indexOf(pattern);
+    if (pos == -1) {
       // The pattern does not occur in the source -> return the source
       return source;
     }
 
     // Build a new String where pattern is replaced by the replacement
     StringBuffer target = new StringBuffer(source.length());
-    int start = 0;             // The start of a part without the pattern
-    int end = firstPatternPos; // The end of a part without the pattern
+    int start = 0; // The start of a part without the pattern
     do {
-      target.append(source.substring(start, end));
+      target.append(source.substring(start, pos));
       target.append(replacement);
-      start = end + pattern.length();
-    } while ((end = source.indexOf(pattern, start)) != -1);
+      start = pos + pattern.length();
+    } while ((pos = source.indexOf(pattern, start)) != -1);
+    target.append(source.substring(start, source.length()));
+
+    // return the String
+    return target.toString();
+  }
+
+
+  /**
+   * Replaces in a string all occurences of a list of patterns with replacements.
+   * <p>
+   * Note: The string is searched left to right. So any pattern matching earlier
+   * in the string will be replaced.
+   * Example: replace("abcd", { "bc", "ab", "cd" }, { "x", "1", "2" }) will
+   * return "12" (the pattern "bc" won't be applied, since "ab" matches before).
+   * <p>
+   * Note: If two patterns match at the same position, then the first one
+   * defined will be applied.
+   * Example: replace("abcd", { "ab", "abc" }, { "1", "2" }) will return "1cd".
+   *
+   * @param source The string to search in
+   * @param patternArr The pattern to be replaced
+   * @param replacementArr The replacement for each occurence of the pattern.
+   *
+   * @return A string where all occurences of <code>pattern</code> are replaced
+   *         by <code>replacement</code>.
+   */
+  public static String replace(String source, String[] patternArr,
+      String[] replacementArr)
+  {
+    if (patternArr.length != replacementArr.length) {
+      throw new IllegalArgumentException("patternArr and replacementArr must "
+      		+ "have the same length: " + patternArr.length + " != "
+      		+ replacementArr.length);
+    }
+
+    // Check whether the patterns occurs in the source at all
+    int[] posArr = new int[patternArr.length];
+    int minPos = Integer.MAX_VALUE;
+    int minPosIdx = -1;
+    for (int i = 0; i < posArr.length; i++) {
+      posArr[i] = source.indexOf(patternArr[i]);
+      if (posArr[i] != -1 && posArr[i] < minPos) {
+        minPos = posArr[i];
+        minPosIdx = i;
+      }
+    }
+    if (minPosIdx == -1) {
+      // The patterns do not occur in the source -> return the source
+      return source;
+    }
+
+    // Build a new String where patterns are replaced by the replacements
+    StringBuffer target = new StringBuffer(source.length());
+    int start = 0;    // The start of a part without the pattern
+    do {
+      target.append(source.substring(start, minPos));
+      target.append(replacementArr[minPosIdx]);
+      start = minPos + patternArr[minPosIdx].length();
+
+      // Find the next matching pattern
+      minPos = Integer.MAX_VALUE;
+      minPosIdx = -1;
+      for (int i = 0; i < posArr.length; i++) {
+        if (posArr[i] < start) {
+          // The last match was before the current position
+          // -> Find the next match for that pattern
+          posArr[i] = source.indexOf(patternArr[i], start);
+        }
+        if (posArr[i] != -1 && posArr[i] < minPos) {
+          minPos = posArr[i];
+          minPosIdx = i;
+        }
+      }
+    } while (minPosIdx != -1);
     target.append(source.substring(start, source.length()));
 
     // return the String

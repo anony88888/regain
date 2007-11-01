@@ -269,6 +269,14 @@ X Made the maximum number of terms per document configurable
 
 ** Version 1.2 am 20.10.07 rev 247 **
 
+X Fixed desktop version (some classes for jdic were missing)
+X Added missing jars to server variant
+
+** Version 1.2.1 am 30.10.07 254 **
+
+X Fixed TLD-definition of the attribute beatified of the hit_url tag
+X Fixed URL-encoding problems with file-to-http-bridge
+
 
 Prio A:
 -------
