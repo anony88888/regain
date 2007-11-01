@@ -116,6 +116,9 @@ Section $(SecProgName)
   SetOutPath $INSTDIR\web\img
   File build\runtime\desktop\win\web\img\*
 
+  SetOutPath $INSTDIR\web\img\ext
+  File build\runtime\desktop\win\web\img\ext\*
+
   SetOutPath $INSTDIR
   WriteUninstaller "Uninstall.exe"
 
