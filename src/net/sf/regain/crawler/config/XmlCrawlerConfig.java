@@ -256,8 +256,8 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     mAnalyzerType = XmlToolkit.getText(node, true);
     node = XmlToolkit.getChild(indexNode, "maxFieldLength", false);
     mMaxFieldLength = (node == null) ? -1 : XmlToolkit.getTextAsInt(node);
-    node = XmlToolkit.getChild(indexNode, "stopwordList", true);
-    mStopWordList = XmlToolkit.getTextAsWordList(node, true);
+    node = XmlToolkit.getChild(indexNode, "stopwordList", false);
+    mStopWordList = (node == null) ? null : XmlToolkit.getTextAsWordList(node, true);
     node = XmlToolkit.getChild(indexNode, "exclusionList", true);
     mExclusionList = XmlToolkit.getTextAsWordList(node, false);
     node = XmlToolkit.getChild(indexNode, "writeAnalysisFiles");

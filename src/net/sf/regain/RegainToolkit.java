@@ -42,6 +42,8 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -593,14 +595,9 @@ public class RegainToolkit {
    * Creates an analyzer that is used both from the crawler and the search mask.
    * It is important that both use the same analyzer which is the reason for
    * this method.
-   * <p>
-   * At the moment the following analyzer types are supported:
-   * <ul>
-   *   <li>english: An analyzer for the english language.</li>
-   *   <li>german: An analyzer for the german language.</li>
-   * </ul>
    *
-   * @param analyzerType The type of the analyzer to create.
+   * @param analyzerType The type of the analyzer to create. Either a classname
+   *        or "english" or "german".
    * @param stopWordList All words that should not be indexed.
    * @param exclusionList All words that shouldn't be changed by the analyzer.
    * @param untokenizedFieldNames The names of the fields that should not be
@@ -616,40 +613,64 @@ public class RegainToolkit {
       throw new RegainException("No analyzer type specified!");
     }
 
+    // Get the analyzer class name
     analyzerType = analyzerType.trim();
-
-    Analyzer analyzer;
+    String analyzerClassName = analyzerType;
     if (analyzerType.equalsIgnoreCase("english")) {
-      StandardAnalyzer stdAnalyzer;
-      if ((stopWordList != null) && (stopWordList.length != 0)) {
-        stdAnalyzer = new StandardAnalyzer(stopWordList);
-      } else {
-        stdAnalyzer = new StandardAnalyzer();
-      }
-
-      if ((exclusionList != null) && (exclusionList.length != 0)) {
-        throw new RegainException("Analyzer type " + analyzerType
-          + " does not support exclusion lists");
-      }
-
-      analyzer = stdAnalyzer;
+      analyzerClassName = StandardAnalyzer.class.getName();
+    } else if (analyzerType.equalsIgnoreCase("german")) {
+      analyzerClassName = GermanAnalyzer.class.getName();
     }
-    else if (analyzerType.equalsIgnoreCase("german")) {
-      GermanAnalyzer deAnalyzer;
-      if ((stopWordList != null) && (stopWordList.length != 0)) {
-        deAnalyzer = new GermanAnalyzer(stopWordList);
-      } else {
-        deAnalyzer = new GermanAnalyzer();
-      }
 
-      if ((exclusionList != null) && (exclusionList.length != 0)) {
-        deAnalyzer.setStemExclusionTable(exclusionList);
-      }
-
-      analyzer = deAnalyzer;
+    // Get the analyzer class
+    Class analyzerClass;
+    try {
+      analyzerClass = Class.forName(analyzerClassName);
+    } catch (ClassNotFoundException exc) {
+      throw new RegainException("Analyzer class not found: " + analyzerClassName, exc);
     }
-    else {
-      throw new RegainException("Unkown analyzer type: '" + analyzerType + "'");
+
+    // Create an instance
+    Analyzer analyzer;
+    if ((stopWordList != null) && (stopWordList.length != 0)) {
+      Constructor ctor;
+      try {
+        ctor = analyzerClass.getConstructor(
+            new Class[] { stopWordList.getClass() });
+      } catch (Throwable thr) {
+        throw new RegainException("Analyzer " + analyzerType
+            + " does not support stop words");
+      }
+      try {
+        analyzer = (Analyzer) ctor.newInstance(new Object[] { stopWordList });
+      } catch (Throwable thr) {
+        throw new RegainException("Creating analyzer instance failed", thr);
+      }
+    } else {
+      try {
+        analyzer = (Analyzer) analyzerClass.newInstance();
+      } catch (Throwable thr) {
+        throw new RegainException("Creating analyzer instance failed", thr);
+      }
+    }
+
+    // Try to apply the exclusion list
+    if ((exclusionList != null) && (exclusionList.length != 0)) {
+      // NOTE: This is supported by the GermanAnalyzer for instance
+      Method setter;
+      try {
+        setter = analyzerClass.getMethod("setStemExclusionTable",
+            new Class[] { exclusionList.getClass() });
+      } catch (Throwable thr) {
+        throw new RegainException("Analyzer " + analyzerType
+            + " does not support exclusion lists");
+      }
+
+      try {
+        setter.invoke(analyzer, new Object[] { exclusionList });
+      } catch (Throwable thr) {
+        throw new RegainException("Applying exclusion list failed.", thr);
+      }
     }
 
     analyzer = new WrapperAnalyzer(analyzer, untokenizedFieldNames);

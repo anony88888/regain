@@ -13,7 +13,7 @@
 	<classpathentry kind="lib" path="lib/win/jacobgen-msoffice2000.jar"/>
 	<classpathentry kind="lib" path="lib/jakarta-regexp-1.5.jar"/>
 	<classpathentry kind="lib" path="lib/jdic.jar"/>
-	<classpathentry kind="lib" path="lib/lucene-analyzers-2.2.0.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-analyzers-2.2.0.jar" sourcepath="lib-src/lucene-analyzers-2.2.0-java-src.zip"/>
 	<classpathentry kind="lib" path="lib/lucene-core-2.2.0.jar" sourcepath="lib-src/lucene-2.2.0-java-src.zip"/>
 	<classpathentry kind="lib" path="lib/poi-3.0.1-FINAL-20070705.jar"/>
 	<classpathentry kind="lib" path="lib/poi-scratchpad-3.0.1-FINAL-20070705.jar"/>
