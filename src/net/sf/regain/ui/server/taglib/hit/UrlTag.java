@@ -49,7 +49,8 @@ public class UrlTag extends SharedTagWrapperTag {
   /**
    * Sets whether the URL should be shown human readable.
    * 
-   * @param beautified Whether the URL should be shown human readable.
+   * @param beautified Whether the URL should be shown human readable
+   *        (for http-URLs: URL decoded, for file-URLs: The file name).
    */
   public void setBeautified(String beautified) {
     getNestedTag().setParameter("beautified", beautified);
