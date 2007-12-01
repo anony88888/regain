@@ -31,22 +31,12 @@ import net.sf.regain.RegainException;
 import net.sf.regain.crawler.document.AbstractPreparator;
 import net.sf.regain.crawler.document.RawDocument;
 
-import org.apache.regexp.RE;
-
 /**
  * A preparator adding an empty text for all documents.
  *
  * @author Gerhard Olsson
  */
 public class EmptyPreparator extends AbstractPreparator {
-
-  /**
-   * Creates a new instance of EmptyPreparator.
-   */
-  public EmptyPreparator() {
-    super(new RE(".*", RE.MATCH_CASEINDEPENDENT));
-  }
-
 
   // overridden
   public void prepare(RawDocument rawDocument) throws RegainException {
