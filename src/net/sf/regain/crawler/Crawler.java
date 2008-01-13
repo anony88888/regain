@@ -278,6 +278,15 @@ public class Crawler implements ErrorLogger {
 
     if ((! alreadyAccepted) && (! alreadyIgnored)) {
       boolean accepted = mUrlChecker.isUrlAccepted(url);
+      int mMaxCycleCount = mConfiguration.getMaxCycleCount();
+
+      if (mMaxCycleCount > 0 && accepted) {
+        // Check for cycles in the path of an URI
+        accepted = mUrlChecker.hasNoCycles(url, mMaxCycleCount);
+        if (mLog.isDebugEnabled() && !accepted) {
+          mLog.debug("URI seems to have cycles (maxCount=" + mMaxCycleCount + "): " + url);
+        }
+      }
 
       // Check whether this page has to be loaded at all
       if (! mConfiguration.getLoadUnparsedUrls()) {

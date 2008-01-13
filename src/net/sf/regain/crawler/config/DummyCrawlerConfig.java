@@ -47,6 +47,14 @@ public class DummyCrawlerConfig implements CrawlerConfig {
     return "idatmpsrv";
   }
 
+  /**
+   * Returns the maximum count of equal occurences of path-parts in an URI.
+   *
+   * @return MaxCycleCount
+   */
+  public int getMaxCycleCount() {
+    return -1;
+  }
 
 
   /**

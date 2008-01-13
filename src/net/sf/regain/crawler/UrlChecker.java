@@ -30,6 +30,8 @@ package net.sf.regain.crawler;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
@@ -146,6 +148,58 @@ public class UrlChecker {
     return urlArr;
   }
 
+  /** 
+    * This method tries to detect cycles in an URI. Every part of the path will
+    * be compared to each other. If more then maxCycles parts are detected the URI
+    * the URI will be marked as a 'cycle URI'
+    * 
+    * @param maxCycles Count of maximum occurence of the same path part
+    * @param url the URI to be checked 
+    * @return true if the URI has no cycles, false if cycles where detected.
+    */
+   public boolean hasNoCycles(String url, int maxCycles) {
+
+      String mPath = "";
+      boolean mResult = true;
+
+      try {
+         URL mUrl = new URL(url);
+         mPath = mUrl.getPath();
+
+      } catch (MalformedURLException ex) {
+         // This should never happen. We assume all URL where checked before
+         return mResult;
+      }
+
+      if (mPath.length() < 2) {
+         return mResult;
+      }
+
+      String[] mParts = RegainToolkit.splitString(mPath, "/");
+      HashSet uniqueParts = new HashSet();
+      // Add every part to a hashmap. The idea behind: only the first occurence 
+      // will resists in the map (because of the same hash value).
+      for (int i = 0; i < mParts.length; i++) {
+         if (mLog.isDebugEnabled()) {
+            mLog.debug("Add part: '" + mParts[i] + "'");
+         }
+         uniqueParts.add(mParts[i]);
+      }
+
+      if (mLog.isDebugEnabled()) {
+         mLog.debug("uniqueParts.size(): " + uniqueParts.size());
+         mLog.debug("mParts.length: " + mParts.length);
+         mLog.debug("maxCycles: " + maxCycles);
+      }
+
+      if (uniqueParts.size() != mParts.length) {
+         if (uniqueParts.size() <= mParts.length - maxCycles) {
+            mResult = false;
+         }
+      }
+
+      return mResult;
+   }
 
   /**
    * Pr�ft ob die URL von der Schwarzen und Wei�en Liste akzeptiert wird.

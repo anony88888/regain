@@ -193,13 +193,13 @@ public class Main {
       "Allowed parameters:\n" +
       "  --help:             Shows this help page\n" +
       "  -forceNewIndex:     Forces the creation of a new search index\n" +
-      "  -retryFailedDocs:   The preparation of documents that failed last time is retried" +
+      "  -retryFailedDocs:   The preparation of documents that failed last time is retried\n" +
       "  -onlyEntries <CSV>: The white list entries to use, separated by comma (,)\n" +
-      "                      (Default: all entries)" +
+      "                      (Default: all entries)\n" +
       "  -config <file>:     The configuration file to use\n" +
-      "                      (Default: CrawlerConfiguration.xml)" +
+      "                      (Default: CrawlerConfiguration.xml)\n" +
       "  -logConfig <file>:  The logging configuration file to use\n" +
-      "                      (Default: log4j.properties)");
+      "                      (Default: log4j.properties)\n");
 
     System.exit(100);
   }

@@ -76,6 +76,9 @@ public class XmlCrawlerConfig implements CrawlerConfig {
   /** The maximum number of terms per document. */
   private int mMaxFieldLength;
 
+  /** The maximum count of equal occurences of path-parts in an URI. */
+  private int mMaxCycleCount;
+
   /** Der zu verwendende Analyzer-Typ. */
   private String mAnalyzerType;
 
@@ -163,9 +166,20 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     readPreparatorSettingsList(config, xmlFile);
     readAuxiliaryFieldList(config);
     readCrawlerAccessController(config);
+    readMaxCycleCount(config);
   }
 
-
+ /**
+   * Read the value for the cycle detection.
+   *
+   * @param config Die Konfiguration, aus der gelesen werden soll.
+   * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
+   */
+  private void readMaxCycleCount(Element config) throws RegainException {
+    Node node = XmlToolkit.getChild(config, "MaxCycleCount");
+    mMaxCycleCount = (node == null) ? -1 : XmlToolkit.getTextAsInt(node);
+  }
+  
   /**
    * Liest aus der Konfiguration, ob Dokumente geladen werden sollen, die weder
    * indiziert, noch auf URLs durchsucht werden.
@@ -946,4 +960,13 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     return mCrawlerAccessControllerConfig;
   }
   
+   /**
+   * Returns the maximum count of equal occurences of path-parts in an URI.
+   *
+   * @return MaxCycleCount
+   */
+  public int getMaxCycleCount() {
+    return mMaxCycleCount;
+  }
+
 }

@@ -53,6 +53,13 @@ public interface CrawlerConfig {
   public String getProxyPort();
 
   /**
+   * Returns the maximum count of equal occurences of path-parts in an URI.
+   *
+   * @return MaxCycleCount
+   */
+  public int getMaxCycleCount();
+
+  /**
    * Gibt den Benutzernamen für die Anmeldung beim Proxy-Server zurück. Wenn
    * kein Benutzernamen konfiguriert wurde, wird <CODE>null</CODE> zurückgegeben.
    *
