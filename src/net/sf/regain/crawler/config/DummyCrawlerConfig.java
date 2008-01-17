@@ -397,4 +397,13 @@ public class DummyCrawlerConfig implements CrawlerConfig {
     return null;
   }
 
+  /**
+   * Returns maximum amount of characters which will be copied from content to summary
+   *
+   * @return MaxSummaryLength
+   */
+  public int getMaxSummaryLength(){
+    return 250000;
+  }
+
 }

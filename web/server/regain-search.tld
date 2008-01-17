@@ -417,5 +417,23 @@
       <required>true</required>
     </attribute>
   </tag>
+ 
+  <tag>
+    <info>
+      Writes the value of an index field of the current hit's document.
+      This tag must be inside a link tag. The field can contain valid HTML
+    </info>
+    <name>hit_fieldHTML</name>
+    <tagclass>net.sf.regain.ui.server.taglib.hit.FieldHTMLTag</tagclass>
+    <bodycontent>empty</bodycontent>
+
+    <attribute>
+      <description>
+        The name of the index field to write the value of
+      </description>
+      <name>field</name>
+      <required>true</required>
+    </attribute>
+  </tag>
 
 </taglib>

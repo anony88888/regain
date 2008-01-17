@@ -30,7 +30,6 @@ package net.sf.regain.search.results;
 import net.sf.regain.RegainException;
 
 import org.apache.lucene.document.Document;
-import org.apache.lucene.search.Hits;
 
 /**
  * Holds the results of one search.
@@ -117,5 +116,16 @@ public interface SearchResults {
    * @return The search time.
    */
   public int getSearchTime();
+
+  /**
+   * Highlights fields in the document.
+   *
+   * @param index The index of the hit.
+   * @return the document of one hit.
+   *
+   * @throws RegainException If highlighting failed.
+   * @see Document
+   */
+  public void highlightHitDocument(int index) throws RegainException;
 
 }

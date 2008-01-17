@@ -117,8 +117,14 @@ public class ListTag extends SharedTag implements SearchConstants {
     PageRequest request)
     throws RegainException
   {
+    // set by configuration SearchConfig
+    boolean shouldHighlight = true; 
+    
     try {
       Document hit = results.getHitDocument(hitIndex);
+      if( shouldHighlight ) {
+         results.highlightHitDocument(hitIndex);
+      }
       request.setContextAttribute(ATTR_CURRENT_HIT, hit);
       float score = results.getHitScore(hitIndex);
       request.setContextAttribute(ATTR_CURRENT_HIT_SCORE, new Float(score));

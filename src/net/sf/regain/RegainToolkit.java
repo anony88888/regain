@@ -1180,7 +1180,7 @@ public class RegainToolkit {
     }
   }
 
-
+ 
   /**
    * Loads a class and creates an instance.
    * 
@@ -1407,6 +1407,30 @@ public class RegainToolkit {
     }
   }
 
+ /**
+    * Creates a summary from given content 
+    * <p>
+    * The method returns <code>null</code> if no summary could created
+    *
+    * @param content The content for which the summary is referring to
+    * @param maxLength The maximum length of the created summary
+    * @return The summary (first n characters of content
+    */
+   public static String createSummaryFromContent(String content, int maxLength) {
+
+    if( content.length() > maxLength ) {
+      // cut the content only if it exceeds the max size for the summary
+      int lastSpacePos = content.lastIndexOf(' ', maxLength);
+
+      if (lastSpacePos == -1) {
+        return null;
+      } else {
+        return content.substring(0, lastSpacePos) + "...";
+      }
+    } else {
+      return content;
+    }
+  }
 
   // inner class WrapperAnalyzer
   

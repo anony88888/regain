@@ -67,12 +67,12 @@ public class DocumentFactory {
   /** The logger for this class */
   private static Logger mLog = Logger.getLogger(DocumentFactory.class);
 
-  /** Die maximale L�nge der Zusammenfassung. */
-  private static final int MAX_SUMMARY_LENGTH = 200;
-  
   /** The crawler config. */
   private CrawlerConfig mConfig;
 
+  /** The maximum amount of characters which will be copied from content to summary */
+  private int mMaxSummaryLength;
+  
   /**
    * Das Verzeichnis, in dem Analyse-Dateien erzeugt werden sollen. Ist
    * <CODE>null</CODE>, wenn keine Analyse-Dateien erzeugt werden sollen.
@@ -169,6 +169,8 @@ public class DocumentFactory {
         }
       }
     }
+    // Read some more configuration entries from the config
+    mMaxSummaryLength = mConfig.getMaxSummaryLength();
   }
 
 
@@ -504,14 +506,20 @@ public class DocumentFactory {
    *         keine erzeugt werden konnte.
    */
   private String createSummaryFromContent(String content) {
-    int lastSpacePos = content.lastIndexOf(' ', MAX_SUMMARY_LENGTH);
+    
+    if( content.length() > mMaxSummaryLength ) {
+      // cut the content only if it exceeds the max size for the summary
+      int lastSpacePos = content.lastIndexOf(' ', mMaxSummaryLength);
 
-    if (lastSpacePos == -1) {
-      return null;
+      if (lastSpacePos == -1) {
+        return null;
+      } else {
+        return content.substring(0, lastSpacePos) + "...";
+      }
     } else {
-      return content.substring(0, lastSpacePos) + "...";
+      return content;
     }
-  }
+}
 
 
 

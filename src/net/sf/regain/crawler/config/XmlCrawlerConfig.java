@@ -138,6 +138,9 @@ public class XmlCrawlerConfig implements CrawlerConfig {
   private String mCrawlerAccessControllerJar;
   /** The configuration of the CrawlerAccessController. */
   private Properties mCrawlerAccessControllerConfig;
+  
+  /** The maximum amount of characters which will be copied from content to summary */
+  private int mMaxSummaryLength;
 
 
   /**
@@ -167,7 +170,7 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     readAuxiliaryFieldList(config);
     readCrawlerAccessController(config);
     readMaxCycleCount(config);
-  }
+    readMaxSummaryLength(config);  }
 
  /**
    * Read the value for the cycle detection.
@@ -960,13 +963,34 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     return mCrawlerAccessControllerConfig;
   }
   
-   /**
+  /**
    * Returns the maximum count of equal occurences of path-parts in an URI.
    *
    * @return MaxCycleCount
    */
   public int getMaxCycleCount() {
     return mMaxCycleCount;
+  }
+
+ /**
+   * Returns maximum amount of characters which will be copied from content to summary
+   *
+   * @return MaxSummaryLength
+   */
+  public int getMaxSummaryLength() {
+    return mMaxSummaryLength;
+  }
+  
+  
+   /**
+   * Read the value for the cycle detection.
+   *
+   * @param config Die Konfiguration, aus der gelesen werden soll.
+   * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
+   */
+  private void readMaxSummaryLength(Element config) throws RegainException {
+    Node node = XmlToolkit.getChild(config, "MaxSummaryLength");
+    mMaxSummaryLength = (node == null) ? 250000 : XmlToolkit.getTextAsInt(node);
   }
 
 }
