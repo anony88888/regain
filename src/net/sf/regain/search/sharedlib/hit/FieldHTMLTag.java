@@ -41,7 +41,7 @@ import org.apache.lucene.document.Document;
  * <li><code>field</code>: The name of the index field to write the value of.</li>
  * </ul>
  *
- * @author Til Schneider, www.murfman.de
+ * @author Thomas Tesche, www.thtesche.com
  */
 public class FieldHTMLTag extends AbstractHitTag {
 
