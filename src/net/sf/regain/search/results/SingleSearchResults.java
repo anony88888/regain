@@ -350,12 +350,11 @@ public class SingleSearchResults implements SearchResults {
     Highlighter highlighter = new Highlighter(new SimpleHTMLFormatter(),
             new QueryScorer(mQuery));
     try {
-      // @todo: make this more generic (for more than one field)
       // Remark: the summary is at this point not a summary. It contains the 
       // first n characters from the document. n is configurable (default: 250000)
       // We transform this summary into 
       // a) a summary matching the search terms (highlighting)
-      // b) or a shortend summary (200 characters)
+      // b) and a shortend summary (200 characters)
       String text = mHits.doc(index).get("summary");
 
       // Overwrite the content with a shortend summary
@@ -364,20 +363,41 @@ public class SingleSearchResults implements SearchResults {
       mHits.doc(index).add(new Field("summary", resSummary,
                  Field.Store.YES, Field.Index.UN_TOKENIZED));
       
-      String resHighlContent = null;
+      String resHighlSummary = null;
       if (text != null) {
+        // Remove 'html', this works the same way as PageResponse.printNoHTML()
+        text = RegainToolkit.replace(text, "<", "&lt;");
+        text = RegainToolkit.replace(text, ">", "&gt;");
+
         TokenStream tokenStream = mAnalyzer.tokenStream("content", 
                 new StringReader(text));
         // Get 3 best fragments and seperate with a " ... "
-        resHighlContent = highlighter.getBestFragments(tokenStream, text, 3, " ... ");
+        resHighlSummary = highlighter.getBestFragments(tokenStream, text, 3, " ... ");
       }
 
-      if (resHighlContent != null) {
+      if (resHighlSummary != null) {
         // write the result back to the document in a new field 
-        mHits.doc(index).add(new Field("highlightedContent", resHighlContent,
+        mHits.doc(index).add(new Field("highlightedSummary", resHighlSummary,
                  Field.Store.YES, Field.Index.UN_TOKENIZED));
       }
 
+      // Highlight the title
+      text = mHits.doc(index).get("title");
+      String resHighlTitle = null;
+      if (text != null) {
+        TokenStream tokenStream = mAnalyzer.tokenStream("content", 
+                new StringReader(text));
+        // Get the best fragment 
+        resHighlTitle = highlighter.getBestFragment(tokenStream, text);
+      }
+
+      if (resHighlTitle != null) {
+        // write the result back to the document in a new field 
+        mHits.doc(index).add(new Field("highlightedTitle", resHighlTitle,
+                 Field.Store.YES, Field.Index.UN_TOKENIZED));
+      }
+      
+      
     } catch (org.apache.lucene.index.CorruptIndexException exCorr) {
       throw new RegainException("Error while searching pattern: " + mQueryText, exCorr);
 
@@ -387,5 +407,14 @@ public class SingleSearchResults implements SearchResults {
 
   }
 
-  
+  /**
+   * Gets whether the search terms should be highlighted
+   *
+   * @return whether to highlight
+   * @throws RegainException If the value could not read from config
+   */
+  public boolean getShouldHighlight(int index) throws RegainException {
+    return mIndexConfig.getShouldHighlight();
+  }
+
 }

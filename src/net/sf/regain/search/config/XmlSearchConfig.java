@@ -61,6 +61,10 @@ public class XmlSearchConfig implements SearchConfig {
     // Get the node that holds the default settings for all indexes
     Node defaultNode = XmlToolkit.getChild(listNode, "defaultSettings");
     
+    // get the highlighted flag
+    node = XmlToolkit.getChild(defaultNode, "Highlighting");
+    boolean highlighting = (node == null) ? true : XmlToolkit.getTextAsBoolean(node);
+    
     // Get the index nodes
     mIndexHash = new HashMap();
     ArrayList defaultIndexNameList = new ArrayList();
@@ -119,7 +123,7 @@ public class XmlSearchConfig implements SearchConfig {
       IndexConfig indexConfig = new IndexConfig(indexName, directory,
           openInNewWindowRegex, useFileToHttpBridge, searchFieldList, rewriteRules,
           searchAccessControllerClass, searchAccessControllerJar,
-          searchAccessControllerConfig);
+          searchAccessControllerConfig, highlighting);
       mIndexHash.put(indexName, indexConfig);
       
       // Check whether this index is default

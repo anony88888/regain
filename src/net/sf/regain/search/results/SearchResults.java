@@ -128,4 +128,12 @@ public interface SearchResults {
    */
   public void highlightHitDocument(int index) throws RegainException;
 
+  /**
+   * Gets whether the search terms should be highlighted
+   *
+   * @return whether to highlight
+   * @throws RegainException If the value could not read from config
+   */
+  public boolean getShouldHighlight(int index) throws RegainException;
+
 }

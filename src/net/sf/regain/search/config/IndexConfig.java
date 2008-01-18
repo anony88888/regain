@@ -69,7 +69,9 @@ public class IndexConfig {
   /** The SearchAccessController to use. May be <code>null</code>. */
   private SearchAccessController mSearchAccessController;
 
-
+  /** Flag for highlighting of the search terms in the results */
+  private boolean mShouldHighlight;
+  
   /**
    * Creates a new instance of IndexConfig.
    * 
@@ -88,12 +90,13 @@ public class IndexConfig {
    *        {@link SearchAccessController} from.
    * @param searchAccessControllerConfig The configuration for the
    *        {@link SearchAccessController}.
+   * @param shouldHighlight The flag for highlighting of the search terms in the results 
    * @throws RegainException If loading the SearchAccessController failed.
    */
   public IndexConfig(String name, String directory, String openInNewWindowRegex,
     boolean useFileToHttpBridge, String[] searchFieldList, String[][] rewriteRules,
     String searchAccessControllerClass, String searchAccessControllerJar,
-    Properties searchAccessControllerConfig)
+    Properties searchAccessControllerConfig, boolean shouldHighlight)
     throws RegainException
   {
     mName = name;
@@ -114,6 +117,7 @@ public class IndexConfig {
       }
       mSearchAccessController.init(searchAccessControllerConfig);
     }
+    mShouldHighlight = shouldHighlight;
   }
 
 
@@ -208,6 +212,15 @@ public class IndexConfig {
    */
   public SearchAccessController getSearchAccessController() {
     return mSearchAccessController;
+  }
+
+  /**
+   * Gets the flag for highlighting of the search terms
+   * 
+   * @return the flag for highlighting
+   */
+  public boolean getShouldHighlight() {
+    return mShouldHighlight;
   }
 
 }

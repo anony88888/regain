@@ -88,7 +88,7 @@ public class ListTag extends SharedTag implements SearchConstants {
       if (msgNoResults != null) {
         response.print(msgNoResults);
       }
-      
+            
       return SKIP_TAG_BODY;
     } else {
       mCurrentResult = fromResult;
@@ -117,8 +117,7 @@ public class ListTag extends SharedTag implements SearchConstants {
     PageRequest request)
     throws RegainException
   {
-    // set by configuration SearchConfig
-    boolean shouldHighlight = true; 
+    boolean shouldHighlight = results.getShouldHighlight(hitIndex);
     
     try {
       Document hit = results.getHitDocument(hitIndex);

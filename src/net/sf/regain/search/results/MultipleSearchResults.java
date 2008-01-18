@@ -255,4 +255,21 @@ public class MultipleSearchResults implements SearchResults {
     results.highlightHitDocument(hitsPosition);
   }
   
+    /**
+   * Gets whether the search terms should be highlighted
+   *
+   * @return whether to highlight
+   * @throws RegainException If the value could not read from config
+   */
+  public boolean getShouldHighlight(int index) throws RegainException {
+      // Get the SingleSearchResults the hit came from
+    SingleSearchResults results = getResultsForHit(index);
+    
+    // Get the index of the hit in the SingleSearchResults
+    int hitsPosition = mMergedHits.getHitsPosition(index);
+    
+    // Get whether a hit should be highlighted.
+    return results.getShouldHighlight(hitsPosition);
+  }
+
 }
