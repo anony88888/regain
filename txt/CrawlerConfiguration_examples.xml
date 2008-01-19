@@ -458,11 +458,11 @@
 
 
 <!--
- | Maximum length of summary in an prepared and indexed document.
+ | Maximum length of summary in an prepared and indexed document (default 250000).
  | The highlighting of search terms will be created from this summary. The longer
  | the summary, the better the highlighting but also the size of the index. After 
  | highlighting the summary will be cut to 200 characters for downward compatibility
- | of the hit document.
+ | of the hit documents.
 -->
 <MaxSummaryLength>1000000</MaxSummaryLength>
 

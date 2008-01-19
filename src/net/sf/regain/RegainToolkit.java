@@ -1407,7 +1407,7 @@ public class RegainToolkit {
     }
   }
 
- /**
+  /**
     * Creates a summary from given content 
     * <p>
     * The method returns <code>null</code> if no summary could created
@@ -1432,6 +1432,25 @@ public class RegainToolkit {
     }
   }
 
+  /**
+   * Creates a field identifier for fields with highlighted content. All high-
+   * lighted content will be stored in a field named 'highlightedOldfieldname' where
+   * oldfieldname was in lowercase before renaming.
+   * <p>
+   * The method returns <code>null</code> if no field identifier could created
+   *
+   * @param field The content for which the summary is referring to
+   * @return the new field identifier
+   */
+  public static String createHighlightedFieldIdent(String fieldName)  {
+    
+    if( fieldName !=null && fieldName.length()>1 )
+      return "highlighted" + fieldName.substring(0,1).toUpperCase() 
+              + fieldName.substring(1, fieldName.length());
+    else
+      return null;
+  }
+  
   // inner class WrapperAnalyzer
   
   

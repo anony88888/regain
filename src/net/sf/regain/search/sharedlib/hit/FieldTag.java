@@ -28,6 +28,7 @@
 package net.sf.regain.search.sharedlib.hit;
 
 import net.sf.regain.RegainException;
+import net.sf.regain.RegainToolkit;
 import net.sf.regain.search.SearchToolkit;
 import net.sf.regain.search.results.SearchResults;
 import net.sf.regain.util.sharedtag.PageRequest;
@@ -64,12 +65,12 @@ public class FieldTag extends AbstractHitTag {
     boolean shouldHighlight = results.getShouldHighlight(hitIndex);
     
     String field = getParameter("field", true);
-    if( shouldHighlight ) {
-      field = "highlighted" + field.substring(0,1).toUpperCase() 
-              + field.substring(1, field.length());
-      }     
-    String value = hit.get(field);
-    //response.print(field);
+    String value = null;
+    if( shouldHighlight ) 
+      value = hit.get(RegainToolkit.createHighlightedFieldIdent(field));
+
+    if( value == null || value.length()==0 )
+      value = hit.get(field);
     
     if (value != null) {
       if( shouldHighlight ) {

@@ -62,6 +62,8 @@ public class LinkTag extends AbstractHitTag {
     String url   = results.getHitUrl(hitIndex);
     String fieldName = (shouldHighlight) ? "highlightedTitle" : "title";
     String title = hit.get(fieldName);
+    if( shouldHighlight && (title==null || title.length()==0))
+      title = hit.get("title");
     boolean openInNewWindow = results.getOpenHitInNewWindow(hitIndex);
     
     // Trim the title

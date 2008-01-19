@@ -347,8 +347,9 @@ public class SingleSearchResults implements SearchResults {
    */
   public void highlightHitDocument(int index) throws RegainException {
     
-    Highlighter highlighter = new Highlighter(new SimpleHTMLFormatter(),
-            new QueryScorer(mQuery));
+    Highlighter highlighter = new Highlighter(
+            new SimpleHTMLFormatter("<span class=\"highlight\">", "</span>"),
+            new QueryScorer(mQuery) );
     try {
       // Remark: the summary is at this point not a summary. It contains the 
       // first n characters from the document. n is configurable (default: 250000)
