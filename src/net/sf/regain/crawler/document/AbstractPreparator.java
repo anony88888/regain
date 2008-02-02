@@ -65,7 +65,8 @@ public abstract class AbstractPreparator implements Preparator {
   private PathElement[] mPath;
   /** The additional fields that should be indexed. */
   private HashMap mAdditionalFieldMap;
-
+  /** The assigned mimetypes for the preparator */
+  private String[] mMimeTypes;
 
   /**
    * Creates a new instance of AbstractPreparator.
@@ -109,8 +110,9 @@ public abstract class AbstractPreparator implements Preparator {
    * @see #setUrlRegex(RE)
    * @see #accepts(RawDocument)
    */
-  public AbstractPreparator(String extention) throws RegainException {
-    this(createExtentionRegex(extention));
+  public AbstractPreparator(String mimeType) throws RegainException {
+    mMimeTypes = new String[] {mimeType};
+    // this(createExtentionRegex(extention));
   }
 
 
@@ -127,8 +129,9 @@ public abstract class AbstractPreparator implements Preparator {
    * @see #setUrlRegex(RE)
    * @see #accepts(RawDocument)
    */
-  public AbstractPreparator(String[] extentionArr) throws RegainException {
-    this(createExtentionRegex(extentionArr));
+  public AbstractPreparator(String[] mimeTypeArr) throws RegainException {
+    mMimeTypes = mimeTypeArr;
+    // this(createExtentionRegex(extentionArr));
   }
 
   
@@ -230,7 +233,15 @@ public abstract class AbstractPreparator implements Preparator {
    */
   public boolean accepts(RawDocument rawDocument) {
     if (mUrlRegex == null) {
-      return false;
+      if( mMimeTypes != null && mMimeTypes.length > 0 ) {
+        for( String mimeType : mMimeTypes ){
+          if( mimeType.equals(rawDocument.getMimeType()))
+            return true;
+        }
+        return false;
+      } else {
+        return false;
+      }
     } else {
       return mUrlRegex.match(rawDocument.getUrl());
     }

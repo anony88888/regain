@@ -56,7 +56,7 @@ public class SwingRtfPreparator extends AbstractPreparator {
    * @throws RegainException If creating the preparator failed.
    */
   public SwingRtfPreparator() throws RegainException {
-    super("rtf");
+    super("application/rtf");
   }
 
 

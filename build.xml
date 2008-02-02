@@ -286,8 +286,8 @@
            debug="${debug}"
            deprecation="true"
            executable="${java-1_4.dir}/bin/javac"
-           source="1.3"
-           target="1.3"
+           source="1.5"
+           target="1.5"
            fork="true">
       <src>
         <path refid="sourcepath"/>
@@ -654,6 +654,12 @@
         <include name="org/apache/lucene/**"/>
         <include name="org/apache/log4j/**"/>
         <include name="org/apache/regexp/**"/>
+        
+        <!-- aperture -->
+        <include name="org/semanticdesktop/aperture/**"/>
+        <include name="org/ontoware/rdf2go/**"/>
+        <include name="org/slf4j/**"/>
+        <include name="org/openrdf/model/impl/**"/>
 
         <!-- XML stuff -->
         <include name="javax/xml/**"/>
@@ -815,7 +821,7 @@
   <!--
    | Runs the project.
    +-->
-  <target name="run-crawler-fast" depends="runtime-fast">
+   <target name="run-crawler-fast" depends="runtime-fast">
     <java classname="net.sf.regain.crawler.Main"
           dir="build/runtime/crawler"
           fork="true">

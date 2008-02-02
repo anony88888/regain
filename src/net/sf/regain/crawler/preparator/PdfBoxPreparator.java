@@ -59,7 +59,7 @@ public class PdfBoxPreparator extends AbstractPreparator {
    * @throws RegainException If creating the preparator failed.
    */
   public PdfBoxPreparator() throws RegainException {
-    super("pdf");
+    super("application/pdf");
   }
 
 

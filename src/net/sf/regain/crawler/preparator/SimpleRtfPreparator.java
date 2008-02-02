@@ -54,7 +54,7 @@ public class SimpleRtfPreparator extends AbstractPreparator {
    * @throws RegainException If creating the preparator failed.
    */
   public SimpleRtfPreparator() throws RegainException {
-    super("rtf");
+    super("application/rtf");
   }
 
 

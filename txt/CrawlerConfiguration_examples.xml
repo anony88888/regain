@@ -154,7 +154,7 @@
    | by the search mask, which prevents a slow first loading of a page for huge
    | indexes.
    +-->
-  <valuePrefetchFields>extension</valuePrefetchFields>
+  <valuePrefetchFields>mimetype</valuePrefetchFields>
 
 </searchIndex>
 
@@ -380,6 +380,10 @@
   <auxiliaryField name="location" regexGroup="1" store="false" tokenize="true">
     <regex>^(.*)$</regex>
   </auxiliaryField>
+  <!-- The value would be filled while creating the document in the parser -->
+  <auxiliaryField name="mimetype" regexGroup="1" >
+    <regex>^()$</regex>
+  </auxiliaryField>
 </auxiliaryFieldList>
 
 
@@ -441,7 +445,7 @@
 -->
 
 
-<!-- The regular expressions that indetify URLs in HTML. -->
+<!-- The regular expressions that identify URLs in HTML. -->
 <htmlParserPatternList>
   <pattern parse="true" index="true" regexGroup="1">="([^"]*\.(htm|html|jsp|php\d?|asp))"</pattern>
   <pattern parse="false" index="false" regexGroup="1">="([^"]*\.(js|css|jpg|gif|png))"</pattern>

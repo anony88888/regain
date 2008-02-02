@@ -47,12 +47,13 @@ import net.sf.regain.crawler.config.CrawlerConfig;
 import net.sf.regain.crawler.config.PreparatorSettings;
 
 import org.apache.log4j.Logger;
-import org.apache.lucene.analysis.Token;
-import org.apache.lucene.analysis.TokenStream;
+import java.io.FileInputStream;
+import org.semanticdesktop.aperture.mime.identifier.magic.MagicMimeTypeIdentifier;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
+import org.ontoware.rdf2go.model.node.impl.URIImpl;
 
 /**
  * Fabrik, die aus der URL und den Rohdaten eines Dokuments ein Lucene-Ducument
@@ -102,7 +103,7 @@ public class DocumentFactory {
   private Profiler mWriteAnalysisProfiler
     = new Profiler("Writing Analysis files", "files");
 
-
+  
   /**
    * Creates a new instance of DocumentFactory.
    * 
@@ -184,6 +185,24 @@ public class DocumentFactory {
    *         the document couldn't be created.
    */
   public Document createDocument(RawDocument rawDocument, ErrorLogger errorLogger) {
+    // Determine the mime-type 
+
+    try {
+      MagicMimeTypeIdentifier mmti = new MagicMimeTypeIdentifier();
+      File file = rawDocument.getContentAsFile();
+      FileInputStream fis = new FileInputStream(file);
+      byte[] bytes = new byte[mmti.getMinArrayLength()];
+      fis.read(bytes);
+      String mimeType = mmti.identify(bytes, file.getName(), new URIImpl(file.toURI().toString())) ;
+      if( mimeType == null || mimeType.length()==0 )
+        mimeType = "application/x-unknown-mime-type";
+      rawDocument.setMimeType( mimeType );
+    }
+      catch (Exception exc) {
+        errorLogger.logError("Determine mime-type of " + rawDocument.getUrl() +
+                              " failed", exc, false);
+    }
+
     // Find the preparator that will prepare this URL
     Document doc = null;
     boolean preparatorFound = false;
@@ -400,6 +419,11 @@ public class DocumentFactory {
     doc.add(new Field("size", Integer.toString(size), Field.Store.YES,
         Field.Index.UN_TOKENIZED));
 
+    // Add the mime-type
+    String mimeType = rawDocument.getMimeType();
+    doc.add(new Field("mimetype", mimeType, Field.Store.YES,
+        Field.Index.UN_TOKENIZED));
+    
     // Add last modified
     Date lastModified = rawDocument.getLastModified();
     if (lastModified == null) {

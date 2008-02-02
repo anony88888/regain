@@ -136,7 +136,7 @@
    | by the search mask, which prevents a slow first loading of a page for huge
    | indexes.
    +-->
-  <valuePrefetchFields>extension</valuePrefetchFields>
+  <valuePrefetchFields>mimetype</valuePrefetchFields>
 
 </searchIndex>
 
@@ -241,6 +241,9 @@
   </auxiliaryField>
   <auxiliaryField name="location" regexGroup="1" store="false" tokenize="true">
     <regex>^(.*)$</regex>
+  </auxiliaryField>
+  <auxiliaryField name="mimetype" regexGroup="1" >
+    <regex>^()$</regex>
   </auxiliaryField>
 </auxiliaryFieldList>
 

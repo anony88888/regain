@@ -358,14 +358,16 @@ public class SingleSearchResults implements SearchResults {
       // b) and a shortend summary (200 characters)
       String text = mHits.doc(index).get("summary");
 
-      // Overwrite the content with a shortend summary
-      String resSummary = RegainToolkit.createSummaryFromContent(text, 200);
-      mHits.doc(index).removeField("summary");
-      mHits.doc(index).add(new Field("summary", resSummary,
-                 Field.Store.YES, Field.Index.UN_TOKENIZED));
-      
-      String resHighlSummary = null;
-      if (text != null) {
+      if( text != null ) {
+        // Overwrite the content with a shortend summary
+        String resSummary = RegainToolkit.createSummaryFromContent(text, 200);
+        if( resSummary != null ) {
+          mHits.doc(index).removeField("summary");
+          mHits.doc(index).add(new Field("summary", resSummary,
+                     Field.Store.YES, Field.Index.UN_TOKENIZED));
+        }
+
+        String resHighlSummary = null;
         // Remove 'html', this works the same way as PageResponse.printNoHTML()
         text = RegainToolkit.replace(text, "<", "&lt;");
         text = RegainToolkit.replace(text, ">", "&gt;");
@@ -374,14 +376,13 @@ public class SingleSearchResults implements SearchResults {
                 new StringReader(text));
         // Get 3 best fragments and seperate with a " ... "
         resHighlSummary = highlighter.getBestFragments(tokenStream, text, 3, " ... ");
-      }
 
-      if (resHighlSummary != null) {
-        // write the result back to the document in a new field 
-        mHits.doc(index).add(new Field("highlightedSummary", resHighlSummary,
-                 Field.Store.YES, Field.Index.UN_TOKENIZED));
+        if (resHighlSummary != null) {
+          // write the result back to the document in a new field 
+          mHits.doc(index).add(new Field("highlightedSummary", resHighlSummary,
+                   Field.Store.YES, Field.Index.UN_TOKENIZED));
+        }
       }
-
       // Highlight the title
       text = mHits.doc(index).get("title");
       String resHighlTitle = null;

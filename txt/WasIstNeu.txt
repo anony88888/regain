@@ -1,3 +1,12 @@
+Version 1.2.4 am 02.02.08
+-------------------------
+
+* Highlighting für Content und Titel
+* Preparatorselektion anhand des Mimetypes (früher Dateiendung)
+* Mimetype-detection (Dateiendung und MagicMime) 
+* Umstellung Erweiterte Suche auf Auswahl Mimetype anstelle Dateiendung
+
+
 Version 1.2.3 am 01.12.07
 -------------------------
 

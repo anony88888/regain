@@ -111,7 +111,11 @@ public class RawDocument {
    */
   private boolean mContentAsFileIsTemporary;
 
-
+  /**
+   * The mimetype of the document. This value will be set through file extension
+   * mapping or by using the *nix-file command (java version)
+   */
+  private String mMimeType;
 
   /**
    * Erzeugt eine neue RawDocument-Instanz.
@@ -451,6 +455,22 @@ public class RawDocument {
    */
   public String toString() {
     return getUrl();
+  }
+
+  /**
+   * Gets the mimetype of this document.
+   *
+   * @return The mimetype
+   */
+  public String getMimeType() {
+    return mMimeType;
+  }
+
+  /**
+   * Sets the mimetype of this document.
+   */
+  public void setMimeType(String mMimeType) {
+    this.mMimeType = mMimeType;
   }
 
 }

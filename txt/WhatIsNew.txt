@@ -1,3 +1,12 @@
+Version 1.2.4 on 02.02.08
+-------------------------
+
+* Highlighting for content and titel
+* Preparator selektion on basis of mime-types 
+* Mimetype-detection (based on file extension and MagicMime)
+* Replacement "Extenden Search" from extension selection to mimetype selection
+
+
 Version 1.2.3 on 2007-12-01
 ---------------------------
 
