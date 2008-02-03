@@ -55,7 +55,7 @@ public class PoiMsWordPreparator extends AbstractPreparator {
    * @throws RegainException If creating the preparator failed.
    */
   public PoiMsWordPreparator() throws RegainException {
-    super("application/msword");
+    super( new String[] {"application/msword", "application/vnd.ms-word" });
   }
 
 

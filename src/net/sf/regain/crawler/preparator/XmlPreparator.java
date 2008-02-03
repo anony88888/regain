@@ -47,7 +47,7 @@ public class XmlPreparator extends AbstractPreparator {
    * @throws RegainException If creating the preparator failed.
    */
   public XmlPreparator() throws RegainException {
-    super("application/xml");
+    super("text/xml");
   }
 
 

@@ -74,7 +74,7 @@ public class PoiMsExcelPreparator extends AbstractPreparator {
    * @throws RegainException If creating the preparator failed.
    */
   public PoiMsExcelPreparator() throws RegainException {
-    super( "application/msexcel" );
+    super( new String[] {"application/msexcel","application/vnd.ms-excel"} );
   }
 
 
