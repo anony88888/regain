@@ -67,6 +67,8 @@ public abstract class AbstractPreparator implements Preparator {
   private HashMap mAdditionalFieldMap;
   /** The assigned mimetypes for the preparator */
   private String[] mMimeTypes;
+  /** The priority of the preparator. Used for the selection of preparators */
+  private int mPriority; 
 
   /**
    * Creates a new instance of AbstractPreparator.
@@ -403,10 +405,24 @@ public abstract class AbstractPreparator implements Preparator {
     mAdditionalFieldMap.put(fieldName, fieldValue);
   }
   
+  /** 
+   * Gets the priority of the preparator
+   * @return int the priority
+   */
+  public int getPriority() {
+    return mPriority;
+  }
 
   /**
-   * Gibt alle Ressourcen frei, die f�r die Informationen �ber das Dokument
-   * reserviert wurden.
+   * Sets the priority of the preparator
+   * @param priority read from config or default value settings
+   */
+  public void setPriority(int priority) {
+    this.mPriority = priority;
+  }
+
+  /**
+   * Release all ressources used for handling a document.
    */
   public void cleanUp() {
     mTitle = null;

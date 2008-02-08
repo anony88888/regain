@@ -48,6 +48,7 @@ import net.sf.regain.crawler.config.PreparatorSettings;
 
 import org.apache.log4j.Logger;
 import java.io.FileInputStream;
+import java.util.Vector;
 import org.semanticdesktop.aperture.mime.identifier.magic.MagicMimeTypeIdentifier;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -206,25 +207,41 @@ public class DocumentFactory {
     // Find the preparator that will prepare this URL
     Document doc = null;
     boolean preparatorFound = false;
+    Vector <Integer>matchingPreperators = new Vector <Integer>();
     for (int i = 0; i < mPreparatorArr.length; i++) {
       if (mPreparatorArr[i].accepts(rawDocument)) {
         // This preparator can prepare this URL
         preparatorFound = true;
-        
-        try {
-          doc = createDocument(mPreparatorArr[i], mPreparatorProfilerArr[i], rawDocument);
-          mLog.info("Preparation done: " + rawDocument.getUrl());
-          break;
-        }
-        catch (RegainException exc) {
-          errorLogger.logError("Preparing " + rawDocument.getUrl() +
-              " with preparator " + mPreparatorArr[i].getClass().getName() +
-              " failed", exc, false);
+        matchingPreperators.add(new Integer(i));
+        if (mLog.isDebugEnabled()) {
+          mLog.debug("Found: " + mPreparatorArr[i].getClass().getSimpleName() +
+                   ", Prio: " + mPreparatorArr[i].getPriority() );
         }
       }
     }
     
-    if (! preparatorFound) {
+    if (preparatorFound) {
+      // Find the preparator with the highest priority
+      Iterator prepIdxIter = matchingPreperators.iterator();
+      int highestPriorityIdx = ((Integer)prepIdxIter.next()).intValue();
+      // In case of more than one matching preperator find the one with the highest prio
+      while( prepIdxIter.hasNext() ) {
+        int currI = ((Integer)prepIdxIter.next()).intValue();
+        if( mPreparatorArr[currI].getPriority() > mPreparatorArr[highestPriorityIdx].getPriority() )
+          highestPriorityIdx = currI;
+      }
+      
+      try {
+        doc = createDocument(mPreparatorArr[highestPriorityIdx], mPreparatorProfilerArr[highestPriorityIdx], rawDocument);
+        mLog.info("Preparation with " + mPreparatorArr[highestPriorityIdx].getClass().getSimpleName() +
+                " done: " + rawDocument.getUrl());
+      }
+      catch (RegainException exc) {
+        errorLogger.logError("Preparing " + rawDocument.getUrl() +
+            " with preparator " + mPreparatorArr[highestPriorityIdx].getClass().getName() +
+            " failed", exc, false);
+      }
+    } else {
       mLog.info("No preparator feels responsible for " + rawDocument.getUrl());
     }
     

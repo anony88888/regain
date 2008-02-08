@@ -132,6 +132,9 @@ public class PreparatorFactory {
             prep.setUrlRegex(urlRegex);
           }
           
+          // Set the priority 
+          prep.setPriority(preparatorSettingsArr[i].getPriority());
+          
           // Add it to the array
           preparatorArr[prepIdx] = prep;
           prepIdx++;

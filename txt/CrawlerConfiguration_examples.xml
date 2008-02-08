@@ -317,6 +317,12 @@
     <urlPattern>\.(mp3|wav)$</urlPattern>
     <class>.EmptyPreparator</class>
   </preparator>
+ 
+  <!-- CatchAll-preparator on basis of EmptyPreparator -->
+  <preparator priority="-10">
+    <class>.EmptyPreparator</class>
+    <urlPattern>.*</urlPattern>
+  </preparator>
 
   <preparator>
     <class>.SimpleRtfPreparator</class>

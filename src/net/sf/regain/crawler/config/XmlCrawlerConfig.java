@@ -457,6 +457,8 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     for (int i = 0; i < nodeArr.length; i++) {
       boolean enabled = XmlToolkit.getAttributeAsBoolean(nodeArr[i], "enabled", true);
       
+      int priority = XmlToolkit.getAttributeAsInt(nodeArr[i], "priority", 0);
+      
       node = XmlToolkit.getChild(nodeArr[i], "class", true);
       String className = XmlToolkit.getText(node, true);
 
@@ -474,7 +476,7 @@ public class XmlCrawlerConfig implements CrawlerConfig {
         prepConfig = new PreparatorConfig();
       }
 
-      mPreparatorSettingsArr[i] = new PreparatorSettings(enabled, className, urlRegex, prepConfig);
+      mPreparatorSettingsArr[i] = new PreparatorSettings(enabled, priority, className, urlRegex, prepConfig);
     }
   }
 
