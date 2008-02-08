@@ -1,3 +1,10 @@
+Versio 1.2.5 am 08.02.08
+------------------------
+
+* Priorität für Preparatoren. Default Prio ist 0. Damit lässt sich mittels
+  URLRegEx .* in einem beliebigen Preparator (vorzugsweise EmptyPreparator)
+  und priority=-1 ein CatchAll-Preparator konfigurieren
+
 Version 1.2.4 am 02.02.08
 -------------------------
 
