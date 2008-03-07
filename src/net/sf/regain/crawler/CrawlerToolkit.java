@@ -256,11 +256,11 @@ public class CrawlerToolkit {
 
 
   /**
-   * L�dt eine Datei vom Dateisystem und gibt den Inhalt zur�ck.
+   * Loads a file from the file system and returns the content
    *
-   * @param file Die zu ladende Datei
-   * @return Den Inhalt der Datei.
-   * @throws RegainException Falls das Laden fehl schlug.
+   * @param file The file to load
+   * @return byte[] The content of file
+   * @throws RegainException in case of problems while loading
    */
   public static byte[] loadFile(File file) throws RegainException {
     if (file.isDirectory()) {

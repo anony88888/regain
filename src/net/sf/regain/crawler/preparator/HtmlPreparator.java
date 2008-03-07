@@ -41,6 +41,11 @@ import net.sf.regain.crawler.preparator.html.HtmlPathExtractor;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
+import org.htmlparser.Parser;
+import org.htmlparser.beans.StringBean;
+import org.htmlparser.lexer.Lexer;
+import org.htmlparser.lexer.Page;
+import org.htmlparser.util.ParserException;
 
 
 /**
@@ -166,11 +171,11 @@ public class HtmlPreparator extends AbstractPreparator {
   
 
   /**
-   * Pr�pariert ein Dokument f�r die Indizierung.
+   * Prepares a document for indexing.
    *
-   * @param rawDocument Das zu pr�pariernde Dokument.
+   * @param rawDocument document which will be prepared
    *
-   * @throws RegainException Wenn die Pr�paration fehl schlug.
+   * @throws RegainException if something goes wrong while preparation
    */
   public void prepare(RawDocument rawDocument) throws RegainException {
     // Get the title
@@ -204,8 +209,30 @@ public class HtmlPreparator extends AbstractPreparator {
       headlines = contentExtractor.extractHeadlines(cuttedContent);
     }
 
+    // Using HTMLParser to extract the content
+    String cleanedContent = null;
+    
+    Parser parser = new Parser(new Lexer(new Page(cuttedContent, "UTF-8")));
+    StringBean stringBean = new StringBean();
+    
+    // replace multiple whitespace with one whitespace
+    stringBean.setCollapse(true);
+    // Do not extract URLs
+    stringBean.setLinks(false);
+    // replace &nbsp; with whitespace
+    stringBean.setReplaceNonBreakingSpaces(true);
+
+    try {
+      // Parse the content
+      parser.visitAllNodesWith(stringBean);
+      cleanedContent = stringBean.getStrings();
+     
+    } catch (ParserException ex) {
+      throw new RegainException("Error while parsing content",ex);
+    }
+    
     // Clean the content from tags
-    String cleanedContent = CrawlerToolkit.cleanFromHtmlTags(cuttedContent);
+    // String cleanedContent = CrawlerToolkit.cleanFromHtmlTags(cuttedContent);
     setCleanedContent(cleanedContent);
 
     if (headlines != null) {

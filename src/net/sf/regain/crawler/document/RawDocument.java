@@ -158,11 +158,11 @@ public class RawDocument {
 
 
   /**
-   * L�dt Daten von einer URL.
+   * Load content from URL.
    *
-   * @param url Die URL.
-   * @return Die Daten des Dokuments.
-   * @throws RegainException Wenn das Laden fehl schlug.
+   * @param url The URL.
+   * @return content of document.
+   * @throws RegainException if loading was erroneous
    */
   private byte[] loadContent(String url) throws RegainException {
     HTTP_LOADING_PROFILER.startMeasuring();

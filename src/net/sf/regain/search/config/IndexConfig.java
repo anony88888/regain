@@ -179,7 +179,12 @@ public class IndexConfig {
    * @return The index fields to search by default.
    */
   public String[] getSearchFieldList() {
-    return mSearchFieldList;
+
+    if(mSearchFieldList != null)
+      return mSearchFieldList;
+    else
+      return DEFAULT_SEARCH_FIELD_LIST;
+      
   }
 
   

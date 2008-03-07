@@ -382,6 +382,10 @@
         <include name="net/sf/regain/crawler/preparator/HtmlPreparator.*"/>
         <include name="net/sf/regain/crawler/preparator/html/**"/>
       </fileset>
+      <fileset dir="build/included-lib-classes/common">
+        <include name="font_metrics.properties"/>
+        <include name="org/htmlparser/**"/>
+      </fileset>
     </jar>
 
     <jar jarfile="build/preparator/SimpleRtfPreparator.jar"
