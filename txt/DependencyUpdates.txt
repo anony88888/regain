@@ -80,6 +80,13 @@ Ca. 28.07.04:
       org.semweb4j.rdf2go.api_4.4.7.jar
       aperture-1.0.1-beta.jar
 
+16.03.08
+========
+    thtesche, cluster:Consult
+    pdf: PDFBox 0.7.3. It works well for me. I'll give it a try and will switch back at problems.
+    pdf: FontBox-0.1.0-dev.jar for PDFBox 0.7.3
+    CIFS/Samba: jcifs-1.2.18.jar
+
 Websites:
 =========
   jakarta regexp: http://jakarta.apache.org/site/downloads/downloads_regexp.cgi
@@ -91,4 +98,5 @@ Websites:
   jacob: http://sourceforge.net/projects/jacob-project/
   jdic: https://jdic.dev.java.net/
   aperture: http://aperture.sourceforge.net/
+  jcifs: http://jcifs.samba.org/
 

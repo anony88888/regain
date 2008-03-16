@@ -1,4 +1,11 @@
-Versio 1.2.5 am 08.02.08
+Version 1.2.6 am 16.03.08
+-------------------------
+
+* Zugriff auf Windows-Shares (ohne Authentifizierung) (Samba/CIFS)
+* HTML-Parser zum Extrahieren des Contents
+* Bugfix Mimetypdetection, wenn das File keine Dateinendung besitzt
+
+Version 1.2.5 am 08.02.08
 ------------------------
 
 * Priorität für Preparatoren. Default Prio ist 0. Damit lässt sich mittels

@@ -97,23 +97,12 @@ public class PdfBoxPreparator extends AbstractPreparator {
         decryptor.decryptDocument("");
       }
 
-      // WORKAROUND: The PDFTextStripper has a bug: it does not append a space
-      //             after every word to the writer. That's why word a
-      //             concatinated.
-      StringWriter writer = new StringWriter();
-
       // Clean the content and write it to a String
-      // FixedPdfTextStripper stripper = new FixedPdfTextStripper();
       PDFTextStripper stripper = new PDFTextStripper();
+      stripper.setWordSeparator(" ");
+      stripper.setLineSeparator("\n");
 
-      // code for PDFBox before 0.6.4
-      // stripper.writeText(pdfDocument.getDocument(), writer);
-
-      // code for PDFBox 0.6.4 or higher
-      stripper.writeText(pdfDocument, writer);
-
-      writer.close();
-      setCleanedContent(writer.toString());
+      setCleanedContent(stripper.getText(pdfDocument));
 
       // Get the title
       // NOTE: There is more information that could be read from a PFD-Dokument.

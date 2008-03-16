@@ -321,7 +321,7 @@ public class DocumentFactory {
         + " did not extract the content of " + url);
     }
 
-    // Preparing suceed -> Create the document
+    // Preparing succeed -> Create the document
     Document doc = createDocument(rawDocument, cleanedContent, title,
                                   summary, headlines, path, additionalFieldMap);
 
