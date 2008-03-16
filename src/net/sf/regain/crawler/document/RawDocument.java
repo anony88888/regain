@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
+import jcifs.smb.SmbFile;
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.CrawlerToolkit;
@@ -138,8 +139,13 @@ public class RawDocument {
 
     if (url.startsWith("file://")) {
       mContentAsFile = RegainToolkit.urlToFile(url);
+    } else if( url.startsWith("smb://" )) {
+      //mContent = loadSmbFile(url); 
+      mContent = null;
+      mContentAsFile = null;
     } else {
       mContent = loadContent(url);
+      mContentAsFile = null;
     }
   }
 
@@ -156,9 +162,42 @@ public class RawDocument {
     mHttpTimeoutSecs = httpTimeoutSecs;
   }
 
+  /**
+   * Loads the content from a smb file
+   * 
+   * @param url The URL
+   * @return content of the document 
+   * @throws net.sf.regain.RegainException if loading fails
+   */
+  private byte[] loadSmbFile(String url) throws RegainException {
+        
+    InputStream in = null;
+    try {
+      SmbFile smbFile = RegainToolkit.urlToSmbFile(url);
+    
+      if( smbFile.canRead() && !smbFile.isDirectory() ) {
+        in = smbFile.getInputStream();
+        
+        return CrawlerToolkit.loadFileFromStream(in,smbFile.getContentLength());
+        
+      } else {
+        throw new RegainException("Can't load content from: "
+        + smbFile.getCanonicalPath());
+      }
+      
+    } catch (Throwable thr) {
+      throw new RegainException( thr.getMessage() );
+      
+    } finally {
+       if (in != null) {
+        try { in.close(); } catch (IOException exc) {}
+      }
+    }
+    
+  }
 
   /**
-   * Load content from URL.
+   * Load content from URL for http/https documents.
    *
    * @param url The URL.
    * @return content of document.
@@ -206,17 +245,31 @@ public class RawDocument {
 
 
   /**
-   * Gibt die L�nge des Dokuments zur�ck (in Bytes).
+   * Return the lentgth of the document (in bytes).
    *
-   * @return Die L�nge des Dokuments.
+   * @return int length of document.
    */
-  public int getLength() {
+  public int getLength() /*throws RegainException*/ {
+    int length = 0;
+    
     if (mContent != null) {
-      return mContent.length;
+      length = mContent.length;
+    
     } else {
-      // Das Dokument befindet sich in einer Datei -> L�nge der Datei nutzen
-      return (int) mContentAsFile.length();
+      // document still not loaded because it's a file 
+      if( mContentAsFile != null ) {
+        length = (int) mContentAsFile.length();
+      
+      } else if( mUrl.startsWith("smb://")) {
+        // @todo : define a suitable way to hold different kinds of files (local fs, windows share, other share types)
+        try{
+          length = (int) RegainToolkit.urlToSmbFile(mUrl).length();
+        } catch( Exception ex ){
+          //throw new RegainException("Detection of file length failed: ", ex);
+        }
+      }
     }
+    return length;
   }
 
 
@@ -229,12 +282,18 @@ public class RawDocument {
    * @return Wann das Dokument zuletzt ge�ndert wurde.
    */
   public Date getLastModified() {
+    Date date = null;
+    
     if (mUrl.startsWith("file://")) {
-      return new Date(mContentAsFile.lastModified());
-    } else {
-      // We don't know when it was last modified
-      return null;
+      date = new Date(mContentAsFile.lastModified());
+    } else if(mUrl.startsWith("smb://")) {
+      try{
+        date = new Date(RegainToolkit.urlToSmbFile(mUrl).lastModified());
+      } catch( Exception ex ){
+        //throw new RegainException("Detection of file length failed: ", ex);
+      }
     }
+    return date;
   }
 
 
@@ -287,7 +346,12 @@ public class RawDocument {
       // Das Dokument befindet sich in einer Datei -> Diese laden
       FILE_LOADING_PROFILER.startMeasuring();
       try {
-        byte[] content = CrawlerToolkit.loadFile(mContentAsFile);
+        byte[] content = null;
+        if( mUrl.startsWith("file://")) {
+          content = CrawlerToolkit.loadFile(mContentAsFile);
+        } else if( mUrl.startsWith("smb://")) {
+          content =  loadSmbFile(mUrl); 
+        }
         FILE_LOADING_PROFILER.stopMeasuring(content.length);
         return content;
       }
@@ -334,12 +398,26 @@ public class RawDocument {
       return new ByteArrayInputStream(mContent);
     } else {
       // This document must be a file
-      try {
-        return new FileInputStream(mContentAsFile);
-      }
-      catch (Throwable thr) {
-        throw new RegainException("Creating stream for file failed: " +
-            mContentAsFile, thr);
+      if(mUrl.startsWith("file://")){
+        try {
+          return new FileInputStream(mContentAsFile);
+        
+        } catch (Throwable thr) {
+          throw new RegainException("Creating stream for file failed: " +
+              mContentAsFile, thr);
+        }
+      } else if(mUrl.startsWith("smb://")) {
+        try {
+           SmbFile smbFile = RegainToolkit.urlToSmbFile(mUrl);
+           return smbFile.getInputStream();
+           
+        } catch (Throwable thr) {
+          throw new RegainException("Creating stream for file failed: " +
+              mContentAsFile, thr);
+        }
+      } else {
+        throw new RegainException("Creating stream for unknown file protocoll failed.");
+        
       }
     }
   }
@@ -453,6 +531,7 @@ public class RawDocument {
    *
    * @return The String representation of this class.
    */
+  @Override
   public String toString() {
     return getUrl();
   }

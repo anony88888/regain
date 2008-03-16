@@ -60,6 +60,7 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
+import jcifs.smb.SmbFile;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
@@ -1303,6 +1304,39 @@ public class RegainToolkit {
     return new File(urlToFileName(url));
   }
 
+ /**
+   * Gets the smbfile that is described by a URL with the <code>smb://</code>
+   * protocol.
+   *
+   * @param url The URL to get the smbfile for.
+   * @return The smbfile that matches the URL.
+   * @throws RegainException If the URL's protocol isn't <code>smb://</code>.
+   */
+  public static SmbFile urlToSmbFile(String url) throws RegainException {
+    
+    try {
+      return new SmbFile(urlToSmbFileName(url));
+    } catch (MalformedURLException urlEx) {
+      throw new RegainException(urlEx.getMessage());
+    }
+  }
+
+    /**
+   * Gets the smb file name that is described by a URL with the <code>smb://</code>
+   * protocol.
+   *
+   * @param url The URL to get the file name for.
+   * @return The smb file name that matches the URL.
+   * @throws RegainException If the URL's protocol isn't <code>smb://</code>.
+   */
+  public static String urlToSmbFileName(String url) throws RegainException {
+    if (! url.startsWith("smb://")) {
+      throw new RegainException("URL must have the smb:// protocol to get a "
+        + "File for it");
+    }
+    // Replace URL-encoded special characters
+    return urlDecode(url, INDEX_ENCODING);
+  }
 
   /**
    * Returns the URL of a file name.

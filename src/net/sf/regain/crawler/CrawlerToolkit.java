@@ -291,6 +291,32 @@ public class CrawlerToolkit {
     }
   }
 
+  /**
+   * Loads content from a InputStream and returns the content
+   *
+   * @param inputStream the stream to read
+   * @return byte[] The content of the source
+   * @throws RegainException in case of problems while loading
+   */
+  public static byte[] loadFileFromStream(InputStream inputStream, int length) throws RegainException {
+    
+    ByteArrayOutputStream out = null;
+    try {
+      out = new ByteArrayOutputStream(length);
+
+      RegainToolkit.pipe(inputStream, out);
+
+      return out.toByteArray();
+    }
+    catch (IOException exc) {
+      throw new RegainException("Loading inputstream failed ", exc);
+    }
+    finally {
+      if (out != null) {
+        try { out.close(); } catch (IOException exc) {}
+      }
+    }
+  }
 
 
   /**

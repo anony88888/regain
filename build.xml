@@ -665,6 +665,9 @@
         <include name="org/slf4j/**"/>
         <include name="org/openrdf/model/impl/**"/>
 
+        <!-- CIFS, Samba -->
+        <include name="jcifs/**"/>
+
         <!-- XML stuff -->
         <include name="javax/xml/**"/>
         <include name="org/w3c/dom/**"/>

@@ -34,6 +34,7 @@ import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import jcifs.smb.SmbFile;
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.config.CrawlerConfig;
@@ -381,8 +382,8 @@ public class Crawler implements ErrorLogger {
       boolean shouldBeParsed = mCurrentJob.shouldBeParsed();
       boolean shouldBeIndexed = mCurrentJob.shouldBeIndexed();
 
-      // Check whether this is a directory
       if (url.startsWith("file://")) {
+        // file system: Check whether this is a directory 
         try {
           File file = RegainToolkit.urlToFile(url);
           // Check whether the file is readable.
@@ -400,6 +401,30 @@ public class Crawler implements ErrorLogger {
             mCrawlerJobProfiler.stopMeasuring(0);
             continue;
           }
+        }
+        catch (Throwable thr) {
+          logError("Invalid URL: '" + url + "'", thr, false);
+        }
+      } else if(url.startsWith("smb://")){
+        // Windows share: Check whether this is a directory
+        try {
+          SmbFile smbFile = RegainToolkit.urlToSmbFile(url);
+          // Check whether the file is readable.
+          if( ! smbFile.canRead() ){
+            mCrawlerJobProfiler.abortMeasuring();
+            logError("File is not readable: '" + url + "'", null, false);
+            continue;
+          } else if (smbFile.isDirectory()) {
+            // This IS a directory -> Add all child files as Jobs
+            if (shouldBeParsed) {
+              parseSmbDirectory(smbFile);
+            }
+            
+            // A directory can't be parsed or indexed -> continue
+            mCrawlerJobProfiler.stopMeasuring(0);
+            continue;
+          }
+            
         }
         catch (Throwable thr) {
           logError("Invalid URL: '" + url + "'", thr, false);
@@ -535,7 +560,7 @@ public class Crawler implements ErrorLogger {
     // Fehler und Deadlink-Liste schreiben
     writeDeadlinkAndErrorList();
 
-    // Index abschlie�en
+    // finalize index
     if (mIndexWriterManager != null) {
       boolean thereWereFatalErrors = (mFatalErrorCount > 0);
       if (thereWereFatalErrors) {
@@ -556,7 +581,7 @@ public class Crawler implements ErrorLogger {
 
     mLog.info(Profiler.getProfilerResults());
 
-    // Systemspeziefischen Zeilenumbruch holen
+    // get system specific line break
     String lineSeparator = RegainToolkit.getLineSeparator();
 
     mLog.info("Statistics:" + lineSeparator
@@ -768,11 +793,11 @@ public class Crawler implements ErrorLogger {
 
 
   /**
-   * Durchsucht ein Verzeichnis nach URLs, also Dateien und Unterverzeichnissen,
-   * und erzeugt f�r jeden Treffer einen neuen Job.
+   * Searches a directory for URLs, that means files and sub-directories.
+   * The method creates a new job for every match
    *
-   * @param dir Das zu durchsuchende Verzeichnis.
-   * @throws RegainException If encoding the found URLs failed. 
+   * @param dir the directory to parse
+   * @throws RegainException If encoding of the found URLs failed. 
    */
   private void parseDirectory(File dir) throws RegainException {
     // Get the URL for the directory
@@ -793,6 +818,40 @@ public class Crawler implements ErrorLogger {
         addJob(url, sourceUrl, false, true, null);
       }
     }
+  }
+
+  /**
+   * Searches a samba directory for URLs, that means files and sub-directories.
+   * The method creates a new job for every match
+   *
+   * @param dir the directory to parse
+   * @throws RegainException If encoding of the found URLs failed. 
+   */
+  private void parseSmbDirectory(SmbFile dir) throws RegainException {
+  
+    try {
+      // Get the URL for the directory
+      String sourceUrl = dir.getCanonicalPath();
+
+      // Parse the directory
+      SmbFile[] childArr = dir.listFiles();
+      for (int childIdx = 0; childIdx < childArr.length; childIdx++) {
+        // Get the URL for the current child file
+        String url = childArr[childIdx].getCanonicalPath();
+
+        // Check whether this is a directory
+        if (childArr[childIdx].isDirectory()) {
+          // It's a directory -> Add a parse job
+          addJob(url, sourceUrl, true, false, null);
+        } else {
+          // It's a file -> Add a index job
+          addJob(url, sourceUrl, false, true, null);
+        }
+      }
+    } catch( Exception ex ) {
+      throw new RegainException(ex.getMessage());
+    }
+         
   }
 
 

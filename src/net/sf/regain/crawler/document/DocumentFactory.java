@@ -188,22 +188,24 @@ public class DocumentFactory {
   public Document createDocument(RawDocument rawDocument, ErrorLogger errorLogger) {
     // Determine the mime-type 
 
+    String mimeType;
     try {
       MagicMimeTypeIdentifier mmti = new MagicMimeTypeIdentifier();
       File file = rawDocument.getContentAsFile();
       FileInputStream fis = new FileInputStream(file);
       byte[] bytes = new byte[mmti.getMinArrayLength()];
       fis.read(bytes);
-      String mimeType = mmti.identify(bytes, file.getName(), new URIImpl(file.toURI().toString())) ;
+      mimeType = mmti.identify(bytes, file.getName(), new URIImpl(file.toURI().toString())) ;
       if( mimeType == null || mimeType.length()==0 )
         mimeType = "application/x-unknown-mime-type";
-      rawDocument.setMimeType( mimeType );
     }
       catch (Exception exc) {
         errorLogger.logError("Determine mime-type of " + rawDocument.getUrl() +
                               " failed", exc, false);
+      mimeType = "application/x-unknown-mime-type";
     }
-
+    rawDocument.setMimeType( mimeType );
+    
     // Find the preparator that will prepare this URL
     Document doc = null;
     boolean preparatorFound = false;
