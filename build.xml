@@ -258,7 +258,7 @@
              bottom="${doc.bottom}"
              stylesheetfile="txt/stylesheet.css"
              access="private"
-             charset="ISO-8859-1"
+             charset="UTF-8"
              failonerror="true">
              <!-- additionalparam="-breakiterator" -->
       <link offline="true"
@@ -584,6 +584,15 @@
       <include name="org/apache/log4j/**"/>
       <include name="org/apache/regexp/**"/>
     
+      <!-- aperture -->
+      <include name="org/semanticdesktop/aperture/**"/>
+      <include name="org/ontoware/rdf2go/**"/>
+      <include name="org/slf4j/**"/>
+      <include name="org/openrdf/model/impl/**"/>
+
+      <!-- CIFS, Samba -->
+      <include name="jcifs/**"/>
+
       <!-- XML stuff -->
       <include name="javax/xml/**"/>
       <include name="org/w3c/dom/**"/>
@@ -742,7 +751,7 @@
    +-->
   <target name="installer" depends="jsmoothgen">
     <mkdir dir="build/public"/>
-    <exec executable="installer/makensis.exe"
+    <exec executable="C:\Dokumente und Einstellungen\thtesche\Eigene Dateien\NetBeansProjects\regain\installer\makensis.exe"
           failonerror="true">
       <arg value="/NOCD"/>
       <arg value="/DVERSION=${version}"/>
