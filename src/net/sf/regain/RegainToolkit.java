@@ -1034,6 +1034,46 @@ public class RegainToolkit {
   }
 
 
+/**
+   * Konvertiert ein Date-Objekt in einen String mit dem Format
+   * "YYYYMMDD". Das ist nötig für einer Rangesuche.
+   * <p>
+   * Dieses Format ist mit Absicht nicht lokalisiert, um die Eindeutigkeit zu
+   * gewährleisten. Die Lokalisierung muss die Suchmaske übernehmen.
+   *
+   * @param lastModified Das zu konvertiernende Date-Objekt
+   * @return Ein String mit dem Format "YYYYMMDD"
+   * @see #indexStringToLastModified(String)
+   */
+  public static String lastModifiedToIndexString(Date lastModified) {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(lastModified);
+
+    int year = cal.get(Calendar.YEAR);
+    int month = cal.get(Calendar.MONTH) + 1; // +1: In the Date class january is 0
+    int day = cal.get(Calendar.DAY_OF_MONTH);
+
+    StringBuffer buffer = new StringBuffer(8);
+
+    // "YYYY"
+    buffer.append(year);
+
+    // "MM"
+    if (month < 10) {
+      buffer.append('0');
+    }
+    buffer.append(month);
+
+    // "DD"
+    if (day < 10) {
+      buffer.append('0');
+    }
+    buffer.append(day);
+
+    return buffer.toString();
+  }
+
+
   /**
    * Konvertiert einen String mit dem Format "YYYY-MM-DD HH:MM" in ein
    * Date-Objekt.
