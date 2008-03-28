@@ -678,6 +678,7 @@
         <exclude name="net/sf/regain/ui/desktop/**"/>
         <exclude name="net/sf/regain/util/sharedtag/simple/**"/>
         <exclude name="net/sf/regain/util/ui/**"/>
+        <exclude name="net/sf/regain/util/modifyindex/**"/>
       </classes>
       <lib dir="lib">
         <include name="lucene-*.jar"/>
