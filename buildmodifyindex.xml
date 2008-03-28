@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<!--
+ | CVS information:
+ |  $RCSfile: build.xml,v $
+ |   $Source: /cvsroot/regain/regain/build.xml,v $
+ |     $Date:   Sep 13 2006 09:54:22  $
+ |   $Author:   f6a  $
+ | $Revision:   1.7  $
+ |
+ +-->
+<project name="regaintool" default="targets" basedir=".">
+
+  <!--
+   | The properties and paths
+   +-->
+  <property file="build.properties"/>
+  
+  <tstamp>
+    <format property="timestamp" pattern="yyMMdd-HHmm"/>
+  </tstamp>  
+
+  <property name="programname.file" value="regaintool"/>
+  
+  <!-- Autodetect the platform -->
+  <condition property="platform" value="linux">
+    <os family="unix"/>
+  </condition>
+  <condition property="platform" value="win">
+    <os family="windows"/>
+  </condition>
+
+  <path id="sourcepath">
+    <pathelement location="src"/>
+  </path>
+
+  <path id="classpath">
+    <pathelement location="temp/classes"/>
+    <fileset dir="lib">
+      <include name="*.jar"/>
+    </fileset>
+    <fileset dir="lib/${platform}">
+      <include name="*.jar"/>
+    </fileset>
+    <fileset dir="lib/win">
+      <include name="jacob*.jar"/>
+    </fileset>
+  </path>
+
+
+  <!--
+   | Display all public targets
+   +-->
+  <target name="targets">
+    <echo message="usage: build [target]"/>
+    <echo message=""/>
+    <echo message="available targets:"/>
+    <echo message="  targets              Shows this list of targets."/>
+    <echo message="  dump-info            Dumps some information (VM-Version...)."/>
+    <echo message="  clean                Deletes the classes directory."/>
+    <echo message="  prepare              Prepares the compilation. (Extracts the libs)"/>
+    <echo message="  prepare-once         Prepares the compilation if needed. (Extracts the libs)"/>
+    <echo message="  make                 Compiles the source code."/>
+  </target>
+
+
+  <!--
+   | Dump some information.
+   +-->
+  <target name="dump-info">
+    <echo message="JAVA_HOME=${env.JAVA_HOME}" />
+    <echo message="java.vm.info=${java.vm.info}" />
+    <echo message="java.vm.name=${java.vm.name}" />
+    <echo message="java.vm.vendor=${java.vm.vendor}" />
+    <echo message="java.vm.version=${java.vm.version}" />
+    <echo message="os.arch=${os.arch}" />
+    <echo message="os.name=${os.name}" />
+    <echo message="os.version=${os.version}" />
+    <echo message="file.encoding=${file.encoding}" />
+    <echo message="user.language=${user.language}" />
+  </target>
+
+
+  <!--
+   | Deletes the classes directory.
+   +-->
+  <target name="clean">
+    <delete dir="temp/classes"/>
+  </target>
+
+  <!--
+   | Compiles the source code.
+   +-->
+  <target name="make" depends="clean">
+    <echo message="Compiling the source code using ${java-1_3.dir} ..." />
+    <mkdir dir="temp/classes"/>
+  	<mkdir dir="temp/runtime/alterindex"/>
+  	<mkdir dir="temp/runtime/alterindex/log"/>
+    <copy todir="temp/runtime/alterindex">
+      <fileset dir="txt" includes="AlterIndexConfiguration.xml"/>
+      <fileset dir="txt" includes="log4j_Test.properties"/>
+      <fileset dir="txt" includes="alterindex.bat"/>
+      <fileset dir="lib" includes="log4j*.jar"/>
+      <fileset dir="lib" includes="jakarta-regexp-1.4.jar"/>
+      <fileset dir="lib" includes="lucene*.jar"/>
+    </copy>
+    <javac destdir="temp/classes"
+           debug="${debug}"
+           deprecation="true"
+           executable="${java-1_3.dir}/bin/javac"
+    	   fork="true">
+      <src>
+        <path refid="sourcepath"/>
+      </src>
+      <classpath>
+        <path refid="classpath"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <!--
+   | Creates a jar for tools
+   +-->
+  <target name="jar" depends="make">
+    <jar jarfile="temp/runtime/alterindex/${programname.file}.jar"
+          compress="false"
+          index="true">
+       <manifest>
+		 <attribute name="Build-By" value="${user.name}" />
+		 <attribute name="Date" value="${timestamp}" />
+         <attribute name="Main-Class" value="net.sf.regain.util.modifyindex.AlterIndex"/>
+       	<attribute name="Class-Path" value="log4j-1.2.11.jar ."/>
+       </manifest>
+       <fileset dir="temp/classes"/>
+     </jar>
+  </target>
+
+</project>
