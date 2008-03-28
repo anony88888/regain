@@ -1113,6 +1113,39 @@ public class RegainToolkit {
   }
 
 
+/**
+   * Konvertiert einen String mit dem Format "YYYYMMDD" in ein
+   * Date-Objekt.
+   *
+   * @param asString Der zu konvertierende String
+   * @return Das konvertierte Date-Objekt.
+   * @throws RegainException Wenn der String ein falsches Format hat.
+   * @see #lastModifiedToIndexString(Date)
+   */
+  public static Date indexStringToLastModified(String asString)
+    throws RegainException
+  {
+    Calendar cal = Calendar.getInstance();
+
+    try {
+      // Format: "YYYY-MM-DD HH:MM"
+
+      int year   = Integer.parseInt(asString.substring(0, 4));
+      cal.set(Calendar.YEAR, year);
+      int month  = Integer.parseInt(asString.substring(4, 6));
+      cal.set(Calendar.MONTH, month - 1); // -1: In the Date class january is 0
+      int day    = Integer.parseInt(asString.substring(6, 8));
+      cal.set(Calendar.DAY_OF_MONTH, day);
+    }
+    catch (Throwable thr) {
+      throw new RegainException("Last-modified-string has not the format" +
+        "'YYYYMMDD': " + asString, thr);
+    }
+
+    return cal.getTime();
+  }
+
+
   /**
    * Splits a String into a string array.
    *
