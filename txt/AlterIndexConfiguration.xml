@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE configuration [
+  <!ENTITY amp "&#x26;">
+  <!ENTITY lt "&#x3C;">
+  <!ENTITY minus "&#45;">
+]>
+
+<configuration>
+  <configurationlist>
+    <config>CrawlerConfigurationTest.xml</config>
+  </configurationlist>
+
+  <replacelist>
+    <replace name="last-modified">
+      <class>net.sf.regain.util.modifyindex.modifier.LastModified</class>
+    </replace>
+  </replacelist>
+  <logconfig>log4j.properties</logconfig>
+  <oldindexdir>index</oldindexdir>
+  <newindexdir>modify</newindexdir>
+</configuration>
