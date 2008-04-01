@@ -302,4 +302,4 @@ public interface CrawlerConfig {
    */
   public String[] getUntokenizedFieldNames();
 }
-}
+

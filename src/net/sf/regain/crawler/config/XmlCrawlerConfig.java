@@ -30,7 +30,7 @@ package net.sf.regain.crawler.config;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Properties;
-
+import java.util.ArrayList;
 import net.sf.regain.RegainException;
 import net.sf.regain.XmlToolkit;
 
