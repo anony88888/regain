@@ -32,6 +32,8 @@ public class XmlSearchConfig implements SearchConfig {
   /** The names of the default indexes. */
   private String[] mDefaultIndexNameArr;
 
+  /** The names of all indexes in search configuration. */
+  private String[] mAllIndexNameArr;
 
   /**
    * Creates a new instance of XmlSearchConfig.
@@ -64,11 +66,14 @@ public class XmlSearchConfig implements SearchConfig {
     // Get the index nodes
     mIndexHash = new HashMap();
     ArrayList defaultIndexNameList = new ArrayList();
+    ArrayList allIndexNameList = new ArrayList();
     Node[] nodeArr = XmlToolkit.getChildArr(listNode, "index");
     for (int indexIdx = 0; indexIdx < nodeArr.length; indexIdx++) {
       Node indexNode = nodeArr[indexIdx];
       
       String indexName = XmlToolkit.getAttribute(indexNode, "name", true);
+      String isParent = XmlToolkit.getAttribute(indexNode, "isparent", false);
+      String parentName = XmlToolkit.getAttribute(indexNode, "parent", false);
       String directory = XmlToolkit.getChildText(indexNode, "dir", true);
 
       // Read the openInNewWindowRegex
@@ -120,6 +125,10 @@ public class XmlSearchConfig implements SearchConfig {
           openInNewWindowRegex, useFileToHttpBridge, searchFieldList, rewriteRules,
           searchAccessControllerClass, searchAccessControllerJar,
           searchAccessControllerConfig);
+ 			indexConfig.setParent(isParent);
+      if(null != parentName && parentName.length()>0){
+    	  indexConfig.setParentName(parentName);
+      }          
       mIndexHash.put(indexName, indexConfig);
       
       // Check whether this index is default
@@ -127,11 +136,18 @@ public class XmlSearchConfig implements SearchConfig {
       if (isDefault) {
         defaultIndexNameList.add(indexName);
       }
+      
+      //save all Indexnames
+      allIndexNameList.add(indexName);
     }
 
     // Store the default indexes into an array
     mDefaultIndexNameArr = new String[defaultIndexNameList.size()];
     defaultIndexNameList.toArray(mDefaultIndexNameArr);
+    
+    //Store all indexnames into an array
+    mAllIndexNameArr = new String[allIndexNameList.size()];
+    allIndexNameList.toArray(mAllIndexNameArr);
   }
   
   
@@ -185,4 +201,14 @@ public class XmlSearchConfig implements SearchConfig {
     return mDefaultIndexNameArr;
   }
   
+  
+  /**
+   * Gets the names of the default indexes.
+   * 
+   * @return The names of the default indexes or an empty array if no default
+   *         index was specified.
+   */
+  public String[] getAllIndexNameArr() {
+    return mAllIndexNameArr;
+  }  
 }
