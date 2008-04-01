@@ -1,5 +1,7 @@
 package net.sf.regain.util.modifyindex;
 
+import org.apache.lucene.document.Field;
+
 public class ModifyDocumentField {
 	private String fieldName;
 	private boolean stored = false;

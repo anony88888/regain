@@ -71,7 +71,7 @@ public class AlterIndex {
 				int maxDoc = mIndexReader.maxDoc();
 				if (maxDoc > 0) {
 					String[] idxFields = null;
-					Collection fn = mIndexReader.getFieldNames();
+					Collection fn = mIndexReader.getFieldNames(IndexReader.FieldOption.ALL);
 					TreeSet fields = new TreeSet();
 					Iterator it = fn.iterator();
 					while (it.hasNext()) {
@@ -259,7 +259,17 @@ public class AlterIndex {
 							for (int j = 0; j < idxFields.length; j++) {
 								ModifyDocumentField mdf = (ModifyDocumentField)modifyDocFields.get(idxFields[j]);
 								if(null != mdf){
-									Field f = new Field(mdf.getFieldName(), mdf.getText(), mdf.isStored(), mdf.isIndexed(), mdf.isTokenized(), mdf.isTermVectorStored());
+									
+									boolean store = mdf.isStored();
+						            boolean index = mdf.isIndexed();
+						            boolean token = mdf.isTokenized();
+						            boolean termVector = mdf.isTermVectorStored();
+						            
+									Field f = new Field(mdf.getFieldName(), mdf.getText(), 
+											store ? Field.Store.YES : Field.Store.NO, 
+											index ? (token ? Field.Index.TOKENIZED : Field.Index.UN_TOKENIZED) : Field.Index.NO, 
+											termVector? Field.TermVector.YES : Field.TermVector.NO);
+									
 									String boostS = mdf.getBoost().trim();
 									if (!boostS.equals("") && !boostS.equals("1.0")) {
 										float boost = 1.0f;
