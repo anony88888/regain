@@ -65,7 +65,13 @@ public class SearchToolkit {
   
   /** The prefix for request parameters that contain additional field values. */
   private static final String FIELD_PREFIX = "field.";
-  
+
+	/**
+	 * The prefix for request parameters that contain additional field values
+	 * that is not a string.
+	 */
+	 private static final String FIELD_PREFIX_NOSTRING = "fieldNoString.";
+	   
   /** The configuration of the search mask. */
   private static SearchConfig mConfig;
   
@@ -257,6 +263,18 @@ public class SearchToolkit {
             }
           }
         }
+        if (paramName.startsWith(FIELD_PREFIX_NOSTRING)) {
+					// This is an additional field -> Append it to the query
+					String fieldName = paramName.substring(FIELD_PREFIX_NOSTRING.length());
+					String fieldValue = request.getParameter(paramName);
+
+					if (fieldValue != null) {
+						fieldValue = fieldValue.trim();
+						if (fieldValue.length() != 0) {
+							query.append(" " + fieldName + ":" + fieldValue);
+						}
+					}
+				}
       }
       
       queryString = query.toString().trim();
