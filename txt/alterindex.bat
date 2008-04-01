@@ -1,0 +1,1 @@
+java -cp regaintool.jar;lucene-analyzers-2.2.0.jar;lucene-2.2.0.jar;jakarta-regexp-1.4.jar;log4j-1.2.11.jar net.sf.regain.util.modifyindex.AlterIndex AlterIndexConfiguration.xml
