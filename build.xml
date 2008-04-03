@@ -357,7 +357,26 @@
         <include name="net/sf/regain/crawler/preparator/PoiMs*"/>
       </fileset>
     </jar>
-
+    
+    <jar jarfile="build/preparator/DispatcherPreparator.jar"
+         compress="false" index="true">
+      <manifest>
+        <attribute name="Preparator-Classes" value=".DispatcherPreparator"/>
+      </manifest>
+      <fileset dir="build/included-lib-classes/common">
+    	<include name="font_metrics.properties"/>
+    	<include name="org/apache/poi/**"/>
+      </fileset>
+      <fileset dir="build/classes">
+    	<include name="net/sf/regain/crawler/preparator/DispatcherPreparator.*"/>
+      	<include name="net/sf/regain/crawler/preparator/HtmlPreparator.*"/>
+        <include name="net/sf/regain/crawler/preparator/html/**"/>
+      	<include name="net/sf/regain/crawler/preparator/SwingRtfPreparator.*"/>
+      	<include name="net/sf/regain/crawler/preparator/XmlPreparator.*"/>
+      	<include name="net/sf/regain/crawler/preparator/PlainTextPreparator.*"/>
+      </fileset>
+    </jar>
+    
     <jar jarfile="build/preparator/JacobMsOfficePreparators.jar"
          compress="false" index="true">
       <manifest>
