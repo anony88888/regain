@@ -31,4 +31,11 @@ public interface SearchConfig {
    */
   public String[] getDefaultIndexNameArr();
   
-}
+ /**
+   * Gets the names of all indexes in the Configuration file.
+   * 
+   * @return The names of the indexes or an empty array if no
+   *         index was specified in the configuration file.
+   */
+  public String[] getAllIndexNameArr();  
+}  
