@@ -1,4 +1,4 @@
-Version 1.4 on 05.04.08 Preview
+Version 1.4.0 on 05.04.08 Preview
 ---------------------------------
 
 * Bugfix: StackOverflowError in Linkextraction abgefangen
@@ -7,8 +7,8 @@ Version 1.4 on 05.04.08 Preview
   flac die Metadaten extrahiert
 
 
-Version 1.2.6 am 16.03.08
--------------------------
+Version 1.3.0/1 am 16.03.08
+---------------------------
 
 * Zugriff auf Windows-Shares (ohne Authentifizierung) (Samba/CIFS)
 * HTML-Parser zum Extrahieren des Contents

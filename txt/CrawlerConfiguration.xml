@@ -213,6 +213,12 @@
       </section>
     </config>
   </preparator>
+
+  <!-- CatchAll-preparator on basis of EmptyPreparator -->
+  <preparator priority="-10">
+    <class>.EmptyPreparator</class>
+    <urlPattern>.*</urlPattern>
+  </preparator>
 </preparatorList>
 
 

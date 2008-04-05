@@ -87,6 +87,10 @@ Ca. 28.07.04:
     pdf: FontBox-0.1.0-dev.jar for PDFBox 0.7.3
     CIFS/Samba: jcifs-1.2.18.jar
 
+05.04.08
+========
+    thtesche, cluster:Consult
+    MP3Preparator, GenericAudioPreparator: jaudiotagger.jar v1.0.8
 Websites:
 =========
   jakarta regexp: http://jakarta.apache.org/site/downloads/downloads_regexp.cgi
@@ -99,4 +103,4 @@ Websites:
   jdic: https://jdic.dev.java.net/
   aperture: http://aperture.sourceforge.net/
   jcifs: http://jcifs.samba.org/
-
+  jaudiotagger: https://jaudiotagger.dev.java.net/, http://www.jthink.net/jaudiotagger/ 
