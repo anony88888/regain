@@ -292,7 +292,7 @@ public class DocumentFactory {
     Map additionalFieldMap;
     if (mLog.isDebugEnabled()) {
       mLog.debug("Using preparator " + preparator.getClass().getName()
-        + " for " + rawDocument);
+        + " for " + rawDocument + ", " + rawDocument.getMimeType());
     }
     preparatorProfiler.startMeasuring();
     try {

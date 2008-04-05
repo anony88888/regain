@@ -871,22 +871,27 @@ public class Crawler implements ErrorLogger {
 
       int offset = 0;
       String contentAsString = rawDocument.getContentAsString();
-      while (re.match(contentAsString, offset)) {
-        offset = re.getParenEnd(0);
+      try {
+        while (re.match(contentAsString, offset)) {
+          offset = re.getParenEnd(0);
 
-        String parentUrl = rawDocument.getUrl();
-        String url = re.getParen(urlGroup);
+          String parentUrl = rawDocument.getUrl();
+          String url = re.getParen(urlGroup);
 
-        if (url != null) {
-          // Convert the URL to an absolute URL
-          url = CrawlerToolkit.toAbsoluteUrl(url, parentUrl);
+          if (url != null) {
+            // Convert the URL to an absolute URL
+            url = CrawlerToolkit.toAbsoluteUrl(url, parentUrl);
 
-          // Try to get a link text
-          String linkText = getLinkText(contentAsString, offset);
+            // Try to get a link text
+            String linkText = getLinkText(contentAsString, offset);
 
-          // Add the job
-          addJob(url, parentUrl, shouldBeParsed, shouldBeIndexed, linkText);
+            // Add the job
+            addJob(url, parentUrl, shouldBeParsed, shouldBeIndexed, linkText);
+          }
         }
+      } catch( Throwable ex ) {
+        throw new RegainException("Too many links in document.", ex);
+        
       }
     }
   }

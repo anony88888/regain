@@ -53,7 +53,7 @@
 
   <property name="doc.header" value="${programname} ${version} API"/>
   <property name="doc.title" value="API documentation for ${programname} ${version}"/>
-  <property name="doc.bottom" value="${programname} ${version}, Copyright (C) 2004 Til Schneider, www.murfman.de"/>
+  <property name="doc.bottom" value="${programname} ${version}, Copyright (C) 2004 Til Schneider, www.murfman.de, 2008 Thomas Tesche, www.thtesche.com"/>
 
   <property name="jacobgen-src.dir" value="build/jacobgen/generated-src"/>
   <property name="jacobgen-classes.dir" value="build/jacobgen/classes"/>
@@ -411,6 +411,32 @@
       </fileset>
       <fileset dir="build/classes">
         <include name="net/sf/regain/crawler/preparator/PdfBoxPreparator.*"/>
+      </fileset>
+    </jar>
+
+    <jar jarfile="build/preparator/MP3Preparator.jar"
+         compress="false" index="true">
+      <manifest>
+        <attribute name="Preparator-Classes" value=".MP3Preparator"/>
+      </manifest>
+      <fileset dir="build/included-lib-classes/common">
+        <include name="org/jaudiotagger/**"/>
+      </fileset>
+      <fileset dir="build/classes">
+        <include name="net/sf/regain/crawler/preparator/MP3Preparator.*"/>
+      </fileset>
+    </jar>
+
+    <jar jarfile="build/preparator/GenericAudioPreparator.jar"
+         compress="false" index="true">
+      <manifest>
+        <attribute name="Preparator-Classes" value=".GenericAudioPreparator"/>
+      </manifest>
+      <fileset dir="build/included-lib-classes/common">
+        <include name="org/jaudiotagger/**"/>
+      </fileset>
+      <fileset dir="build/classes">
+        <include name="net/sf/regain/crawler/preparator/GenericAudioPreparator.*"/>
       </fileset>
     </jar>
 

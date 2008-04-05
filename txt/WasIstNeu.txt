@@ -1,20 +1,21 @@
+Version 1.3.1 on 10.04.08 Preview
+---------------------------------
+
+* Bugfix: StackOverflowError in Linkextraction abgefangen
+* mp3-Preparator extrahiert von ID3v2 oder ID3v1 Tags
+* Generischer Audio Preparator, welcher von mp4 (iTunes), ogg-Vorbis oder 
+  flac die Metadaten extrahiert
+
+
 Version 1.2.6 am 16.03.08
 -------------------------
 
 * Zugriff auf Windows-Shares (ohne Authentifizierung) (Samba/CIFS)
 * HTML-Parser zum Extrahieren des Contents
 * Bugfix Mimetypdetection, wenn das File keine Dateinendung besitzt
-
-Version 1.2.5 am 08.02.08
-------------------------
-
 * Priorität für Preparatoren. Default Prio ist 0. Damit lässt sich mittels
   URLRegEx .* in einem beliebigen Preparator (vorzugsweise EmptyPreparator)
   und priority=-1 ein CatchAll-Preparator konfigurieren
-
-Version 1.2.4 am 02.02.08
--------------------------
-
 * Highlighting für Content und Titel
 * Preparatorselektion anhand des Mimetypes (früher Dateiendung)
 * Mimetype-detection (Dateiendung und MagicMime) 

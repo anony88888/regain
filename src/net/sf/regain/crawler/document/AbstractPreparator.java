@@ -30,6 +30,7 @@ package net.sf.regain.crawler.document;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.Vector;
 import net.sf.regain.RegainException;
 import net.sf.regain.crawler.config.PreparatorConfig;
 
@@ -433,7 +434,36 @@ public abstract class AbstractPreparator implements Preparator {
     mAdditionalFieldMap = null;
   }
 
+  /**
+   * Concatenate all parts together, use ', ' as delimiter. If a parts is empty or consists
+   * only of whitespaces the part will be negleted.
+   * 
+   * @param parts for concatenation
+   * @param maxPartsUsed number of partsused for concatenation
+   * @return the resulting string whith all single parts concatenated
+   */
+   protected String concatenateStringParts(Vector<String> parts, int maxPartsUsed) {
 
+    String result = "";
+
+    if (parts.size() > 0) {
+      int end = parts.size();
+      if (maxPartsUsed < parts.size()) {
+        end = maxPartsUsed;
+      }
+      for (int i = 0; i < end; i++) {
+        // Iterate over single parts
+        if (parts.get(i).length() > 0) {
+          result += parts.get(i);
+          if (i < end - 1) {
+            result += ", ";
+          }
+        }
+      }
+    }
+    return result;
+  }
+  
   /**
    * Frees all resources reserved by the preparator.
    * <p>
