@@ -60,6 +60,9 @@ public class XmlDesktopConfig implements DesktopConfig, DesktopConstants {
   /** The port of the webserver. */
   private int mPort;
   
+  /** Flag whether external access is allowed. */
+  private boolean mExternalAccessAllowed;
+  
   /**
    * The executable of the browser. Is <code>null</code> if the browser should
    * be auto-detected.
@@ -114,7 +117,18 @@ public class XmlDesktopConfig implements DesktopConfig, DesktopConstants {
     return mBrowser;
   }
   
-
+  /**
+   * Gets the setting wheter external access to the instance is allowed or not.
+   * pages. Returns FALSE if no config entry exists
+   * 
+   * @return the boolean whether external access is allowed or not
+   * @throws RegainException If loading the config failed.
+   */
+  public boolean getExternalAccessAllowed() throws RegainException {
+    loadConfig();
+    return mExternalAccessAllowed;
+  }
+  
   /**
    * Loads the config if the config was not yet loaded or if the file has changed.
    * 
@@ -137,7 +151,10 @@ public class XmlDesktopConfig implements DesktopConfig, DesktopConstants {
 
       node = XmlToolkit.getChild(config, "browser");
       mBrowser = (node == null) ? null : XmlToolkit.getText(node, false, true);
-      
+
+      node = XmlToolkit.getChild(config, "allow_external_access");
+      mExternalAccessAllowed = ( node == null ) ? false : XmlToolkit.getTextAsBoolean(node);
+              
       mConfigFileLastModified = lastModified;
     }
   }
