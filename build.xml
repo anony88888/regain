@@ -440,6 +440,20 @@
       </fileset>
     </jar>
 
+    <jar jarfile="build/preparator/JavaPreparator.jar"
+         compress="false" index="true">
+      <manifest>
+        <attribute name="Preparator-Classes" value=".JavaPreparator"/>
+      </manifest>
+      <fileset dir="build/included-lib-classes/common">
+        <include name="org/eclipse/**"/>
+        <include name="org/osgi/**"/>
+      </fileset>
+      <fileset dir="build/classes">
+        <include name="net/sf/regain/crawler/preparator/JavaPreparator.*"/>
+      </fileset>
+    </jar>
+
     <jar jarfile="build/preparator/IfilterPreparator.jar"
          compress="false" index="true">
       <manifest>
