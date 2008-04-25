@@ -27,23 +27,18 @@
  */
 package net.sf.regain.crawler.preparator;
 
+import net.sf.regain.crawler.preparator.java.*;
 import java.util.ArrayList;
-import java.util.ListIterator;
 import java.util.Vector;
 import net.sf.regain.RegainException;
 import net.sf.regain.crawler.document.AbstractPreparator;
 import net.sf.regain.crawler.document.RawDocument;
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.SimpleType;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 /**
- * Prepares Java source code for indexing
+ * Prepares  Java source code for indexing
  * <p>
  * The following information will be extracted:
- * class name, member names, comments (javadoc) 
+ * class name, member names, return types , code blocks
  *
  * @author Thomas Tesche, cluster:Consult, http://www.thtesche.com/
  */
@@ -67,40 +62,22 @@ public class JavaPreparator extends AbstractPreparator {
    */
   public void prepare(RawDocument rawDocument) throws RegainException {
 
-    // Create new parsing with Java Language Specification 3
-    ASTParser parser = ASTParser.newParser(AST.JLS3);
-    CompilationUnit compileUnit = null;
     Vector<String> contentParts = new Vector<String>();
     Vector<String> titleParts = new Vector<String>();
 
     try {
-      parser.setKind(ASTParser.K_COMPILATION_UNIT);
-      parser.setSource(rawDocument.getContentAsString().toCharArray());
-      // Compile the source code
-      compileUnit = (CompilationUnit) parser.createAST(null);
+      // Creates the parser
+      JavaParser parser = new JavaParser();
+      parser.setSource(rawDocument.getContentAsString());
+      JClass cls = parser.getDeclaredClass();
 
-      // Iterate over all type declarations
-      ListIterator<TypeDeclaration> typesIter = compileUnit.types().listIterator();
-      while (typesIter.hasNext()) {
-        TypeDeclaration _class = typesIter.next();
-        // Class/Interface name
-        String class_interface = _class.isInterface() ? "Interface: " : "Class: ";
-        titleParts.add(class_interface + _class.getName().getIdentifier());
-        contentParts.add(class_interface + _class.getName().getIdentifier());
-        // Superclass name
-        SimpleType _superClass = (SimpleType) _class.getSuperclassType();
-        if( _superClass!=null ){
-          contentParts.add("Superclass: " + _superClass.getName().getFullyQualifiedName());
-        }
-        
-        // Inner classes
-        TypeDeclaration[] types = _class.getTypes();
-        
-        
-      }
+      String class_interface = cls.isInterface() ? "Interface: " : "Class: ";
+
+      titleParts.add(class_interface + cls.getClassName());
+      // extract the class info (including inner classes)
+      contentParts.add(extractClassInfo(cls, false).toString());
 
       setTitle(concatenateStringParts(titleParts, Integer.MAX_VALUE));
-      contentParts.add(rawDocument.getContentAsString());
       setCleanedContent(concatenateStringParts(contentParts, Integer.MAX_VALUE));
 
     } catch (Exception ex) {
@@ -109,20 +86,130 @@ public class JavaPreparator extends AbstractPreparator {
 
   }
 
-  public class JClass {
+  /**
+   * Extract different information from a class. 
+   * <p>
+   * 
+   * @param cls - the class from which the infos will be extracted
+   * @param innerClass - is the class an inner class
+   *
+   * @return the extracted infos as a StringBuffer 
+   */
+  private StringBuffer extractClassInfo(JClass cls, boolean innerClass) {
 
-    String className = null;
-    ArrayList methodDeclarations = new ArrayList();
-    ArrayList innerClasses = new ArrayList();
-    String superClass = null;
-    ArrayList interfaces = new ArrayList();
+    StringBuffer strBuffer = new StringBuffer();
+
+    //For each class add Class Name field
+    String class_interface = "";
+    if (cls.isInterface()) {
+      class_interface = " Interface: ";
+    } else if (innerClass) {
+      class_interface = ", InnerClass: ";
+    } else {
+      class_interface = " Class: ";
+    }
+
+    strBuffer.append(class_interface).append(cls.getClassName());
+
+    String superCls = cls.getSuperClass();
+    if (superCls != null) //Add the class it extends as extends field
+    {
+      strBuffer.append(", Superclass: ").append(superCls);
+    }
+    // Add interfaces it implements
+    ArrayList interfaces = cls.getInterfaces();
+    for (int i = 0; i < interfaces.size(); i++) {
+      strBuffer.append(", implements: ").append((String) interfaces.get(i));
+    }
+
+    // Add details  on methods declared
+    strBuffer.append(extractMethodInfo(cls));
+
+    // Examine inner classes and extract the same details as for the class
+    ArrayList innerCls = cls.getInnerClasses();
+    for (int i = 0; i < innerCls.size(); i++) {
+      strBuffer.append(extractClassInfo((JClass) innerCls.get(i), true));
+    }
+
+    return strBuffer;
   }
 
-  public class JMethod {
+  /**
+   * Extract method details for the class.
+   * 
+   * @param the class to exermine
+   * 
+   * @return the result as a StringBuffer
+   */
+  private StringBuffer extractMethodInfo(JClass cls) {
 
-    String methodName = null;
-    ArrayList parameters = new ArrayList();
-    String codeBlock = null;
-    String returnType = null;
+    StringBuffer strBuffer = new StringBuffer();
+
+    // get all methods
+    ArrayList methods = cls.getMethodDeclarations();
+    for (int i = 0; i < methods.size(); i++) {
+      JMethod method = (JMethod) methods.get(i);
+
+      strBuffer.append(", ");
+      // Add return type field
+      String returnType = method.getReturnType();
+      if (returnType != null) {
+        if (!returnType.equalsIgnoreCase("void")) {
+          strBuffer.append(" ").append(returnType);
+        }
+      }
+      // Add method name field
+      strBuffer.append(" ").append(method.getMethodName()).append("(");
+
+      ArrayList params = method.getParameters();
+      for (int k = 0; k < params.size(); k++) // For each method add parameter types
+      {
+        if (k != 0) {
+          strBuffer.append(" ");
+        }
+        strBuffer.append((String) params.get(k));
+      }
+      strBuffer.append(") ");
+      String code = method.getCodeBlock();
+      if (code != null) //add the method code block
+      {
+        strBuffer.append(code);
+      }
+    }
+
+    return strBuffer;
   }
+
+  private StringBuffer extractImportDeclarations(JavaParser parser) {
+
+    StringBuffer strBuffer = new StringBuffer();
+
+    ArrayList imports = parser.getImportDeclarations();
+    if (imports == null) {
+      return strBuffer;
+    }
+    for (int i = 0; i < imports.size(); i++) //add import declarations as keyword
+    {
+      strBuffer.append((String) imports.get(i));
+    }
+
+    return strBuffer;
+  }
+
+  private StringBuffer extractComments(JavaParser parser) {
+
+    StringBuffer strBuffer = new StringBuffer();
+
+    ArrayList comments = parser.getComments();
+    if (comments == null) {
+      return strBuffer;
+    }
+    for (int i = 0; i < comments.size(); i++) {
+      String docComment = (String) comments.get(i);
+      strBuffer.append(docComment);
+    }
+
+    return strBuffer;
+  }
+  
 }
