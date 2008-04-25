@@ -450,6 +450,7 @@
         <include name="org/osgi/**"/>
       </fileset>
       <fileset dir="build/classes">
+        <include name="net/sf/regain/crawler/preparator/java/**"/>
         <include name="net/sf/regain/crawler/preparator/JavaPreparator.*"/>
       </fileset>
     </jar>
