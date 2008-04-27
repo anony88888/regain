@@ -91,6 +91,11 @@ Ca. 28.07.04:
 ========
     thtesche, cluster:Consult
     MP3Preparator, GenericAudioPreparator: jaudiotagger.jar v1.0.8
+
+27.04.08
+========
+    thtesche, cluster:Consult
+    JavaPreparator: Eclipse 3.3.1 
 Websites:
 =========
   jakarta regexp: http://jakarta.apache.org/site/downloads/downloads_regexp.cgi
@@ -104,3 +109,4 @@ Websites:
   aperture: http://aperture.sourceforge.net/
   jcifs: http://jcifs.samba.org/
   jaudiotagger: https://jaudiotagger.dev.java.net/, http://www.jthink.net/jaudiotagger/ 
+  Eclipse: http://www.eclipse.org/

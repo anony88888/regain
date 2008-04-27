@@ -280,12 +280,12 @@
    | Compiles the source code.
    +-->
   <target name="make">
-    <echo message="Compiling the source code using ${java-1_4.dir} ..." />
+    <echo message="Compiling the source code using ${java.dir} ..." />
     <mkdir dir="build/classes"/>
     <javac destdir="build/classes"
            debug="${debug}"
            deprecation="true"
-           executable="${java-1_4.dir}/bin/javac"
+           executable="${java.dir}/bin/javac"
            source="1.5"
            target="1.5"
            fork="true">
@@ -549,18 +549,23 @@
     <copy todir="build/runtime/desktop/linux/web">
       <fileset dir="build/runtime/desktop/win/web"/>
     </copy>
-    
+        
     <!-- Copy the preparator jars -->
     <copy todir="build/runtime/crawler/preparator">
-      <fileset dir="build/preparator"/>
+      <fileset dir="build/preparator">
+        <exclude name="JavaPreparator.jar"/>
+      </fileset>
     </copy>
     <copy todir="build/runtime/desktop/win/preparator">
-      <fileset dir="build/preparator"/>
+      <fileset dir="build/preparator">
+        <exclude name="JavaPreparator.jar"/>
+      </fileset>
     </copy>
     <copy todir="build/runtime/desktop/linux/preparator">
       <fileset dir="build/preparator">
         <exclude name="JacobMsOfficePreparators.jar"/>
         <exclude name="IfilterPreparator.jar"/>
+        <exclude name="JavaPreparator.jar"/>
       </fileset>
     </copy>
   </target>
@@ -870,7 +875,7 @@
           dir="build/runtime/crawler"
           fork="true">
           <!--
-          jvm="${java-1_4.dir}/bin/java"
+          jvm="${java.dir}/bin/java"
           -->
     </java>
   </target>
@@ -884,7 +889,7 @@
           dir="build/runtime/crawler"
           fork="true">
           <!--
-          jvm="${java-1_4.dir}/bin/java"
+          jvm="${java.dir}/bin/java"
           -->
       <jvmarg value="-Xmx256M"/>
       <classpath>
@@ -902,7 +907,7 @@
           dir="build/runtime/desktop/${platform}"
           fork="true">
           <!--
-          jvm="${java-1_4.dir}/bin/java"
+          jvm="${java.dir}/bin/java"
           -->
       <jvmarg value="-Djava.library.path=."/>
       <jvmarg value="-Xmx256M"/>

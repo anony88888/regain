@@ -1,6 +1,11 @@
-Version 1.4.0 on 05.04.08 Preview
+Version 1.4.1 am 27.04.08 Preview
 ---------------------------------
+* JavaPreparator für *.java-Dateien. Der JavaPreparator ist aufgrund seiner 
+  Größe und dem begrenzten Nutzerkreis nicht Teil der Standardistribution.
 
+
+Version 1.4.0 am 05.04.08 Preview
+---------------------------------
 * Bugfix: StackOverflowError in Linkextraction abgefangen
 * mp3-Preparator extrahiert von ID3v2 oder ID3v1 Tags
 * Generischer Audio Preparator, welcher von mp4 (iTunes), ogg-Vorbis oder 
