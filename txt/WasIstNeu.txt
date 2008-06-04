@@ -1,7 +1,11 @@
+Version 1.4.2 am 04.06.08 Preview
+---------------------------------
+* http://-Links, welche mit einem / enden, k�nnen extrahiert und indiziert werden
+
 Version 1.4.1 am 27.04.08 Preview
 ---------------------------------
-* JavaPreparator für *.java-Dateien. Der JavaPreparator ist aufgrund seiner 
-  Größe und dem begrenzten Nutzerkreis nicht Teil der Standardistribution.
+* JavaPreparator fuer *.java-Dateien. Der JavaPreparator ist aufgrund seiner 
+  Groesse und dem begrenzten Nutzerkreis nicht Teil der Standardistribution.
 
 
 Version 1.4.0 am 05.04.08 Preview

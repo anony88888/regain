@@ -482,7 +482,7 @@ public class RawDocument {
       // Get the file extension
       String extension;
       int lastDot = mUrl.lastIndexOf('.');
-      if (lastDot == -1) {
+      if (lastDot == -1 || mUrl.endsWith("/")  ) {
         extension = ".tmp";
       } else {
         extension = mUrl.substring(lastDot);

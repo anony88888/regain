@@ -300,7 +300,7 @@ public class Crawler implements ErrorLogger {
       if (accepted) {
         mUrlChecker.setAccepted(url);
         if (mLog.isDebugEnabled()) {
-          mLog.debug("Found new URL: " + url);
+          mLog.debug("Found new URL: " + url + " in page: " + sourceUrl);
         }
 
         CrawlerJob job = new CrawlerJob(url, sourceUrl, sourceLinkText,
@@ -318,7 +318,7 @@ public class Crawler implements ErrorLogger {
       } else {
         mUrlChecker.setIgnored(url);
         if (mLog.isDebugEnabled()) {
-          mLog.debug("Ignoring URL: " + url);
+          mLog.debug("Ignoring URL: " + url + " in page: " + sourceUrl);
         }
       }
     }
