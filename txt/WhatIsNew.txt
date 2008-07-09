@@ -1,3 +1,10 @@
+Version 1.5.0 on 09.07.08 Preview
+---------------------------------
+* Link extraction with REgexp switched to HTMLParser link extraction
+* HTMLParser now complete integrated
+* -notrayicon - command line parameter for  desktop-search (TrayIcon will never be shown)
+* Lucene updated to version 2.3.2
+
 Version 1.4.2 on 04.06.08 Preview
 ---------------------------------
 * http://-links which ends with a / will be extracted and indexed

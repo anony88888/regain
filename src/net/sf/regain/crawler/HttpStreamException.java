@@ -112,7 +112,7 @@ public class HttpStreamException extends RegainException {
    * @return Ob der HTTP-Code con einem dead link stammt.
    */
   public boolean isHttpReturnCodeFromDeadLink() {
-    return (mHttpReturnCode == 404);
+    return (mHttpReturnCode == 404 || mHttpReturnCode == 400);
   }
   
 }

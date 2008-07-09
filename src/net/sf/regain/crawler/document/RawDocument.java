@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
+import java.util.HashMap;
 import jcifs.smb.SmbFile;
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
@@ -119,6 +120,11 @@ public class RawDocument {
   private String mMimeType;
 
   /**
+   * HashMap links containing the URL as key and the linktext as value
+   */
+  private HashMap <String,String>mLinks;
+  
+  /**
    * Erzeugt eine neue RawDocument-Instanz.
    *
    * @param url Die URL des Dokuments.
@@ -133,6 +139,7 @@ public class RawDocument {
   public RawDocument(String url, String sourceUrl, String sourceLinkText)
     throws RegainException
   {
+    mLinks = new HashMap<String,String>();
     mUrl = url;
     mSourceUrl = sourceUrl;
     mSourceLinkText = sourceLinkText;
@@ -140,7 +147,6 @@ public class RawDocument {
     if (url.startsWith("file://")) {
       mContentAsFile = RegainToolkit.urlToFile(url);
     } else if( url.startsWith("smb://" )) {
-      //mContent = loadSmbFile(url); 
       mContent = null;
       mContentAsFile = null;
     } else {
@@ -482,7 +488,7 @@ public class RawDocument {
       // Get the file extension
       String extension;
       int lastDot = mUrl.lastIndexOf('.');
-      if (lastDot == -1 || mUrl.endsWith("/")  ) {
+      if (lastDot == -1 || mUrl.endsWith("/") || mUrl.length()-lastDot>=5 ) {
         extension = ".tmp";
       } else {
         extension = mUrl.substring(lastDot);
@@ -509,7 +515,7 @@ public class RawDocument {
 
 
   /**
-   * Gibt alle genutzten System-Ressourcen, wie temporï¿½re Dateien, wieder frei.
+   * Gibt alle genutzten System-Ressourcen, wie temporäre Dateien, wieder frei.
    * <p>
    * Ressourcen der VM, wie z.B. Arrays, werden nicht freigegeben. Das soll der
    * GarbageCollector erledigen.
@@ -552,4 +558,28 @@ public class RawDocument {
     this.mMimeType = mMimeType;
   }
 
+  /**
+   * Gets the information wether the document contains links
+   * @return true if the document contains at least one link
+   */
+  public boolean hasLinks() {
+    if( this.mLinks.isEmpty() )
+      return false;
+    else
+      return true;
+  }
+  
+  /** 
+   * Adds a single link to the Hashmap of links
+   */
+  public void addLink( String url, String linkText ) {
+    this.mLinks.put(url,linkText);
+  }
+  /**
+   * Gets the links
+   * @return Hashmap of links. key is the URL, value the link text
+   */
+  public HashMap getLinks(){
+    return mLinks;
+  }
 }

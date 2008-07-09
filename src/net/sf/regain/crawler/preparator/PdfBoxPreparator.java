@@ -29,13 +29,11 @@ package net.sf.regain.crawler.preparator;
 
 import java.io.InputStream;
 import java.io.IOException;
-import java.io.StringWriter;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.crawler.document.AbstractPreparator;
 import net.sf.regain.crawler.document.RawDocument;
 
-import org.pdfbox.encryption.DocumentEncryption;
 import org.pdfbox.exceptions.CryptographyException;
 import org.pdfbox.exceptions.InvalidPasswordException;
 import org.pdfbox.pdfparser.PDFParser;
@@ -87,20 +85,15 @@ public class PdfBoxPreparator extends AbstractPreparator {
 
       // Decrypt the PDF-Dokument
       if (pdfDocument.isEncrypted()) {
-        // code for PDFBox before 0.6.7
-        // DecryptDocument decryptor = new DecryptDocument(pdfDocument);
-        
-        // code for PDFBox 0.6.7 or higher
-        DocumentEncryption decryptor = new DocumentEncryption(pdfDocument);
-        
-        // Just try using the default password and move on
-        decryptor.decryptDocument("");
+        pdfDocument.decrypt("");
       }
 
-      // Clean the content and write it to a String
+      // Extract the text with a utility class
       PDFTextStripper stripper = new PDFTextStripper();
-      stripper.setWordSeparator(" ");
-      stripper.setLineSeparator("\n");
+      stripper.setSuppressDuplicateOverlappingText(false);
+      stripper.setSortByPosition(true);
+      stripper.setStartPage(1);
+      stripper.setEndPage(Integer.MAX_VALUE);
 
       setCleanedContent(stripper.getText(pdfDocument));
 

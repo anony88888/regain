@@ -27,6 +27,8 @@
  */
 package net.sf.regain.crawler.preparator;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 
 import net.sf.regain.RegainException;
@@ -38,18 +40,21 @@ import net.sf.regain.crawler.document.RawDocument;
 import net.sf.regain.crawler.preparator.html.HtmlContentExtractor;
 import net.sf.regain.crawler.preparator.html.HtmlPathExtractor;
 
+import net.sf.regain.crawler.preparator.html.LinkVisitor;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 import org.htmlparser.Parser;
+import org.htmlparser.Tag;
 import org.htmlparser.beans.StringBean;
 import org.htmlparser.lexer.Lexer;
 import org.htmlparser.lexer.Page;
+import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.ParserException;
 
 
 /**
- * Prï¿½pariert ein HTML-Dokument fï¿½r die Indizierung.
+ * Präpariert ein HTML-Dokument für die Indizierung.
  * <p>
  * Dabei werden die Rohdaten des Dokuments von Formatierungsinformation befreit,
  * es wird der Titel extrahiert.
@@ -107,6 +112,7 @@ public class HtmlPreparator extends AbstractPreparator {
    * @param config The configuration.
    * @throws RegainException If the configuration has an error.
    */
+  @Override
   public void init(PreparatorConfig config) throws RegainException {
     // Read the content extractors
     Map[] sectionArr = config.getSectionsWithName("contentExtractor");
@@ -195,6 +201,7 @@ public class HtmlPreparator extends AbstractPreparator {
     // Cut the content and extract the headlines
     String cuttedContent;
     String headlines;
+    boolean isContentCutted = false;
     if (contentExtractor == null) {
       // There is no HtmlContentExtractor responsible for this document
       if (mLog.isDebugEnabled()) {
@@ -205,8 +212,10 @@ public class HtmlPreparator extends AbstractPreparator {
       headlines = null;
     } else {
       cuttedContent = contentExtractor.extractContent(rawDocument);
-
       headlines = contentExtractor.extractHeadlines(cuttedContent);
+      if( !cuttedContent.equals(rawDocument.getContentAsString()) ){
+        isContentCutted = true;
+      }
     }
 
     // Using HTMLParser to extract the content
@@ -228,13 +237,44 @@ public class HtmlPreparator extends AbstractPreparator {
       cleanedContent = stringBean.getStrings();
      
     } catch (ParserException ex) {
-      throw new RegainException("Error while parsing content",ex);
+      throw new RegainException("Error while parsing content: ",ex);
     }
     
-    // Clean the content from tags
-    // String cleanedContent = CrawlerToolkit.cleanFromHtmlTags(cuttedContent);
+    // The result of parsing the html-content
     setCleanedContent(cleanedContent);
 
+    // Extract links
+    LinkVisitor linkVisitor = new LinkVisitor();
+    if( isContentCutted ){
+      // This means a new parser run which is expensive but neccessary
+      parser = new Parser(new Lexer(new Page(rawDocument.getContentAsString(), "UTF-8")));
+    } else {
+      parser.reset();
+    }
+    
+    try {
+      // Parse the content
+      parser.visitAllNodesWith(linkVisitor);
+      ArrayList<Tag> links = linkVisitor.getLinks();
+      
+      // Iterate over all links found
+      Iterator linksIter = links.iterator();
+      while (linksIter.hasNext()) {
+        LinkTag currTag = ((LinkTag) linksIter.next());
+        
+        String link = CrawlerToolkit.toAbsoluteUrl(currTag.getLink(), rawDocument.getUrl());
+        String linkText = currTag.getLinkText();
+        if( linkText == null ){
+          linkText ="";
+        }
+        // store the link
+        rawDocument.addLink(link, linkText);
+      }
+      
+    } catch (ParserException ex) {
+      throw new RegainException("Error while extracting links: ",ex);
+    }
+    
     if (headlines != null) {
       // Replace HTML Entities
       headlines = CrawlerToolkit.replaceHtmlEntities(headlines);

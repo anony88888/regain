@@ -31,14 +31,17 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.String;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import java.util.Map;
 import jcifs.smb.SmbFile;
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.config.CrawlerConfig;
 import net.sf.regain.crawler.config.StartUrl;
+import net.sf.regain.crawler.config.UrlMatcher;
 import net.sf.regain.crawler.config.UrlPattern;
 import net.sf.regain.crawler.config.WhiteListEntry;
 import net.sf.regain.crawler.document.RawDocument;
@@ -52,7 +55,7 @@ import org.apache.regexp.RESyntaxException;
  * werden je nach Einstellung nur geladen, in den Suchindex aufgenommen oder
  * wiederum nach URLs durchsucht.
  * <p>
- * Fï¿½r jede URL wird Anhand der Schwarzen und der Weiï¿½en Liste entschieden, ob sie
+ * Für jede URL wird Anhand der Schwarzen und der Weißen Liste entschieden, ob sie
  * ignoriert oder bearbeitet wird. Wenn <CODE>loadUnparsedUrls</CODE> auf
  * <CODE>false</CODE> gesetzt wurde, dann werden auch URLs ignoriert, die weder
  * durchsucht noch indiziert werden.
@@ -141,15 +144,20 @@ public class Crawler implements ErrorLogger {
     RawDocument.setHttpTimeoutSecs(config.getHttpTimeoutSecs());
 
     mHtmlParserUrlPatternArr = config.getHtmlParserUrlPatterns();
-    mHtmlParserPatternReArr = new RE[mHtmlParserUrlPatternArr.length];
-    for (int i = 0; i < mHtmlParserPatternReArr.length; i++) {
-      String regex = mHtmlParserUrlPatternArr[i].getRegexPattern();
-      try {
-        mHtmlParserPatternReArr[i] = new RE(regex);
-      }
-      catch (RESyntaxException exc) {
-        throw new RegainException("Regular exception of HTML parser pattern #"
-          + (i + 1) + " has a wrong syntax: '" + regex + "'", exc);
+    if(mHtmlParserUrlPatternArr.length > 0) {
+      mLog.error("Entries in <htmlParserPatternList/> are no longer supported. Please remove " +
+        "the Tag and it's children from your config file. Use <whitelist><prefix|regex " +
+        "parse=true|false index=true|false >http://someULR</prefix|regex> instead.");
+      mHtmlParserPatternReArr = new RE[mHtmlParserUrlPatternArr.length];
+      for (int i = 0; i < mHtmlParserPatternReArr.length; i++) {
+        String regex = mHtmlParserUrlPatternArr[i].getRegexPattern();
+        try {
+          mHtmlParserPatternReArr[i] = new RE(regex);
+        }
+        catch (RESyntaxException exc) {
+          throw new RegainException("Regular exception of HTML parser pattern #"
+            + (i + 1) + " has a wrong syntax: '" + regex + "'", exc);
+        }
       }
     }
   }
@@ -251,16 +259,16 @@ public class Crawler implements ErrorLogger {
   /**
    * Analysiert die URL und entscheidet, ob sie bearbeitet werden soll oder nicht.
    * <p>
-   * Wenn ja, dann wird ein neuer Job erzeugt und der Job-Liste hinzugefï¿½gt.
+   * Wenn ja, dann wird ein neuer Job erzeugt und der Job-Liste hinzugefügt.
    *
-   * @param url Die URL des zu prï¿½fenden Jobs.
-   * @param sourceUrl Die URL des Dokuments in der die URL des zu prï¿½fenden Jobs
+   * @param url Die URL des zu prüfenden Jobs.
+   * @param sourceUrl Die URL des Dokuments in der die URL des zu prüfenden Jobs
    *        gefunden wurde.
    * @param shouldBeParsed Gibt an, ob die URL geparst werden soll.
    * @param shouldBeIndexed Gibt an, ob die URL indiziert werden soll.
    * @param sourceLinkText Der Text des Links in dem die URL gefunden wurde. Ist
    *        <code>null</code>, falls die URL nicht in einem Link (also einem
-   *        a-Tag) gefunden wurde oder wenn aus sonstigen Grï¿½nden kein Link-Text
+   *        a-Tag) gefunden wurde oder wenn aus sonstigen Gründen kein Link-Text
    *        vorhanden ist.
    */
   private void addJob(String url, String sourceUrl, boolean shouldBeParsed,
@@ -278,7 +286,16 @@ public class Crawler implements ErrorLogger {
     boolean alreadyIgnored = mUrlChecker.wasAlreadyIgnored(url);
 
     if ((! alreadyAccepted) && (! alreadyIgnored)) {
-      boolean accepted = mUrlChecker.isUrlAccepted(url);
+      // Check whether the url matches an entry in the whitelist and not an entry in the blacklist
+      // We assume that the caller of addJob() detected the correct values for shouldBeParsed
+      // and shouldBeIndexed. 
+      UrlMatcher urlMatch = mUrlChecker.isUrlAccepted(url);
+      boolean accepted;
+      if( urlMatch.getShouldBeParsed() || urlMatch.getShouldBeIndexed() )
+        accepted = true;
+      else
+        accepted = false;
+      
       int mMaxCycleCount = mConfiguration.getMaxCycleCount();
 
       if (mMaxCycleCount > 0 && accepted) {
@@ -441,6 +458,8 @@ public class Crawler implements ErrorLogger {
         String redirectUrl = exc.getRedirectUrl();
         mLog.info("Redirect '" + url +  "' -> '" + redirectUrl + "'");
         mUrlChecker.setIgnored(url);
+        // the RedirectURL inherit the properties for shouldBeParsed, shouldBeIndexed from the 
+        // sourceURL. This is possibly not right according to definitions in the whitelist
         addJob(redirectUrl, mCurrentJob.getSourceUrl(), shouldBeParsed,
                shouldBeIndexed, mCurrentJob.getSourceLinkText());
         mCrawlerJobProfiler.stopMeasuring(0);
@@ -456,32 +475,39 @@ public class Crawler implements ErrorLogger {
         continue;
       }
 
-      // Parse the content
-      if (shouldBeParsed) {
-        mLog.info("Parsing " + rawDocument.getUrl());
-        mHtmlParsingProfiler.startMeasuring();
-        try {
-          parseHtmlDocument(rawDocument);
-          mHtmlParsingProfiler.stopMeasuring(rawDocument.getLength());
-        }
-        catch (RegainException exc) {
-          logError("Parsing HTML failed: " + rawDocument.getUrl(), exc, false);
-        }
-      }
-
-      // Index the content
-      if (shouldBeIndexed) {
+      if( shouldBeIndexed || shouldBeParsed ){
         if (mLog.isDebugEnabled()) {
-          mLog.debug("Indexing " + rawDocument.getUrl());
+          mLog.debug("Parsing and indexing " + rawDocument.getUrl());
         }
-        try {
-          mIndexWriterManager.addToIndex(rawDocument, this);
-        }
-        catch (RegainException exc) {
-          logError("Indexing failed: " + rawDocument.getUrl(), exc, false);
-        }
-      }
+        mHtmlParsingProfiler.startMeasuring();
 
+        // Parse and index content and metadata
+        if (shouldBeIndexed) {
+           try {
+            mIndexWriterManager.addToIndex(rawDocument, this);
+          }
+          catch (RegainException exc) {
+            logError("Indexing failed for: " + rawDocument.getUrl(), exc, false);
+          }
+        } 
+
+        // Extract links form the document (parse=true). The real meaning of parse in this context
+        // is link-extraction. The document is parsed anyway (building a html-node tree).
+        if (shouldBeParsed) {
+          if(!shouldBeIndexed){
+            // The document is not parsed so parse it
+            mIndexWriterManager.getDocumentFactory().createDocument(rawDocument, this);
+          }
+          try {
+            //parseHtmlDocument(rawDocument);
+            createCrawlerJobs(rawDocument);
+          }
+          catch (RegainException exc) {
+            logError("CrawlerJob creation failed for: " + rawDocument.getUrl(), exc, false);
+          }
+        }
+        mHtmlParsingProfiler.stopMeasuring(rawDocument.getLength());
+      }
       // System-Ressourcen des RawDocument wieder frei geben.
       rawDocument.dispose();
 
@@ -512,7 +538,7 @@ public class Crawler implements ErrorLogger {
       }
     } // while (! mJobList.isEmpty())
 
-    // Nicht mehr vorhandene Dokumente aus dem Index lï¿½schen
+    // Nicht mehr vorhandene Dokumente aus dem Index löschen
     if (mConfiguration.getBuildIndex()) {
       mLog.info("Removing index entries of documents that do not exist any more...");
       try {
@@ -523,7 +549,7 @@ public class Crawler implements ErrorLogger {
       }
     }
 
-    // Prï¿½fen, ob Index leer ist
+    // Prüfen, ob Index leer ist
     int entryCount = 0;
     try {
       entryCount = mIndexWriterManager.getIndexEntryCount();
@@ -543,7 +569,7 @@ public class Crawler implements ErrorLogger {
       logError("The index is empty.", null, true);
       failedPercent = 1;
     } else {
-      // Prï¿½fen, ob die Anzahl der abgebrochenen Dokumente ï¿½ber der Toleranzgranze
+      // Prüfen, ob die Anzahl der abgebrochenen Dokumenteüber der Toleranzgrenze
       // ist.
       double failedDocCount = mDeadlinkList.size() + mErrorCount;
       double totalDocCount = failedDocCount + entryCount;
@@ -772,10 +798,10 @@ public class Crawler implements ErrorLogger {
 
 
   /**
-   * Prï¿½ft, ob die Exception von einem Dead-Link herrï¿½hrt.
+   * Prüft, ob die Exception von einem Dead-Link herrührt.
    *
-   * @param thr Die zu prï¿½fende Exception
-   * @return Ob die Exception von einem Dead-Link herrï¿½hrt.
+   * @param thr Die zu prüfende Exception
+   * @return Ob die Exception von einem Dead-Link herrührt.
    */
   private boolean isExceptionFromDeadLink(Throwable thr) {
     if (thr instanceof HttpStreamException) {
@@ -854,9 +880,28 @@ public class Crawler implements ErrorLogger {
          
   }
 
+  /**
+   * Creates crawler jobs from inclosed links. Every link is checked against the white-/black list.
+   * 
+   * @param rawDocument A document with or without links
+   * @throws net.sf.regain.RegainException if an exception occurrs during job creation
+   */
+  private void createCrawlerJobs(RawDocument rawDocument) throws RegainException {
+    if( rawDocument.hasLinks() ){
+      // Iterate over all found links in the document
+      for (Iterator iter = rawDocument.getLinks().entrySet().iterator(); iter.hasNext();){ 
+        Map.Entry entry = (Map.Entry)iter.next();
+        // The intention of this call is only to determine the linkextraction and indexing property
+        UrlMatcher urlMatch = mUrlChecker.isUrlAccepted((String)entry.getKey());
+        // Add the job
+        addJob((String)entry.getKey(), rawDocument.getUrl(), 
+          urlMatch.getShouldBeParsed(), urlMatch.getShouldBeIndexed(), (String)entry.getValue());
+      }
+    }
+  }
 
   /**
-   * Durchsucht den Inhalt eines HTML-Dokuments nach URLs und erzeugt fï¿½r jeden
+   * Durchsucht den Inhalt eines HTML-Dokuments nach URLs und erzeugt für jeden
    * Treffer einen neuen Job.
    *
    * @param rawDocument Das zu durchsuchende Dokument.
@@ -895,8 +940,6 @@ public class Crawler implements ErrorLogger {
       }
     }
   }
-
-
 
   /**
    * Tries to extract a link text from a position where a URL was found.
@@ -947,7 +990,7 @@ public class Crawler implements ErrorLogger {
 
 
   /**
-   * Gibt die Anzahl der Fehler zurï¿½ck (das beinhaltet fatale und nicht fatale
+   * Gibt die Anzahl der Fehler zurück (das beinhaltet fatale und nicht fatale
    * Fehler).
    *
    * @return Die Anzahl der Fehler.
@@ -959,7 +1002,7 @@ public class Crawler implements ErrorLogger {
 
 
   /**
-   * Gibt Die Anzahl der fatalen Fehler zurï¿½ck.
+   * Gibt Die Anzahl der fatalen Fehler zurück.
    * <p>
    * Fatale Fehler sind Fehler, durch die eine Erstellung oder Aktualisierung
    * des Index verhindert wurde.

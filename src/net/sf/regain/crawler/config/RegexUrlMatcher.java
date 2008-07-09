@@ -37,7 +37,7 @@ import org.apache.regexp.RESyntaxException;
  *  
  * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
  */
-public class RegexUrlMatcher implements UrlMatcher {
+public class RegexUrlMatcher extends UrlMatcherImpl {
 
   /** The regex as String. */
   private String mUrlRegexAsString;
@@ -53,9 +53,10 @@ public class RegexUrlMatcher implements UrlMatcher {
    *        matched by this matcher.
    * @throws RegainException
    */
-  public RegexUrlMatcher(String regex)
+  public RegexUrlMatcher(String regex, boolean shouldBeParsed, boolean shouldBeIndexed)
     throws RegainException
   {
+    super(shouldBeParsed, shouldBeIndexed);
     mUrlRegexAsString = regex;
     
     try {

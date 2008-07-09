@@ -37,6 +37,7 @@ import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.config.StartUrl;
 import net.sf.regain.crawler.config.UrlMatcher;
+import net.sf.regain.crawler.config.UrlMatcherImpl;
 import net.sf.regain.crawler.config.WhiteListEntry;
 
 import org.apache.log4j.Logger;
@@ -202,39 +203,44 @@ public class UrlChecker {
    }
 
   /**
-   * Prï¿½ft ob die URL von der Schwarzen und Weiï¿½en Liste akzeptiert wird.
+   * Prüft ob die URL von der Schwarzen und Weißen Liste akzeptiert wird.
    * <p>
-   * Dies ist der Fall, wenn sie keinem Prï¿½fix aus der Schwarzen Liste und
-   * mindestens einem aus der Weiï¿½en Liste entspricht.
+   * Dies ist der Fall, wenn sie keinem Präfix aus der Schwarzen Liste und
+   * mindestens einem aus der Weißen Liste entspricht.
    *
-   * @param url Die zu prï¿½fende URL.
-   * @return Ob die URL von der Schwarzen und Weiï¿½en Liste akzeptiert wird.
+   * @param url Die zu prüfende URL.
+   * @return Ob die URL von der Schwarzen und Weißen Liste akzeptiert wird.
    */
-  public boolean isUrlAccepted(String url) {
+  public UrlMatcher isUrlAccepted(String url) {
+    
+    UrlMatcher urlMatch = new UrlMatcherImpl(false, false);
+
     // check whether this URL matches to a white list prefix
-    boolean matchesToWhiteList = false;
     for (int i = 0; i < mWhiteListEntryArr.length; i++) {
       if (mWhiteListEntryArr[i].shouldBeUpdated()) {
         UrlMatcher matcher = mWhiteListEntryArr[i].getUrlMatcher();
         if (matcher.matches(url)) {
-          matchesToWhiteList = true;
+          // get the values for link extraction and indexing 
+          // from the current matcher hit
+          urlMatch.setShouldBeParsed(matcher.getShouldBeParsed());
+          urlMatch.setShouldBeIndexed(matcher.getShouldBeIndexed());
           break;
         }
       }
     }
-    if (! matchesToWhiteList) {
-      return false;
-    }
 
     // check whether this URL matches to a black list prefix
-    for (int i = 0; i < mBlackListArr.length; i++) {
-      if (mBlackListArr[i].matches(url)) {
-        return false;
+    // check only if there was a whitelist-hit
+    if( urlMatch.getShouldBeParsed() || urlMatch.getShouldBeIndexed() ) {
+      for (int i = 0; i < mBlackListArr.length; i++) {
+        if (mBlackListArr[i].matches(url)) {
+          urlMatch.setShouldBeParsed(false);
+          urlMatch.setShouldBeIndexed(false);
+        }
       }
     }
 
-    // All tests passed -> URL is accepted
-    return true;
+    return urlMatch;
   }
 
 
@@ -308,7 +314,8 @@ public class UrlChecker {
       // since we didn't remember whether it was accepted or not.
       
       // Check whether the url is accepted by the white and black list
-      if (! isUrlAccepted(url)) {
+      UrlMatcher urlMatch = isUrlAccepted(url);
+      if (! urlMatch.getShouldBeIndexed() ) {
         // This file is not accepted -> Remove it from the index
         return false;
       }

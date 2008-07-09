@@ -96,6 +96,12 @@ Ca. 28.07.04:
 ========
     thtesche, cluster:Consult
     JavaPreparator: Eclipse 3.3.1 
+
+09.07.08
+========
+    thtesche, Thomas Tesche, cluster:Consult
+    lucene 2.2.0 --> 2.3.2
+
 Websites:
 =========
   jakarta regexp: http://jakarta.apache.org/site/downloads/downloads_regexp.cgi

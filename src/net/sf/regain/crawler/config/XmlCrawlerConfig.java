@@ -337,7 +337,7 @@ public class XmlCrawlerConfig implements CrawlerConfig {
 
 
   /**
-   * Liest die URL-Patterns fï¿½r den HTML-Parser aus der Konfiguration.
+   * Reads the  URL-patterns for the old HTML-parser from the config.
    * <p>
    * Diese werden beim durchsuchen eines HTML-Dokuments dazu verwendet, URLs
    * zu identifizieren.
@@ -346,17 +346,21 @@ public class XmlCrawlerConfig implements CrawlerConfig {
    * @throws RegainException Wenn die Konfiguration fehlerhaft ist.
    */
   private void readHtmlParserUrlPatterns(Node config) throws RegainException {
-    Node node = XmlToolkit.getChild(config, "htmlParserPatternList", true);
-    Node[] nodeArr = XmlToolkit.getChildArr(node, "pattern");
-    mHtmlParserUrlPatterns = new UrlPattern[nodeArr.length];
-    for (int i = 0; i < nodeArr.length; i++) {
-      String regexPattern = XmlToolkit.getText(nodeArr[i], true);
-      int regexGroup = XmlToolkit.getAttributeAsInt(nodeArr[i], "regexGroup");
-      boolean parse = XmlToolkit.getAttributeAsBoolean(nodeArr[i], "parse");
-      boolean index = XmlToolkit.getAttributeAsBoolean(nodeArr[i], "index");
+    Node node = XmlToolkit.getChild(config, "htmlParserPatternList", false);
+    if( node!=null ) {
+      Node[] nodeArr = XmlToolkit.getChildArr(node, "pattern");
+      mHtmlParserUrlPatterns = new UrlPattern[nodeArr.length];
+      for (int i = 0; i < nodeArr.length; i++) {
+        String regexPattern = XmlToolkit.getText(nodeArr[i], true);
+        int regexGroup = XmlToolkit.getAttributeAsInt(nodeArr[i], "regexGroup");
+        boolean parse = XmlToolkit.getAttributeAsBoolean(nodeArr[i], "parse");
+        boolean index = XmlToolkit.getAttributeAsBoolean(nodeArr[i], "index");
 
-      mHtmlParserUrlPatterns[i] = new UrlPattern(regexPattern, regexGroup,
-        parse, index);
+        mHtmlParserUrlPatterns[i] = new UrlPattern(regexPattern, regexGroup,
+          parse, index);
+      }
+    } else {
+      mHtmlParserUrlPatterns = new UrlPattern[0];
     }
   }
 
@@ -378,11 +382,11 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     mBlackList = new UrlMatcher[prefixNodeArr.length + regexNodeArr.length];
     for (int i = 0; i < prefixNodeArr.length; i++) {
       String prefix = XmlToolkit.getText(prefixNodeArr[i], true);
-      mBlackList[i] = new PrefixUrlMatcher(prefix);
+      mBlackList[i] = new PrefixUrlMatcher(prefix, false, false);
     }
     for (int i = 0; i < regexNodeArr.length; i++) {
       String regex = XmlToolkit.getText(regexNodeArr[i], true);
-      mBlackList[prefixNodeArr.length + i] = new RegexUrlMatcher(regex);
+      mBlackList[prefixNodeArr.length + i] = new RegexUrlMatcher(regex,false,false);
     }
   }
 
@@ -404,13 +408,17 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     mWhiteListEntryArr = new WhiteListEntry[prefixNodeArr.length + regexNodeArr.length];
     for (int i = 0; i < prefixNodeArr.length; i++) {
       String prefix = XmlToolkit.getText(prefixNodeArr[i], true);
-      UrlMatcher matcher = new PrefixUrlMatcher(prefix);
+      boolean parse = XmlToolkit.getAttributeAsBoolean(prefixNodeArr[i], "parse", true);
+      boolean index = XmlToolkit.getAttributeAsBoolean(prefixNodeArr[i], "index", true);
+      UrlMatcher matcher = new PrefixUrlMatcher(prefix, parse, index);
       String name = XmlToolkit.getAttribute(prefixNodeArr[i], "name");
       mWhiteListEntryArr[i] = new WhiteListEntry(matcher, name);
     }
     for (int i = 0; i < regexNodeArr.length; i++) {
       String regex = XmlToolkit.getText(regexNodeArr[i], true);
-      UrlMatcher matcher = new RegexUrlMatcher(regex);
+      boolean parse = XmlToolkit.getAttributeAsBoolean(regexNodeArr[i], "parse", true);
+      boolean index = XmlToolkit.getAttributeAsBoolean(regexNodeArr[i], "index", true);
+      UrlMatcher matcher = new RegexUrlMatcher(regex, parse, index);
       String name = XmlToolkit.getAttribute(regexNodeArr[i], "name");
       mWhiteListEntryArr[prefixNodeArr.length + i] = new WhiteListEntry(matcher, name);
     }
@@ -883,7 +891,7 @@ public class XmlCrawlerConfig implements CrawlerConfig {
    * The black list is an array of WhiteListEntry, a URLs <i>must</i> match to,
    * in order to be processed.
    *
-   * @return Die Weiße Liste
+   * @return Die weiße Liste
    */
   public WhiteListEntry[] getWhiteList() {
     return mWhiteListEntryArr;

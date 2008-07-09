@@ -130,7 +130,7 @@ public class Main implements DesktopConstants {
      
     // Opening browser only in tryIcon-less mode
     if(!useTrayIcon) {
-      DesktopToolkit.openPageInBrowser("searchinput.jsp");
+      DesktopToolkit.openPageInBrowser("welcome.jsp");
     }
   }
   

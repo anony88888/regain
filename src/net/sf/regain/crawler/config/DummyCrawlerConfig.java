@@ -313,7 +313,7 @@ public class DummyCrawlerConfig implements CrawlerConfig {
    */
   public WhiteListEntry[] getWhiteList() {
     return new WhiteListEntry[] {
-      new WhiteListEntry(new PrefixUrlMatcher("file://"), null)
+      new WhiteListEntry(new PrefixUrlMatcher("file://",true,true), null)
     };
   }
 
