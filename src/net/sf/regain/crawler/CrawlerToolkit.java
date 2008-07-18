@@ -217,8 +217,8 @@ public class CrawlerToolkit {
 
 
   /**
-   * Lädt ein Dokument von einem HTTP-Server herunter und gibt seinen Inhalt
-   * zurück.
+   * Lï¿½dt ein Dokument von einem HTTP-Server herunter und gibt seinen Inhalt
+   * zurï¿½ck.
    *
    * @param url Die URL des zu ladenden Dokuments.
    *
@@ -401,7 +401,22 @@ public class CrawlerToolkit {
     return url;
   }
 
-
+  /**
+   * Removes anchors from URLs like http://mydomain.com/index.html#anchor
+   * 
+   * @param url an URL with or without an anchor
+   * @return the URL without an anchor
+   */
+  public static String removeAnchor(String url){
+    // Remove anchors from link.
+    int index = url.indexOf('#');
+    if (index != -1) {
+      return url.substring(0, index);
+    } else {
+      return url;
+    }
+  }
+  
   /**
    * Prints the active threads to System.out. Usefull for debugging.
    */
@@ -464,9 +479,9 @@ public class CrawlerToolkit {
 
 
   /**
-   * Wandelt alle HTML-Entitäten in ihre Ensprechungen.
+   * Wandelt alle HTML-Entitï¿½ten in ihre Ensprechungen.
    *
-   * @param text Den Text, dessen HTML-Entitäten gewandelt werden sollen.
+   * @param text Den Text, dessen HTML-Entitï¿½ten gewandelt werden sollen.
    *
    * @return Der gewandelte Text.
    */
@@ -514,12 +529,12 @@ public class CrawlerToolkit {
 
 
   /**
-   * Säubert HTML-Text von seinen Tags und wandelt alle HTML-Entitäten in ihre
+   * Sï¿½ubert HTML-Text von seinen Tags und wandelt alle HTML-Entitï¿½ten in ihre
    * Ensprechungen.
    *
-   * @param text Der zu säubernde HTML-Text.
+   * @param text Der zu sï¿½ubernde HTML-Text.
    *
-   * @return Der von Tags gesäberte Text
+   * @return Der von Tags gesï¿½berte Text
    */
   public static String cleanFromHtmlTags(String text) {
     StringBuffer clean = new StringBuffer(text.length());

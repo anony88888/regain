@@ -97,10 +97,12 @@ Ca. 28.07.04:
     thtesche, cluster:Consult
     JavaPreparator: Eclipse 3.3.1 
 
-09.07.08
+17.07.08
 ========
     thtesche, Thomas Tesche, cluster:Consult
     lucene 2.2.0 --> 2.3.2
+    BouncyCastle for PDFBox 1.39 for JDK 1.6
+    Aperture 1.0.1-beta --> 1.1.0-beta
 
 Websites:
 =========
@@ -116,3 +118,4 @@ Websites:
   jcifs: http://jcifs.samba.org/
   jaudiotagger: https://jaudiotagger.dev.java.net/, http://www.jthink.net/jaudiotagger/ 
   Eclipse: http://www.eclipse.org/
+  BouncyCastle: http://www.bouncycastle.org/

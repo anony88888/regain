@@ -407,6 +407,7 @@
       <fileset dir="build/included-lib-classes/common">
         <include name="org/pdfbox/**"/>
         <include name="org/fontbox/**"/>
+        <include name="org/bouncycastle/**"/>
         <include name="Resources/**"/>
       </fileset>
       <fileset dir="build/classes">

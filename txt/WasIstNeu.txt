@@ -1,13 +1,17 @@
-Version 1.5.0 am 09.07.08 Preview
+Version 1.5.0 am 10.07.08 Preview
 ---------------------------------
-* Linkextraktion von REgexp auf HTMLParser umgestellt
+* Linkextraktion von Regexp auf HTMLParser umgestellt
 * HTMLParser jetzt komplett integriert
-* -notrayicon - Kommandozeilenparameter f�r Desktopsuche (TrayIcon wird nicht angezeigt)
+* -notrayicon - Kommandozeilenparameter für Desktopsuche (TrayIcon wird nicht angezeigt)
 * Lucene auf 2.3.2 geupdated
+* Anchors werden von URLs entfernt (http://forum.murfman.de/index.html#bottom --> http://forum.murfman.de/index.html)
+* Definition eines default Indexupdate-Intervalles
+* Änderung Löschvorgang temporäre Dateien
+* Verbesserte Mimetype-Detection (Update Aperture, URL-Bestimmung)
 
 Version 1.4.2 am 04.06.08 Preview
 ---------------------------------
-* http://-Links, welche mit einem / enden, k�nnen extrahiert und indiziert werden
+* http://-Links, welche mit einem / enden, können extrahiert und indiziert werden
 
 Version 1.4.1 am 27.04.08 Preview
 ---------------------------------
@@ -29,11 +33,11 @@ Version 1.3.0/1 am 16.03.08
 * Zugriff auf Windows-Shares (ohne Authentifizierung) (Samba/CIFS)
 * HTML-Parser zum Extrahieren des Contents
 * Bugfix Mimetypdetection, wenn das File keine Dateinendung besitzt
-* Priorit�t f�r Preparatoren. Default Prio ist 0. Damit l�sst sich mittels
+* Priorität für Preparatoren. Default Prio ist 0. Damit lässt sich mittels
   URLRegEx .* in einem beliebigen Preparator (vorzugsweise EmptyPreparator)
   und priority=-1 ein CatchAll-Preparator konfigurieren
-* Highlighting f�r Content und Titel
-* Preparatorselektion anhand des Mimetypes (fr�her Dateiendung)
+* Highlighting für Content und Titel
+* Preparatorselektion anhand des Mimetypes (früher Dateiendung)
 * Mimetype-detection (Dateiendung und MagicMime) 
 * Umstellung Erweiterte Suche auf Auswahl Mimetype anstelle Dateiendung
 
@@ -41,7 +45,7 @@ Version 1.3.0/1 am 16.03.08
 Version 1.2.3 am 01.12.07
 -------------------------
 
-* Bugfix: In manchen F�llen wurden keine Dateiinhalte indexiert.
+* Bugfix: In manchen Fällen wurden keine Dateiinhalte indexiert.
 
 
 Version 1.2.2 am 01.11.07
@@ -65,16 +69,16 @@ Version 1.2 am 20.10.07
 * In den Suchergebnissen werden nun Icons gezeigt, die den Typ einer Datei
   kennzeichnen. 
 * Die Index-Felder "size" und "last-modified" sind nun suchbar.
-* Neuer Pr�parator: EmptyPreparator (Beigesteuert von Gerhard Olsson). Dieser
-  Pr�parator extrahiert keinen Inhalt aus den ihm zugeordneten Dateien. Dadurch
-  landet im Index nur der Pfad und Dateiname (hilfreich f�r alle Dateitypen, f�r
-  die es keinen Pr�parator gibt).
-* Die maximale Anzahl von Termen pro Dokument ist nun einstellbar und zwar �ber
+* Neuer Präparator: EmptyPreparator (Beigesteuert von Gerhard Olsson). Dieser
+  Präparator extrahiert keinen Inhalt aus den ihm zugeordneten Dateien. Dadurch
+  landet im Index nur der Pfad und Dateiname (hilfreich für alle Dateitypen, für
+  die es keinen Präparator gibt).
+* Die maximale Anzahl von Termen pro Dokument ist nun einstellbar und zwar über
   das <maxFieldLength>-Tag in der CrawlerConfiguration.xml. Default ist 10000.
 * Der IfilterPreparator funktioniert jetzt auch unter Windows Server 2003.
-* Die Werte f�r das <search:input_fieldlist>-Tag k�nnen nun beim Indexieren
-  ermittelt werden. Dadurch muss diese bei gro�en Indexen langsame Operation
-  nicht mehr bei der ersten Suche gemacht werden. Dies kann �ber das
+* Die Werte für das <search:input_fieldlist>-Tag können nun beim Indexieren
+  ermittelt werden. Dadurch muss diese bei großen Indexen langsame Operation
+  nicht mehr bei der ersten Suche gemacht werden. Dies kann über das
   <valuePrefetchFields>-Tag in der CrawlerConfiguration.xml eingestellt werden.
 * Mehrere Bugfixes
 
@@ -95,8 +99,8 @@ Version 1.1 am 26.02.06
 * Die Tag Library ist nun dokumentiert.
 * Die Suchmaske akzeptiert nun mehrere "query" Parameter
   (diese werden einfach aneinandergeh�ngt)
-* Die Jacob-Pr�paratoren wurden verbessert. (Danke an Reinhard Balling)
-* Neuer Pr�parator ExternalPrepartor: Dieser Pr�parator ruft externe Programme
+* Die Jacob-Präparatoren wurden verbessert. (Danke an Reinhard Balling)
+* Neuer Präparator ExternalPrepartor: Dieser Präparator ruft externe Programme
   oder Skripte auf, um den Text aus Dokumenten zu extrahieren.
   (Danke an Paul Ortyl)
 * Italienische Lokalisierung fertiggestellt. (Danke an Franco Lombardo)
@@ -106,14 +110,14 @@ Version 1.1 am 26.02.06
 Version 1.1 Beta 6 am 05.12.05
 ------------------------------
 
-* Neuer Pr�parator: Mit dem PoiMsPowerPointPreparator steht nun auch ein
-  plattformunabh�ngiger Pr�parator f�r Powerpoint zur Verf�gung.
+* Neuer Präparator: Mit dem PoiMsPowerPointPreparator steht nun auch ein
+  plattformunabh�ngiger Präparator für Powerpoint zur Verfügung.
   (Vielen Dank an Gerhard Olsson)
-* Neuer Pr�parator: Der IfilterPreparator nutzt die I-Filter-Schnittstelle von
-  Microsoft um etliche Dateiformate zu lesen. Leider l�uft er nur unter Windows.
+* Neuer Präparator: Der IfilterPreparator nutzt die I-Filter-Schnittstelle von
+  Microsoft um etliche Dateiformate zu lesen. Leider läuft er nur unter Windows.
 * Multiindexsuche: In der SearchConfiguration.xml k�nnen nun auch mehrere
   Indizes als Default angegeben werden.
-* Die Zusatzfelder (Auxiliary Fields) k�nnen nun besser mit Gro�-/Kleinschreibung
+* Die Zusatzfelder (Auxiliary Fields) können nun besser mit Groß-/Kleinschreibung
   umgehen.
 * Der vom Crawler an die Webserver gesendete HTTP-Agent ist nun in der
   CrawlerConfiguration.xml konfigurierbar. So kann sich der Crawler
@@ -124,9 +128,9 @@ Version 1.1 Beta 6 am 05.12.05
 Version 1.1 Beta 5 am 13.08.05
 ------------------------------
 
-* Multiindex-Suche: Es k�nnen nun mehrere Suchindizes �ber eine Suchmaske
+* Multiindex-Suche: Es können nun mehrere Suchindizes über eine Suchmaske
   durchsucht werden. Die Suchanfragen werden dabei auf jeden Index losgelassen
-  und anschlie�end vereint.
+  und anschließend vereint.
 * In der Wei�en und der Schwarzen Liste k�nnen jetzt auch regul�re Ausdr�cke
   angegeben werden.
 * Suchmaske: Der Ort der Ressourcen und der Konfiguration wird jetzt besser

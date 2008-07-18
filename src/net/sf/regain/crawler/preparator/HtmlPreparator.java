@@ -54,10 +54,9 @@ import org.htmlparser.util.ParserException;
 
 
 /**
- * Präpariert ein HTML-Dokument für die Indizierung.
+ * Prepares a HTML-document for indexing.
  * <p>
- * Dabei werden die Rohdaten des Dokuments von Formatierungsinformation befreit,
- * es wird der Titel extrahiert.
+ * The document will be parsed and a title will be extracted.
  *
  * @author Til Schneider, www.murfman.de
  */
@@ -85,7 +84,8 @@ public class HtmlPreparator extends AbstractPreparator {
    * @throws RegainException If creating the preparator failed.
    */
   public HtmlPreparator() throws RegainException {
-    super(createAcceptRegex());
+    super(new String[]{"text/html", "application/xhtml+xml"});
+    //super(createAcceptRegex());
   }
 
 
@@ -220,8 +220,8 @@ public class HtmlPreparator extends AbstractPreparator {
 
     // Using HTMLParser to extract the content
     String cleanedContent = null;
-    
-    Parser parser = new Parser(new Lexer(new Page(cuttedContent, "UTF-8")));
+    Page htmlPage = new Page(cuttedContent, "UTF-8");
+    Parser parser = new Parser(new Lexer(htmlPage));
     StringBean stringBean = new StringBean();
     
     // replace multiple whitespace with one whitespace
@@ -247,7 +247,8 @@ public class HtmlPreparator extends AbstractPreparator {
     LinkVisitor linkVisitor = new LinkVisitor();
     if( isContentCutted ){
       // This means a new parser run which is expensive but neccessary
-      parser = new Parser(new Lexer(new Page(rawDocument.getContentAsString(), "UTF-8")));
+      htmlPage = new Page(rawDocument.getContentAsString(), "UTF-8");
+      parser = new Parser(new Lexer(htmlPage));
     } else {
       parser.reset();
     }
@@ -256,19 +257,20 @@ public class HtmlPreparator extends AbstractPreparator {
       // Parse the content
       parser.visitAllNodesWith(linkVisitor);
       ArrayList<Tag> links = linkVisitor.getLinks();
+      htmlPage.setBaseUrl(rawDocument.getUrl());
       
       // Iterate over all links found
       Iterator linksIter = links.iterator();
       while (linksIter.hasNext()) {
         LinkTag currTag = ((LinkTag) linksIter.next());
-        
-        String link = CrawlerToolkit.toAbsoluteUrl(currTag.getLink(), rawDocument.getUrl());
-        String linkText = currTag.getLinkText();
-        if( linkText == null ){
-          linkText ="";
+        String link = CrawlerToolkit.removeAnchor(currTag.extractLink());
+        //String link = CrawlerToolkit.toAbsoluteUrl(currTag.extractLink(), rawDocument.getUrl());
+        String linkText = (currTag.getLinkText() == null) ? "" : currTag.getLinkText();
+       
+        // store all http(s)-links the link
+        if(currTag.isHTTPLikeLink()){
+          rawDocument.addLink(link, linkText);
         }
-        // store the link
-        rawDocument.addLink(link, linkText);
       }
       
     } catch (ParserException ex) {

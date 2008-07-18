@@ -203,7 +203,7 @@ public class PreparatorFactory {
         if (isPreparatorEnabled(className, preparatorSettingsArr)) {
           // Create the class loader if nessesary
           if (loader == null) {
-            loader = new URLClassLoader(new URL[] { file.toURL() });
+            loader = new URLClassLoader(new URL[] { file.toURI().toURL() });
           }
           
           // Load the preparator and add it to the preparatorHash

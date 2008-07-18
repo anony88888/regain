@@ -144,7 +144,7 @@ public class XmlDesktopConfig implements DesktopConfig, DesktopConstants {
       Element config = doc.getDocumentElement();
       
       Node node = XmlToolkit.getChild(config, "interval", true);
-      mInterval = XmlToolkit.getTextAsInt(node);
+      mInterval = (node == null ) ? DEFAULT_INTERVAL : XmlToolkit.getTextAsInt(node);
 
       node = XmlToolkit.getChild(config, "port");
       mPort = (node == null) ? DEFAULT_PORT : XmlToolkit.getTextAsInt(node);

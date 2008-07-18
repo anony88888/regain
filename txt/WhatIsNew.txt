@@ -4,6 +4,10 @@ Version 1.5.0 on 09.07.08 Preview
 * HTMLParser now complete integrated
 * -notrayicon - command line parameter for  desktop-search (TrayIcon will never be shown)
 * Lucene updated to version 2.3.2
+* Removing anchors from URLs
+* Definition of a default index update interval
+* Deletion of temporary files is handled safer
+* Improved mime-type detection
 
 Version 1.4.2 on 04.06.08 Preview
 ---------------------------------

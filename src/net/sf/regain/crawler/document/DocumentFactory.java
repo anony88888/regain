@@ -48,6 +48,7 @@ import net.sf.regain.crawler.config.PreparatorSettings;
 
 import org.apache.log4j.Logger;
 import java.io.FileInputStream;
+import java.net.URL;
 import java.util.Vector;
 import org.semanticdesktop.aperture.mime.identifier.magic.MagicMimeTypeIdentifier;
 import org.apache.lucene.document.Document;
@@ -195,7 +196,10 @@ public class DocumentFactory {
       FileInputStream fis = new FileInputStream(file);
       byte[] bytes = new byte[mmti.getMinArrayLength()];
       fis.read(bytes);
-      mimeType = mmti.identify(bytes, file.getName(), new URIImpl(file.toURI().toString())) ;
+      URL url;
+      url = new URL(rawDocument.getUrl());
+      mimeType = mmti.identify(bytes, file.getPath(), 
+              new URIImpl(url.getProtocol()+"://"+url.getHost()+url.getPath())) ;
       if( mimeType == null || mimeType.length()==0 )
         mimeType = "application/x-unknown-mime-type";
     }

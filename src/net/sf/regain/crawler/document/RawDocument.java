@@ -32,6 +32,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Date;
 
 import java.util.HashMap;
@@ -486,12 +488,27 @@ public class RawDocument {
       // -> Inhalt in eine Datei schreiben
 
       // Get the file extension
+      URL url;
+      String path;
+      try {
+        url = new URL(mUrl);
+        path = url.getPath();
+        // Handles urls like http://www.thtesche.com/ an http://www.thtesche.com/blog/
+        if( (path.length()==0 
+                && (url.getProtocol().equalsIgnoreCase("http") || url.getProtocol().equalsIgnoreCase("https") ))
+                || path.endsWith("/")) {
+          path = "index.html";
+        }
+      } catch (MalformedURLException ex) {
+         mLog.debug("Couldn't create URL", ex);
+         path = mUrl;
+      }
       String extension;
-      int lastDot = mUrl.lastIndexOf('.');
-      if (lastDot == -1 || mUrl.endsWith("/") || mUrl.length()-lastDot>=5 ) {
-        extension = ".tmp";
+      int lastDot = path.lastIndexOf('.');
+      if (lastDot == -1 || path.length()-lastDot>=6 ) {
+        extension = "";
       } else {
-        extension = mUrl.substring(lastDot);
+        extension = path.substring(lastDot);
       }
 
       // Get an unused file
@@ -503,7 +520,7 @@ public class RawDocument {
         throw new RegainException("Getting temporary File failed", exc);
       }
 
-      // Inhalt in temporï¿½re Datei schreiben
+      // write content in temporary file
       writeToFile(tmpFile);
 
       mContentAsFile = tmpFile;
@@ -515,7 +532,7 @@ public class RawDocument {
 
 
   /**
-   * Gibt alle genutzten System-Ressourcen, wie temporäre Dateien, wieder frei.
+   * Gibt alle genutzten System-Ressourcen, wie temporï¿½re Dateien, wieder frei.
    * <p>
    * Ressourcen der VM, wie z.B. Arrays, werden nicht freigegeben. Das soll der
    * GarbageCollector erledigen.
@@ -526,7 +543,9 @@ public class RawDocument {
         mLog.debug("Deleting temporary file: " + mContentAsFile.getAbsolutePath());
       }
       if (! mContentAsFile.delete()) {
-        mLog.warn("Deleting temporary file failed: " + mContentAsFile.getAbsolutePath());
+        mContentAsFile.deleteOnExit();
+        mLog.debug("Deleting temporary file failed: " + mContentAsFile.getAbsolutePath() + 
+                "File will be deleted on program exit.");
       }
     }
   }
