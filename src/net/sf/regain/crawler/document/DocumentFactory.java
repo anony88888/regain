@@ -48,8 +48,13 @@ import net.sf.regain.crawler.config.PreparatorSettings;
 
 import org.apache.log4j.Logger;
 import java.io.FileInputStream;
+import java.io.StringReader;
 import java.net.URL;
 import java.util.Vector;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.WhitespaceAnalyzer;
+import org.apache.lucene.analysis.WhitespaceTokenizer;
 import org.semanticdesktop.aperture.mime.identifier.magic.MagicMimeTypeIdentifier;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -436,7 +441,11 @@ public class DocumentFactory {
 
     // Add the URL of the document
     doc.add(new Field("url", url, Field.Store.YES, Field.Index.UN_TOKENIZED));
-
+    
+    // Add the file name (without protocol, drive-letter and path) 
+    doc.add(new Field("filename", new WhitespaceTokenizer(
+            new StringReader( RegainToolkit.urlToWhitespacedFileName(url)))));
+  
     // Add the document's size
     int size = rawDocument.getLength();
     doc.add(new Field("size", Integer.toString(size), Field.Store.YES,

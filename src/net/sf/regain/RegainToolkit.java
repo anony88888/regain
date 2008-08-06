@@ -713,7 +713,7 @@ public class RegainToolkit {
           System.out.println("Tokens for '" + asString + "':");
           Token token;
           while ((token = stream.next()) != null) {
-            System.out.println("  '" + token.termText() + "'");
+            System.out.println("  '" + new String(token.termBuffer(), 0, token.termLength()) + "'");
           }
 
           // Do the call a second time and return the result this time
@@ -1291,7 +1291,26 @@ public class RegainToolkit {
     return urlDecode(fileName, INDEX_ENCODING);
   }
 
+  /**
+   * Gets the 'real' file name that is described by a URL with the <code>file://</code>
+   * protocol. This file name does not contain a path, protocol and drive-letter
+   *
+   * @param url The URL to get the file name for.
+   * @return The file name that matches the URL.
+   * @throws RegainException If the URL's protocol isn't <code>file://</code>.
+   */
+  public static String urlToWhitespacedFileName(String url) throws RegainException {
+    if (! url.startsWith("file://")) {
+      throw new RegainException("URL must have the file:// protocol to get a "
+        + "File for it");
+    }
 
+    String fileName = url.substring(url.lastIndexOf("/")+1);
+    fileName = fileName.replaceAll("\\.", " ").replaceAll("-", " ").replaceAll("_"," ");
+    // Replace URL-encoded special characters
+    return urlDecode(fileName, INDEX_ENCODING);
+  }
+  
   /**
    * Gets the file that is described by a URL with the <code>file://</code>
    * protocol.
@@ -1412,10 +1431,6 @@ public class RegainToolkit {
    */
   public static String urlEncode(String text, String encoding) throws RegainException {
     try {
-      // For Java 1.2.2
-      //return URLEncoder.encode(text);
-
-      // Since Java 1.3
       return URLEncoder.encode(text, encoding);
     }
     catch (UnsupportedEncodingException exc) {
@@ -1540,7 +1555,7 @@ public class RegainToolkit {
         return mNoStemmingAnalyzer.tokenStream(fieldName, reader);
       }
     }
-    
+
   } // inner class WrapperAnalyzer
 
 
