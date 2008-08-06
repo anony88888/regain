@@ -46,7 +46,7 @@ public class PlainTextPreparator extends AbstractPreparator {
    * @throws RegainException If creating the preparator failed.
    */
   public PlainTextPreparator() throws RegainException {
-    super("txt");
+    super("text/plain");
   }
 
 

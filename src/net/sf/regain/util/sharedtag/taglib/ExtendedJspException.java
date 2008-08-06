@@ -33,7 +33,7 @@ import java.io.PrintWriter;
 import javax.servlet.jsp.JspException;
 
 /**
- * Eine JspException, die eingebettete Exceptions unterstützt.
+ * Eine JspException, die eingebettete Exceptions unterstï¿½tzt.
  * <p>
  * This class has the same code as {@link net.sf.regain.RegainException}.
  * The only difference is, that is inherits from <code>JspException</code>.
@@ -125,7 +125,7 @@ public class ExtendedJspException extends JspException {
   private boolean superClassPrintsCause() {
     // Check whether there is a getCause method in the super class
     try {
-      getClass().getSuperclass().getMethod("getCause", null);
+      getClass().getSuperclass().getMethod("getCause");
       
       // The superclass has a getCause method -> It must be Java 1.4 or more
       return true;

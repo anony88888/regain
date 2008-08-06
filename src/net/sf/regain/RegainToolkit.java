@@ -60,6 +60,7 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
+import jcifs.smb.SmbFile;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
@@ -71,7 +72,7 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermEnum;
 
 /**
- * Enthält Hilfsmethoden, die sowohl vom Crawler als auch von der Suchmaske
+ * Enthï¿½lt Hilfsmethoden, die sowohl vom Crawler als auch von der Suchmaske
  * genutzt werden.
  *
  * @author Til Schneider, www.murfman.de
@@ -105,11 +106,11 @@ public class RegainToolkit {
 
 
   /**
-   * Löscht ein Verzeichnis mit allen Unterverzeichnissen und -dateien.
+   * Lï¿½scht ein Verzeichnis mit allen Unterverzeichnissen und -dateien.
    *
-   * @param dir Das zu löschende Verzeichnis.
+   * @param dir Das zu lï¿½schende Verzeichnis.
    *
-   * @throws RegainException Wenn das Löschen fehl schlug.
+   * @throws RegainException Wenn das Lï¿½schen fehl schlug.
    */
   public static void deleteDirectory(File dir) throws RegainException {
     if (! dir.exists()) {
@@ -165,7 +166,7 @@ public class RegainToolkit {
    * Schreibt alle Daten, die der InputStream liefert in den OutputStream.
    * <p>
    * Weder der InputStream noch der OutputStream werden dabei geschlossen. Dies
-   * muss die aufrufende Methode übernehmen!
+   * muss die aufrufende Methode ï¿½bernehmen!
    *
    * @param in Der InputStream, der die Daten liefert.
    * @param out Der OutputStream auf den die Daten geschrieben werden sollen.
@@ -686,7 +687,7 @@ public class RegainToolkit {
    * Erzeugt einen Analyzer, der die Aufrufe an einen eingebetteten Analyzer
    * analysiert.
    * <p>
-   * Dies ist beim Debugging hilfreich, wenn man prüfen will, was ein Analyzer
+   * Dies ist beim Debugging hilfreich, wenn man prï¿½fen will, was ein Analyzer
    * bei bestimmten Anfragen ausgibt.
    *
    * @param nestedAnalyzer The nested Analyzer that should
@@ -840,7 +841,7 @@ public class RegainToolkit {
 
 
   /**
-   * Gibt einen Wert in Prozent mit zwei Nachkommastellen zurück.
+   * Gibt einen Wert in Prozent mit zwei Nachkommastellen zurï¿½ck.
    *
    * @param value Der Wert. (Zwischen 0 und 1)
    * @return Der Wert in Prozent.
@@ -854,8 +855,8 @@ public class RegainToolkit {
 
   
   /**
-   * Gibt einen für den Menschen gut lesbaren String für eine Anzahl Bytes
-   * zurück.
+   * Gibt einen fï¿½r den Menschen gut lesbaren String fï¿½r eine Anzahl Bytes
+   * zurï¿½ck.
    *
    * @param bytes Die Anzahl Bytes
    * @return Ein String, der sie Anzahl Bytes wiedergibt
@@ -866,8 +867,8 @@ public class RegainToolkit {
 
 
   /**
-   * Gibt einen für den Menschen gut lesbaren String für eine Anzahl Bytes
-   * zurück.
+   * Gibt einen fï¿½r den Menschen gut lesbaren String fï¿½r eine Anzahl Bytes
+   * zurï¿½ck.
    *
    * @param bytes Die Anzahl Bytes
    * @param locale The locale to use for formatting the numbers.
@@ -879,8 +880,8 @@ public class RegainToolkit {
 
 
   /**
-   * Gibt einen für den Menschen gut lesbaren String für eine Anzahl Bytes
-   * zurück.
+   * Gibt einen fï¿½r den Menschen gut lesbaren String fï¿½r eine Anzahl Bytes
+   * zurï¿½ck.
    *
    * @param bytes Die Anzahl Bytes
    * @param fractionDigits Die Anzahl der Nachkommastellen
@@ -892,8 +893,8 @@ public class RegainToolkit {
   
 
   /**
-   * Gibt einen für den Menschen gut lesbaren String für eine Anzahl Bytes
-   * zurück.
+   * Gibt einen fï¿½r den Menschen gut lesbaren String fï¿½r eine Anzahl Bytes
+   * zurï¿½ck.
    *
    * @param bytes Die Anzahl Bytes
    * @param fractionDigits Die Anzahl der Nachkommastellen
@@ -976,11 +977,11 @@ public class RegainToolkit {
 
   /**
    * Konvertiert ein Date-Objekt in einen String mit dem Format
-   * "YYYY-MM-DD HH:MM". Das ist nötig, um ein eindeutiges und vom Menschen
+   * "YYYY-MM-DD HH:MM". Das ist nï¿½tig, um ein eindeutiges und vom Menschen
    * lesbares Format zu haben.
    * <p>
    * Dieses Format ist mit Absicht nicht lokalisiert, um die Eindeutigkeit zu
-   * gewährleisten. Die Lokalisierung muss die Suchmaske übernehmen.
+   * gewï¿½hrleisten. Die Lokalisierung muss die Suchmaske ï¿½bernehmen.
    *
    * @param lastModified Das zu konvertiernende Date-Objekt
    * @return Ein String mit dem Format "YYYY-MM-DD HH:MM"
@@ -1108,7 +1109,7 @@ public class RegainToolkit {
 
 
   /**
-   * Gibt den systemspeziefischen Zeilenumbruch zurück.
+   * Gibt den systemspeziefischen Zeilenumbruch zurï¿½ck.
    *
    * @return Der Zeilenumbruch.
    */
@@ -1180,7 +1181,7 @@ public class RegainToolkit {
     }
   }
 
-
+ 
   /**
    * Loads a class and creates an instance.
    * 
@@ -1255,7 +1256,7 @@ public class RegainToolkit {
       }
       
       try {
-        classLoader = new URLClassLoader(new URL[] { jarFile.toURL() }, superClass.getClassLoader());
+        classLoader = new URLClassLoader(new URL[] { jarFile.toURI().toURL() }, superClass.getClassLoader());
       }
       catch (MalformedURLException exc) {
         throw new RegainException("Creating class loader for " +
@@ -1303,6 +1304,39 @@ public class RegainToolkit {
     return new File(urlToFileName(url));
   }
 
+ /**
+   * Gets the smbfile that is described by a URL with the <code>smb://</code>
+   * protocol.
+   *
+   * @param url The URL to get the smbfile for.
+   * @return The smbfile that matches the URL.
+   * @throws RegainException If the URL's protocol isn't <code>smb://</code>.
+   */
+  public static SmbFile urlToSmbFile(String url) throws RegainException {
+    
+    try {
+      return new SmbFile(urlToSmbFileName(url));
+    } catch (MalformedURLException urlEx) {
+      throw new RegainException(urlEx.getMessage());
+    }
+  }
+
+    /**
+   * Gets the smb file name that is described by a URL with the <code>smb://</code>
+   * protocol.
+   *
+   * @param url The URL to get the file name for.
+   * @return The smb file name that matches the URL.
+   * @throws RegainException If the URL's protocol isn't <code>smb://</code>.
+   */
+  public static String urlToSmbFileName(String url) throws RegainException {
+    if (! url.startsWith("smb://")) {
+      throw new RegainException("URL must have the smb:// protocol to get a "
+        + "File for it");
+    }
+    // Replace URL-encoded special characters
+    return urlDecode(url, INDEX_ENCODING);
+  }
 
   /**
    * Returns the URL of a file name.
@@ -1407,7 +1441,50 @@ public class RegainToolkit {
     }
   }
 
+  /**
+    * Creates a summary from given content 
+    * <p>
+    * The method returns <code>null</code> if no summary could created
+    *
+    * @param content The content for which the summary is referring to
+    * @param maxLength The maximum length of the created summary
+    * @return The summary (first n characters of content
+    */
+   public static String createSummaryFromContent(String content, int maxLength) {
 
+    if( content.length() > maxLength ) {
+      // cut the content only if it exceeds the max size for the summary
+      int lastSpacePos = content.lastIndexOf(' ', maxLength);
+
+      if (lastSpacePos == -1) {
+        return null;
+      } else {
+        return content.substring(0, lastSpacePos) + "...";
+      }
+    } else {
+      return content;
+    }
+  }
+
+  /**
+   * Creates a field identifier for fields with highlighted content. All high-
+   * lighted content will be stored in a field named 'highlightedOldfieldname' where
+   * oldfieldname was in lowercase before renaming.
+   * <p>
+   * The method returns <code>null</code> if no field identifier could created
+   *
+   * @param field The content for which the summary is referring to
+   * @return the new field identifier
+   */
+  public static String createHighlightedFieldIdent(String fieldName)  {
+    
+    if( fieldName !=null && fieldName.length()>1 )
+      return "highlighted" + fieldName.substring(0,1).toUpperCase() 
+              + fieldName.substring(1, fieldName.length());
+    else
+      return null;
+  }
+  
   // inner class WrapperAnalyzer
   
   
@@ -1493,7 +1570,7 @@ public class RegainToolkit {
 
 
     /**
-     * Schließt den eingebetteten Reader.
+     * Schlieï¿½t den eingebetteten Reader.
      *
      * @throws IOException Wenn der eingebettete Reader nicht geschlossen werden
      *         konnte.
@@ -1510,8 +1587,8 @@ public class RegainToolkit {
      *        sollen
      * @param off Der Offset im Puffer, ab dem geschreiben werden soll.
      * @param len Die max. Anzahl von Zeichen, die geschrieben werden soll.
-     * @return Die Anzahl von Zeichen, die tatsächlich geschrieben wurde, bzw.
-     *         <code>-1</code>, wenn keine Daten mehr verfügbar sind.
+     * @return Die Anzahl von Zeichen, die tatsï¿½chlich geschrieben wurde, bzw.
+     *         <code>-1</code>, wenn keine Daten mehr verfï¿½gbar sind.
      * @throws IOException Wenn nicht vom eingebetteten Reader gelesen werden
      *         konnte.
      */

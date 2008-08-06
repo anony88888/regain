@@ -32,19 +32,20 @@ package net.sf.regain.crawler.config;
  * 
  * @author Tilman Schneider, STZ-IDA an der FH Karlsruhe
  */
-public class PrefixUrlMatcher implements UrlMatcher {
+public class PrefixUrlMatcher extends UrlMatcherImpl {
 
   /** The prefix a URL must start with in order to be matched by this matcher. */
   private String mUrlPrefix;
-
-
+ 
+  
   /**
    * Creates a new instance of PrefixUrlMatcher.
    * 
    * @param urlPrefix The prefix a URL must start with to be matched by this
    *        matcher.
    */
-  public PrefixUrlMatcher(String urlPrefix) {
+  public PrefixUrlMatcher(String urlPrefix, boolean shouldBeParsed, boolean shouldBeIndexed) {
+    super(shouldBeParsed, shouldBeIndexed);
     mUrlPrefix = urlPrefix;
   }
 
@@ -59,7 +60,7 @@ public class PrefixUrlMatcher implements UrlMatcher {
     return url.startsWith(mUrlPrefix);
   }
 
-
+ 
   /**
    * Gets a String representation of this UrlMatcher.
    */

@@ -61,4 +61,13 @@ public interface DesktopConfig {
    */
   public String getBrowser() throws RegainException;
 
+   /**
+   * Gets the setting wheter external access to the instance is allowed or not.
+   * pages. Returns FALSE if no config entry exists
+   * 
+   * @return the boolean whether external access is allowed or not
+   * @throws RegainException If loading the config failed.
+   */
+  public boolean getExternalAccessAllowed() throws RegainException; 
+
 }

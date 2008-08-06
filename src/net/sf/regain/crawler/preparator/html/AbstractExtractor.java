@@ -143,7 +143,7 @@ public class AbstractExtractor {
    * @return Ob der Extrahierer das gegebene Dokument bearbeiten kann.
    */
   public boolean accepts(RawDocument rawDocument) {
-    return rawDocument.getUrl().startsWith(mPrefix);
+    return rawDocument.getUrl().matches(mPrefix);
   }
 
 

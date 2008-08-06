@@ -88,7 +88,7 @@ public class ListTag extends SharedTag implements SearchConstants {
       if (msgNoResults != null) {
         response.print(msgNoResults);
       }
-      
+            
       return SKIP_TAG_BODY;
     } else {
       mCurrentResult = fromResult;
@@ -117,8 +117,13 @@ public class ListTag extends SharedTag implements SearchConstants {
     PageRequest request)
     throws RegainException
   {
+    boolean shouldHighlight = results.getShouldHighlight(hitIndex);
+    
     try {
       Document hit = results.getHitDocument(hitIndex);
+      if( shouldHighlight ) {
+         results.highlightHitDocument(hitIndex);
+      }
       request.setContextAttribute(ATTR_CURRENT_HIT, hit);
       float score = results.getHitScore(hitIndex);
       request.setContextAttribute(ATTR_CURRENT_HIT_SCORE, new Float(score));

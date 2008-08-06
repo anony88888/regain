@@ -42,4 +42,27 @@ public interface UrlMatcher {
    */
   public boolean matches(String url);
 
+  /** 
+   * Gets a flag whether links should be extracted from the content
+   * 
+   * @return Whether from a match for matches(url) possibly inclosed links should be extracted.
+   */
+  public boolean getShouldBeParsed();
+
+  /** 
+   * Gets a flag whether the content should be indexed.
+   * 
+   * @return Whether from a match for matches(url) the content from the URL should be indexed.
+   */
+  public boolean getShouldBeIndexed();
+
+  /** 
+   * Sets a flag whether links should be extracted from the content
+   */
+  public void setShouldBeParsed(boolean shouldBeParsed);
+
+  /** 
+   * Sets a flag whether the content should be indexed.
+   */
+  public void setShouldBeIndexed(boolean shouldBeIndexed);
 }

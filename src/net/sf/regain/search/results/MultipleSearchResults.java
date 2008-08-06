@@ -235,4 +235,41 @@ public class MultipleSearchResults implements SearchResults {
     return mSearchTime;
   }
 
+  /**
+   * Highlights fields in the document. Fields for highlighting will be:
+   * - content
+   * - title
+   *
+   * @param index The index of the hit.
+   *
+   * @throws RegainException If highlighting failed.
+   */
+  public void highlightHitDocument(int index) throws RegainException {
+   
+    // Get the SingleSearchResults the hit came from
+    SingleSearchResults results = getResultsForHit(index);
+    
+    // Get the index of the hit in the SingleSearchResults
+    int hitsPosition = mMergedHits.getHitsPosition(index);
+    
+    results.highlightHitDocument(hitsPosition);
+  }
+  
+    /**
+   * Gets whether the search terms should be highlighted
+   *
+   * @return whether to highlight
+   * @throws RegainException If the value could not read from config
+   */
+  public boolean getShouldHighlight(int index) throws RegainException {
+      // Get the SingleSearchResults the hit came from
+    SingleSearchResults results = getResultsForHit(index);
+    
+    // Get the index of the hit in the SingleSearchResults
+    int hitsPosition = mMergedHits.getHitsPosition(index);
+    
+    // Get whether a hit should be highlighted.
+    return results.getShouldHighlight(hitsPosition);
+  }
+
 }

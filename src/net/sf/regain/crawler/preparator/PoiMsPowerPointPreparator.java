@@ -52,7 +52,7 @@ public class PoiMsPowerPointPreparator extends AbstractPreparator {
    * @throws RegainException If creating the preparator failed.
    */
   public PoiMsPowerPointPreparator() throws RegainException {
-    super(new String[] { "ppt", "pot" });
+    super(new String[] {"application/mspowerpoint", "application/vnd.ms-powerpoint"});
   }
 
 

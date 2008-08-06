@@ -126,7 +126,7 @@ public class RegainException extends Exception {
   private boolean superClassPrintsCause() {
     // Check whether there is a getCause method in the super class
     try {
-      getClass().getSuperclass().getMethod("getCause", null);
+      getClass().getSuperclass().getMethod("getCause");
       
       // The superclass has a getCause method -> It must be Java 1.4 or more
       return true;

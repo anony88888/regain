@@ -132,6 +132,9 @@ public class PreparatorFactory {
             prep.setUrlRegex(urlRegex);
           }
           
+          // Set the priority 
+          prep.setPriority(preparatorSettingsArr[i].getPriority());
+          
           // Add it to the array
           preparatorArr[prepIdx] = prep;
           prepIdx++;
@@ -200,7 +203,7 @@ public class PreparatorFactory {
         if (isPreparatorEnabled(className, preparatorSettingsArr)) {
           // Create the class loader if nessesary
           if (loader == null) {
-            loader = new URLClassLoader(new URL[] { file.toURL() });
+            loader = new URLClassLoader(new URL[] { file.toURI().toURL() });
           }
           
           // Load the preparator and add it to the preparatorHash

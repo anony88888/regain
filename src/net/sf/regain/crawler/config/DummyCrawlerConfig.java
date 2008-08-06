@@ -47,6 +47,14 @@ public class DummyCrawlerConfig implements CrawlerConfig {
     return "idatmpsrv";
   }
 
+  /**
+   * Returns the maximum count of equal occurences of path-parts in an URI.
+   *
+   * @return MaxCycleCount
+   */
+  public int getMaxCycleCount() {
+    return -1;
+  }
 
 
   /**
@@ -305,7 +313,7 @@ public class DummyCrawlerConfig implements CrawlerConfig {
    */
   public WhiteListEntry[] getWhiteList() {
     return new WhiteListEntry[] {
-      new WhiteListEntry(new PrefixUrlMatcher("file://"), null)
+      new WhiteListEntry(new PrefixUrlMatcher("file://",true,true), null)
     };
   }
 
@@ -337,8 +345,8 @@ public class DummyCrawlerConfig implements CrawlerConfig {
    */
   public PreparatorSettings[] getPreparatorSettingsList() {
     return new PreparatorSettings[] {
-      new PreparatorSettings(true, "net.sf.regain.crawler.document.HtmlPreparator", null, new PreparatorConfig()),
-      new PreparatorSettings(true, "net.sf.regain.crawler.document.XmlPreparator", null, new PreparatorConfig())
+      new PreparatorSettings(true, 0, "net.sf.regain.crawler.document.HtmlPreparator", null, new PreparatorConfig()),
+      new PreparatorSettings(true, 0, "net.sf.regain.crawler.document.XmlPreparator", null, new PreparatorConfig())
     };
   }
 
@@ -387,6 +395,15 @@ public class DummyCrawlerConfig implements CrawlerConfig {
    */
   public Properties getCrawlerAccessControllerConfig() {
     return null;
+  }
+
+  /**
+   * Returns maximum amount of characters which will be copied from content to summary
+   *
+   * @return MaxSummaryLength
+   */
+  public int getMaxSummaryLength(){
+    return 250000;
   }
 
 }
