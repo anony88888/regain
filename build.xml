@@ -910,8 +910,6 @@
           <!--
           jvm="${java.dir}/bin/java"
           -->
-      <!-- optional argument. Usefull for some Linux distris. -->
-      <!--arg value="-noTrayIcon"/-->
       <jvmarg value="-Djava.library.path=."/>
       <jvmarg value="-Xmx256M"/>
       <classpath>
@@ -920,6 +918,25 @@
     </java>
   </target>
 
+  <!--
+   | Runs the project.
+   +-->
+  <target name="run-desktop-fast-notrayicon" depends="runtime-fast">
+    <java classname="net.sf.regain.ui.desktop.Main"
+          dir="build/runtime/desktop/${platform}"
+          fork="true">
+          <!--
+          jvm="${java.dir}/bin/java"
+          -->
+      <!-- Usefull for some Linux distris where the desktop integration don't work.. -->
+      <arg value="-noTrayIcon"/>
+      <jvmarg value="-Djava.library.path=."/>
+      <jvmarg value="-Xmx256M"/>
+      <classpath>
+        <path refid="classpath"/>
+      </classpath>
+    </java>
+  </target>
   
   <!--
    | Creates all the stuff that can be downloaded.
