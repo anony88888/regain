@@ -1,6 +1,9 @@
 Version 1.5.1 am 07.08.08 
 -------------------------
 * Dateiname wird korrekt indiziert
+* Datumsformat 'last-modified' auf "YYYYMMDD" geändert. Damit kann man die RangeSearch auf
+  das Feld anwenden (Code-Contribution)
+* locale-Handling im SharedTag verbessert (Code-Contribution)
 
 Version 1.5.0 am 10.07.08 Preview
 ---------------------------------

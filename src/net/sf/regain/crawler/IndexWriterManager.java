@@ -38,7 +38,6 @@ import java.util.HashMap;
 
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
-import net.sf.regain.crawler.config.AuxiliaryField;
 import net.sf.regain.crawler.config.CrawlerConfig;
 import net.sf.regain.crawler.config.UrlMatcher;
 import net.sf.regain.crawler.document.DocumentFactory;
@@ -287,7 +286,7 @@ public class IndexWriterManager {
     }
 
     // Get the untokenized field names
-    String[] untokenizedFieldNames = getUntokenizedFieldNames(config);
+    String[] untokenizedFieldNames = config.getUntokenizedFieldNames();
 
     // Create the Analyzer
     // NOTE: Make shure you use the same Analyzer in the SearchContext too!
@@ -349,27 +348,6 @@ public class IndexWriterManager {
     mDocumentFactory = new DocumentFactory(config, mAnalysisDir);
   }
 
-  
-  /**
-   * Returns the names of the fields that shouldn't be tokenized.
-   * 
-   * @param config The crawler configuration.
-   * @return The names of the fields that shouldn't be tokenized.
-   */
-  private String[] getUntokenizedFieldNames(CrawlerConfig config) {
-    AuxiliaryField[] auxFieldArr = config.getAuxiliaryFieldList();
-    ArrayList list = new ArrayList();
-    for (int i = 0; i < auxFieldArr.length; i++) {
-      if (! auxFieldArr[i].isTokenized()) {
-        list.add(auxFieldArr[i].getFieldName());
-      }
-    }
-
-    String[] asArr = new String[list.size()];
-    list.toArray(asArr);
-    return asArr;
-  }
-  
 
   /**
    * Gibt zur�ck, ob ein bestehender Index aktualisiert wird.
@@ -664,11 +642,10 @@ public class IndexWriterManager {
           // Compare the modification date with the one from the index entry
           String asString = doc.get("last-modified");
           if (asString != null) {
-            Date indexLastModified = RegainToolkit.stringToLastModified(asString);
+            Date indexLastModified = RegainToolkit.indexStringToLastModified(asString);
 
             long diff = docLastModified.getTime() - indexLastModified.getTime();
-            if (diff > 60000L) {
-              // The document is at least one minute newer
+             if (diff > 60000L) {
               // -> The index entry is not up-to-date -> Delete the old entry
               mLog.info("Index entry is outdated. Creating a new one (" +
                   docLastModified + " > " + indexLastModified + "): " +

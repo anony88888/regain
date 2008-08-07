@@ -30,7 +30,7 @@ package net.sf.regain.crawler.config;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Properties;
-
+import java.util.ArrayList;
 import net.sf.regain.RegainException;
 import net.sf.regain.XmlToolkit;
 
@@ -891,7 +891,7 @@ public class XmlCrawlerConfig implements CrawlerConfig {
    * The black list is an array of WhiteListEntry, a URLs <i>must</i> match to,
    * in order to be processed.
    *
-   * @return Die weiﬂe Liste
+   * @return The white list
    */
   public WhiteListEntry[] getWhiteList() {
     return mWhiteListEntryArr;
@@ -1003,4 +1003,23 @@ public class XmlCrawlerConfig implements CrawlerConfig {
     mMaxSummaryLength = (node == null) ? 250000 : XmlToolkit.getTextAsInt(node);
   }
 
+  /**
+   * Returns the names of the fields that shouldn't be tokenized.
+   * 
+   * @param config The crawler configuration.
+   * @return The names of the fields that shouldn't be tokenized.
+   */
+  public String[] getUntokenizedFieldNames() {
+    AuxiliaryField[] auxFieldArr = getAuxiliaryFieldList();
+    ArrayList list = new ArrayList();
+    for (int i = 0; i < auxFieldArr.length; i++) {
+      if (! auxFieldArr[i].isTokenized()) {
+        list.add(auxFieldArr[i].getFieldName());
+      }
+    }
+
+    String[] asArr = new String[list.size()];
+    list.toArray(asArr);
+    return asArr;
+  }  
 }

@@ -249,13 +249,12 @@ public abstract class SharedTag {
     // Get the Localizer
     mLocalizer = (Localizer) request.getContextAttribute("Localizer");
     if (mLocalizer == null) {
-      // The default resource bundles are in english
-      Locale.setDefault(Locale.ENGLISH);
-
+      
       // Get the locale
       Locale locale = request.getLocale();
       if (locale == null) {
-        locale = Locale.getDefault();
+    	// The default resource bundles are in english
+        locale = Locale.ENGLISH;
       }
       
       // Init the MultiLocalizer if nessesary
@@ -387,6 +386,7 @@ public abstract class SharedTag {
    * 
    * @return The String representation.
    */
+  @Override
   public String toString() {
     return getTagName();
   }
