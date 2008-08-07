@@ -1037,10 +1037,10 @@ public class RegainToolkit {
 
 /**
    * Konvertiert ein Date-Objekt in einen String mit dem Format
-   * "YYYYMMDD". Das ist nötig für einer Rangesuche.
+   * "YYYYMMDD". Das ist nï¿½tig fï¿½r einer Rangesuche.
    * <p>
    * Dieses Format ist mit Absicht nicht lokalisiert, um die Eindeutigkeit zu
-   * gewährleisten. Die Lokalisierung muss die Suchmaske übernehmen.
+   * gewï¿½hrleisten. Die Lokalisierung muss die Suchmaske ï¿½bernehmen.
    *
    * @param lastModified Das zu konvertiernende Date-Objekt
    * @return Ein String mit dem Format "YYYYMMDD"
@@ -1373,15 +1373,20 @@ public class RegainToolkit {
    * @throws RegainException If the URL's protocol isn't <code>file://</code>.
    */
   public static String urlToWhitespacedFileName(String url) throws RegainException {
-    if (! url.startsWith("file://")) {
-      throw new RegainException("URL must have the file:// protocol to get a "
-        + "File for it");
+    int lastSlash = url.lastIndexOf("/");
+    // Cut file name from path
+    if( lastSlash > 0 && lastSlash+1 < url.length() ) {
+      String fileName = url.substring(lastSlash+1);
+      int lastDot = fileName.lastIndexOf(".");
+      if( lastDot>0 && lastDot < fileName.length() ) {
+        fileName = fileName.substring(0,lastDot);
+      }
+      fileName = fileName.replaceAll("\\.", " ").replaceAll("-", " ").replaceAll("_"," ");
+      // Replace URL-encoded special characters
+      return urlDecode(fileName, INDEX_ENCODING);
+    } else {
+        return "";
     }
-
-    String fileName = url.substring(url.lastIndexOf("/")+1);
-    fileName = fileName.replaceAll("\\.", " ").replaceAll("-", " ").replaceAll("_"," ");
-    // Replace URL-encoded special characters
-    return urlDecode(fileName, INDEX_ENCODING);
   }
   
   /**
