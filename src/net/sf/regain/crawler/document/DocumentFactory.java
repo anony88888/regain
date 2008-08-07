@@ -463,7 +463,7 @@ public class DocumentFactory {
       // -> Take the current time
       lastModified = new Date();
     }
-    String lastModifiedAsString = RegainToolkit.lastModifiedToString(lastModified);
+    String lastModifiedAsString = RegainToolkit.lastModifiedToIndexString(lastModified);
     doc.add(new Field("last-modified", lastModifiedAsString, Field.Store.YES,
         Field.Index.UN_TOKENIZED));
 

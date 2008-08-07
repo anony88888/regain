@@ -396,6 +396,17 @@ public class DummyCrawlerConfig implements CrawlerConfig {
   public Properties getCrawlerAccessControllerConfig() {
     return null;
   }
+  
+  
+  /**
+   * Returns the names of the fields that shouldn't be tokenized.
+   * 
+   * @param config The crawler configuration.
+   * @return The names of the fields that shouldn't be tokenized.
+   */
+  public String[] getUntokenizedFieldNames(){
+	  return null;
+  }
 
   /**
    * Returns maximum amount of characters which will be copied from content to summary
@@ -405,5 +416,5 @@ public class DummyCrawlerConfig implements CrawlerConfig {
   public int getMaxSummaryLength(){
     return 250000;
   }
-
 }
+

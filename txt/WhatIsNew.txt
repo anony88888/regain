@@ -1,6 +1,9 @@
 Version 1.5.1 on 07.08.08 
 -------------------------
 * Filename will be indexed correctly
+* Date format of field 'last-modified' changed to "YYYYMMDD". By now range search could 
+  be applied to the field. (code contribution)
+* Improved locale-Handling in SharedTag (code contribution)
 
 Version 1.5.0 on 09.07.08 Preview
 ---------------------------------
