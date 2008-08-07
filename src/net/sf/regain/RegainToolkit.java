@@ -1378,6 +1378,7 @@ public class RegainToolkit {
     if( lastSlash > 0 && lastSlash+1 < url.length() ) {
       String fileName = url.substring(lastSlash+1);
       int lastDot = fileName.lastIndexOf(".");
+      // Remove the extension
       if( lastDot>0 && lastDot < fileName.length() ) {
         fileName = fileName.substring(0,lastDot);
       }
