@@ -2,14 +2,14 @@ Version 1.5.1 on 07.08.08
 -------------------------
 * Filename will be indexed correctly
 * Date format of field 'last-modified' changed to "YYYYMMDD". By now range search could 
-  be applied to the field. (code contribution)
-* Improved locale-Handling in SharedTag (code contribution)
+  be applied to the field. (code contribution by filiadat)
+* Improved locale-Handling in SharedTag (code contribution by filiadata)
 
 Version 1.5.0 on 09.07.08 Preview
 ---------------------------------
 * Link extraction with REgexp switched to HTMLParser link extraction
 * HTMLParser now complete integrated
-* -notrayicon - command line parameter for  desktop-search (TrayIcon will never be shown)
+* -notrayicon - command line parameter for  desktop-search (TrayIcon will never be shown, code contribution by Stefan Gottlieb)
 * Lucene updated to version 2.3.2
 * Removing anchors from URLs
 * Definition of a default index update interval
