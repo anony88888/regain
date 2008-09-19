@@ -412,7 +412,7 @@ public class IndexWriterManager {
         mErrorLogWriter = new PrintWriter(mErrorLogStream);
       }
       catch (IOException exc) {
-        throw new RegainException("Opening error log file of the index failed");
+        throw new RegainException("Opening error log file of the index failed", exc);
       }
     }
     

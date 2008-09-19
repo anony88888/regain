@@ -194,7 +194,7 @@ public class RawDocument {
       }
       
     } catch (Throwable thr) {
-      throw new RegainException( thr.getMessage() );
+      throw new RegainException( thr.getMessage(), thr );
       
     } finally {
        if (in != null) {

@@ -51,9 +51,6 @@ import java.io.FileInputStream;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.Vector;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.WhitespaceTokenizer;
 import org.apache.lucene.document.DateTools;
 import org.semanticdesktop.aperture.mime.identifier.magic.MagicMimeTypeIdentifier;
@@ -174,7 +171,7 @@ public class DocumentFactory {
         catch (RESyntaxException exc) {
           throw new RegainException("Regular expression of "
             + "use-link-text-as-title-pattern #" + i + " has wrong syntax '"
-            + useLinkTextAsTitleRegexArr[i] + "'");
+            + useLinkTextAsTitleRegexArr[i] + "'", exc);
         }
       }
     }
@@ -199,13 +196,23 @@ public class DocumentFactory {
     try {
       MagicMimeTypeIdentifier mmti = new MagicMimeTypeIdentifier();
       File file = rawDocument.getContentAsFile();
+      //      file.canRead() ??? or file.exists() ???
+      if (file.canRead() == false) {
+        mLog.warn("canRead() on file return: false. Maybe no access rights for sourceURL: " + 
+          RegainToolkit.fileToUrl(file));
+    	  return null;
+        // throw new RegainException(); --> Proposal from J.Stiepel but here, we do need null
+      } 
+
+      // FIXME JST FileNotFoundException, wenn (Zugriff verweigert).
       FileInputStream fis = new FileInputStream(file);
       byte[] bytes = new byte[mmti.getMinArrayLength()];
       fis.read(bytes);
-      URL url;
-      url = new URL(rawDocument.getUrl());
+      //URL url;
+      //url = new URL(rawDocument.getUrl());
       mimeType = mmti.identify(bytes, file.getPath(), 
-              new URIImpl(url.getProtocol()+"://"+url.getHost()+url.getPath())) ;
+              //new URIImpl(url.getProtocol()+"://"+url.getHost()+url.getPath())) ;
+              new URIImpl(rawDocument.getUrl(),false)) ;
       if( mimeType == null || mimeType.length()==0 )
         mimeType = "application/x-unknown-mime-type";
     }

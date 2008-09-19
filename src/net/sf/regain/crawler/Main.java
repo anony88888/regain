@@ -102,7 +102,7 @@ public class Main {
       return; // Abort
     }
 
-    PropertyConfigurator.configure(logConfigFile.getAbsolutePath());
+    PropertyConfigurator.configureAndWatch(logConfigFile.getAbsolutePath(), 10 * 1000);
     mLog.info("Logging initialized");
 
     // Load crawler configuration

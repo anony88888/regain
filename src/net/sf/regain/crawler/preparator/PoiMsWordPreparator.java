@@ -36,10 +36,11 @@ import net.sf.regain.crawler.document.AbstractPreparator;
 import net.sf.regain.crawler.document.RawDocument;
 
 import org.apache.poi.hdf.extractor.WordDocument;
+import org.apache.poi.hwpf.extractor.WordExtractor;
 
 
 /**
- * Präpariert ein Microsoft-Word-Dokument für die Indizierung mit Hilfe der
+ * Prï¿½pariert ein Microsoft-Word-Dokument fï¿½r die Indizierung mit Hilfe der
  * <a href="http://jakarta.apache.org/poi/">POI-API</a>.
  * <p>
  * Dabei werden die Rohdaten des Dokuments von Formatierungsinformation befreit,
@@ -60,13 +61,39 @@ public class PoiMsWordPreparator extends AbstractPreparator {
 
 
   /**
-   * Präpariert ein Dokument für die Indizierung.
+   * Prï¿½pariert ein Dokument fï¿½r die Indizierung.
    *
-   * @param rawDocument Das zu präpariernde Dokument.
+   * @param rawDocument Das zu prï¿½pariernde Dokument.
    *
-   * @throws RegainException Wenn die Präparation fehl schlug.
+   * @throws RegainException Wenn die Prï¿½paration fehl schlug.
    */
   public void prepare(RawDocument rawDocument) throws RegainException {
+    InputStream stream = null;
+    try {
+      stream = rawDocument.getContentAsStream();
+      WordExtractor extractor = new WordExtractor(stream);
+      setCleanedContent(extractor.getText());
+    }
+    catch (IOException exc) {
+      throw new RegainException("Reading MS Word dokument failed: "
+        + rawDocument.getUrl(), exc);
+    }
+    finally {
+      if (stream != null) {
+        try { stream.close(); } catch (Exception exc) {}
+      }
+    }
+  }
+
+  /**
+   * PrÃ¤pariert ein Dokument fÃ¼r die Indizierung.
+   *
+   * @param rawDocument Das zu prÃ¤pariernde Dokument.
+   *
+   * @throws RegainException Wenn die PrÃ¤paration fehl schlug.
+   * @deprecated
+   */
+  public void prepareWordDocument(RawDocument rawDocument) throws RegainException {
     InputStream stream = null;
     try {
       stream = rawDocument.getContentAsStream();
@@ -88,5 +115,6 @@ public class PoiMsWordPreparator extends AbstractPreparator {
       }
     }
   }
+ 
 
 }

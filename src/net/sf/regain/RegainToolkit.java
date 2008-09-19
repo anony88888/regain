@@ -1343,7 +1343,7 @@ public class RegainToolkit {
     try {
       return new SmbFile(urlToSmbFileName(url));
     } catch (MalformedURLException urlEx) {
-      throw new RegainException(urlEx.getMessage());
+      throw new RegainException(urlEx.getMessage(), urlEx);
     }
   }
 
