@@ -196,7 +196,6 @@ public class DocumentFactory {
     try {
       MagicMimeTypeIdentifier mmti = new MagicMimeTypeIdentifier();
       File file = rawDocument.getContentAsFile();
-      //      file.canRead() ??? or file.exists() ???
       if (file.canRead() == false) {
         mLog.warn("canRead() on file return: false. Maybe no access rights for sourceURL: " + 
           RegainToolkit.fileToUrl(file));
@@ -204,7 +203,6 @@ public class DocumentFactory {
         // throw new RegainException(); --> Proposal from J.Stiepel but here, we do need null
       } 
 
-      // FIXME JST FileNotFoundException, wenn (Zugriff verweigert).
       FileInputStream fis = new FileInputStream(file);
       byte[] bytes = new byte[mmti.getMinArrayLength()];
       fis.read(bytes);
