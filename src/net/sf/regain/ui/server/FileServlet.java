@@ -67,6 +67,7 @@ public class FileServlet extends HttpServlet {
     boolean autoFlush = true;
     PageContext pageContext = null;
     try {
+      req.setCharacterEncoding("UTF-8");
       pageContext = factory.getPageContext(this, req, resp,
         errorPageURL, needsSession, bufferSize, autoFlush);
     
