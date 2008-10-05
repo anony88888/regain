@@ -23,8 +23,8 @@ public class IndexConfig {
 
   /** Default list of index fields to search in. */
   protected static final String[] DEFAULT_SEARCH_FIELD_LIST
-    = { "content", "title", "headlines" };
-  
+    = { "content", "title", "headlines", "location", "filename" };
+
   /** The name of the index. */
   private String mName;
   

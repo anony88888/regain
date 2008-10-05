@@ -147,7 +147,7 @@ public class SingleSearchResults implements SearchResults {
         mQuery = mainQuery;
       }
 
-      // System.out.println("Query: '" + queryText + "' -> '" + query.toString() + "'");
+      //System.out.println("Query: '" + queryText + "' -> '" + mQuery.toString() + "'");
       
       try {
         mHits = manager.search(mQuery);
