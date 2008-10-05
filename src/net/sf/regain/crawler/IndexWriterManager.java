@@ -655,8 +655,8 @@ public class IndexWriterManager {
             }
             if (diff > 86400000L) {
               // -> The index entry is not up-to-date -> Delete the old entry
-              mLog.info("Index entry is outdated. Creating a new one (" +
-                  docLastModified + " > " + indexLastModified + "): " +
+              mLog.info("Index entry is outdated. Creating a new one (index=" +
+                  docLastModified + "), (source=" + indexLastModified + "): " +
                   rawDocument.getUrl());
               removeOldEntry = true;
             } else {
@@ -679,7 +679,8 @@ public class IndexWriterManager {
                 }
               } else {
                 // The entry is up-to-date and contains text -> We are done
-                mLog.info("Index entry is already up to date: " + rawDocument.getUrl());
+                mLog.info("Index entry is already up to date (index="+indexLastModified+"), " +
+                  "(source=" + docLastModified + "): " +  rawDocument.getUrl());
                 return;
               }
             }
