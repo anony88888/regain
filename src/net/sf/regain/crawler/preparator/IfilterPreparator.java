@@ -292,7 +292,9 @@ public class IfilterPreparator extends AbstractPreparator {
     Iterator ifilterIter = mGuidToIFilterHash.values().iterator();
     while (ifilterIter.hasNext()) {
       IfilterWrapper ifilter = (IfilterWrapper) ifilterIter.next();
-      ifilter.close();
+
+      // Closing of the Ifliter moved to IfilterWrapper.getText()
+      //ifilter.close();
     }
 
     // Clean the hashes

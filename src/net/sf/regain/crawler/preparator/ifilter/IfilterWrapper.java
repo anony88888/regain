@@ -47,6 +47,8 @@ public class IfilterWrapper {
   /** Used by native code. Holds the pointer to the PersistentHandler COM object */
   public long mPersistentHandler;
 
+  /** The class ID of the Ifilter*/
+  public String clsid;
   
   /**
    * Creates a new instance of IfilterWrapper.
@@ -55,7 +57,10 @@ public class IfilterWrapper {
    *        "clsid:f07f3920-7b8c-11cf-9be8-00aa004b9986"
    */
   public IfilterWrapper(String clsid) {
-    init(clsid);
+	  // Intialization moved to getText() method.
+	  //init(clsid);
+	  this.clsid = clsid;
+	  mPersistentHandler = 0;
   }
 
 
@@ -106,12 +111,16 @@ public class IfilterWrapper {
 
   /**
    * Gets the plain text of a file.
+   * Initialization and closing of the IFilter.
    * 
    * @param fileName The name of the file too get the text for.
    * @param buffer The StringBuffer where to store the text.
    */
   public void getText(String fileName, StringBuffer buffer) {
+	init(clsid);
     getText(fileName, buffer, false, mLog.isDebugEnabled(), false);
+    close();
+    mPersistentHandler = 0;
   }
 
 
@@ -138,6 +147,9 @@ public class IfilterWrapper {
    * <p>
    * Call this method after you are done using the IfilterWrapper.
    */
-  public native void close();
+  private native void close();
+
+  // Method has been replaced by a private close()-method, which is called by the getText()-method
+  //public native void close(){}
 
 }
