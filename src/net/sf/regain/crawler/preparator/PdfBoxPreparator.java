@@ -42,7 +42,7 @@ import org.pdfbox.pdmodel.PDDocumentInformation;
 import org.pdfbox.util.PDFTextStripper;
 
 /**
- * Präpariert ein PDF-Dokument für die Indizierung.
+ * PrÃ¤pariert ein PDF-Dokument fÃ¼r die Indizierung.
  * <p>
  * Dabei werden die Rohdaten des Dokuments von Formatierungsinformation befreit,
  * es wird der Titel extrahiert.
@@ -62,11 +62,11 @@ public class PdfBoxPreparator extends AbstractPreparator {
 
 
   /**
-   * Präpariert ein Dokument für die Indizierung.
+   * PrÃ¤pariert ein Dokument fÃ¼r die Indizierung.
    *
-   * @param rawDocument Das zu präpariernde Dokument.
+   * @param rawDocument Das zu prï¿½pariernde Dokument.
    *
-   * @throws RegainException Wenn die Präparation fehl schlug.
+   * @throws RegainException Wenn die Prï¿½paration fehl schlug.
    */
   public void prepare(RawDocument rawDocument) throws RegainException {
     String url = rawDocument.getUrl();

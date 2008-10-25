@@ -28,12 +28,12 @@
 package net.sf.regain.crawler.config;
 
 /**
- * Ein Eintrag in der Weißen Liste.
+ * Ein Eintrag in der WeiÃŸen Liste.
  * <p>
- * Die Weiße Liste enthält Präfixe, von denen eine URL einen haben <i>muß</i>,
+ * Die Weiï¿½e Liste enthÃ¤lt PrÃ¤fixe, von denen eine URL einen haben <i>muï¿½</i>,
  * um bearbeitet zu werden.
  * <p>
- * Des weiteren wird durch die Weiße Liste festgelegt, welche Teile des Index
+ * Des weiteren wird durch die Weiï¿½e Liste festgelegt, welche Teile des Index
  * vom Crawler bearbeitet werden sollen.
  *
  * @author Til Schneider, www.murfman.de

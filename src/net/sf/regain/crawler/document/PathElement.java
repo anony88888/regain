@@ -57,7 +57,7 @@ public class PathElement {
 
 
   /**
-   * Gibt die URL zurück.
+   * Gibt die URL zurÃ¼ck.
    *
    * @return Die URL.
    */
@@ -68,7 +68,7 @@ public class PathElement {
 
 
   /**
-   * Gibt den Titel zurück.
+   * Gibt den Titel zurÃ¼ck.
    *
    * @return Der Titel.
    */

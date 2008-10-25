@@ -54,7 +54,7 @@ import org.apache.regexp.RESyntaxException;
  * werden je nach Einstellung nur geladen, in den Suchindex aufgenommen oder
  * wiederum nach URLs durchsucht.
  * <p>
- * F�r jede URL wird Anhand der Schwarzen und der Wei�en Liste entschieden, ob sie
+ * für jede URL wird Anhand der Schwarzen und der Weißen Liste entschieden, ob sie
  * ignoriert oder bearbeitet wird. Wenn <CODE>loadUnparsedUrls</CODE> auf
  * <CODE>false</CODE> gesetzt wurde, dann werden auch URLs ignoriert, die weder
  * durchsucht noch indiziert werden.
@@ -260,8 +260,8 @@ public class Crawler implements ErrorLogger {
    * <p>
    * Wenn ja, dann wird ein neuer Job erzeugt und der Job-Liste hinzugef�gt.
    *
-   * @param url Die URL des zu pr�fenden Jobs.
-   * @param sourceUrl Die URL des Dokuments in der die URL des zu pr�fenden Jobs
+   * @param url Die URL des zu prüfenden Jobs.
+   * @param sourceUrl Die URL des Dokuments in der die URL des zu prüfenden Jobs
    *        gefunden wurde.
    * @param shouldBeParsed Gibt an, ob die URL geparst werden soll.
    * @param shouldBeIndexed Gibt an, ob die URL indiziert werden soll.
@@ -572,7 +572,7 @@ public class Crawler implements ErrorLogger {
       logError("The index is empty.", null, true);
       failedPercent = 1;
     } else {
-      // Pr�fen, ob die Anzahl der abgebrochenen Dokumente�ber der Toleranzgrenze
+      // Pr�fen, ob die Anzahl der abgebrochenen Dokumenteüber der Toleranzgrenze
       // ist.
       double failedDocCount = mDeadlinkList.size() + mErrorCount;
       double totalDocCount = failedDocCount + entryCount;
@@ -801,9 +801,9 @@ public class Crawler implements ErrorLogger {
 
 
   /**
-   * Pr�ft, ob die Exception von einem Dead-Link herr�hrt.
+   * Prüft, ob die Exception von einem Dead-Link herr�hrt.
    *
-   * @param thr Die zu pr�fende Exception
+   * @param thr Die zu prüfende Exception
    * @return Ob die Exception von einem Dead-Link herr�hrt.
    */
   private boolean isExceptionFromDeadLink(Throwable thr) {
@@ -914,7 +914,7 @@ public class Crawler implements ErrorLogger {
   }
 
   /**
-   * Durchsucht den Inhalt eines HTML-Dokuments nach URLs und erzeugt f�r jeden
+   * Durchsucht den Inhalt eines HTML-Dokuments nach URLs und erzeugt für jeden
    * Treffer einen neuen Job.
    *
    * @param rawDocument Das zu durchsuchende Dokument.
@@ -1003,7 +1003,7 @@ public class Crawler implements ErrorLogger {
 
 
   /**
-   * Gibt die Anzahl der Fehler zur�ck (das beinhaltet fatale und nicht fatale
+   * Gibt die Anzahl der Fehler zurück (das beinhaltet fatale und nicht fatale
    * Fehler).
    *
    * @return Die Anzahl der Fehler.
@@ -1015,7 +1015,7 @@ public class Crawler implements ErrorLogger {
 
 
   /**
-   * Gibt Die Anzahl der fatalen Fehler zur�ck.
+   * Gibt Die Anzahl der fatalen Fehler zurück.
    * <p>
    * Fatale Fehler sind Fehler, durch die eine Erstellung oder Aktualisierung
    * des Index verhindert wurde.

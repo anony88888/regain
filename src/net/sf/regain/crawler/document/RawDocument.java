@@ -48,7 +48,7 @@ import org.apache.log4j.Logger;
 
 
 /**
- * Enth�lt alle Rohdaten eines Dokuments.
+ * enthält alle Rohdaten eines Dokuments.
  * <p>
  * Falls der Inhalt des Dokuments zur besseren Bearbeitung in Form eines Strings
  * gebraucht wird, dann wird dieser zum sp�test m�glichen Zeitpunkt erstellt.
@@ -69,7 +69,7 @@ public class RawDocument {
     = new Profiler("Documents loaded from the file system", "docs");
 
   /**
-   * Der Timeout f�r HTTP-Downloads. Dieser Wert bestimmt die maximale Zeit
+   * Der Timeout für HTTP-Downloads. Dieser Wert bestimmt die maximale Zeit
    * in Sekunden, die ein HTTP-Download insgesamt dauern darf.
    */
   private static int mHttpTimeoutSecs = 180;
@@ -102,7 +102,7 @@ public class RawDocument {
 
   /**
    * Die Datei, in der sich der Inhalt des Dokuments befindet.
-   * Ist <CODE>null</CODE>, wenn das Dokument �ber HTTP bezogen wird und noch
+   * Ist <CODE>null</CODE>, wenn das Dokument über HTTP bezogen wird und noch
    * nicht angefragt wurde.
    */
   private File mContentAsFile;
@@ -159,7 +159,7 @@ public class RawDocument {
 
 
   /**
-   * Setzt den Timeout f�r HTTP-Downloads.
+   * Setzt den Timeout für HTTP-Downloads.
    * <p>
    * Dieser Wert bestimmt die maximale Zeit, die ein HTTP-Download insgesamt
    * dauern darf.
@@ -282,10 +282,10 @@ public class RawDocument {
 
 
   /**
-   * Gibt zur�ck, wann das Dokument zuletzt ge�ndert wurde.
+   * Gibt zurück, wann das Dokument zuletzt ge�ndert wurde.
    * <p>
    * Wenn die letzte �nderung nicht ermittelt werden kann (z.B. bei
-   * HTTP-Dokumenten), dann wird <code>null</code> zur�ckgegeben.
+   * HTTP-Dokumenten), dann wird <code>null</code> zurückgegeben.
    *
    * @return Wann das Dokument zuletzt ge�ndert wurde.
    */
@@ -306,7 +306,7 @@ public class RawDocument {
 
 
   /**
-   * Gibt die URL des Dokuments zur�ck.
+   * Gibt die URL des Dokuments zurück.
    *
    * @return Die URL des Dokuments.
    */
@@ -317,7 +317,7 @@ public class RawDocument {
 
 
   /**
-   * Gibt die URL jenen Dokuments zur�ck, in dem die URL dieses Dokuments
+   * Gibt die URL jenen Dokuments zurück, in dem die URL dieses Dokuments
    * gefunden wurde.
    *
    * @return Die URL jenen Dokuments, in dem die URL dieses Dokuments gefunden
@@ -330,12 +330,12 @@ public class RawDocument {
 
 
   /**
-   * Gibt den Text des Links zur�ck in dem die URL gefunden wurde.
+   * Gibt den Text des Links zurück in dem die URL gefunden wurde.
    * <p>
    * Ist <code>null</code>, falls die URL nicht in einem Link (also einem a-Tag)
    * gefunden wurde oder wenn aus sonstigen Gr�nden kein Link-Text vorhanden ist.
    *
-   * @return Der Text des Links zur�ck in dem die URL gefunden wurde.
+   * @return Der Text des Links zurück in dem die URL gefunden wurde.
    */
   public String getSourceLinkText() {
     return mSourceLinkText;
@@ -344,7 +344,7 @@ public class RawDocument {
 
 
   /**
-   * Gibt den Inhalt des Dokuments zur�ck.
+   * Gibt den Inhalt des Dokuments zurück.
    *
    * @return Der Inhalt des Dokuments.
    * @throws RegainException Wenn das Dokument nicht geladen werden konnte.
@@ -376,7 +376,7 @@ public class RawDocument {
 
 
   /**
-   * Gibt den Inhalt des Dokuments als String zur�ck.
+   * Gibt den Inhalt des Dokuments als String zurück.
    * <p>
    * Dieser String wird erst bei der ersten Abfrage erzeugt und dann gecached.
    *
@@ -455,7 +455,7 @@ public class RawDocument {
 
 
   /**
-   * Gibt den Datei des Dokuments zur�ck. Falls das Dokument nicht als Datei
+   * Gibt den Datei des Dokuments zurück. Falls das Dokument nicht als Datei
    * existiert, wird eine tempor�re Datei erzeugt.
    *
    * @return Die Datei des Dokuments.
@@ -469,7 +469,7 @@ public class RawDocument {
 
 
   /**
-   * Gibt den Datei des Dokuments zur�ck. Falls das Dokument nicht als Datei
+   * Gibt den Datei des Dokuments zurück. Falls das Dokument nicht als Datei
    * existiert, wird eine tempor�re Datei erzeugt.
    *
    * @param forceTempFile Bigt an, ob erzwungen werden soll, dass eine

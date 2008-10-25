@@ -39,7 +39,7 @@ import net.sf.regain.crawler.preparator.rtf.RtfFilterReader;
 
 
 /**
- * Präpariert ein RTF-Dokument für die Indizierung. Dazu wird sämtliche
+ * PrÃ¤pariert ein RTF-Dokument fÃ¼r die Indizierung. Dazu wird sï¿½mtliche
  * Formatierungsinformation einfach ignoriert.
  * <p>
  * Dabei werden die Rohdaten des Dokuments von Formatierungsinformation befreit.
@@ -59,11 +59,11 @@ public class SimpleRtfPreparator extends AbstractPreparator {
 
 
   /**
-   * Präpariert ein Dokument für die Indizierung.
+   * PrÃ¤pariert ein Dokument fÃ¼r die Indizierung.
    *
-   * @param rawDocument Das zu präpariernde Dokument.
+   * @param rawDocument Das zu prï¿½pariernde Dokument.
    *
-   * @throws RegainException Wenn die Präparation fehl schlug.
+   * @throws RegainException Wenn die Prï¿½paration fehl schlug.
    */
   public void prepare(RawDocument rawDocument) throws RegainException {
     InputStream stream = null;

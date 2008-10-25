@@ -40,7 +40,7 @@ import org.apache.poi.hwpf.extractor.WordExtractor;
 
 
 /**
- * Pr�pariert ein Microsoft-Word-Dokument f�r die Indizierung mit Hilfe der
+ * Präpariert ein Microsoft-Word-Dokument für die Indizierung mit Hilfe der
  * <a href="http://jakarta.apache.org/poi/">POI-API</a>.
  * <p>
  * Dabei werden die Rohdaten des Dokuments von Formatierungsinformation befreit,
@@ -61,7 +61,7 @@ public class PoiMsWordPreparator extends AbstractPreparator {
 
 
   /**
-   * Pr�pariert ein Dokument f�r die Indizierung.
+   * Präpariert ein Dokument für die Indizierung.
    *
    * @param rawDocument Das zu pr�pariernde Dokument.
    *

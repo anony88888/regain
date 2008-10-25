@@ -74,8 +74,8 @@ public class SingleSearchResults implements SearchResults {
   private int mSearchTime;
 
   /**
-   * Der Reguläre Ausdruck, zu dem eine URL passen muss, damit sie in einem
-   * neuen Fenster geöffnet wird.
+   * Der RegulÃ¤re Ausdruck, zu dem eine URL passen muss, damit sie in einem
+   * neuen Fenster geÃ¶ffnet wird.
    */
   private RE mOpenInNewWindowRegex;
 

@@ -28,9 +28,9 @@
 package net.sf.regain.crawler.config;
 
 /**
- * Enthält die Daten einer Start-URL.
+ * enthÃ¤lt die Daten einer Start-URL.
  * <p>
- * Eine Start-URL ist ein Startpunkt an dem der Crawler-Prozeß beginnt.
+ * Eine Start-URL ist ein Startpunkt an dem der Crawler-Prozeï¿½ beginnt.
  *
  * @author Til Schneider, www.murfman.de
  */
@@ -63,7 +63,7 @@ public class StartUrl {
 
 
   /**
-   * Gibt die URL des zu bearbeitenden Dokuments zurück.
+   * Gibt die URL des zu bearbeitenden Dokuments zurÃ¼ck.
    *
    * @return Die URL des zu bearbeitenden Dokuments.
    */
@@ -74,7 +74,7 @@ public class StartUrl {
 
 
   /**
-   * Gibt zurück, ob das Dokument nach weiteren URLs durchsucht werden soll.
+   * Gibt zurÃ¼ck, ob das Dokument nach weiteren URLs durchsucht werden soll.
    *
    * @return Ob das Dokument nach weiteren URLs durchsucht werden soll.
    */
@@ -85,7 +85,7 @@ public class StartUrl {
 
 
   /**
-   * Gibt zurück, ob das Dokument indiziert werden soll.
+   * Gibt zurÃ¼ck, ob das Dokument indiziert werden soll.
    *
    * @return Ob das Dokument indiziert werden soll.
    */

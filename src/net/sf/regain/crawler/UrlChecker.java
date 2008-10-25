@@ -203,13 +203,13 @@ public class UrlChecker {
    }
 
   /**
-   * Pr¸ft ob die URL von der Schwarzen und Weiﬂen Liste akzeptiert wird.
+   * Pr√ºft ob die URL von der Schwarzen und Wei√üen Liste akzeptiert wird.
    * <p>
-   * Dies ist der Fall, wenn sie keinem Pr‰fix aus der Schwarzen Liste und
-   * mindestens einem aus der Weiﬂen Liste entspricht.
+   * Dies ist der Fall, wenn sie keinem Pr√§fix aus der Schwarzen Liste und
+   * mindestens einem aus der Wei√üen Liste entspricht.
    *
-   * @param url Die zu pr¸fende URL.
-   * @return Ob die URL von der Schwarzen und Weiﬂen Liste akzeptiert wird.
+   * @param url Die zu pr√ºfende URL.
+   * @return Ob die URL von der Schwarzen und Wei√üen Liste akzeptiert wird.
    */
   public UrlMatcher isUrlAccepted(String url) {
     

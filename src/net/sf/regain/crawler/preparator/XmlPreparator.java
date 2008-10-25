@@ -33,7 +33,7 @@ import net.sf.regain.crawler.document.AbstractPreparator;
 import net.sf.regain.crawler.document.RawDocument;
 
 /**
- * Präpariert ein XML-Dokument für die Indizierung.
+ * PrÃ¤pariert ein XML-Dokument fÃ¼r die Indizierung.
  * <p>
  * Dabei werden die Rohdaten des Dokuments von Formatierungsinformation befreit.
  *
@@ -52,11 +52,11 @@ public class XmlPreparator extends AbstractPreparator {
 
 
   /**
-   * Präpariert ein Dokument für die Indizierung.
+   * PrÃ¤pariert ein Dokument fÃ¼r die Indizierung.
    *
-   * @param rawDocument Das zu präpariernde Dokument.
+   * @param rawDocument Das zu prï¿½pariernde Dokument.
    *
-   * @throws RegainException Wenn die Präparation fehl schlug.
+   * @throws RegainException Wenn die Prï¿½paration fehl schlug.
    */
   public void prepare(RawDocument rawDocument) throws RegainException {
     String contentAsString = rawDocument.getContentAsString();

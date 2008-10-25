@@ -32,9 +32,9 @@ import net.sf.regain.crawler.document.AbstractPreparator;
 import net.sf.regain.crawler.document.RawDocument;
 
 /**
- * Präpariert ein Plain-Text-Dokument für die Indizierung.
+ * PrÃ¤pariert ein Plain-Text-Dokument fÃ¼r die Indizierung.
  * <p>
- * Das Dokument wird dabei unverändert übernommen befreit.
+ * Das Dokument wird dabei unverï¿½ndert Ã¼bernommen befreit.
  *
  * @author Til Schneider, www.murfman.de
  */
@@ -51,11 +51,11 @@ public class PlainTextPreparator extends AbstractPreparator {
 
 
   /**
-   * Präpariert ein Dokument für die Indizierung.
+   * PrÃ¤pariert ein Dokument fÃ¼r die Indizierung.
    *
-   * @param rawDocument Das zu präpariernde Dokument.
+   * @param rawDocument Das zu prï¿½pariernde Dokument.
    *
-   * @throws RegainException Wenn die Präparation fehl schlug.
+   * @throws RegainException Wenn die Prï¿½paration fehl schlug.
    */
   public void prepare(RawDocument rawDocument) throws RegainException {
     setCleanedContent(rawDocument.getContentAsString());

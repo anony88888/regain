@@ -30,9 +30,9 @@ package net.sf.regain.crawler.document;
 import net.sf.regain.crawler.CrawlerToolkit;
 
 /**
- * Thread, der einen HTTP-Download übernimmt.
+ * Thread, der einen HTTP-Download Ã¼bernimmt.
  * <p>
- * Hilfsklasse für {@link RawDocument}.
+ * Hilfsklasse fÃ¼r {@link RawDocument}.
  *
  * @author Til Schneider, www.murfman.de
  */
@@ -68,7 +68,7 @@ public class HttpDownloadThread extends Thread {
 
 
   /**
-   * Führt den Download aus.
+   * Fï¿½hrt den Download aus.
    * <p>
    * Am Ende ist entweder mDocContent oder mError gesetzt, bevor der wartende
    * Thread benachrichtigt wird.
@@ -101,10 +101,10 @@ public class HttpDownloadThread extends Thread {
 
 
   /**
-   * Gibt den Inhalt des heruntergeladenen Dokuments zurück.
+   * Gibt den Inhalt des heruntergeladenen Dokuments zurÃ¼ck.
    * <p>
-   * Falls das Dokument noch nicht vollständig heruntergeladen wurde, wird
-   * <code>null</code> zurückgegeben.
+   * Falls das Dokument noch nicht vollstï¿½ndig heruntergeladen wurde, wird
+   * <code>null</code> zurÃ¼ckgegeben.
    *
    * @return Der Inhalt des heruntergeladenen Dokuments
    */
@@ -114,9 +114,9 @@ public class HttpDownloadThread extends Thread {
 
 
   /**
-   * Gibt den Fehler zurück, der beim Download auftrat.
+   * Gibt den Fehler zurÃ¼ck, der beim Download auftrat.
    * <p>
-   * Falls noch kein Fehler auftrat, wird <code>null</code> zurückgegeben.
+   * Falls noch kein Fehler auftrat, wird <code>null</code> zurÃ¼ckgegeben.
    *
    * @return Der Fehler, der beim Download auftrat.
    */
