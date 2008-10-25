@@ -1,23 +1,23 @@
-Version 1.5.3 am XXXXXXXX PREVIEW
--------------------------
+Version 1.5.3 am 05.10.08 PREVIEW
+---------------------------------
 * POI von Version 3.0.1 auf 3.1, Contribution J.Stiepel
 * MS-Visio Preparator (experimentell), Contribution J.Stiepel
 * einige Bugfixe betreffs Schreibrechten und Fehlerbehandlung, Contribution J.Stiepel
-* Verschachtelte Indexe für die Suche, Contribution filiadata
+* Verschachtelte Indexe fÃ¼r die Suche, Contribution filiadata
 * Achtung Fehlerbehaftet: verschachtelte Indices !!!
-* Bugfix: Umlaute werden nicht durch Suchmaske 'zerstört'
+* Bugfix: Umlaute werden nicht durch Suchmaske 'zerstÃ¶rt'
 * neue Servletversion
 
 Version 1.5.2 am 15.08.08 PREVIEW
 ---------------------------------
 * Per Default wird der gesamte Content im Index gespeichert. Mittels <search:hit_content/> aus der
   Taglib kann man eine ausklappbare Contentansicht in die Ergebnisliste einbauen. 
-  ACHTUNG: Experimentelles Fe01ature. Die Indexe können sehr groß werden.
+  ACHTUNG: Experimentelles Fe01ature. Die Indexe kÃ¶nnen sehr groÃŸ werden.
 
 Version 1.5.1 am 07.08.08 
 -------------------------
 * Dateiname wird korrekt indiziert
-* Datumsformat 'last-modified' auf "YYYYMMDD" geändert. Damit kann man die RangeSearch auf
+* Datumsformat 'last-modified' auf "YYYYMMDD" geÃ¤ndert. Damit kann man die RangeSearch auf
   das Feld anwenden (Code-Contribution)
 * locale-Handling im SharedTag verbessert (Code-Contribution)
 
@@ -29,12 +29,12 @@ Version 1.5.0 am 10.07.08 Preview
 * Lucene auf 2.3.2 geupdated
 * Anchors werden von URLs entfernt (http://forum.murfman.de/index.html#bottom --> http://forum.murfman.de/index.html)
 * Definition eines default Indexupdate-Intervalles
-* Änderung Löschvorgang temporäre Dateien
+* Ã„nderung LÃ¶schvorgang temporÃ¤re Dateien
 * Verbesserte Mimetype-Detection (Update Aperture, URL-Bestimmung)
 
 Version 1.4.2 am 04.06.08 Preview
 ---------------------------------
-* http://-Links, welche mit einem / enden, können extrahiert und indiziert werden
+* http://-Links, welche mit einem / enden, kÃ¶nnen extrahiert und indiziert werden
 
 Version 1.4.1 am 27.04.08 Preview
 ---------------------------------
@@ -56,11 +56,11 @@ Version 1.3.0/1 am 16.03.08
 * Zugriff auf Windows-Shares (ohne Authentifizierung) (Samba/CIFS)
 * HTML-Parser zum Extrahieren des Contents
 * Bugfix Mimetypdetection, wenn das File keine Dateinendung besitzt
-* Priorität für Preparatoren. Default Prio ist 0. Damit lässt sich mittels
+* PrioritÃ¤t fÃ¼r Preparatoren. Default Prio ist 0. Damit lÃ¤sst sich mittels
   URLRegEx .* in einem beliebigen Preparator (vorzugsweise EmptyPreparator)
   und priority=-1 ein CatchAll-Preparator konfigurieren
-* Highlighting für Content und Titel
-* Preparatorselektion anhand des Mimetypes (früher Dateiendung)
+* Highlighting fÃ¼r Content und Titel
+* Preparatorselektion anhand des Mimetypes (frÃ¼her Dateiendung)
 * Mimetype-detection (Dateiendung und MagicMime) 
 * Umstellung Erweiterte Suche auf Auswahl Mimetype anstelle Dateiendung
 
