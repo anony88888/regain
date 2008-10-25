@@ -208,7 +208,7 @@ X IfilterPreparator: Einen Präparator schreiben, der das IFilter-Interface
 X Gro�-/Kleinschreibung in Auxilliary Fields
 X Zeit zwischen Breakpoints konfigurierbar
 X HTTP User agent konfigurierbar
-- Namen der verf�gbaren Indizes von JSPs aus erreichbar machen
+- Namen der verfügbaren Indizes von JSPs aus erreichbar machen
     Geht schon: SearchToolkit.getIndexConfigArr(...)
 
 ** Version 1.1 Beta 6 am 05.12.05 **
@@ -316,7 +316,7 @@ Prio A:
   Desktop search: Status page: Add checkbox "Stop reloading when index update is finished"
     for page reload button.
 
-  Handbuch: Installation: Was muss man konfigurieren, damit es l�uft.
+  Handbuch: Installation: Was muss man konfigurieren, damit es läuft.
   Desktopsuche: Mime-Types konfigurierbar (apache-Format)
   übersetzungen holen: lastLogMessages
 

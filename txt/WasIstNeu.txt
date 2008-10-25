@@ -99,7 +99,7 @@ Version 1.2 am 20.10.07
 * Die maximale Anzahl von Termen pro Dokument ist nun einstellbar und zwar über
   das <maxFieldLength>-Tag in der CrawlerConfiguration.xml. Default ist 10000.
 * Der IfilterPreparator funktioniert jetzt auch unter Windows Server 2003.
-* Die Werte für das <search:input_fieldlist>-Tag k�nnen nun beim Indexieren
+* Die Werte für das <search:input_fieldlist>-Tag können nun beim Indexieren
   ermittelt werden. Dadurch muss diese bei gro�en Indexen langsame Operation
   nicht mehr bei der ersten Suche gemacht werden. Dies kann über das
   <valuePrefetchFields>-Tag in der CrawlerConfiguration.xml eingestellt werden.
@@ -134,13 +134,13 @@ Version 1.1 Beta 6 am 05.12.05
 ------------------------------
 
 * Neuer Präparator: Mit dem PoiMsPowerPointPreparator steht nun auch ein
-  plattformunabh�ngiger Präparator für Powerpoint zur Verf�gung.
+  plattformunabhängiger Präparator für Powerpoint zur Verfügung.
   (Vielen Dank an Gerhard Olsson)
 * Neuer Präparator: Der IfilterPreparator nutzt die I-Filter-Schnittstelle von
-  Microsoft um etliche Dateiformate zu lesen. Leider l�uft er nur unter Windows.
-* Multiindexsuche: In der SearchConfiguration.xml k�nnen nun auch mehrere
+  Microsoft um etliche Dateiformate zu lesen. Leider läuft er nur unter Windows.
+* Multiindexsuche: In der SearchConfiguration.xml können nun auch mehrere
   Indizes als Default angegeben werden.
-* Die Zusatzfelder (Auxiliary Fields) k�nnen nun besser mit Gro�-/Kleinschreibung
+* Die Zusatzfelder (Auxiliary Fields) können nun besser mit Groß-/Kleinschreibung
   umgehen.
 * Der vom Crawler an die Webserver gesendete HTTP-Agent ist nun in der
   CrawlerConfiguration.xml konfigurierbar. So kann sich der Crawler
@@ -151,14 +151,14 @@ Version 1.1 Beta 6 am 05.12.05
 Version 1.1 Beta 5 am 13.08.05
 ------------------------------
 
-* Multiindex-Suche: Es k�nnen nun mehrere Suchindizes über eine Suchmaske
+* Multiindex-Suche: Es können nun mehrere Suchindizes über eine Suchmaske
   durchsucht werden. Die Suchanfragen werden dabei auf jeden Index losgelassen
   und anschlie�end vereint.
-* In der Weißen und der Schwarzen Liste k�nnen jetzt auch regul�re Ausdr�cke
+* In der Weißen und der Schwarzen Liste können jetzt auch regul�re Ausdr�cke
   angegeben werden.
 * Suchmaske: Der Ort der Ressourcen und der Konfiguration wird jetzt besser
   erkannt, so dass regain auch dann korrekt funktioniert, wenn Tomcat als
-  Service l�uft.
+  Service läuft.
 * Suchmaske: Die File-zu-Http-Br�cke ist nun abschaltbar.
 * Crawler: Der Crawler braucht nun beim Durchsuchen von Verzeichnissen weniger
   Arbeitsspeicher

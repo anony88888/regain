@@ -44,7 +44,7 @@ import org.apache.lucene.search.Query;
  * Kapselt die Suche auf dem Suchindex.
  * <p>
  * Alle Suchanfragen werden synchronisiert. Au�erdem wird im 10-Sekunden-Takt
- * gePrüft, ob ein neuer Index verf�gbar ist. Wenn ja, dann wird der neue Index
+ * gePrüft, ob ein neuer Index verfügbar ist. Wenn ja, dann wird der neue Index
  * übernommen und der alte in einem Backup gesichert.
  *
  * @author Til Schneider, www.murfman.de

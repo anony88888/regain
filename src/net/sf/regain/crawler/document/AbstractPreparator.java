@@ -359,7 +359,7 @@ public abstract class AbstractPreparator implements Preparator {
   /**
    * Gibt den Pfad zurück, über den das Dokument zu erreichen ist.
    * <p>
-   * Falls kein Pfad verf�gbar ist, wird <code>null</code> zurückgegeben.
+   * Falls kein Pfad verfügbar ist, wird <code>null</code> zurückgegeben.
    *
    * @return Der Pfad, über den das Dokument zu erreichen ist.
    */

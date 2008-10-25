@@ -217,7 +217,7 @@ public class RawDocument {
       = new HttpDownloadThread(url, Thread.currentThread());
     loaderThread.start();
 
-    // Warten bis entweder der Timeout abl�uft, oder bis dieser Thread vom
+    // Warten bis entweder der Timeout abläuft, oder bis dieser Thread vom
     // HttpContentLoaderThread unterbrochen wird.
     try {
       Thread.sleep(mHttpTimeoutSecs * 1000);
@@ -244,7 +244,7 @@ public class RawDocument {
       }
 
       // Wir haben weder einen Inhalt noch einen Fehler
-      // -> Der Download l�uft noch
+      // -> Der Download läuft noch
       // -> Da jedoch mittlerweile der Timeout abgelaufen ist -> Exception werfen
       throw new RegainException("Loading Document by HTTP timed out after " +
           mHttpTimeoutSecs + " seconds: " + url);

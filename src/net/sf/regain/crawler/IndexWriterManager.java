@@ -1187,7 +1187,7 @@ public class IndexWriterManager {
   /**
    * Schreibt die Terme vom IndexReader sortiert in den Writer.
    * <p>
-   * Um die Terme sortieren zu k�nnen, m�ssen sie zwischengespeichert werden. Falls
+   * Um die Terme sortieren zu können, m�ssen sie zwischengespeichert werden. Falls
    * es zu viele sind, k�nnte das schief gehen. In diesem Fall sollte man auf simples
    * Schreiben umstellen.
    *

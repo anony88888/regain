@@ -1,7 +1,7 @@
 Kurzbeschreibung
 ----------------
 
-regain ist eine Suchmaschine, die sowohl Dateisysteme als auch Webseiten in einen Suchindex aufnehmen kann. Mit Hilfe dieses Suchindex k�nnen - �hnlich wie bei anderen Suchmaschinen z.B. Google - über ein Webinterface Volltextsuchen in gro�en Datenmengen in Sekundenbruchteilen durchgef�hrt werden.
+regain ist eine Suchmaschine, die sowohl Dateisysteme als auch Webseiten in einen Suchindex aufnehmen kann. Mit Hilfe dieses Suchindex können - �hnlich wie bei anderen Suchmaschinen z.B. Google - über ein Webinterface Volltextsuchen in gro�en Datenmengen in Sekundenbruchteilen durchgef�hrt werden.
 
 regain kann auf Servlet/JSP-f�higen Webservern eingesetzt werden und auch als sog. Desktop-Suchmaschine. Die Server-Variante ist eher für den professionellen Bereich interessant und wird bereits von dm-drogerie markt produktiv eingesetzt. Die Desktop-Suchmaschine ist die neueste Entwicklung im regain-Projekt und zielt auf den Einsatz durch Privatpersonen.
 
@@ -25,7 +25,7 @@ Darüber hinaus kann regain durch ein Plugin-System sehr einfach um weitere Date
 Was ist nach Ihrer Meinung die besondere Neuerung Ihrer Idee/Ihres Verfahrens/Ihres Produkts?
 ---------------------------------------------------------------------------------------------
 
-Das Besondere bei regain ist die Tatsache, dass es sich sowohl als Desktop-Suchmaschine als auch im Server-Einsatz nutzen l�sst. Bei der Entwicklung der Architektur wurde sehr stark darauf geachtet, dass m�glichst weite Teile des Systems für beide Varianten genutzt werden k�nnen. Eine Firma, die plant regain serverseitig einzusetzen, kann daher regain beispielsweise zun�chst in der Desktop-Variante ohne gro�en Aufwand evaluieren, um dann regain mit derselben Konfiguration in der Server-Variante einzusetzen. 
+Das Besondere bei regain ist die Tatsache, dass es sich sowohl als Desktop-Suchmaschine als auch im Server-Einsatz nutzen l�sst. Bei der Entwicklung der Architektur wurde sehr stark darauf geachtet, dass m�glichst weite Teile des Systems für beide Varianten genutzt werden können. Eine Firma, die plant regain serverseitig einzusetzen, kann daher regain beispielsweise zun�chst in der Desktop-Variante ohne gro�en Aufwand evaluieren, um dann regain mit derselben Konfiguration in der Server-Variante einzusetzen. 
 
 
 Existiert aus Ihrer Sicht aufgrund der Entwicklung Ihrer Idee/Ihres Verfahrens/Ihres Produkts bei Ihnen ein Vorsprung vor dem aktuellen Stand der Technik?
@@ -45,7 +45,7 @@ Angesichts von so gro�en Namen wie Google, kann die Desktop-Variante regain la
 Haben Sie für Ihre Idee/Ihr Verfahren/Ihr Produkt gewerbliche Schutzrechte (z.B. Patente) angemeldet?
 -------------------------------------------------
 
-Patente wurden nicht angemeldet. regain ist unter der Open-Source-Lizenz LGPL (Lesser General Public License) freigegeben. Das hei�t, regain darf zeitlich unbegrenzt und kostenlos genutzt werden. Man darf regain weiterentwickeln oder anpassen, muss aber jedem, der die ge�nderte Version erh�lt, auch den ge�nderten Quellcode zur Verf�gung stellen. regain darf in andere Projekte eingebunden werden, ohne dass deren Quellcode ver�ffentlicht werden muss.
+Patente wurden nicht angemeldet. regain ist unter der Open-Source-Lizenz LGPL (Lesser General Public License) freigegeben. Das hei�t, regain darf zeitlich unbegrenzt und kostenlos genutzt werden. Man darf regain weiterentwickeln oder anpassen, muss aber jedem, der die ge�nderte Version erh�lt, auch den ge�nderten Quellcode zur Verfügung stellen. regain darf in andere Projekte eingebunden werden, ohne dass deren Quellcode ver�ffentlicht werden muss.
 
 
 Welche Zielgruppe m�chten Sie erreichen?
@@ -55,7 +55,7 @@ regain ist für zwei Zielgruppen interessant:
 
 * Die Firma, die für Ihren Webauftritt eine Suche bereitstellen will bzw. ihre Intranet-Seiten um eine Suchm�glichkeit für Dokumente auf internen Dateiservern erweitern will.
 
-* Der private Endanwender, der die Vorz�ge von Suchmaschinen auch bei seinen privaten Dokumente nutzen k�nnen m�chte.
+* Der private Endanwender, der die Vorz�ge von Suchmaschinen auch bei seinen privaten Dokumente nutzen können m�chte.
 
 
 Kreativit�t
@@ -144,13 +144,13 @@ Die wichtigsten Funktionen im einzelnen:
 
 * Mit regain kann sehr genau festgelegt werden, was in den Index kommen soll und was nicht.
 - Wei�e und Schwarze Liste: Durch eine Wei�e und eine Schwarze Liste l��t sich der aufzubereitende Suchraum genau eingrenzen. So kann z.B. alles von http://www.xy.de indexiert werden, au�er http://www.xy.de/dynamic.
-- Mehrere Quellen in einem Index: Es k�nnen in denselben Suchindex Dokumente von verschiedenen Dateisystemen und/oder Webseiten indexiert werden.
-- Partielle Indexierung: Wenn in einem Suchindex z.B. Dokumente aus mehreren Netzlaufwerken und einer Webseite sind, dann kann man z.B. nur die Dokumente eines der Netzlaufwerke aktualisieren. So k�nnen manche Laufwerke st�ndlich aktualisiert werden, andere nur w�chentlich.
+- Mehrere Quellen in einem Index: Es können in denselben Suchindex Dokumente von verschiedenen Dateisystemen und/oder Webseiten indexiert werden.
+- Partielle Indexierung: Wenn in einem Suchindex z.B. Dokumente aus mehreren Netzlaufwerken und einer Webseite sind, dann kann man z.B. nur die Dokumente eines der Netzlaufwerke aktualisieren. So können manche Laufwerke st�ndlich aktualisiert werden, andere nur w�chentlich.
 
 * Indexierung
 - Hot-Deployment: Auf einen neuen Suchindex wechseln, ohne die Servlet-Engine (z.B. Tomcat) neu zu starten.
 - Stopword-Liste: Worte bestimmen, die nicht indexiert werden sollen.
-- Analyse-Dateien: Auf Wunsch k�nnen alle Zwischenschritte der Indexierung als Dateien ausgegeben werden.
+- Analyse-Dateien: Auf Wunsch können alle Zwischenschritte der Indexierung als Dateien ausgegeben werden.
 - Content-Extraktion für HTML: Es ist m�glich, lediglich den eigentlichen Inhalt von HTML-Dokumenten zu indexieren. regain klammert die Navigation und die Fu�leiste aus.
 - Pfad-Extraktion für HTML: Den Navigationspfad von HTML-Dokumenten bei den Suchergebnissen anzeigen lassen.
 - Erkennung von Dead Links: Quasi als Abfallprodukt werden alle gefundenen Dead Links (also Links auf nicht mehr vorhandene Dokumente) ausgegeben.

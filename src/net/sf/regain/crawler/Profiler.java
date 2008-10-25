@@ -62,7 +62,7 @@ public class Profiler {
   private int mAbortedMeasureCount;
   /**
    * Die Zeit, zu der die laufende Messung begonnen hat. Ist -1, wenn keine
-   * Messung l�uft.
+   * Messung läuft.
    */
   private long mMeasureStart = -1;
 
