@@ -50,7 +50,7 @@ public class CrawlerToolkit {
   /** The logger for this class */
   private static Logger mLog = Logger.getLogger(CrawlerToolkit.class);
 
-
+  
   /**
    * Returns a human readable command string for a command.
    *

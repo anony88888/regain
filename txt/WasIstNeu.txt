@@ -12,7 +12,7 @@ Version 1.5.2 am 15.08.08 PREVIEW
 ---------------------------------
 * Per Default wird der gesamte Content im Index gespeichert. Mittels <search:hit_content/> aus der
   Taglib kann man eine ausklappbare Contentansicht in die Ergebnisliste einbauen. 
-  ACHTUNG: Experimentelles Fe01ature. Die Indexe können sehr groß werden.
+  ACHTUNG: Experimentelles Feature. Die Indexe können sehr groß werden.
 
 Version 1.5.1 am 07.08.08 
 -------------------------

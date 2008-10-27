@@ -35,7 +35,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import java.util.Map;
+import java.util.Properties;
+import javax.mail.Session;
+import javax.mail.URLName;
 import jcifs.smb.SmbFile;
+import net.sf.regain.ImapToolkit;
 import net.sf.regain.RegainException;
 import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.config.CrawlerConfig;
@@ -413,7 +417,7 @@ public class Crawler implements ErrorLogger {
               parseDirectory(file);
             }
             
-            // A directory can't be parsed or indexed -> continue
+            // A directory can't be indexed -> continue
             mCrawlerJobProfiler.stopMeasuring(0);
             continue;
           }
@@ -438,11 +442,36 @@ public class Crawler implements ErrorLogger {
               parseSmbDirectory(smbFile);
             }
             
-            // A directory can't be parsed or indexed -> continue
+            // A directory can't be indexed -> continue
             mCrawlerJobProfiler.stopMeasuring(0);
             continue;
           }
             
+        }
+        catch (Throwable thr) {
+          mCrawlerJobProfiler.abortMeasuring();
+          logError("Invalid URL: '" + url + "'", thr, false);
+          continue;
+        }
+      }else if(url.startsWith("imap://") || url.startsWith("imaps://")){
+        // IMAP mail box: Check whether this is a folder or an e-mail url
+        try {
+          if( ImapToolkit.checkForEMailURL( url) == true) {
+            // This is an URL wich describes an a-mail like 
+            // imap://user:password@mail.mailhost.com/INBOX/message_23(_attachment_1)
+            // We do not check here for the accessibility, so nothing to do
+          } else {
+            // If the URL is not an e-mail it have to be folder. Add all subfolders and 
+            // messages as jobs
+            if (shouldBeParsed) {
+              //parseImapFolder(url);
+            }
+            
+            // A folder can't be indexed -> continue
+            mCrawlerJobProfiler.stopMeasuring(0);
+            continue;
+          }
+
         }
         catch (Throwable thr) {
           mCrawlerJobProfiler.abortMeasuring();
@@ -541,7 +570,7 @@ public class Crawler implements ErrorLogger {
       }
     } // while (! mJobList.isEmpty())
 
-    // Nicht mehr vorhandene Dokumente aus dem Index l�schen
+    // Remove documents from the index which no longer exists
     if (mConfiguration.getBuildIndex()) {
       mLog.info("Removing index entries of documents that do not exist any more...");
       try {
@@ -552,7 +581,7 @@ public class Crawler implements ErrorLogger {
       }
     }
 
-    // Pr�fen, ob Index leer ist
+    // Check wether the index is empty
     int entryCount = 0;
     try {
       entryCount = mIndexWriterManager.getIndexEntryCount();
@@ -572,8 +601,7 @@ public class Crawler implements ErrorLogger {
       logError("The index is empty.", null, true);
       failedPercent = 1;
     } else {
-      // Pr�fen, ob die Anzahl der abgebrochenen Dokumenteüber der Toleranzgrenze
-      // ist.
+      // Check wether the count of dead/errror links reached the limit
       double failedDocCount = mDeadlinkList.size() + mErrorCount;
       double totalDocCount = failedDocCount + entryCount;
       failedPercent = failedDocCount / totalDocCount;
@@ -893,6 +921,48 @@ public class Crawler implements ErrorLogger {
          
   }
 
+  /**
+   * Searches a imap directory for folder an counts the containing messages
+   * The method creates a new job for every not empty folder
+   *
+   * @param folder the folder to parse
+   * @throws RegainException If encoding of the found URLs failed. 
+   */
+  private void parseIMAPFolder(String folderUrl) throws RegainException {
+  
+//    try {
+//   
+//      Session session = Session.getInstance(new Properties());
+//      URLName urlName = new URLName(folderUrl);
+
+   
+//      
+//      
+//      
+//      // Get the URL for the directory
+//      String sourceUrl = dir.getCanonicalPath();
+//
+//      // Parse the directory
+//      SmbFile[] childArr = dir.listFiles();
+//      for (int childIdx = 0; childIdx < childArr.length; childIdx++) {
+//        // Get the URL for the current child file
+//        String url = childArr[childIdx].getCanonicalPath();
+//
+//        // Check whether this is a directory
+//        if (childArr[childIdx].isDirectory()) {
+//          // It's a directory -> Add a parse job
+//          addJob(url, sourceUrl, true, false, null);
+//        } else {
+//          // It's a file -> Add a index job
+//          addJob(url, sourceUrl, false, true, null);
+//        }
+//      }
+//    } catch( Exception ex ) {
+//      throw new RegainException(ex.getMessage(), ex);
+//    }
+//         
+  }
+  
   /**
    * Creates crawler jobs from inclosed links. Every link is checked against the white-/black list.
    * 

@@ -801,10 +801,10 @@ public class IndexWriterManager {
         String url = doc.get("url");
         String lastModified = doc.get("last-modified");
 
-        // Pr�fen, ob die URL gel�scht werden soll
+        // Prüfen, ob die URL gel�scht werden soll
         boolean shouldBeDeleted;
         if (url != null) {
-          // Pr�fen, ob dieser Eintrag zum L�schen vorgesehen ist
+          // Prüfen, ob dieser Eintrag zum L�schen vorgesehen ist
           if (isMarkedForDeletion(doc)) {
             shouldBeDeleted = true;
           }
@@ -816,7 +816,7 @@ public class IndexWriterManager {
           else if (urlChecker.shouldBeKeptInIndex(url)) {
             shouldBeDeleted = false;
           }
-          // Pr�fen, ob die URL zu einem zu-verschonen-Präfix passt
+          // Prüfen, ob die URL zu einem zu-verschonen-Präfix passt
           else {
             shouldBeDeleted = true;
             for (int i = 0; i < preserveUrlMatcherArr.length; i++) {
@@ -907,7 +907,7 @@ public class IndexWriterManager {
       return false;
     }
 
-    // Pr�fen, ob es einen Eintrag für diese URL gibt und ob er dem
+    // Prüfen, ob es einen Eintrag für diese URL gibt und ob er dem
     // last-modified des Dokuments entspricht
     String lastModifiedToDelete = (String) mUrlsToDeleteHash.get(url);
     return lastModified.equals(lastModifiedToDelete);

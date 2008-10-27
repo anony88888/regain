@@ -224,7 +224,7 @@ public class RawDocument {
     }
     catch (InterruptedException exc) {}
 
-    // Pr�fen, ob wir mittlerweile den Inhalt haben
+    // Prüfen, ob wir mittlerweile den Inhalt haben
     byte[] content = loaderThread.getContent();
     if (content != null) {
       HTTP_LOADING_PROFILER.stopMeasuring(content.length);

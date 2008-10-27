@@ -638,7 +638,7 @@ public class DocumentFactory {
    * <p>
    * Eine Analyse-Datei enthält die Daten des Dokuments bei jedem
    * Zwischenschritt der Aufbereitung. Sie hilft die Qualit�t der
-   * Index-Erstellung zu pr�fen und wird in einem Unterverzeichnis im
+   * Index-Erstellung zu Prüfen und wird in einem Unterverzeichnis im
    * Index-Verzeichnis angelegt.
    *
    * @param url Die URL des Dokuments.

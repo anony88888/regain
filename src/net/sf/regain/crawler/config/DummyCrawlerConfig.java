@@ -195,7 +195,7 @@ public class DummyCrawlerConfig implements CrawlerConfig {
   /**
    * Gibt zur�ck, ob Analyse-Deteien geschrieben werden sollen.
    * <p>
-   * Diese Dateien helfen, die Qualit�t der Index-Erstellung zu pr�fen und
+   * Diese Dateien helfen, die Qualit�t der Index-Erstellung zu Prüfen und
    * werden in einem Unterverzeichnis im Index-Verzeichnis angelegt.
    *
    * @return Ob Analyse-Deteien geschrieben werden sollen.

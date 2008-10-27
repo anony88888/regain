@@ -226,7 +226,7 @@ X TLD-Dokumentation generieren.
 X Search mask: Allow multiple query parameters (Just concatinate them)
 X Include improved Jacob preparators of Reinhard Balling. See mail from 17.11.05.
 X Include and improve ExternalPrepartor of Paul Ortyl. See mail from 10.12.05.
-X Pr�fen, ob es mehrere Parameter gleichen Names in Präparator-Config gibt
+X Prüfen, ob es mehrere Parameter gleichen Names in Präparator-Config gibt
     See http://forum.murfman.de/de/viewtopic.php?p=351
 X Fehlende Teile der italienischen Lokalisierung. (Danke an Franco Lombardo)
 X Delivering a simpler default CrawlerConfiguration.xml.
@@ -308,7 +308,7 @@ Prio A:
   Give preparators the possibility to add index fields on their own.
     See mail of Daniel Varela Santoalla from 09.02.06.
   Bugfix: IfilterPreparator geht unter WinXP Home nicht.
-  Pr�fen: Werden manche HTTP-URLs wirklich gel�scht?
+  Prüfen: Werden manche HTTP-URLs wirklich gel�scht?
     Siehe: http://forum.murfman.de/de/viewtopic.php?p=417
 
   Desktop search: Status page: Add checkbox "Create completely new index" for
