@@ -822,6 +822,10 @@
     <junit haltonfailure="true" fork="true"> <!-- showoutput="true" -->
       <classpath>
         <path refid="classpath"/>
+         <fileset dir="lib">
+          <include name="*.jar"/>
+          <include name="ant/*.jar"/>
+        </fileset>
       </classpath>
       <formatter type="plain" usefile="false"/>
       <batchtest>

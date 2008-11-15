@@ -27,17 +27,27 @@
  */
 package net.sf.regain.crawler;
 
+import com.sun.mail.imap.IMAPFolder;
+import com.sun.mail.imap.IMAPSSLStore;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Vector;
+import javax.mail.Folder;
+import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.URLName;
+import javax.mail.internet.MimeMessage;
 import jcifs.smb.SmbFile;
 import net.sf.regain.ImapToolkit;
 import net.sf.regain.RegainException;
@@ -453,10 +463,11 @@ public class Crawler implements ErrorLogger {
           logError("Invalid URL: '" + url + "'", thr, false);
           continue;
         }
+        
       }else if(url.startsWith("imap://") || url.startsWith("imaps://")){
         // IMAP mail box: Check whether this is a folder or an e-mail url
         try {
-          if( ImapToolkit.checkForEMailURL( url) == true) {
+          if( ImapToolkit.isMessageURL( url) == true) {
             // This is an URL wich describes an a-mail like 
             // imap://user:password@mail.mailhost.com/INBOX/message_23(_attachment_1)
             // We do not check here for the accessibility, so nothing to do
@@ -464,7 +475,7 @@ public class Crawler implements ErrorLogger {
             // If the URL is not an e-mail it have to be folder. Add all subfolders and 
             // messages as jobs
             if (shouldBeParsed) {
-              //parseImapFolder(url);
+              parseIMAPFolder(url);
             }
             
             // A folder can't be indexed -> continue
@@ -930,37 +941,62 @@ public class Crawler implements ErrorLogger {
    */
   private void parseIMAPFolder(String folderUrl) throws RegainException {
   
-//    try {
-//   
-//      Session session = Session.getInstance(new Properties());
-//      URLName urlName = new URLName(folderUrl);
+    mLog.debug("Determine IMAP subfolder for: " + folderUrl);
+    Session session = Session.getInstance(new Properties());
+    
+    URLName originURLName = new URLName(folderUrl);
+    // Replace all %20 with whitespace in folder pathes
+    String folder = "";
+    if(originURLName.getFile()!=null){
+      folder = originURLName.getFile().replaceAll("%20", " ");
+    }
+    URLName urlName = new URLName(originURLName.getProtocol(), originURLName.getHost(), 
+      originURLName.getPort(), folder , originURLName.getUsername(), originURLName.getPassword());
+    
+    Map<String, Integer> folderList = new Hashtable<String, Integer>();
 
-   
-//      
-//      
-//      
-//      // Get the URL for the directory
-//      String sourceUrl = dir.getCanonicalPath();
-//
-//      // Parse the directory
-//      SmbFile[] childArr = dir.listFiles();
-//      for (int childIdx = 0; childIdx < childArr.length; childIdx++) {
-//        // Get the URL for the current child file
-//        String url = childArr[childIdx].getCanonicalPath();
-//
-//        // Check whether this is a directory
-//        if (childArr[childIdx].isDirectory()) {
-//          // It's a directory -> Add a parse job
-//          addJob(url, sourceUrl, true, false, null);
-//        } else {
-//          // It's a file -> Add a index job
-//          addJob(url, sourceUrl, false, true, null);
-//        }
-//      }
-//    } catch( Exception ex ) {
-//      throw new RegainException(ex.getMessage(), ex);
-//    }
-//         
+    try {
+      IMAPSSLStore imapStore = new IMAPSSLStore(session, urlName);
+
+      imapStore.connect();
+      IMAPFolder startFolder;
+
+      if (urlName.getFile() == null) {
+        // There is no folder given
+        startFolder = (IMAPFolder) imapStore.getDefaultFolder();
+      } else {
+        startFolder = (IMAPFolder) imapStore.getFolder(urlName.getFile());
+      }
+
+      // Find messages (if folder exist and could be openend)
+      if( startFolder.exists()){
+        try {
+          startFolder.open(Folder.READ_ONLY);
+          Message[] msgs = startFolder.getMessages();
+          for (int i = 0; i < msgs.length; i++) {
+            MimeMessage message = (MimeMessage) msgs[i];
+            // It's a message -> Add a index job
+            addJob(folderUrl + "/message_"+startFolder.getUID(message), folderUrl, false, true, null);
+          }
+          startFolder.close(false);
+
+        } catch (MessagingException messageEx) {
+          mLog.debug("Could not open folder for reading but this is not an errror. Folder URL is " + folderUrl);
+        }        
+      }
+      // Find all subfolder 
+      folderList = ImapToolkit.getAllFolders(startFolder, false);
+
+      // Iterate over all subfolders
+      for (Map.Entry<String, Integer> entry : folderList.entrySet()) {
+        // It's a directory -> Add a parse job
+        addJob(folderUrl + "/"+(String) entry.getKey(), folderUrl, true, false, null);
+      }
+      imapStore.close();
+    
+    } catch (Exception ex) {
+      throw new RegainException("Couldn't determine IMAP entries.", ex);
+    }
   }
   
   /**
