@@ -6,8 +6,6 @@
 package net.sf.regain.test;
 
 import net.sf.regain.*;
-import com.sun.mail.imap.IMAPFolder;
-import java.util.Map;
 import junit.framework.TestCase;
 
 /**
