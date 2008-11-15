@@ -594,7 +594,7 @@ public class RawDocument {
           extension = path.substring(lastDot);
         }
       } else if( mUrl.toLowerCase().startsWith("imap") | mUrl.toLowerCase().startsWith("imaps") ) {
-        extension = ".mime";
+        extension = ".mht";
       }
       
       // Get an unused file
