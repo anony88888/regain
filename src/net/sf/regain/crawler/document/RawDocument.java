@@ -382,6 +382,8 @@ public class RawDocument {
         //throw new RegainException("Detection of file length failed: ", ex);
       }
     }
+    // @todo: last modified date for messages
+    
     return date;
   }
 
@@ -594,7 +596,9 @@ public class RawDocument {
           extension = path.substring(lastDot);
         }
       } else if( mUrl.toLowerCase().startsWith("imap") | mUrl.toLowerCase().startsWith("imaps") ) {
+        // @todo: consider extensions for attachments too
         extension = ".mht";
+        
       }
       
       // Get an unused file

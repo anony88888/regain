@@ -1,6 +1,6 @@
 /*
  * regain - A file search engine providing plenty of formats
- * Copyright (C) 2004  Til Schneider
+ * Copyright (C) 2004-2008  Til Schneider, Thomas Tesche
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,6 +32,7 @@ import java.net.*;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
+import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import net.sf.regain.RegainException;
@@ -44,12 +45,42 @@ import net.sf.regain.util.io.HtmlEntities;
  *
  * @author Til Schneider, www.murfman.de
  * @author Gerhard Olsson
+ * @author Thomas Tesche
  */
 public class CrawlerToolkit {
 
   /** The logger for this class */
   private static Logger mLog = Logger.getLogger(CrawlerToolkit.class);
 
+  public static String createURLFromProps(String[] parts) {
+    
+    String result = "";
+    if( parts.length >= 4 ) {
+      // We need at least protocol, sld, tld, account/password
+      result = parts[0] + "://";
+      for( int i=1; i< parts.length-2;i++) {
+        // aggregate domain name
+        result += parts[i] + ".";
+      }
+      
+      // Remove the last dot
+      result = result.substring(0, result.length()-1);
+      
+      // Analyze length-2 part for portnumber
+      if( Pattern.matches("^\\d*$", parts[parts.length-2]) ) {
+        result += ":";
+      } else {
+        result += ".";
+      }
+      result += parts[parts.length-2] + "/";
+        mLog.debug("The result for url assambling is: " +  result );
+        System.out.println(result);
+    } else {
+      mLog.error("This is not a valid authentication entry: " + parts );
+    }
+    
+    return result;
+  }
   
   /**
    * Returns a human readable command string for a command.

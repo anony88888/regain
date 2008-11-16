@@ -71,5 +71,9 @@ public interface DesktopConstants {
 
   /** The file that holds the crawler configuration. */
   public static final File DEFAULT_CRAWLER_CONFIG_FILE = new File(DEFAULT_CONFIG_DIR, "CrawlerConfiguration.xml");
+  
+  /** The authentication properties. */
+  public static final File AUTH_PROPS_FILE = new File(CONFIG_DIR, "authentication.properties");
+  
 
 }
