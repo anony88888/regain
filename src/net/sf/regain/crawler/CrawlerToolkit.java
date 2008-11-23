@@ -656,16 +656,17 @@ public class CrawlerToolkit {
   public static String replaceAuthenticationValuesInURL(String url, AccountPasswordEntry entry) {
 
     String finalUrl = url;
-    // Lookup the key and in case of a match build the final url with account, password enrichment
-    finalUrl = url.substring(0, url.indexOf("://"));
-    finalUrl += "://" + entry.getAccountName() + ":" +
-      entry.getPassword() + "@";
-    finalUrl += url.substring(url.indexOf("://") + 3);
-
+    if (entry != null) {
+      // Lookup the key and in case of a match build the final url with account, password enrichment
+      finalUrl = url.substring(0, url.indexOf("://"));
+      finalUrl += "://" + entry.getAccountName() + ":" +
+        entry.getPassword() + "@";
+      finalUrl += url.substring(url.indexOf("://") + 3);
+    }
     return finalUrl;
 
   }
-  
+
   /**
    * Extract left part of URL (protocol, host, port).
    * 
