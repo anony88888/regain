@@ -963,7 +963,6 @@ public class Crawler implements ErrorLogger {
     try {
       // Get the URL for the directory
       String sourceUrl = dir.getCanonicalPath();
-      // @todo: use userPasswordFactory for username
 
       // Parse the directory
       SmbFile[] childArr = dir.listFiles();
@@ -1046,7 +1045,13 @@ public class Crawler implements ErrorLogger {
       // Iterate over all subfolders
       for (Map.Entry<String, Integer> entry : folderList.entrySet()) {
         // It's a directory -> Add a parse job
-        addJob(folderUrl + "/" + (String) entry.getKey(), folderUrl, true, false, null);
+        String newFolder;
+        if( folderUrl == null || folderUrl.length() == 0 || !folderUrl.endsWith("/")) {
+          newFolder =  "/" + (String) entry.getKey();
+        } else {
+          newFolder =  (String) entry.getKey();
+        }
+        addJob(folderUrl + newFolder, folderUrl, true, false, null);
       }
       imapStore.close();
 

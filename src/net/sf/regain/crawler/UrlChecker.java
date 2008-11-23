@@ -214,7 +214,7 @@ public class UrlChecker {
   public UrlMatcher isUrlAccepted(String url) {
     
     UrlMatcher urlMatch = new UrlMatcherImpl(false, false);
-
+    mLog.debug("isUrlAccepted for url: " + url);
     // check whether this URL matches to a white list prefix
     for (int i = 0; i < mWhiteListEntryArr.length; i++) {
       if (mWhiteListEntryArr[i].shouldBeUpdated()) {
@@ -224,6 +224,7 @@ public class UrlChecker {
           // from the current matcher hit
           urlMatch.setShouldBeParsed(matcher.getShouldBeParsed());
           urlMatch.setShouldBeIndexed(matcher.getShouldBeIndexed());
+          mLog.debug("Whitelist matches for url: " + url);
           break;
         }
       }
@@ -236,6 +237,7 @@ public class UrlChecker {
         if (mBlackListArr[i].matches(url)) {
           urlMatch.setShouldBeParsed(false);
           urlMatch.setShouldBeIndexed(false);
+          mLog.debug("Blacklist matches for url: " + url);
         }
       }
     }

@@ -142,6 +142,9 @@ public class RawDocument {
   /** account-password entry for the url in processing. */
   AccountPasswordEntry mAccountPasswordEntry;
   
+  /** Last modified date. Will be changed for protocolls which can determine this date correctly. */
+  Date mLastModifiedDate = new Date();
+  
   /**
    * Erzeugt eine neue RawDocument-Instanz.
    *
@@ -166,6 +169,7 @@ public class RawDocument {
 
     if (url.startsWith("file://")) {
       mContentAsFile = RegainToolkit.urlToFile(url);
+      mLastModifiedDate = new Date(mContentAsFile.lastModified());
     } else if( url.startsWith("smb://" )) {
       mContent = null;
       mContentAsFile = null;
@@ -177,7 +181,6 @@ public class RawDocument {
       mContentAsFile = null;
     }
   }
-
 
   /**
    * Setzt den Timeout für HTTP-Downloads.
@@ -241,6 +244,7 @@ public class RawDocument {
           cplMessage.setFlag(Flags.Flag.SEEN, true);
           cplMessage.writeTo(baos);
           bytearrayMessage = baos.toByteArray();
+          mLastModifiedDate = cplMessage.getSentDate();
         }
 
         currentFolder.close(false);
@@ -271,6 +275,7 @@ public class RawDocument {
     
       if( smbFile.canRead() && !smbFile.isDirectory() ) {
         in = smbFile.getInputStream();
+        mLastModifiedDate = new Date(smbFile.lastModified());
         
         return CrawlerToolkit.loadFileFromStream(in,smbFile.getContentLength());
         
@@ -378,21 +383,7 @@ public class RawDocument {
    * @return Wann das Dokument zuletzt geändert wurde.
    */
   public Date getLastModified() {
-    Date date = null;
-    
-    if (mUrl.startsWith("file://")) {
-      date = new Date(mContentAsFile.lastModified());
-    } else if(mUrl.startsWith("smb://")) {
-      try{
-        date = new Date(RegainToolkit.urlToSmbFile(
-          CrawlerToolkit.replaceAuthenticationValuesInURL(mUrl, mAccountPasswordEntry)).lastModified());
-      } catch( Exception ex ){
-        //throw new RegainException("Detection of file length failed: ", ex);
-      }
-    }
-    // @todo: last modified date for messages
-    
-    return date;
+    return mLastModifiedDate;
   }
 
 
@@ -450,8 +441,10 @@ public class RawDocument {
           content = CrawlerToolkit.loadFile(mContentAsFile);
         } else if( mUrl.startsWith("smb://")) {
           content =  loadSmbFile(mUrl); 
+          mContent = content;
         } else if( mUrl.startsWith("imap://") || mUrl.startsWith("imaps://")) {
           content =  loadIMAPMessage(mUrl); 
+          mContent = content;
         }
         FILE_LOADING_PROFILER.stopMeasuring(content.length);
         return content;
@@ -536,7 +529,7 @@ public class RawDocument {
       RegainToolkit.writeToFile(getContent(), file);
 
       if (mContentAsFile == null) {
-        // Falls das Dokument in Dateiform ben�tigt wird, dann diese Datei
+        // Falls das Dokument in Dateiform benötigt wird, dann diese Datei
         // nutzen.
         mContentAsFile = file;
       }
@@ -631,7 +624,7 @@ public class RawDocument {
 
 
   /**
-   * Gibt alle genutzten System-Ressourcen, wie tempor�re Dateien, wieder frei.
+   * Gibt alle genutzten System-Ressourcen, wie temporäre Dateien, wieder frei.
    * <p>
    * Ressourcen der VM, wie z.B. Arrays, werden nicht freigegeben. Das soll der
    * GarbageCollector erledigen.

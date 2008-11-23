@@ -56,6 +56,7 @@ public class PrefixUrlMatcher extends UrlMatcherImpl {
    * @param url The URL to check.
    * @return Whether the given URL matches to the rules of this matcher.
    */
+  @Override
   public boolean matches(String url) {
     return url.startsWith(mUrlPrefix);
   }
@@ -64,6 +65,7 @@ public class PrefixUrlMatcher extends UrlMatcherImpl {
   /**
    * Gets a String representation of this UrlMatcher.
    */
+  @Override
   public String toString() {
     return mUrlPrefix;
   }

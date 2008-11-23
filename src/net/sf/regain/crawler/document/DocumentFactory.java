@@ -564,7 +564,7 @@ public class DocumentFactory {
   /**
    * Erzeugt eine Zusammenfassung aus dem Inhalt eines Dokuments.
    * <p>
-   * Wenn keine Zusammenfassung m�glich ist, wird <code>null</code>
+   * Wenn keine Zusammenfassung möglich ist, wird <code>null</code>
    * zurückgegeben.
    *
    * @param content Der Inhalt für den die Zusammenfassung erstellt werden soll.
