@@ -68,11 +68,12 @@ public class HttpDownloadThread extends Thread {
 
 
   /**
-   * F�hrt den Download aus.
+   * Führt den Download aus.
    * <p>
    * Am Ende ist entweder mDocContent oder mError gesetzt, bevor der wartende
    * Thread benachrichtigt wird.
    */
+  @Override
   public void run() {
     try {
       mDocContent = CrawlerToolkit.loadHttpDocument(mDocUrl);

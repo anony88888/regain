@@ -42,7 +42,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Session;
@@ -56,14 +55,15 @@ import net.sf.regain.crawler.CrawlerToolkit;
 import net.sf.regain.crawler.Profiler;
 import net.sf.regain.crawler.RedirectException;
 
+import net.sf.regain.crawler.access.AccountPasswordEntry;
 import org.apache.log4j.Logger;
 
 
 /**
- * enthält alle Rohdaten eines Dokuments.
+ * Enthält alle Rohdaten eines Dokuments.
  * <p>
  * Falls der Inhalt des Dokuments zur besseren Bearbeitung in Form eines Strings
- * gebraucht wird, dann wird dieser zum sp�test m�glichen Zeitpunkt erstellt.
+ * gebraucht wird, dann wird dieser zum spätest möglichen Zeitpunkt erstellt.
  *
  * @author Til Schneider, www.murfman.de
  */
@@ -136,10 +136,11 @@ public class RawDocument {
    */
   private String mMimeType;
 
-  /**
-   * HashMap links containing the URL as key and the linktext as value
-   */
+  /** HashMap links containing the URL as key and the linktext as value. */
   private HashMap <String,String>mLinks;
+  
+  /** account-password entry for the url in processing. */
+  AccountPasswordEntry mAccountPasswordEntry;
   
   /**
    * Erzeugt eine neue RawDocument-Instanz.
@@ -149,17 +150,19 @@ public class RawDocument {
    *        gefunden wurde.
    * @param sourceLinkText Der Text des Links in dem die URL gefunden wurde. Ist
    *        <code>null</code>, falls die URL nicht in einem Link (also einem
-   *        a-Tag) gefunden wurde oder wenn aus sonstigen Gr�nden kein Link-Text
+   *        a-Tag) gefunden wurde oder wenn aus sonstigen Gründen kein Link-Text
    *        vorhanden ist.
    * @throws RegainException Wenn das Dokument nicht geladen werden konnte.
    */
-  public RawDocument(String url, String sourceUrl, String sourceLinkText)
+  public RawDocument(String url, String sourceUrl, String sourceLinkText, 
+    AccountPasswordEntry accountPasswordEntry )
     throws RegainException
   {
-    mLinks = new HashMap<String,String>();
-    mUrl = url;
-    mSourceUrl = sourceUrl;
-    mSourceLinkText = sourceLinkText;
+    this.mLinks = new HashMap<String,String>();
+    this.mUrl = url;
+    this.mSourceUrl = sourceUrl;
+    this.mSourceLinkText = sourceLinkText;
+    this.mAccountPasswordEntry = accountPasswordEntry;
 
     if (url.startsWith("file://")) {
       mContentAsFile = RegainToolkit.urlToFile(url);
@@ -210,7 +213,8 @@ public class RawDocument {
         mLog.debug("Read mime message uid: " + messageUID + " for IMAP url: " + url);
         Session session = Session.getInstance(new Properties());
     
-        URLName originURLName = new URLName(ImapToolkit.cutMessageIdentifier(url));
+        URLName originURLName = new URLName(ImapToolkit.cutMessageIdentifier(
+          CrawlerToolkit.replaceAuthenticationValuesInURL(url, mAccountPasswordEntry)));
         // Replace all %20 with whitespace in folder pathes
         String folder = "";
         if(originURLName.getFile()!=null){
@@ -262,7 +266,8 @@ public class RawDocument {
         
     InputStream in = null;
     try {
-      SmbFile smbFile = RegainToolkit.urlToSmbFile(url);
+      SmbFile smbFile = RegainToolkit.urlToSmbFile(
+        CrawlerToolkit.replaceAuthenticationValuesInURL(url, mAccountPasswordEntry));
     
       if( smbFile.canRead() && !smbFile.isDirectory() ) {
         in = smbFile.getInputStream();
@@ -294,16 +299,17 @@ public class RawDocument {
    */
   private byte[] loadContent(String url) throws RegainException {
     HTTP_LOADING_PROFILER.startMeasuring();
-    HttpDownloadThread loaderThread
-      = new HttpDownloadThread(url, Thread.currentThread());
+    HttpDownloadThread loaderThread = new HttpDownloadThread(
+      CrawlerToolkit.replaceAuthenticationValuesInURL(url, mAccountPasswordEntry),
+      Thread.currentThread());
     loaderThread.start();
 
     // Warten bis entweder der Timeout abläuft, oder bis dieser Thread vom
     // HttpContentLoaderThread unterbrochen wird.
     try {
       Thread.sleep(mHttpTimeoutSecs * 1000);
+    } catch (InterruptedException exc) {
     }
-    catch (InterruptedException exc) {}
 
     // Prüfen, ob wir mittlerweile den Inhalt haben
     byte[] content = loaderThread.getContent();
@@ -352,7 +358,8 @@ public class RawDocument {
       } else if( mUrl.startsWith("smb://")) {
         // @todo : define a suitable way to hold different kinds of files (local fs, windows share, other share types)
         try{
-          length = (int) RegainToolkit.urlToSmbFile(mUrl).length();
+          length = (int) RegainToolkit.urlToSmbFile(
+            CrawlerToolkit.replaceAuthenticationValuesInURL(mUrl, mAccountPasswordEntry)).length();
         } catch( Exception ex ){
           //throw new RegainException("Detection of file length failed: ", ex);
         }
@@ -377,7 +384,8 @@ public class RawDocument {
       date = new Date(mContentAsFile.lastModified());
     } else if(mUrl.startsWith("smb://")) {
       try{
-        date = new Date(RegainToolkit.urlToSmbFile(mUrl).lastModified());
+        date = new Date(RegainToolkit.urlToSmbFile(
+          CrawlerToolkit.replaceAuthenticationValuesInURL(mUrl, mAccountPasswordEntry)).lastModified());
       } catch( Exception ex ){
         //throw new RegainException("Detection of file length failed: ", ex);
       }
@@ -501,7 +509,8 @@ public class RawDocument {
         }
       } else if(mUrl.startsWith("smb://")) {
         try {
-           SmbFile smbFile = RegainToolkit.urlToSmbFile(mUrl);
+           SmbFile smbFile = RegainToolkit.urlToSmbFile(
+             CrawlerToolkit.replaceAuthenticationValuesInURL(mUrl, mAccountPasswordEntry));
            return smbFile.getInputStream();
            
         } catch (Throwable thr) {
