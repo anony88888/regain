@@ -85,15 +85,17 @@ public class MessagePreparator extends AbstractPreparator {
     Collection<String> attachments = new ArrayList<String>();
     SimpleDateFormat simpleFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
-    StringBuffer result = new StringBuffer();
+    StringBuffer resultText = new StringBuffer();
+    StringBuffer summaryText = new StringBuffer();
+    
     try {
       MimeMessage message = new MimeMessage(session, mimeInput);
 
-      result.append("Subject: " + message.getSubject()).append("\n");
-      result.append("Sent: " + simpleFormat.format(message.getSentDate())).append("\n");
+      resultText.append("Subject: " + message.getSubject()).append("\n");
+      resultText.append("Sent: " + simpleFormat.format(message.getSentDate())).append("\n");
 
       if (message.getReceivedDate() != null) {
-        result.append("Recieved: " + simpleFormat.format(message.getReceivedDate())).append("\n");
+        resultText.append("Recieved: " + simpleFormat.format(message.getReceivedDate())).append("\n");
       }
       Address[] recipientsArray = message.getAllRecipients();
       String recipients = "";
@@ -101,7 +103,7 @@ public class MessagePreparator extends AbstractPreparator {
         recipients += recipientsArray[i].toString().replace("<", " ").replace(">", " ") + ", ";
       }
       recipients = recipients.substring(0, recipients.length() - 2);
-      result.append("Recipient(s): " + recipients).append("\n");
+      resultText.append("Recipient(s): " + recipients).append("\n");
 
       Address[] repliesArray = message.getReplyTo();
       if (repliesArray != null && repliesArray.length > 0) {
@@ -110,7 +112,7 @@ public class MessagePreparator extends AbstractPreparator {
           replies += repliesArray[i].toString().replace("<", " ").replace(">", " ") + ", ";
         }
         replies = replies.substring(0, replies.length() - 2);
-        result.append("Reply to: " + replies).append("\n");
+        resultText.append("Reply to: " + replies).append("\n");
       }
 
       Address[] senderArray = message.getFrom();
@@ -121,9 +123,11 @@ public class MessagePreparator extends AbstractPreparator {
         }
         sender = sender.substring(0, sender.length() - 2);
         setTitle(message.getSubject() + " from " + sender);
-        result.append("Sender: " + sender).append("\n");
+        resultText.append("Sender: " + sender).append("\n");
       }
 
+      summaryText.append(resultText.toString());
+      
       // multipart or not multipart
       if (message.getContent() instanceof Multipart) {
         //contentType = "multipart";
@@ -180,14 +184,12 @@ public class MessagePreparator extends AbstractPreparator {
       mLog.error("Could not parse mime message for parsing.", ex);
     }
 
-    StringBuffer summary = new StringBuffer();
     if (textParts.size() > 0) {
       // Iteriere über alle Textteile der Mail und aggregiere diese
       Iterator iter = textParts.iterator();
       while (iter.hasNext()) {
         String current = (String) iter.next();
-        result.append(StripEntities.stripHTMLTags(((String) current)) + " ").append("\n");
-        summary.append(StripEntities.stripHTMLTags(((String) current)) + " ").append("\n");
+        resultText.append(StripEntities.stripHTMLTags(((String) current)) + " ").append("\n");
       }
     }
 
@@ -195,12 +197,13 @@ public class MessagePreparator extends AbstractPreparator {
       // Iteriere über alle Textteile der Mail und aggregiere diese
       Iterator iter = textParts.iterator();
       while (iter.hasNext()) {
-        result.append(StripEntities.stripHTMLTags(((String) iter.next()))).append("\n");
+        resultText.append(StripEntities.stripHTMLTags(((String) iter.next()))).append("\n");
       }
     }
 
-    setSummary(summary.toString());
-    setCleanedContent(result.toString());
+    setSummary(summaryText.toString());
+    setCleanedContent(resultText.toString() + summaryText.toString().replace(".", " ")
+      .replace(":", " ").replace("@", " ").replace("-", " ").replace("_", " "));
 
   }
 }
