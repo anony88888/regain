@@ -676,10 +676,16 @@ public class CrawlerToolkit {
    */
   public static String createURLWithoutPath(String completeUrl) throws RegainException {
 
+    String result = "";
     Matcher matcher = urlPatternLeft.matcher(completeUrl);
     matcher.find();
     if (matcher.groupCount() > 0) {
-      return matcher.group(1) +"/";
+      try {
+        return matcher.group(1) + "/";
+      } catch (IllegalStateException ex) {
+        // No match found
+        return "";
+      }
     } else {
       throw new RegainException("URL is unparsable. url: " + completeUrl);
     }

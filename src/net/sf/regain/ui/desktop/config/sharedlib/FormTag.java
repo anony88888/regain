@@ -372,7 +372,9 @@ public class FormTag extends SharedTag implements DesktopConstants {
     }
         
     // Add the file protocol to the whitelist
-    XmlToolkit.addChildWithText(crawlerDoc, whitelistNode, "prefix", FILE_PROTOCOL);
+    for (int i = 0; i < dirlist.length; i++) {
+      XmlToolkit.addChildWithText(crawlerDoc, whitelistNode, "prefix", FILE_PROTOCOL + dirlist[i]);
+    }
     
     // Add the sitelist to the whitelist
     for (int i = 0; i < sitelist.length; i++) {
