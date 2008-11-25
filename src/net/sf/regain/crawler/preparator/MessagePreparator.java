@@ -27,8 +27,11 @@
  */
 package net.sf.regain.crawler.preparator;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -86,8 +89,8 @@ public class MessagePreparator extends AbstractPreparator {
     SimpleDateFormat simpleFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
     StringBuffer resultText = new StringBuffer();
-    StringBuffer summaryText = new StringBuffer();
-    
+    StringBuffer keyText = new StringBuffer();
+
     try {
       MimeMessage message = new MimeMessage(session, mimeInput);
 
@@ -100,7 +103,8 @@ public class MessagePreparator extends AbstractPreparator {
       Address[] recipientsArray = message.getAllRecipients();
       String recipients = "";
       for (int i = 0; i < recipientsArray.length; i++) {
-        recipients += recipientsArray[i].toString().replace("<", " ").replace(">", " ") + ", ";
+        recipients += recipientsArray[i].toString() + ", ";
+        keyText.append(stripNoneWordChars(recipientsArray[i].toString()) + " ");
       }
       recipients = recipients.substring(0, recipients.length() - 2);
       resultText.append("Recipient(s): " + recipients).append("\n");
@@ -109,7 +113,8 @@ public class MessagePreparator extends AbstractPreparator {
       if (repliesArray != null && repliesArray.length > 0) {
         String replies = "";
         for (int i = 0; i < repliesArray.length; i++) {
-          replies += repliesArray[i].toString().replace("<", " ").replace(">", " ") + ", ";
+          replies += repliesArray[i].toString() + ", ";
+          keyText.append(stripNoneWordChars(repliesArray[i].toString()) + " ");
         }
         replies = replies.substring(0, replies.length() - 2);
         resultText.append("Reply to: " + replies).append("\n");
@@ -119,15 +124,17 @@ public class MessagePreparator extends AbstractPreparator {
       if (senderArray != null && senderArray.length > 0) {
         String sender = "";
         for (int i = 0; i < senderArray.length; i++) {
-          sender += senderArray[i].toString().replace("<", " ").replace(">", " ") + ", ";
+          sender += senderArray[i].toString() + ", ";
+          keyText.append(stripNoneWordChars(senderArray[i].toString()) + " ");
         }
         sender = sender.substring(0, sender.length() - 2);
         setTitle(message.getSubject() + " from " + sender);
         resultText.append("Sender: " + sender).append("\n");
       }
 
-      summaryText.append(resultText.toString());
-      
+      resultText.append("Header key words: " + keyText.toString()).append("\n");
+      resultText.append("-------------------------------------------------------------").append("\n");
+
       // multipart or not multipart
       if (message.getContent() instanceof Multipart) {
         //contentType = "multipart";
@@ -138,14 +145,15 @@ public class MessagePreparator extends AbstractPreparator {
           String disposition = bp.getDisposition();
 
           if ((disposition != null) &&
-            ((disposition.equals(Part.ATTACHMENT)) || (disposition.equals(Part.INLINE)))) {
+            ((disposition.equals(Part.ATTACHMENT)))) {
             attachments.add("attachment: " + bp.getFileName());
 
-          } else if (disposition == null) {
+          } else if (disposition == null || disposition.equals(Part.INLINE)) {
 
             // Plain Text oder HTML
             if (bp.isMimeType("text/*")) {
               textParts.add((String) bp.getContent());
+              //textParts.add( inputStreamAsString(bp.getInputStream()));
 
             } else if (bp.isMimeType("multipart/*")) {
               // another bodypart container
@@ -155,7 +163,7 @@ public class MessagePreparator extends AbstractPreparator {
               for (int k = 0; k < mpInner.getCount(); k++) {
                 BodyPart bpInner = mpInner.getBodyPart(k);
 
-                if (bpInner.getDisposition() == null) {
+                if (bpInner.getDisposition() == null || disposition.equals(Part.INLINE)) {
 
                   if (bpInner.isMimeType("text/*")) {
                     textParts.add((String) bpInner.getContent());
@@ -201,9 +209,31 @@ public class MessagePreparator extends AbstractPreparator {
       }
     }
 
-    setSummary(summaryText.toString());
-    setCleanedContent(resultText.toString() + summaryText.toString().replace(".", " ")
-      .replace(":", " ").replace("@", " ").replace("-", " ").replace("_", " "));
+    setCleanedContent(resultText.toString());
 
+  }
+
+  /** 
+   * Removes unwanted chars from a given string.
+   * @param uncleanString
+   * @return
+   */
+  private String stripNoneWordChars(String uncleanString) {
+    return uncleanString.replace(".", " ").replace(":", " ").replace("@", " ").replace("-", " ").replace("_", " ").replace("<", " ").replace(">", " ");
+
+  }
+
+  public static String inputStreamAsString(InputStream stream)
+    throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+    StringBuilder sb = new StringBuilder();
+    String line = null;
+
+    while ((line = br.readLine()) != null) {
+      sb.append(line + "\n");
+    }
+
+    br.close();
+    return sb.toString();
   }
 }
