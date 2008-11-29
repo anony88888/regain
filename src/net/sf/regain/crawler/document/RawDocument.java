@@ -243,7 +243,9 @@ public class RawDocument {
         if (cplMessage != null) {
           cplMessage.setFlag(Flags.Flag.SEEN, true);
           cplMessage.writeTo(baos);
+          baos.flush();
           bytearrayMessage = baos.toByteArray();
+          baos.close();
           mLastModifiedDate = cplMessage.getSentDate();
         }
 

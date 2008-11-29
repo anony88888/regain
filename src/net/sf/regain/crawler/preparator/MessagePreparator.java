@@ -45,7 +45,9 @@ import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
+import javax.mail.util.SharedByteArrayInputStream;
 import net.sf.regain.RegainException;
+import net.sf.regain.RegainToolkit;
 import net.sf.regain.crawler.document.AbstractPreparator;
 import net.sf.regain.crawler.document.RawDocument;
 import net.sf.regain.crawler.preparator.util.StripEntities;
@@ -182,7 +184,13 @@ public class MessagePreparator extends AbstractPreparator {
       } else {
         // This is a plain text mail.
         //contentType = "text";
-        textParts.add((String) message.getContent());
+        Object content = message.getContent();
+        if( content instanceof String ){
+          textParts.add((String) content);
+        } else { 
+          // This is an SharedByteArrayInputstream
+          textParts.add(RegainToolkit.readStringFromStream((SharedByteArrayInputStream)content));
+        }
       }
 
     } catch (MessagingException ex) {
