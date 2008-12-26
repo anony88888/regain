@@ -1,3 +1,11 @@
+Version 1.5.6 am 22.12.08 PREVIEW
+---------------------------------
+* EXE-Version nun wieder enthalten. Es gab ein merkwürdiges Verhalten bzgl. des Mailparsens. Fehler
+  ließ sich nicht mehr reproduzieren. Dies trat auch nur bei der EXE-Version auf.
+* E-Mails werden nur einmal vom Server gelesen und verarbeitet. Wenn man sein Postfach neu indexieren
+  will, muss man die Dokumente aus dem Index löschen (am einfachsten den ganzen Index löschen)
+* Auf neueste Versionen des Windows-Installers und JSmooth geupdated.
+
 Version 1.5.5 am 30.11.08 PREVIEW
 ---------------------------------
 * URL-Authentication für imap(s), http, smb in der Form protok://username:password@host:port/a_path/.
