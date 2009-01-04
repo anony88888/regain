@@ -687,10 +687,10 @@ public class RegainToolkit {
    * Erzeugt einen Analyzer, der die Aufrufe an einen eingebetteten Analyzer
    * analysiert.
    * <p>
-   * Dies ist beim Debugging hilfreich, wenn man prï¿½fen will, was ein Analyzer
+   * Dies ist beim Debugging hilfreich, wenn man prüfen will, was ein Analyzer
    * bei bestimmten Anfragen ausgibt.
    *
-   * @param nestedAnalyzer The nested Analyzer that should
+   * @param nestedAnalyzer The nested Analyzer that should be analysed
    * @return Ein Analyzer, der die Aufrufe an einen eingebetteten Analyzer
    *         analysiert.
    */

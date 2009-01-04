@@ -1,3 +1,8 @@
+Version 1.6.0 am XX.XX (stable)
+---------------------------------
+* Highlighting auch für Wildcard- und Fuzzysuchen (Contribution A.Larsson)
+* BUGFIX: Aufrufen von lokalen Dateien mittels Browser nach Anwendung von <rewriteRules/>
+
 Version 1.5.6 am 22.12.08 PREVIEW
 ---------------------------------
 * EXE-Version nun wieder enthalten. Es gab ein merkwürdiges Verhalten bzgl. des Mailparsens. Fehler
